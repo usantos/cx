@@ -1,18 +1,19 @@
 package br.gov.caixa.loterias.feature.cart
 
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
-import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSPrimaryButton
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.cart.navigation.CartRecoveryStatusPresentation
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
@@ -20,13 +21,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class CartRecoverySlotUiTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun `recovery slot forwards loading network and retry while Back is gated by loading`() {
         val loading = mutableStateOf(true)
@@ -44,7 +48,7 @@ class CartRecoverySlotUiTest {
                 LoteriasCaixaDSPrimaryButton("LOCAL RETRY", onClick = onRetry)
             }
         })
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 adapter.SimulationRecoveryPanel(loading.value, null, { retries++ }, { back++ }, { dismisses++ }, fixture.network)
             }
@@ -73,7 +77,7 @@ class CartRecoverySlotUiTest {
         var dismisses = 0
         val fixture = CartWiringFixture()
         val adapter = fixture.adapter()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 adapter.SimulationRecoveryPanel(false, message.value, { retries++ }, { back++ }, {
                     dismisses++

@@ -20,7 +20,7 @@ internal class FavoriteCartsLoading(
     private val getFavoriteCarts: GetFavoriteCartsUseCase,
     private val getFavoriteCartBets: GetFavoriteCartBetsUseCase,
     private val isSessionCurrent: () -> Boolean,
-    private val betsCache: MutableMap<Long, List<FavoriteCartBet>>
+    private val betsCache: MutableMap<Long, List<FavoriteCartBet>>,
 ) {
     private var expansionRequest: Any? = null
 

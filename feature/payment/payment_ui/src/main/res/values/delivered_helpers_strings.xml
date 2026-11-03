@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+
+
+
+        <string name="ui_bandeiras_aceitas_bf739a" formatted="false">"Bandeiras aceitas"</string>
+        <string name="ui_mercado_pago_fe6402" formatted="false">"Mercado Pago"</string>
+
+
+    <string name="ui_minhas_compras_c1e245" formatted="false">"Minhas Compras"</string>
+        <string name="ui_nome_508690" formatted="false">"Nome"</string>
+
+
+
+
+
+        <string name="ui_pagar_via_191e93" formatted="false">"Pagar via:"</string>
+
+
+
+
+        <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+
+
+
+
+
+
+        <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+    </resources>

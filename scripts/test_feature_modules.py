@@ -9,6 +9,76 @@ spec.loader.exec_module(policy)
 
 
 class FeatureModulesTest(unittest.TestCase):
+    def dynamic_fixture(self, dynamic=True, declared=True, base=':app', cycle=False, configured=False):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        root = Path(directory.name)
+        builds = {
+            'app': "plugins { id 'com.android.application' }\nandroid { dynamicFeatures = " + ("[':feature:support:faq']" if declared else "[]") + " }\n",
+            'feature/support/faq': "plugins { id '" + ('com.android.dynamic-feature' if dynamic else 'com.android.library') + "' }\ndependencies {\n implementation project('" + base + "')\n}\n",
+            'core/other-app': "plugins { id 'com.android.application' }\n",
+        }
+        if cycle:
+            builds['app'] += "implementation project(':feature:support:faq')\n"
+        for folder, body in builds.items():
+            build = root / folder / 'build.gradle'
+            build.parent.mkdir(parents=True)
+            build.write_text(body)
+        graph = None
+        if configured:
+            graph = {'projects': {
+                ':app': {'dependencies': [':feature:support:faq'] if cycle else [], 'application': True,
+                         'dynamicFeatures': [':feature:support:faq'] if declared else []},
+                ':feature:support:faq': {'dependencies': [base], 'dynamicFeature': dynamic},
+                ':core:other-app': {'dependencies': [], 'application': True, 'dynamicFeatures': []},
+            }}
+        return policy.check(root, graph)
+
+    def test_dynamic_feature_may_depend_on_its_declaring_base(self):
+        for configured in (False, True):
+            with self.subTest(configured=configured):
+                self.assertEqual([], self.dynamic_fixture(configured=configured))
+
+    def test_library_cannot_depend_on_base_even_when_listed_as_dynamic(self):
+        for configured in (False, True):
+            self.assertTrue(any('production dependency on application' in e
+                                for e in self.dynamic_fixture(dynamic=False, configured=configured)))
+
+    def test_dynamic_feature_requires_exact_base_declaration(self):
+        for configured in (False, True):
+            for options in ({'declared': False}, {'base': ':core:other-app'}):
+                with self.subTest(configured=configured, options=options):
+                    self.assertTrue(any('production dependency on application' in e
+                                        for e in self.dynamic_fixture(configured=configured, **options)))
+
+    def test_dynamic_packaging_exception_does_not_allow_real_dependency_cycle(self):
+        for configured in (False, True):
+            self.assertTrue(any('cycle' in e for e in self.dynamic_fixture(cycle=True, configured=configured)))
+
+    def test_dynamic_feature_still_cannot_compile_foreign_sources(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            build = root / 'feature/support/faq/build.gradle'
+            build.parent.mkdir(parents=True)
+            build.write_text("plugins { id 'com.android.dynamic-feature' }\n"
+                             "sourceSets.main.kotlin.srcDirs('../presentation/src/main/kotlin')")
+            self.assertTrue(any('outside its own module' in e for e in policy.check(root)))
+
+    def test_commented_dynamic_plugin_or_base_registration_cannot_grant_exception(self):
+        for base, dynamic in (
+            ("plugins { id 'com.android.application' }\n// dynamicFeatures = [':feature:support:faq']",
+             "plugins { id 'com.android.dynamic-feature' }"),
+            ("plugins { id 'com.android.application' }\ndynamicFeatures = [':feature:support:faq']",
+             "plugins { id 'com.android.library' }\n/* id 'com.android.dynamic-feature' */"),
+        ):
+            with self.subTest(base=base), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                for name, code in [('app', base), ('feature/support/faq', dynamic + "\nimplementation project(':app')")]:
+                    build = root / name / 'build.gradle'
+                    build.parent.mkdir(parents=True)
+                    build.write_text(code)
+                self.assertTrue(any('production dependency on application' in e for e in policy.check(root)))
+
     def test_feature_tests_cannot_keep_foreign_core_or_app_namespaces(self):
         for layer, package in [('data/src/test', 'br.gov.caixa.loterias.core.data'),
                                ('data/src/androidTest', 'br.gov.caixa.loterias.core.preferences'),

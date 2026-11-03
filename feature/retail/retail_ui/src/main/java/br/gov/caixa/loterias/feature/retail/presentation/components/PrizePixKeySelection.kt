@@ -1,0 +1,82 @@
+package br.gov.caixa.loterias.feature.retail.presentation.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.gov.caixa.loterias.core.designsystem.automation.uiId
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCheckbox as Checkbox
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.feature.retail.R as LocalizedR
+import br.gov.caixa.loterias.feature.retail.presentation.mapper.isValidPixKey
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizePixActions
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizePixKeySource
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
+import br.gov.caixa.loterias.feature.retail.ui.R as DeliveryR
+
+@Composable
+internal fun PrizePixKeyChoice(state: PrizeRedemptionUiState, actions: PrizePixActions) {
+    val uiStrings = androidx.compose.ui.platform.LocalResources.current
+    Column(Modifier.fillMaxWidth().background(LoteriasCaixaDSColorTokens.White).padding(top = 8.dp)) {
+        Text(
+            uiStrings.getString(DeliveryR.string.ui_escolha_a_chave_pix_que_deseja_receb_ad328d),
+            (Modifier.padding(24.dp)).uiId("retail.0020"),
+            color = LoteriasCaixaDS.colors.brand,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Row(Modifier.fillMaxWidth().padding(top = 16.dp).height(56.dp)) {
+            PrizePixTab("CPF", state.pixKeySource == PrizePixKeySource.CPF, actions.selectCpfPixKey, Modifier.weight(1f))
+            PrizePixTab(
+                uiStrings.getString(DeliveryR.string.ui_outra_chave_8d9935),
+                state.pixKeySource == PrizePixKeySource.OTHER,
+                actions.selectOtherPixKey,
+                Modifier.weight(1f)
+            )
+        }
+        Text(
+            uiStrings.getString(DeliveryR.string.ui_chave_01966c),
+            (Modifier.padding(24.dp)).uiId("retail.0021"),
+            color = LoteriasCaixaDSColorTokens.PrizeText,
+            fontWeight = FontWeight.Bold
+        )
+        if (state.pixKeySource == PrizePixKeySource.CPF) {
+            Text(state.cpf, (Modifier.padding(start = 24.dp, top = 16.dp)).uiId("retail.0022"), fontWeight = FontWeight.Bold)
+        } else {
+            Column(Modifier.padding(start = 24.dp, end = 24.dp)) {
+                PrizePixOtherKeyField(
+                    value = state.pixKey,
+                    onValueChange = actions.changePixKey,
+                    error = state.pixKey.isNotBlank() && !isValidPixKey(state.pixKey)
+                )
+                Row(
+                    Modifier.fillMaxWidth().padding(
+                        top = 16.dp
+                    ).uiId("retail.0023").toggleable(value = state.pixOwnershipAccepted, role = Role.Checkbox, onValueChange = {
+                        actions.togglePixOwnership()
+                    }),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(state.pixOwnershipAccepted, onCheckedChange = null, modifier = Modifier.uiId("retail.0024"))
+                    Text(
+                        uiStrings.getString(DeliveryR.string.ui_estou_ciente_que_o_resgate_de_premio_7aa71e),
+                        (Modifier.weight(1f)).uiId("retail.0025"),
+                        color = LoteriasCaixaDS.colors.brand
+                    )
+                }
+            }
+        }
+    }
+}

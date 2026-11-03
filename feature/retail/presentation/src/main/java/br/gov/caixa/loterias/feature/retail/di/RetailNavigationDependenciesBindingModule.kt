@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class RetailNavigationDependenciesBindingModule {
     @Binds
-    abstract fun bindRetailNavigationDependenciesDependencies(implementation: RetailNavigationDependenciesAdapter): RetailNavigationDependencies
+    abstract fun bindRetailNavigationDependenciesDependencies(
+        implementation: RetailNavigationDependenciesAdapter,
+    ): RetailNavigationDependencies
 }

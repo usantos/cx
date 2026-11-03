@@ -2,9 +2,9 @@ package br.gov.caixa.loterias.feature.betting.presentation.route
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.feature.betting.presentation.screen.BettingGameScreen
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel

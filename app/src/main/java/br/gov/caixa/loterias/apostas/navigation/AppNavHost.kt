@@ -8,7 +8,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalResources
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.apostas.navigation.transition.AppScreenNavHost
 import br.gov.caixa.loterias.apostas.BuildConfig
 import br.gov.caixa.loterias.apostas.R
 import br.gov.caixa.loterias.apostas.composition.navigation.AppFeatureGraphDependencies
@@ -16,6 +15,7 @@ import br.gov.caixa.loterias.apostas.navigation.action.appNavigationActions
 import br.gov.caixa.loterias.apostas.navigation.recovery.rememberRecoveryNavController
 import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
 import br.gov.caixa.loterias.apostas.navigation.session.rememberAppSessionCoordinator
+import br.gov.caixa.loterias.apostas.navigation.transition.AppScreenNavHost
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.presentation.state.HomeSection
 import br.gov.caixa.loterias.feature.account.navigation.accountGraph

@@ -59,11 +59,16 @@ class TicketsViewModel(
     private val elapsedMillis: () -> Long = { br.gov.caixa.loterias.core.presentation.time.elapsedRealtimeMillis() },
 
     private val isSessionCurrent: () -> Boolean = { true },
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<TicketsUiState, TicketsStateAction>(
         TicketsUiState(),
         ::reduceTicketsState
     ).also { addCloseable(it) }
+    private fun startOperation(action: () -> Unit) {
+        if (canStartOperation()) action()
+    }
+
     val state = mutableState.state
 
     private val history = TicketsHistoryCoordinator(
@@ -75,7 +80,7 @@ class TicketsViewModel(
     private val purchases = TicketsPurchaseCoordinator(
         mutableState, viewModelScope, dispatchers, getPurchaseBets, getPurchaseDetails,
         validateFavoriteName, savePurchaseAsFavorite, validateDam,
-        pixDeadline::capture, ::fail
+        pixDeadline::capture, ::fail, { canStartOperation() && isSessionCurrent() }
     )
     private val pix = TicketsPixCoordinator(
         mutableState,
@@ -179,9 +184,9 @@ class TicketsViewModel(
 
     fun toggleKeepSurprises() = purchases.toggleKeepSurprises()
 
-    fun validateAndSaveFavorite() = purchases.validateAndSaveFavorite()
+    fun validateAndSaveFavorite() = startOperation { purchases.validateAndSaveFavorite() }
 
-    fun confirmFavoriteOverwrite() = purchases.confirmFavoriteOverwrite()
+    fun confirmFavoriteOverwrite() = startOperation { purchases.confirmFavoriteOverwrite() }
 
     fun cancelFavoriteOverwrite() = purchases.cancelFavoriteOverwrite()
 

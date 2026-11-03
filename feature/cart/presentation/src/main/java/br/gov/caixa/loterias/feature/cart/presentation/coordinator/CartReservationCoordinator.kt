@@ -28,7 +28,7 @@ internal class CartReservationCoordinator(
     session: CartReservationSession,
     private val applyResult: (AppResult<ShoppingCart>) -> Unit,
     private val loadParameters: () -> Unit,
-    private val setCartRequestRunning: (Boolean) -> Unit
+    private val setCartRequestRunning: (Boolean) -> Unit,
 ) {
     private val reservationSessions = session.identities
     private val reservationOwner = reservationSessions?.captureIdentity()

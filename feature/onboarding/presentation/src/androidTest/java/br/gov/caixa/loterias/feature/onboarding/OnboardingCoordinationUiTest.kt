@@ -1,21 +1,30 @@
 package br.gov.caixa.loterias.feature.onboarding
 
-import androidx.compose.ui.test.*
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsOff
+import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
+import br.gov.caixa.loterias.feature.onboarding.presentation.route.OnboardingRoute
+import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import br.gov.caixa.loterias.feature.onboarding.presentation.route.OnboardingRoute
-import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 @RunWith(AndroidJUnit4::class)
 class OnboardingCoordinationUiTest {
@@ -26,7 +35,7 @@ class OnboardingCoordinationUiTest {
         var completions = 0
         val viewModel = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase { completions++ })
         viewModel.pageChanged(1)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel, {}, { calls += "complete" }, { calls += "underage" }, {}, {}, {})
             }
@@ -52,10 +61,17 @@ class OnboardingCoordinationUiTest {
         var completions = 0
         val initial = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase { completions++ })
         val viewModel = mutableStateOf(initial)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
-                OnboardingRoute(viewModel.value, { calls += "back" }, { calls += "complete" },
-                    { calls += "underage" }, { calls += "responsible" }, {}, {})
+                OnboardingRoute(
+                    viewModel.value,
+                    { calls += "back" },
+                    { calls += "complete" },
+                    { calls += "underage" },
+                    { calls += "responsible" },
+                    {},
+                    {}
+                )
             }
         }
         compose.onNodeWithText("Não").performClick()
@@ -88,7 +104,7 @@ class OnboardingCoordinationUiTest {
             SetBettingTutorialDismissedUseCase { tutorial, dismissed -> dismissals += tutorial to dismissed }
         )
         val viewModel = mutableStateOf(newViewModel())
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel.value, {}, {}, {}, {}, { calls += "start" }, { calls += "skip" })
             }

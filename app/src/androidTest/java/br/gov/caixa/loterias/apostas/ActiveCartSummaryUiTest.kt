@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.core.designsystem.components.cart.LoteriasCaixaDSCa
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.activeCartSummary
 import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -35,7 +36,6 @@ import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCart
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceiptUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBetUseCase
@@ -94,7 +94,7 @@ class ActiveCartSummaryUiTest {
         val submitted = mutableListOf<BetDraft>()
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 if (consumerVisible) {
                     BettingSimulationDestination(
@@ -183,7 +183,7 @@ class ActiveCartSummaryUiTest {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
         var revision by mutableIntStateOf(0)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val snapshot = activeResumingCartSummary(getCart, revision)
                 LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
@@ -231,7 +231,7 @@ class ActiveCartSummaryUiTest {
     @Test fun returningToResumedMarketplaceReloadsCurrentCart() {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val snapshot = activeResumingCartSummary(getCart)
                 LoteriasCaixaDSCartSummary(snapshot?.total ?: BigDecimal.ZERO, snapshot?.betCount ?: 0)
@@ -264,7 +264,7 @@ class ActiveCartSummaryUiTest {
         val repository = Repository()
         val getCart = GetCurrentCart(repository)
         var refresh by mutableIntStateOf(0)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val snapshot = activeCartSummary(getCart, refresh)
                 Box {
@@ -307,7 +307,7 @@ class ActiveCartSummaryUiTest {
         )
         val getCart = GetCurrentCart(repository)
         var refresh by mutableIntStateOf(0)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val snapshot = activeCartSummary(getCart, refresh)
                 Box {

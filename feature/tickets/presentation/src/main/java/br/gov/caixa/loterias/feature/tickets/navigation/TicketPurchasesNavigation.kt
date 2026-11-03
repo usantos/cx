@@ -5,9 +5,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
+import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
 import br.gov.caixa.loterias.feature.payment.navigation.PaymentRegistrationHost
 import br.gov.caixa.loterias.feature.payment.navigation.paymentRegistrationViewModel
 import br.gov.caixa.loterias.feature.tickets.presentation.route.PurchaseDetailDataRoute
@@ -18,73 +22,106 @@ fun NavGraphBuilder.ticketPurchasesNavigation(
     appContainer: TicketsNavigationDependencies,
     navController: NavHostController,
     navigation: AppNavigationState,
-    session: SessionNavigationActions
+    session: SessionNavigationActions,
 ) {
     composable("tickets/purchases") {
-        androidx.compose.runtime.key(session.privateEntryKey) {
-            val ticketsViewModel = viewModel(key = "purchases-${session.privateEntryKey}") {
-                TicketsViewModel(
-                    appContainer.confirmedBets,
-                    appContainer.purchases,
-                    appContainer.purchaseBets,
-                    appContainer.checkTicket,
-                    appContainer.dispatchers,
-                    appContainer.confirmedBetsConfiguration,
-                    appContainer.lotteryModalities,
-                    appContainer.purchaseMonths,
-                    appContainer.purchasePaymentMethods,
-                    appContainer.purchaseStatuses,
-                    isSessionCurrent = session.isPrivateSessionCurrent
+        FeatureModuleAdmission(
+            AppModule.TICKETS,
+            { navController.popBackStack() },
+            access = if (session.purchaseRecovery?.current() !=
+                null
+            ) {
+                FeatureEntryAccess.CONTINUATION
+            } else {
+                FeatureEntryAccess.OPTIONAL
+            }
+        ) {
+            val canStartTicketsOperation = rememberFeatureWritePermission(AppModule.TICKETS)
+            androidx.compose.runtime.key(session.privateEntryKey) {
+                val ticketsViewModel = viewModel(key = "purchases-${session.privateEntryKey}") {
+                    TicketsViewModel(
+                        appContainer.confirmedBets,
+                        appContainer.purchases,
+                        appContainer.purchaseBets,
+                        appContainer.checkTicket,
+                        appContainer.dispatchers,
+                        appContainer.confirmedBetsConfiguration,
+                        appContainer.lotteryModalities,
+                        appContainer.purchaseMonths,
+                        appContainer.purchasePaymentMethods,
+                        appContainer.purchaseStatuses,
+                        isSessionCurrent = session.isPrivateSessionCurrent,
+                        canStartOperation = canStartTicketsOperation
+                    )
+                }
+                PurchasesDataRoute(
+                    privateDataEnabled = session.identity != null,
+                    purchaseRecovery = session.purchaseRecovery,
+                    viewModel = ticketsViewModel,
+                    onBack = {
+                        session.purchaseRecovery?.finish()
+                        navController.popBackStack()
+                    },
+                    onOpen = { purchase ->
+                        navigation.details.selectedPurchase = purchase
+                        navController.navigate("tickets/purchase-detail")
+                    }
                 )
             }
-            PurchasesDataRoute(
-                privateDataEnabled = session.identity != null,
-                viewModel = ticketsViewModel,
-                onBack = navController::popBackStack,
-                onOpen = { purchase ->
-                    navigation.details.selectedPurchase = purchase
-                    navController.navigate("tickets/purchase-detail")
-                }
-            )
         }
     }
     composable("tickets/purchase-detail") {
-        val purchase = navigation.details.selectedPurchase ?: visualTestPurchase(appContainer.mockBackendEnabled)
-        if (purchase == null) {
-            LaunchedEffect(Unit) { navController.popBackStack() }
-        } else {
-            val ticketsViewModel = viewModel { purchaseDetailViewModel(appContainer) }
-            val registrationViewModel = paymentRegistrationViewModel(appContainer)
-            val onPurchaseDetailRedirect: (br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect) -> Unit = { destination ->
-                if (destination.name in setOf("LOGIN", "REGISTER_ACCOUNT", "ACCEPT_TERMS")) {
-                    session.state.visitorReturnRoute = "tickets/purchase-detail"
-                    session.state.visitorReturnOwnerKey = appContainer.authenticatedSessionIdentity.captureIdentity()?.ownerKey
-                }
-                navController.navigate(serviceRedirectRoute(destination)) { launchSingleTop = true }
+        FeatureModuleAdmission(
+            AppModule.TICKETS,
+            { navController.popBackStack() },
+            access = if (navigation.details.selectedPurchase?.let { session.purchaseRecovery?.permitsSelectedPurchase(it.id) } ==
+                true
+            ) {
+                FeatureEntryAccess.CONTINUATION
+            } else {
+                FeatureEntryAccess.OPTIONAL
             }
-            PurchaseDetailDataRoute(
-                ticketsViewModel,
-                purchase,
-                navController::popBackStack,
-                onOpen = { route ->
-                    if (route == "home") {
-                        navController.navigate("home") { popUpTo("home") { inclusive = true } }
-                    } else {
-                        navController.navigate(route)
+        ) {
+            val canStartPurchaseOperation = rememberFeatureWritePermission(AppModule.TICKETS)
+            val purchase = navigation.details.selectedPurchase ?: visualTestPurchase(appContainer.mockBackendEnabled)
+            if (purchase == null) {
+                LaunchedEffect(Unit) { navController.popBackStack() }
+            } else {
+                val ticketsViewModel = viewModel(key = "purchase-detail-${session.privateEntryKey}") {
+                    purchaseDetailViewModel(appContainer, session.isPrivateSessionCurrent, canStartPurchaseOperation)
+                }
+                val registrationViewModel = paymentRegistrationViewModel(appContainer)
+                val onPurchaseDetailRedirect: (br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect) -> Unit = { destination ->
+                    if (destination.name in setOf("LOGIN", "REGISTER_ACCOUNT", "ACCEPT_TERMS")) {
+                        session.state.visitorReturnRoute = "tickets/purchase-detail"
+                        session.state.visitorReturnOwnerKey = appContainer.authenticatedSessionIdentity.captureIdentity()?.ownerKey
                     }
-                },
-                onPixRedirect = { destination ->
-                    onPurchaseDetailRedirect(br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect.valueOf(destination.name))
-                },
-                onPixRegistration = { registrationViewModel.start() },
-                onHelp = { navController.navigate(PURCHASE_HELP_ROUTE) }
-            )
-            PaymentRegistrationHost(
-                registrationViewModel,
-                ticketsViewModel::resumePixPurchaseAfterRedirect,
-                onPurchaseDetailRedirect,
-                simulateBrowser = appContainer.mockBackendEnabled
-            )
+                    navController.navigate(serviceRedirectRoute(destination)) { launchSingleTop = true }
+                }
+                PurchaseDetailDataRoute(
+                    ticketsViewModel,
+                    purchase,
+                    navController::popBackStack,
+                    onOpen = { route ->
+                        if (route == "home") {
+                            navController.navigate("home") { popUpTo("home") { inclusive = true } }
+                        } else {
+                            navController.navigate(route)
+                        }
+                    },
+                    onPixRedirect = { destination ->
+                        onPurchaseDetailRedirect(br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect.valueOf(destination.name))
+                    },
+                    onPixRegistration = { registrationViewModel.start() },
+                    onHelp = { navController.navigate(PURCHASE_HELP_ROUTE) }
+                )
+                PaymentRegistrationHost(
+                    registrationViewModel,
+                    ticketsViewModel::resumePixPurchaseAfterRedirect,
+                    onPurchaseDetailRedirect,
+                    simulateBrowser = appContainer.mockBackendEnabled
+                )
+            }
         }
     }
 }
@@ -92,7 +129,11 @@ fun NavGraphBuilder.ticketPurchasesNavigation(
 // Registrado por supportGraph; mantém a ajuda na aba real de dúvidas frequentes, sem inventar um destino.
 internal const val PURCHASE_HELP_ROUTE = "support/terms?tab=FAQ"
 
-private fun purchaseDetailViewModel(appContainer: TicketsNavigationDependencies): TicketsViewModel = TicketsViewModel(
+private fun purchaseDetailViewModel(
+    appContainer: TicketsNavigationDependencies,
+    isSessionCurrent: () -> Boolean,
+    canStartOperation: () -> Boolean,
+): TicketsViewModel = TicketsViewModel(
     appContainer.confirmedBets,
     appContainer.purchases,
     appContainer.purchaseBets,
@@ -108,5 +149,7 @@ private fun purchaseDetailViewModel(appContainer: TicketsNavigationDependencies)
     appContainer.savePurchaseAsFavorite,
     appContainer.validateDam,
     getPixPurchaseStatus = appContainer.purchaseProgress,
-    pixNoticeClock = appContainer.localClock
+    pixNoticeClock = appContainer.localClock,
+    isSessionCurrent = isSessionCurrent,
+    canStartOperation = canStartOperation
 )

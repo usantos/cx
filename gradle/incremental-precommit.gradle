@@ -56,6 +56,12 @@ ext.incrementalScope = {
             !it.name.toLowerCase().contains('test')
         })
         allDependencies[owner.path] = dependencies(owner.configurations)
+        // Alterar o split exige validar também a base que o distribui. A relação de
+        // empacotamento não é uma dependência de código no gate de ciclos de arquitetura.
+        if (owner.plugins.hasPlugin('com.android.application')) {
+            productionDependencies[owner.path].addAll(owner.android.dynamicFeatures)
+            allDependencies[owner.path].addAll(owner.android.dynamicFeatures)
+        }
     }
     cachedScope = rootProject.affectedPreCommitModules(owners*.path, productionDependencies, allDependencies)
             .collect { rootProject.project(it) }.toSet()
@@ -86,6 +92,10 @@ tasks.register('verifyIncrementalScopePolicy') {
         }
         if (!rootProject.affectedPreCommitModules([], production, all).isEmpty()) {
             throw new GradleException('Seleção vazia incluiu módulos')
+        }
+        def dynamicPackaging = [app: ['faq'], faq: ['app'], unrelated: []]
+        if (rootProject.affectedPreCommitModules(['faq'], dynamicPackaging, dynamicPackaging) != ['app', 'faq'].toSet()) {
+            throw new GradleException('Alteração do split não selecionou sua base de empacotamento')
         }
         logger.lifecycle('Escopo incremental: fixtures de dependências transitivas, testes, isolamento e ciclos aprovadas.')
     }

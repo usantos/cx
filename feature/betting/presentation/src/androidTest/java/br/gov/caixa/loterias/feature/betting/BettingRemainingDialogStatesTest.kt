@@ -4,29 +4,32 @@ import android.graphics.Bitmap
 import android.view.View
 import android.view.ViewGroup
 import android.view.inspector.WindowInspector
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSHtmlDialog
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.io.File
 import java.math.BigDecimal
@@ -36,35 +39,35 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 /** Callbacks de validação e gravação usam massas locais; nenhuma requisição de favoritos ou carrinho sai do dispositivo. */
 class BettingRemainingDialogStatesTest {
-    @get:Rule val compose=createComposeRule()
+    @get:Rule val compose = createComposeRule()
 
     @Test fun duplicateDialogCancelAndConfirmUseOnlyLocalCallbacks() {
-        val visible=mutableStateOf(true)
-        var accepted=0;var declined=0
-        compose.setContent {LoteriasCaixaDSTheme(darkTheme = false) {
-            if (visible.value) {
-                LoteriasCaixaDSHtmlDialog(
-                    title = "Atenção",
-                    html = br.gov.caixa.loterias.feature.cart.domain.model.VISITOR_DUPLICATE_CONFIRMATION,
-                    positiveLabel = "Sim",
-                    negativeLabel = "Não",
-                    parseHtml = false,
-                    onPositive = {
-                        accepted++
-                        visible.value = false
-                    },
-                    onNegative = {
-                        declined++
-                        visible.value = false
-                    }
-                )
+        val visible = mutableStateOf(true)
+        var accepted = 0
+        var declined = 0
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                if (visible.value) {
+                    LoteriasCaixaDSHtmlDialog(
+                        title = "Atenção",
+                        html = br.gov.caixa.loterias.feature.cart.domain.model.VISITOR_DUPLICATE_CONFIRMATION,
+                        positiveLabel = "Sim",
+                        negativeLabel = "Não",
+                        parseHtml = false,
+                        onPositive = {
+                            accepted++
+                            visible.value = false
+                        },
+                        onNegative = {
+                            declined++
+                            visible.value = false
+                        }
+                    )
+                }
             }
-        }
         }
         capture("duplicate-confirmation", "callbacks=local-only\n")
         compose.onNodeWithText("Não").performClick()
@@ -114,7 +117,7 @@ class BettingRemainingDialogStatesTest {
                 AppResult.Success(Unit)
             }
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.runOnIdle {
             (1..6).forEach(vm::toggleNumber)

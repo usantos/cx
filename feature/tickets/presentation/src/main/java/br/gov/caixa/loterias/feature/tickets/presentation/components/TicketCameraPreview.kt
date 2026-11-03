@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.components
 
+import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.core.SurfaceRequest
-import androidx.camera.compose.CameraXViewfinder
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -34,7 +34,7 @@ internal fun TicketCameraPreview(onCode: (String) -> Unit, modifier: Modifier = 
         BarcodeScanning.getClient(
             BarcodeScannerOptions.Builder()
                 .setBarcodeFormats(Barcode.FORMAT_QR_CODE)
-                .build(),
+                .build()
         )
     }
     val latestOnCode = rememberUpdatedState(onCode)
@@ -65,11 +65,9 @@ internal fun TicketCameraPreview(onCode: (String) -> Unit, modifier: Modifier = 
     }
 }
 
-private class TicketBarcodeAnalyzer(
-    private val scanner: BarcodeScanner,
-    private val onCode: (String) -> Unit,
-) : ImageAnalysis.Analyzer {
+private class TicketBarcodeAnalyzer(private val scanner: BarcodeScanner, private val onCode: (String) -> Unit) : ImageAnalysis.Analyzer {
     private val processing = AtomicBoolean(false)
+
     @ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
         val mediaImage = imageProxy.image

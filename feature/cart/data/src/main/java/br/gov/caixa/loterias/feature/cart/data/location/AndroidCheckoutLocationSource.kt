@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.CancellationSignal
+import android.os.SystemClock
 import androidx.core.content.ContextCompat
 import androidx.core.location.LocationManagerCompat
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
@@ -18,6 +19,7 @@ import br.gov.caixa.loterias.core.persistence.AndroidSecureStores
 import br.gov.caixa.loterias.core.persistence.SecurePreferenceMigration
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationAccess
 import br.gov.caixa.loterias.feature.cart.domain.port.CheckoutLocationSource
+import java.io.IOException
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -78,18 +80,37 @@ class AndroidCheckoutLocationSource(
     @SuppressLint("MissingPermission")
     @Suppress("DEPRECATION")
     override suspend fun countryCode(): String? = withContext(dispatchers.io) {
-        val providers = manager.getProviders(true)
-        val cached = providers.mapNotNull { manager.getLastKnownLocation(it) }.minByOrNull { it.accuracy }
-        val location = cached ?: providers.firstOrNull {
-            it == LocationManager.NETWORK_PROVIDER || it == LocationManager.GPS_PROVIDER
-        }?.let { currentLocation(it) } ?: return@withContext null
         if (!Geocoder.isPresent()) return@withContext null
-        Geocoder(context, Locale.getDefault()).getFromLocation(location.latitude, location.longitude, 1)
-            ?.firstOrNull()?.countryCode
+        val providers = manager.getProviders(true)
+        val cached = providers.mapNotNull { manager.getLastKnownLocation(it) }
+            .filter(::isRecentLocation).minByOrNull { it.accuracy }
+        val location = cached ?: freshLocation(providers) ?: return@withContext null
+        try {
+            Geocoder(context, Locale.getDefault()).getFromLocation(location.latitude, location.longitude, 1)
+                ?.firstOrNull()?.countryCode
+        } catch (_: IOException) {
+            null
+        }
+    }
+
+    private fun isRecentLocation(location: Location): Boolean {
+        val now = SystemClock.elapsedRealtimeNanos()
+        return location.elapsedRealtimeNanos in 0..now && now - location.elapsedRealtimeNanos <= MAX_LOCATION_AGE_NANOS &&
+            location.hasAccuracy() && location.accuracy.isFinite() && location.accuracy >= 0f &&
+            location.latitude in MIN_LATITUDE..MAX_LATITUDE && location.longitude in MIN_LONGITUDE..MAX_LONGITUDE
+    }
+
+    private suspend fun freshLocation(enabledProviders: List<String>): Location? {
+        for (provider in listOf(LocationManager.NETWORK_PROVIDER, LocationManager.GPS_PROVIDER)) {
+            if (provider !in enabledProviders) continue
+            val location = currentLocation(provider)
+            if (location != null && isRecentLocation(location)) return location
+        }
+        return null
     }
 
     @SuppressLint("MissingPermission")
-    private suspend fun currentLocation(provider: String): Location? = withTimeoutOrNull(15_000) {
+    private suspend fun currentLocation(provider: String): Location? = withTimeoutOrNull(PROVIDER_TIMEOUT_MILLIS) {
         suspendCancellableCoroutine { continuation ->
             val cancellation = CancellationSignal()
             continuation.invokeOnCancellation { cancellation.cancel() }
@@ -100,6 +121,12 @@ class AndroidCheckoutLocationSource(
     }
 
     private companion object {
+        const val MAX_LOCATION_AGE_NANOS = 60_000_000_000L
+        const val PROVIDER_TIMEOUT_MILLIS = 7_500L
+        const val MIN_LATITUDE = -90.0
+        const val MAX_LATITUDE = 90.0
+        const val MIN_LONGITUDE = -180.0
+        const val MAX_LONGITUDE = 180.0
         const val REQUEST_COUNT = "CONT_PERMISSION_LOCATION"
     }
 }

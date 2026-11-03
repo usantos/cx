@@ -279,7 +279,11 @@ private fun reduceTicketsFavoriteState(state: TicketsUiState, action: TicketsFav
 
     is TicketsStateAction.PurchaseFavoriteNameRejected -> state.copy(errorMessage = action.message)
 
-    TicketsStateAction.PurchaseFavoriteValidationStarted -> state.copy(isLoading = true, errorMessage = null)
+    TicketsStateAction.PurchaseFavoritePreparationCancelled -> state.copy(isLoading = false)
+
+    TicketsStateAction.PurchaseFavoriteValidationStarted,
+    TicketsStateAction.PurchaseFavoriteSaveStarted,
+    -> state.copy(isLoading = true, errorMessage = null)
 
     TicketsStateAction.PurchaseFavoriteOverwriteRequired -> state.copy(
         isLoading = false,
@@ -293,8 +297,6 @@ private fun reduceTicketsFavoriteState(state: TicketsUiState, action: TicketsFav
     TicketsStateAction.PurchaseFavoriteSavedDismissed -> state.copy(favoriteSaved = false)
 
     TicketsStateAction.LocalPurchaseFavoriteSaved -> state.copy(showFavoriteDialog = false, favoriteSaved = true)
-
-    TicketsStateAction.PurchaseFavoriteSaveStarted -> state.copy(isLoading = true, errorMessage = null)
 
     TicketsStateAction.PurchaseFavoriteSaved -> state.copy(
         isLoading = false,

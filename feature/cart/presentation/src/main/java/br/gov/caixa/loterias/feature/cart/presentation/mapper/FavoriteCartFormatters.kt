@@ -12,7 +12,7 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 
-internal val favoriteTextStyle = TextStyle(
+val favoriteTextStyle = TextStyle(
     fontFamily = LoteriasCaixaDSFontFamily,
     fontSize = 14.sp,
     platformStyle = PlatformTextStyle(includeFontPadding = true)
@@ -20,7 +20,7 @@ internal val favoriteTextStyle = TextStyle(
 
 /** Dimensionamento automático uniforme do XML: linha única de 150dp, mínimo de 8sp, passos de 1sp e máximo de 14dp. */
 @Composable
-internal fun favoriteNameSize(name: String): androidx.compose.ui.unit.TextUnit {
+fun favoriteNameSize(name: String): androidx.compose.ui.unit.TextUnit {
     val density = LocalDensity.current
     val measurer = rememberTextMeasurer()
     val width = with(density) { 150.dp.roundToPx() }
@@ -44,7 +44,7 @@ internal fun favoriteNameSize(name: String): androidx.compose.ui.unit.TextUnit {
     }
 }
 
-internal fun favoriteSummaryModalityName(bet: FavoriteCartBet): String = if (bet.modalityId ==
+fun favoriteSummaryModalityName(bet: FavoriteCartBet): String = if (bet.modalityId ==
     9
 ) {
     messageText("milionaria_c791e4")
@@ -52,7 +52,7 @@ internal fun favoriteSummaryModalityName(bet: FavoriteCartBet): String = if (bet
     bet.modality.lowercase()
 }
 
-internal fun favoriteDetailModalityName(bet: FavoriteCartBet): String = if (bet.modalityId ==
+fun favoriteDetailModalityName(bet: FavoriteCartBet): String = if (bet.modalityId ==
     9
 ) {
     messageText("milionaria_c791e4")
@@ -62,25 +62,25 @@ internal fun favoriteDetailModalityName(bet: FavoriteCartBet): String = if (bet.
     bet.modality.lowercase()
 }
 
-internal fun favoriteBetSummaryText(bet: FavoriteCartBet): String = buildString {
+fun favoriteBetSummaryText(bet: FavoriteCartBet): String = buildString {
     append(bet.numberCount)
     append(" num(s)")
     if (bet.cloverCount > 0) append(" ${bet.cloverCount} trev(s)")
 }
 
-internal fun favoriteBetComplement(bet: FavoriteCartBet): String? = when (bet.modalityId) {
+fun favoriteBetComplement(bet: FavoriteCartBet): String? = when (bet.modalityId) {
     20 -> if (bet.surprise) "???" else bet.favoriteTeam
     11 -> if (bet.surprise) "???" else bet.luckyMonth
     else -> null
 }
 
-internal fun favoriteBetNumbers(bet: FavoriteCartBet): String = if (bet.surprise) {
+fun favoriteBetNumbers(bet: FavoriteCartBet): String = if (bet.surprise) {
     List(bet.numberCount) { "XX" }.joinToString(" - ")
 } else {
     bet.numbers.joinToString(" - ") { if (it == 100) "00" else it.toString().padStart(2, '0') }
 }
 
-internal fun favoriteBetClovers(bet: FavoriteCartBet): String = "Trevos:  " + if (bet.surprise) {
+fun favoriteBetClovers(bet: FavoriteCartBet): String = "Trevos:  " + if (bet.surprise) {
     List(bet.cloverCount) { "XX" }.joinToString(" - ")
 } else {
     bet.clovers.joinToString(" - ")

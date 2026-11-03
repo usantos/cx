@@ -4,7 +4,6 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
@@ -12,7 +11,6 @@ import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentState
 import kotlinx.coroutines.launch
 
 internal class PaymentSavedCards(
@@ -24,6 +22,7 @@ internal class PaymentSavedCards(
     private val getCards: GetSavedCardsUseCase,
     private val deleteCard: DeleteSavedCardUseCase,
     private val isSessionCurrent: () -> Boolean,
+    private val canStartOperation: () -> Boolean,
     private val applyFailure: (AppError) -> Unit,
 ) {
 
@@ -61,6 +60,7 @@ internal class PaymentSavedCards(
     fun confirmDelete() {
         val card = mutableState.value.deleteCandidate ?: return
         viewModelScope.launch(dispatchers.io) {
+            if (!isSessionCurrent() || !canStartOperation() || mutableState.value.deleteCandidate != card) return@launch
             mutableState.dispatch(PaymentAction.CardDeletionStarted)
             when (val result = deleteCard(card.deletionIdentifier, card.paymentMethodId)) {
                 is AppResult.Failure -> applyFailure(result.error)

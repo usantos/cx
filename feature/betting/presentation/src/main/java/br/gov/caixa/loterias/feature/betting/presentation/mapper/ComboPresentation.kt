@@ -15,19 +15,19 @@ import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import java.util.Locale
 
-internal fun comboText(size: Int, weight: FontWeight = FontWeight.Normal, family: FontFamily = LoteriasCaixaDSFontFamily) = TextStyle(
+fun comboText(size: Int, weight: FontWeight = FontWeight.Normal, family: FontFamily = LoteriasCaixaDSFontFamily) = TextStyle(
     fontFamily = family,
     fontWeight = weight,
     fontSize = size.sp,
     platformStyle = PlatformTextStyle(includeFontPadding = true)
 )
 
-internal fun BetCombo.specialEntry(): BetComboEntry? = entries.firstOrNull()?.takeIf { id == 1 }
-internal fun BetCombo.catalogName(): String = specialEntry()?.modality?.specialName?.takeIf(String::isNotBlank) ?: name
-internal fun BetCombo.detailName(): String = specialEntry()?.modality?.specialName?.takeIf(String::isNotBlank)
+fun BetCombo.specialEntry(): BetComboEntry? = entries.firstOrNull()?.takeIf { id == 1 }
+fun BetCombo.catalogName(): String = specialEntry()?.modality?.specialName?.takeIf(String::isNotBlank) ?: name
+fun BetCombo.detailName(): String = specialEntry()?.modality?.specialName?.takeIf(String::isNotBlank)
     ?.let { "$name $it" } ?: name
 
-internal fun comboEntryName(entry: BetComboEntry): AnnotatedString {
+fun comboEntryName(entry: BetComboEntry): AnnotatedString {
     val modality = entry.modality
     val normal = modality.managerName.ifBlank { modality.name }
     val special = entry.contestType.equals("ESPECIAL", true) || entry.contestType.equals("E", true)
@@ -42,7 +42,7 @@ internal fun comboEntryName(entry: BetComboEntry): AnnotatedString {
     }
 }
 
-internal object ComboTextSize {
+object ComboTextSize {
     const val CAPTION = 12
     const val BODY = 13
     const val LABEL = 14

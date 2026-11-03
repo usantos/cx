@@ -1,21 +1,25 @@
 package br.gov.caixa.loterias.feature.account
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTouchInput
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
-import kotlinx.coroutines.CompletableDeferred
+import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
 import java.util.concurrent.atomic.AtomicInteger
+import kotlinx.coroutines.CompletableDeferred
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
 
 class PersonalDataFailureStateTest {
     @get:Rule val compose = createComposeRule()
@@ -29,9 +33,9 @@ class PersonalDataFailureStateTest {
             updatePersonalData = UpdatePersonalDataUseCase { _, _ ->
                 updates.incrementAndGet()
                 AppResult.Failure(AppError.Network)
-            },
+            }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 PersonalDataRoute(model, onBack = {}, onComplete = { error("Failed profile must not complete") })
             }

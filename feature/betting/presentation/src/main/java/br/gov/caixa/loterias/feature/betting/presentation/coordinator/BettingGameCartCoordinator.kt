@@ -4,9 +4,7 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.BettingGameDraftMapper
-import br.gov.caixa.loterias.feature.betting.presentation.mapper.availableNumberQuantities
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState

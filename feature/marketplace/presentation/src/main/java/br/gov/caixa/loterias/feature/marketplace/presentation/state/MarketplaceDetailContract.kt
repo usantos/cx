@@ -42,4 +42,3 @@ sealed interface MarketplaceDetailAction {
     data object DecreaseShares : MarketplaceDetailAction
     data object AddToCart : MarketplaceDetailAction
 }
-

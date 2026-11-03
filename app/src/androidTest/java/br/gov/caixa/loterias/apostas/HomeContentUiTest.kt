@@ -3,19 +3,26 @@ package br.gov.caixa.loterias.apostas
 import android.graphics.Bitmap
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
 import br.gov.caixa.loterias.feature.home.presentation.components.infiniteCarouselInitialPage
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeContent
@@ -31,12 +38,21 @@ import org.junit.Test
 
 class HomeContentUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
-    private val parameters = BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 30,
+    private val parameters = BettingParameters(
+        BigDecimal.TEN,
+        BigDecimal.ONE,
+        30,
         listOf(game(2, "Mega-Sena", "MEGA_SENA"), game(7, "Quina", "QUINA")),
-        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL")))
-    private val home = HomeUiState(loading = false, parameters = parameters,
+        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
+    )
+    private val home = HomeUiState(
+        loading = false,
+        parameters = parameters,
         features = HomeFeatureConfiguration(poolSalesEnabled = true),
-        cartTotal = BigDecimal("20.00"), cartItemCount = 2, unreadNotificationCount = 1)
+        cartTotal = BigDecimal("20.00"),
+        cartItemCount = 2,
+        unreadNotificationCount = 1
+    )
     private val presentation = mutableStateOf(HomePresentation(false, null, false, 0.dp, 0f))
     private val requested = mutableStateOf(2)
     private val calls = mutableListOf<String>()
@@ -57,7 +73,9 @@ class HomeContentUiTest {
         assertTrue(betBounds.bottom < cartBounds.top)
         write("classic-action-bounds.txt", listOf(rootBounds, poolBounds, betBounds, cartBounds).joinToString("\n"))
         capture("classic-with-cart")
-        pool.performClick(); bet.performClick(); cart.performClick()
+        pool.performClick()
+        bet.performClick()
+        cart.performClick()
         compose.onNodeWithContentDescription("Abrir menu").performClick()
         compose.onNodeWithContentDescription("Notificações").performClick()
         compose.onNodeWithContentDescription("Apresentar atalhos").performClick()
@@ -86,15 +104,26 @@ class HomeContentUiTest {
 
     private fun show() {
         val lotteries = parameters.toHomeLotteries(false)
-        compose.setContent { LoteriasCaixaDSTheme {
-            HomeContent(home, null, lotteries, ResultsUiState(), requested.value, presentation.value,
-                HomeActions(retry = { calls += "retry" }, openMenu = { calls += "menu" },
-                    openNotifications = { calls += "notifications" }, toggleCampaign = { calls += "campaign" },
-                    toggleQuickAccess = { calls += "quick" }, readTicket = {}, responsibleGaming = {},
-                    socialTransfers = {}, womenSupport = {}, toggleResult = {},
-                    pool = { calls += "pool:${it.modalityId}" }, bet = { calls += "bet:${it.modalityId}" },
-                    openCart = { calls += "cart" }))
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                HomeContent(
+                    home,
+                    null,
+                    lotteries,
+                    ResultsUiState(),
+                    requested.value,
+                    presentation.value,
+                    HomeActions(
+                        retry = { calls += "retry" }, openMenu = { calls += "menu" },
+                        openNotifications = { calls += "notifications" }, toggleCampaign = { calls += "campaign" },
+                        toggleQuickAccess = { calls += "quick" }, readTicket = {}, responsibleGaming = {},
+                        socialTransfers = {}, womenSupport = {}, toggleResult = {},
+                        pool = { calls += "pool:${it.modalityId}" }, bet = { calls += "bet:${it.modalityId}" },
+                        openCart = { calls += "cart" }
+                    )
+                )
+            }
+        }
         compose.waitForIdle()
     }
 
@@ -107,7 +136,9 @@ class HomeContentUiTest {
         file.outputStream().use { check(compose.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it)) }
     }
 
-    private fun write(name: String, text: String) { target(name).writeText(text) }
+    private fun write(name: String, text: String) {
+        target(name).writeText(text)
+    }
     private fun target(name: String): File {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val phase = InstrumentationRegistry.getArguments().getString("homePhase") ?: "verification"
@@ -118,5 +149,6 @@ class HomeContentUiTest {
 
     private fun game(id: Int, name: String, code: String) = LotteryGameParameters(
         LotteryModality(id, name, code), 4321, "17/10/2026", 60, 6, 20, 10,
-        emptyList(), listOf(BetPrice(6, 0, BigDecimal("5.00"))), estimatedPrize = BigDecimal("10000000"))
+        emptyList(), listOf(BetPrice(6, 0, BigDecimal("5.00"))), estimatedPrize = BigDecimal("10000000")
+    )
 }

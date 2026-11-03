@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performImeAction
 import androidx.compose.ui.test.performTextReplacement
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.presentation.components.BettingFavoriteDialog
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -20,13 +21,18 @@ class BettingFavoriteCallbacksTest {
         val revision = mutableStateOf(0)
         val name = mutableStateOf("")
         val events = mutableListOf<String>()
-        compose.setContent {
+        compose.setFeatureContent {
             val current = revision.value
             LoteriasCaixaDSTheme {
-                BettingFavoriteDialog(name.value,
-                    onNameChange = { name.value = it; events.add("change-$current-$it") },
+                BettingFavoriteDialog(
+                    name.value,
+                    onNameChange = {
+                        name.value = it
+                        events.add("change-$current-$it")
+                    },
                     onConfirm = { events.add("confirm-$current") },
-                    onCancel = { events.add("cancel-$current") })
+                    onCancel = { events.add("cancel-$current") }
+                )
             }
         }
         compose.runOnIdle { revision.value = 1 }

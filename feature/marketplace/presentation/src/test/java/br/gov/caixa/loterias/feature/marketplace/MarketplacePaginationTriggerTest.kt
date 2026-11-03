@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.marketplace
 
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.shouldLoadMarketplacePage
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.shouldLoadMarketplacePage
 
 class MarketplacePaginationTriggerTest {
     @Test fun `only a scrolled list at its bottom requests another available page`() {
@@ -11,6 +11,7 @@ class MarketplacePaginationTriggerTest {
         assertFalse(shouldLoadMarketplacePage(false, false, true, false))
         assertFalse(shouldLoadMarketplacePage(true, true, true, false))
     }
+
     @Test fun `loading or exhausted search cannot issue another pagination request`() {
         assertFalse(shouldLoadMarketplacePage(true, false, true, true))
         assertFalse(shouldLoadMarketplacePage(true, false, false, false))

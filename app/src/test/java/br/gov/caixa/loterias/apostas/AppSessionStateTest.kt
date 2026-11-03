@@ -4,10 +4,12 @@ import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
 import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContext
 import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContextCodec
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class AppSessionStateTest {

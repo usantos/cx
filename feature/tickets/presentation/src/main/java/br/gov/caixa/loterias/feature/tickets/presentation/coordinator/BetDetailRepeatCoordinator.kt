@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.feature.tickets.presentation.mapper.normalizedConte
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toCartMessage
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toRepeatDraft
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toRepeatOption
+import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailRepeatAction
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailStateAction
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailUiState
 import java.util.concurrent.atomic.AtomicReference
@@ -27,6 +28,7 @@ internal class BetDetailRepeatCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val addBetToCart: AddBetToCartUseCase,
     private val getBettingParameters: GetBettingParametersUseCase?,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     fun dismissCartAddition() = mutableState.dispatch(BetDetailStateAction.CartAdditionDismissed)
 
@@ -36,6 +38,7 @@ internal class BetDetailRepeatCoordinator(
 
     @Synchronized
     fun addCurrentBetToCart(): Job {
+        if (!canStartOperation()) return completedOperation()
         if (!mutableState.value.detailsReady || !phase.compareAndSet(RepeatPhase.IDLE, RepeatPhase.LOADING)) return completedOperation()
         val bet = mutableState.value.bet
         return scope.launch(dispatchers.io) {
@@ -49,6 +52,7 @@ internal class BetDetailRepeatCoordinator(
     }
 
     private suspend fun prepareRepeat(bet: ConfirmedBet): Boolean {
+        if (!canStartOperation()) return false
         val hasSelection = bet.numbers.isNotEmpty() || bet.numberColumns.any(List<Int>::isNotEmpty) ||
             bet.lotecaSelections.isNotEmpty() || bet.lotogolSelections.isNotEmpty() || bet.surprise
         if (bet.modalityId <= 0 || !hasSelection) {
@@ -63,6 +67,10 @@ internal class BetDetailRepeatCoordinator(
         }
         val result = parameters()
         currentCoroutineContext().ensureActive()
+        if (!canStartOperation()) {
+            mutableState.dispatch(BetDetailStateAction.RepeatPreparationCancelled)
+            return false
+        }
         return when (result) {
             is AppResult.Failure -> {
                 mutableState.dispatch(BetDetailStateAction.RepeatParametersFailed(result.error.toCartMessage()))
@@ -77,11 +85,17 @@ internal class BetDetailRepeatCoordinator(
 
     @Synchronized
     fun confirmRepeatContest(): Job {
+        if (!canStartOperation()) return completedOperation()
         val current = mutableState.value
         val option = current.repeatContestOptions.getOrNull(current.selectedRepeatContestIndex) ?: return completedOperation()
         if (!phase.compareAndSet(RepeatPhase.CONTEST, RepeatPhase.SUBMITTING)) return completedOperation()
-        mutableState.dispatch(BetDetailStateAction.RepeatContestConfirmed)
-        return launchSubmission(current.bet, option.contestType)
+        return launchSubmission(
+            current.bet,
+            option.contestType,
+            RepeatPhase.CONTEST,
+            BetDetailStateAction.RepeatContestConfirmed,
+            BetDetailStateAction.RepeatContestsReceived(current.repeatContestOptions, current.selectedRepeatContestIndex)
+        )
     }
 
     @Synchronized
@@ -94,20 +108,40 @@ internal class BetDetailRepeatCoordinator(
 
     @Synchronized
     fun confirmRepeatConversion(): Job {
+        if (!canStartOperation()) return completedOperation()
         val current = mutableState.value
         val option = current.repeatConversion ?: return completedOperation()
         if (!phase.compareAndSet(RepeatPhase.CONVERSION, RepeatPhase.SUBMITTING)) return completedOperation()
-        mutableState.dispatch(BetDetailStateAction.RepeatConversionConfirmed)
-        return launchSubmission(current.bet, option.contestType)
+        return launchSubmission(
+            current.bet,
+            option.contestType,
+            RepeatPhase.CONVERSION,
+            BetDetailStateAction.RepeatConversionConfirmed,
+            BetDetailStateAction.RepeatConversionRequired(option)
+        )
     }
 
     private fun completedOperation(): Job = Job().apply { complete() }
 
-    private fun launchSubmission(bet: ConfirmedBet, contestType: String) = scope.launch(dispatchers.io) {
+    private fun launchSubmission(
+        bet: ConfirmedBet,
+        contestType: String,
+        previous: RepeatPhase,
+        started: BetDetailRepeatAction,
+        restore: BetDetailRepeatAction,
+    ) = scope.launch(dispatchers.io) {
         try {
-            submitRepeat(bet, contestType)
+            if (!canStartOperation()) {
+                phase.set(previous)
+                return@launch
+            }
+            mutableState.dispatch(started)
+            if (!submitRepeat(bet, contestType)) {
+                mutableState.dispatch(restore)
+                phase.set(previous)
+            }
         } finally {
-            phase.set(RepeatPhase.IDLE)
+            phase.compareAndSet(RepeatPhase.SUBMITTING, RepeatPhase.IDLE)
         }
     }
 
@@ -144,8 +178,12 @@ internal class BetDetailRepeatCoordinator(
         mutableState.dispatch(action)
     }
 
-    private suspend fun submitRepeat(bet: ConfirmedBet, contestType: String) {
+    private suspend fun submitRepeat(bet: ConfirmedBet, contestType: String): Boolean {
         currentCoroutineContext().ensureActive()
+        if (!canStartOperation()) {
+            mutableState.dispatch(BetDetailStateAction.RepeatPreparationCancelled)
+            return false
+        }
         val draft = bet.toRepeatDraft(contestType)
         when (val result = addBetToCart(draft)) {
             is AppResult.Success -> {
@@ -154,5 +192,6 @@ internal class BetDetailRepeatCoordinator(
 
             is AppResult.Failure -> mutableState.dispatch(BetDetailStateAction.RepeatAdditionFailed(result.error.toCartMessage()))
         }
+        return true
     }
 }

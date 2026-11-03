@@ -19,7 +19,8 @@ internal class BetDetailFavoriteCoordinator(
     private val scope: CoroutineScope,
     private val dispatchers: CoroutineDispatchers,
     private val validateFavoriteBet: ValidateFavoriteBetUseCase,
-    private val saveFavoriteBet: SaveFavoriteBetUseCase
+    private val saveFavoriteBet: SaveFavoriteBetUseCase,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     private var pendingFavoriteDraft: FavoriteBetDraft? = null
 
@@ -28,6 +29,7 @@ internal class BetDetailFavoriteCoordinator(
     fun changeFavoriteName(value: String) = mutableState.dispatch(BetDetailStateAction.FavoriteNameChanged(value))
 
     fun submitFavorite() = scope.launch(dispatchers.io) {
+        if (!canStartOperation()) return@launch
         if (mutableState.value.loading) return@launch
         pendingFavoriteDraft = null
         mutableState.dispatch(BetDetailStateAction.FavoriteValidationStarted)
@@ -37,7 +39,12 @@ internal class BetDetailFavoriteCoordinator(
             return@launch
         }
         mutableState.dispatch(BetDetailStateAction.FavoriteSavingStarted)
-        when (val result = validateFavoriteBet(draft)) {
+        val result = validateFavoriteBet(draft)
+        if (!canStartOperation()) {
+            mutableState.dispatch(BetDetailStateAction.FavoritePreparationCancelled)
+            return@launch
+        }
+        when (result) {
             is AppResult.Success -> saveFavorite(draft)
 
             is AppResult.Failure -> when (val error = result.error) {
@@ -52,11 +59,10 @@ internal class BetDetailFavoriteCoordinator(
     }
 
     fun confirmFavoriteOverwrite() = scope.launch(dispatchers.io) {
+        if (!canStartOperation()) return@launch
         val draft = pendingFavoriteDraft ?: return@launch
         if (!mutableState.value.favoriteOverwriteConfirmation || mutableState.value.loading) return@launch
-        pendingFavoriteDraft = null
-        mutableState.dispatch(BetDetailStateAction.FavoriteOverwriteConfirmed)
-        saveFavorite(draft)
+        saveFavorite(draft, overwrite = true)
     }
 
     fun dismissFavoriteOverwrite() {
@@ -64,7 +70,15 @@ internal class BetDetailFavoriteCoordinator(
         mutableState.dispatch(BetDetailStateAction.FavoriteOverwriteDismissed)
     }
 
-    private suspend fun saveFavorite(draft: FavoriteBetDraft) {
+    private suspend fun saveFavorite(draft: FavoriteBetDraft, overwrite: Boolean = false) {
+        if (!canStartOperation()) {
+            mutableState.dispatch(BetDetailStateAction.FavoritePreparationCancelled)
+            return
+        }
+        if (overwrite) {
+            pendingFavoriteDraft = null
+            mutableState.dispatch(BetDetailStateAction.FavoriteOverwriteConfirmed)
+        }
         when (val result = saveFavoriteBet(draft)) {
             is AppResult.Success -> mutableState.dispatch(BetDetailStateAction.FavoriteSaved)
             is AppResult.Failure -> mutableState.dispatch(BetDetailStateAction.FavoriteSaveFailed(result.error.toFavoriteMessage()))

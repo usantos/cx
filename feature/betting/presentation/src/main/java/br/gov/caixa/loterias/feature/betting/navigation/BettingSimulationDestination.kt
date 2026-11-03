@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.feature.betting.navigation
 
-import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 /** Consumidor compartilhado pelo destino de navegação e pelo hospedeiro de regressão da edição retida. */
 @Composable
@@ -45,7 +45,13 @@ fun BettingSimulationDestination(
         onFavoriteLoginRequired = onFavoriteLoginRequired,
         onHelp = onHelp,
         onCart = onCart,
-        onBack = { clearPendingEdit(); onBack() },
-        onAdded = { clearPendingEdit(); cartRevision++ },
+        onBack = {
+            clearPendingEdit()
+            onBack()
+        },
+        onAdded = {
+            clearPendingEdit()
+            cartRevision++
+        }
     )
 }

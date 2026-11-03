@@ -1,0 +1,73 @@
+// Robolectric carrega recursos de uma aplicação base real. As classes instrumentadas
+// e a cobertura continuam pertencendo ao módulo dinâmico, sem reescrever IDs/recursos.
+configurations {
+    dynamicFeatureTestBundletool {
+        canBeConsumed = false
+        canBeResolved = true
+    }
+}
+dependencies {
+    dynamicFeatureTestBundletool libs.bundletool.test
+}
+
+subprojects { owner ->
+    owner.pluginManager.withPlugin('com.android.dynamic-feature') {
+        owner.afterEvaluate {
+            def bases = rootProject.subprojects.findAll { candidate ->
+                candidate.plugins.hasPlugin('com.android.application') && candidate.android.dynamicFeatures.contains(owner.path)
+            }
+            if (bases.size() != 1) throw new GradleException("Testes do split exigem uma base exata: ${owner.path}")
+            def base = bases[0]
+            def aaptName = System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows') ? 'aapt2.exe' : 'aapt2'
+            def aapt2 = new File(owner.android.sdkDirectory, "build-tools/${owner.android.buildToolsVersion}/${aaptName}")
+            // Os testes usam os flavors Debug da mesma base, sem alterar variantes release.
+            ['prd', 'tqs', 'automacao'].each { flavor ->
+                def variant = "${flavor}Debug"
+                def capitalized = variant.capitalize()
+                def bundle = base.layout.buildDirectory.file("outputs/bundle/${variant}/${base.name}-${flavor}-debug.aab")
+                def directory = base.layout.buildDirectory.dir("generated/dynamic-feature-test-resources/${variant}")
+                def archive = directory.map { it.file('universal.apks') }
+                def resourceApk = directory.map { it.file('universal.apk') }
+                def taskName = "prepare${capitalized}DynamicFeatureTestResources"
+                def prepare = base.tasks.findByName(taskName) != null ? base.tasks.named(taskName) : base.tasks.register(taskName, JavaExec) {
+                    group = 'verification'
+                    description = "Builds real universal resources from ${base.path} ${variant} AAB for dynamic unit tests."
+                    dependsOn "${base.path}:bundle${capitalized}"
+                    classpath = rootProject.configurations.dynamicFeatureTestBundletool
+                    mainClass = 'com.android.tools.build.bundletool.BundleToolMain'
+                    javaLauncher = owner.javaToolchains.launcherFor {
+                        languageVersion = JavaLanguageVersion.of(21)
+                    }
+                    inputs.file(aapt2).withPropertyName('androidResourceCompiler')
+                    inputs.file(bundle).withPropertyName('baseAppBundle').withPathSensitivity(PathSensitivity.RELATIVE)
+                    outputs.file(archive).withPropertyName('universalApkSet')
+                    outputs.file(resourceApk).withPropertyName('universalResourceApk')
+                    doFirst {
+                        directory.get().asFile.mkdirs()
+                        args = ['build-apks', "--bundle=${bundle.get().asFile.absolutePath}",
+                                "--output=${archive.get().asFile.absolutePath}", '--mode=universal', '--overwrite', "--aapt2=${aapt2.absolutePath}"]
+                    }
+                    doLast {
+                        new java.util.zip.ZipFile(archive.get().asFile).withCloseable { zip ->
+                            def entry = zip.getEntry('universal.apk')
+                            if (entry == null) throw new GradleException("Bundletool não gerou universal.apk: ${archive.get().asFile}")
+                            zip.getInputStream(entry).withCloseable { input ->
+                                resourceApk.get().asFile.withOutputStream { output -> output << input }
+                            }
+                        }
+                    }
+                }
+                owner.tasks.matching { it.name == "test${capitalized}UnitTest" }.configureEach {
+                    dependsOn prepare
+                    inputs.file(resourceApk).withPropertyName('dynamicFeatureResourceApk').withPathSensitivity(PathSensitivity.RELATIVE)
+                    systemProperty 'simlo.dynamicFeature.resourceApk', resourceApk.get().asFile.absolutePath
+                    doFirst {
+                        def baseVariant = base.android.applicationVariants.find { it.name == variant }
+                        if (baseVariant == null) throw new GradleException("Variante base ausente: ${base.path}:${variant}")
+                        systemProperty 'simlo.dynamicFeature.baseApplicationId', baseVariant.applicationId
+                    }
+                }
+            }
+        }
+    }
+}

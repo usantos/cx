@@ -3,22 +3,22 @@ package br.gov.caixa.loterias.feature.cart
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.CartLine
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.PoolExpiry
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.PoolExpiryState
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.canClearCart
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.canFavoriteCart
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.formatCurrency
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.poolExpiry
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.quantityLabel
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.totalCartCents
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.visibleCartSections
 import java.math.BigDecimal
 import java.time.Instant
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.formatCurrency
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.CartLine
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.PoolExpiry
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.PoolExpiryState
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.canClearCart
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.canFavoriteCart
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.poolExpiry
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.quantityLabel
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.totalCartCents
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.visibleCartSections
 
 class CartRulesTest {
     @Test fun `total considers price and quantity`() {

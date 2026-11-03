@@ -17,4 +17,6 @@ internal fun rapidServiceFailurePresentation(
 ): ServiceFailurePresentation =
     if (failure is ServiceFailure.NoticeRequired && failure.notice.reason == ServiceNoticeReason.LOGIN_REQUIRED) {
         ServiceFailurePresentation(redirect = ServiceRedirectEvent(ServiceRedirect.LOGIN))
-    } else serviceFailurePresentation(failure, network, now)
+    } else {
+        serviceFailurePresentation(failure, network, now)
+    }

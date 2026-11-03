@@ -28,9 +28,10 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -81,7 +82,7 @@ class BettingCatalogCoordinationUiTest {
         val fixture = Fixture().apply { modalityGate = CompletableDeferred() }
         val model = fixture.model(BettingCatalogMode.MODALITIES)
         val selected = mutableListOf<Int>()
-        compose.setContent { LoteriasCaixaDSTheme { LotteryModalitiesRoute(model, {}, selected::add) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { LotteryModalitiesRoute(model, {}, selected::add) } }
         compose.onNode(hasProgressBarRangeInfo(ProgressBarRangeInfo.Indeterminate)).assertIsDisplayed()
         compose.runOnIdle { fixture.modalityGate!!.complete(AppResult.Failure(AppError.Network)) }
         compose.onNodeWithText("Não foi possível carregar as opções de apostas. Verifique sua internet.").assertIsDisplayed()
@@ -106,7 +107,7 @@ class BettingCatalogCoordinationUiTest {
         val model = fixture.model(BettingCatalogMode.COMBOS)
         val selected = mutableListOf<Int>()
         var carts = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 BetCombosRoute(model, {}, selected::add, BigDecimal("35.00"), 3, onCart = { carts++ })
             }
@@ -134,7 +135,7 @@ class BettingCatalogCoordinationUiTest {
         val model = fixture.model(BettingCatalogMode.COMBO_DETAIL)
         val visible = mutableStateOf(true)
         var additions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 if (visible.value) {
                     BetComboDetailRoute(model, {}, {
@@ -158,7 +159,7 @@ class BettingCatalogCoordinationUiTest {
         val fixture = Fixture()
         val model = fixture.model(BettingCatalogMode.COMBO_DETAIL)
         var additions = 0
-        compose.setContent { LoteriasCaixaDSTheme { BetComboDetailRoute(model, {}, { additions++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BetComboDetailRoute(model, {}, { additions++ }) } }
         compose.onNodeWithContentDescription("Remover apostas").performClick()
         compose.runOnIdle { assertEquals(1, model.state.value.comboQuantity) }
         repeat(16) { compose.onNodeWithContentDescription("Adicionar apostas").performClick() }
@@ -181,7 +182,7 @@ class BettingCatalogCoordinationUiTest {
         val fixture = Fixture().apply { combos = emptyList() }
         val model = fixture.model(BettingCatalogMode.COMBO_DETAIL)
         var additions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 BetComboDetailRoute(model, {}, { additions++ }, BigDecimal("35.00"), 3)
             }
@@ -224,7 +225,7 @@ class BettingCatalogCoordinationUiTest {
         val selected = mutableStateOf(old)
         val count = mutableStateOf(1)
         val addedIds = mutableListOf<Int>()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 BetComboDetailRoute(selected.value, {}, {
                     assertFalse(selected.value.state.value.addedToCart)
@@ -251,7 +252,7 @@ class BettingCatalogCoordinationUiTest {
         val fixture = Fixture()
         val model = fixture.model(BettingCatalogMode.MODALITIES)
         val campaign = mutableStateOf(LoteriasCaixaDSCampaign.DEFAULT)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 CompositionLocalProvider(LocalLoteriasCaixaDSMegaSenaCampaign provides campaign.value) {
                     LotteryModalitiesRoute(model, {}, {})

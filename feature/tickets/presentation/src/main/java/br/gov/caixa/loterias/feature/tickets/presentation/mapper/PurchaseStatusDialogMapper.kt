@@ -1,8 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.mapper
 
-import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
-
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseDialogAction
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseStatusDialog
 

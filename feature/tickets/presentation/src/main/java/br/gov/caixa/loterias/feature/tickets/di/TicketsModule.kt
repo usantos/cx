@@ -1,8 +1,9 @@
 package br.gov.caixa.loterias.feature.tickets.di
 
-import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
+import br.gov.caixa.loterias.feature.tickets.domain.repository.TicketsRepository
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicket
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBets
@@ -25,12 +26,11 @@ import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBetUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.SavePurchaseAsFavorite
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.SavePurchaseAsFavoriteUseCase
-import br.gov.caixa.loterias.feature.tickets.domain.repository.TicketsRepository
-import dagger.Provides
-import javax.inject.Singleton
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -61,8 +61,7 @@ object TicketsModule {
     fun purchaseDetails(repository: TicketsRepository): GetPurchaseDetailsUseCase = GetPurchaseDetails(repository)
 
     @Provides
-    fun savePurchaseAsFavorite(repository: TicketsRepository): SavePurchaseAsFavoriteUseCase =
-        SavePurchaseAsFavorite(repository)
+    fun savePurchaseAsFavorite(repository: TicketsRepository): SavePurchaseAsFavoriteUseCase = SavePurchaseAsFavorite(repository)
 
     @Provides
     fun checkTicket(repository: TicketsRepository): CheckTicketUseCase = CheckTicket(repository)
@@ -75,8 +74,7 @@ object TicketsModule {
     fun purchaseMonths(repository: TicketsRepository): GetPurchaseMonthsUseCase = GetPurchaseMonths(repository)
 
     @Provides
-    fun purchasePaymentMethods(repository: TicketsRepository): GetPurchasePaymentMethodsUseCase =
-        GetPurchasePaymentMethods(repository)
+    fun purchasePaymentMethods(repository: TicketsRepository): GetPurchasePaymentMethodsUseCase = GetPurchasePaymentMethods(repository)
 
     @Provides
     fun purchaseStatuses(repository: TicketsRepository): GetPurchaseStatusesUseCase = GetPurchaseStatuses(repository)

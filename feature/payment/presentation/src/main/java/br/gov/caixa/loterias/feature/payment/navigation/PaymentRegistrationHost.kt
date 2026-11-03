@@ -2,13 +2,19 @@ package br.gov.caixa.loterias.feature.payment.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.MercadoPagoRegistrationViewModel
 import br.gov.caixa.loterias.feature.payment.presentation.components.MercadoPagoRegistrationOverlay
+import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.MercadoPagoRegistrationViewModel
 
 @Composable
 fun paymentRegistrationViewModel(container: MercadoPagoRegistrationDependencies): MercadoPagoRegistrationViewModel =
     viewModel(key = "mercado-pago-registration") {
-        MercadoPagoRegistrationViewModel(container.accountProfile, container.prepareMercadoPagoRegistration, container.dispatchers, container.localClock, container.networkAvailability)
+        MercadoPagoRegistrationViewModel(
+            container.accountProfile,
+            container.prepareMercadoPagoRegistration,
+            container.dispatchers,
+            container.localClock,
+            container.networkAvailability
+        )
     }
 
 @Composable

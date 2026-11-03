@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.cart.presentation.mapper
 
-internal fun cartHelpAction(modality: String, onHelp: ((Int, String) -> Unit)?): (() -> Unit)? {
+fun cartHelpAction(modality: String, onHelp: ((Int, String) -> Unit)?): (() -> Unit)? {
     if (onHelp == null) return null
     val normalized = java.text.Normalizer.normalize(modality, java.text.Normalizer.Form.NFD)
         .replace(Regex("\\p{M}"), "").uppercase().replace('-', '_').replace(' ', '_')

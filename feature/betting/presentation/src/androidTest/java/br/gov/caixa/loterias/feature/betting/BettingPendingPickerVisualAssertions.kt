@@ -13,11 +13,13 @@ internal fun SemanticsNodeInteraction.assertNativeDisabledConfirmPixels() {
     val expected = intArrayOf(201, 204, 211)
     var greyPixels = 0
     var bluePixels = 0
-    for (y in 0 until pixels.height) for (x in 0 until pixels.width) {
-        val pixel = pixels[x, y]
-        val rgb = intArrayOf((pixel.red * 255).toInt(), (pixel.green * 255).toInt(), (pixel.blue * 255).toInt())
-        if (rgb.indices.all { kotlin.math.abs(rgb[it] - expected[it]) <= 2 }) greyPixels++
-        if (pixel.blue - pixel.red > .2f) bluePixels++
+    for (y in 0 until pixels.height) {
+        for (x in 0 until pixels.width) {
+            val pixel = pixels[x, y]
+            val rgb = intArrayOf((pixel.red * 255).toInt(), (pixel.green * 255).toInt(), (pixel.blue * 255).toInt())
+            if (rgb.indices.all { kotlin.math.abs(rgb[it] - expected[it]) <= 2 }) greyPixels++
+            if (pixel.blue - pixel.red > .2f) bluePixels++
+        }
     }
     assertTrue("Native disabled Confirmar must render grey glyph pixels", greyPixels > 10)
     assertEquals("Disabled Confirmar must have no enabled blue glyphs", 0, bluePixels)

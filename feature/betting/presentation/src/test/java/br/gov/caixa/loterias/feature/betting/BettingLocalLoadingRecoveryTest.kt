@@ -6,12 +6,14 @@ package br.gov.caixa.loterias.feature.betting
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.isDialog
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -30,10 +32,16 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-@org.junit.runner.RunWith(org.robolectric.RobolectricTestRunner::class)
-@org.robolectric.annotation.Config(sdk = [35])
+import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class BettingLocalLoadingRecoveryTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun lotomaniaRandomButtonCompletesLocalSimulationWhenSalesAreClosed() {
         val game = LotteryGameParameters(
@@ -50,7 +58,7 @@ class BettingLocalLoadingRecoveryTest {
             AddBetToCartUseCase { error("Simulação local não deve enviar aposta") },
             checkpointSession = session
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.onNodeWithText("Aposta aleatória").assertIsEnabled().performClick()
         compose.waitUntil(10_000) { vm.state.value.selectedNumbers.size == 50 }
@@ -98,7 +106,7 @@ class BettingLocalLoadingRecoveryTest {
                 }
             }
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { backs.incrementAndGet() }, {}) } }
         compose.mainClock.advanceTimeBy(750) // LoadingView original: atraso de 500 e transição de opacidade de 200.
         compose.onNode(isDialog()).assertExists()
         compose.onNodeWithText("Carregando…").assertIsDisplayed()

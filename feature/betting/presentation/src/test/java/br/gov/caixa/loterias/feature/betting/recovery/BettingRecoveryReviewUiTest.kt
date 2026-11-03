@@ -7,13 +7,15 @@ import androidx.activity.OnBackPressedDispatcher
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -30,13 +32,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class BettingRecoveryReviewUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun `obsolete draft shows legacy notice and Entendi returns without losing the draft`() {
         val draft = BettingCheckpoint(2, "NORMAL", 99, numbers = setOf(4, 1), numberQuantity = 6)
@@ -55,7 +60,7 @@ class BettingRecoveryReviewUiTest {
             checkpointSession = session
         )
         var exits = 0
-        compose.setContent { LoteriasCaixaDSTheme { BettingGameRoute(model, { exits++ }, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingGameRoute(model, { exits++ }, {}) } }
         compose.waitUntil(10_000) { model.state.value.recoveryReview != null }
         compose.onNodeWithText("Atenção").assertIsDisplayed()
         compose.onNodeWithText("O registro de apostas individuais para o concurso 99 foi encerrado.").assertIsDisplayed()
@@ -90,7 +95,7 @@ class BettingRecoveryReviewUiTest {
         )
         var exits = 0
         var backDispatcher: OnBackPressedDispatcher? = null
-        compose.setContent {
+        compose.setFeatureContent {
             backDispatcher = requireNotNull(LocalOnBackPressedDispatcherOwner.current).onBackPressedDispatcher
             LoteriasCaixaDSTheme { BettingGameRoute(model, { exits++ }, {}, fallbackModalityId = 2) }
         }
@@ -126,7 +131,7 @@ class BettingRecoveryReviewUiTest {
             AddBetToCartUseCase { error("Não deve enviar aposta") },
             checkpointSession = session
         )
-        compose.setContent { LoteriasCaixaDSTheme { BettingGameRoute(model, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingGameRoute(model, {}, {}) } }
         compose.waitUntil(10_000) { model.state.value.game != null || model.state.value.recoveryReview != null }
         assertEquals(draft.numbers, model.state.value.selectedNumbers)
         compose.onNodeWithText("Rascunho preservado para conferência").assertDoesNotExist()

@@ -3,27 +3,28 @@ package br.gov.caixa.loterias.feature.betting
 import androidx.compose.runtime.remember
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.betting.presentation.route.FavoriteBetsRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
+import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.presentation.route.FavoriteBetsRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -100,7 +101,7 @@ class FavoriteBetsPreflightUiTest {
         compose.runOnIdle { assertEquals(listOf(FavoriteBetCartOptions(2, 0, null)), fixture.added) }
     }
 
-    private fun show(fixture: Fixture) = compose.setContent {
+    private fun show(fixture: Fixture) = compose.setFeatureContent {
         val model = remember { fixture.create() }
         LoteriasCaixaDSTheme { FavoriteBetsRoute(model, { fixture.exits++ }, {}, {}) }
     }

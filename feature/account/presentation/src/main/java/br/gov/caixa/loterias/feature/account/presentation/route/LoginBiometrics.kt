@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalView
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
@@ -28,11 +28,12 @@ internal fun rememberLoginBiometricAuthorization(
     val credentialLauncher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val challenge = biometricChallenge
         biometricChallenge = null
-        if (result.resultCode == Activity.RESULT_OK && challenge != null) viewModel.completeBiometric {
-                        checkNotNull(authentication as? br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway)
-                            .completeBiometricAuthorization(challenge)
-                    }
-        else {
+        if (result.resultCode == Activity.RESULT_OK && challenge != null) {
+            viewModel.completeBiometric {
+                checkNotNull(authentication as? br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway)
+                    .completeBiometricAuthorization(challenge)
+            }
+        } else {
             viewModel.biometricAuthorizationFailed()
         }
     }
@@ -43,11 +44,12 @@ internal fun rememberLoginBiometricAuthorization(
             try {
                 biometricPrompt(promptHost, challenge) { result ->
                     biometricChallenge = null
-                    if (result != null) viewModel.completeBiometric {
-                        checkNotNull(authentication as? br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway)
-                            .completeBiometricAuthorization(result)
-                    }
-                    else {
+                    if (result != null) {
+                        viewModel.completeBiometric {
+                            checkNotNull(authentication as? br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway)
+                                .completeBiometricAuthorization(result)
+                        }
+                    } else {
                         viewModel.biometricAuthorizationFailed()
                     }
                 }
@@ -56,7 +58,9 @@ internal fun rememberLoginBiometricAuthorization(
                 viewModel.biometricAuthorizationFailed()
                 null
             }
-        } else null
+        } else {
+            null
+        }
         onDispose { cancelPrompt?.invoke() }
     }
     return LoginBiometricAuthorization(promptHost) {
@@ -68,7 +72,7 @@ internal fun rememberLoginBiometricAuthorization(
     }
 }
 
-internal tailrec fun Context.findActivity(): Activity? = when (this) {
+tailrec fun Context.findActivity(): Activity? = when (this) {
     is Activity -> this
     is ContextWrapper -> baseContext.findActivity()
     else -> null

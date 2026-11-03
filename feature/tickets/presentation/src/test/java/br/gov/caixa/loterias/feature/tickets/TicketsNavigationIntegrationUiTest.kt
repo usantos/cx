@@ -5,7 +5,7 @@ package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -31,6 +31,8 @@ import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
@@ -85,13 +87,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], qualifiers = "w480dp-h900dp")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36], qualifiers = "w480dp-h900dp")
 class TicketsNavigationIntegrationUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
     private lateinit var navigation: AppNavigationState
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))
@@ -237,7 +242,7 @@ class TicketsNavigationIntegrationUiTest {
     }
 
     private fun show(route: String, seedBet: Boolean = false) {
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             navigation = rememberAppNavigationState(identity.ownerKey)
             LoteriasCaixaDSTheme {

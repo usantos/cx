@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -19,7 +18,7 @@ import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentCar
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentCardRedirectCoordinator
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentCardSavedCardsCoordinator
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentCardSubmissionCoordinator
-import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
+import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentCardSubmissionServices
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurchaseContext
@@ -40,6 +39,7 @@ class PaymentCardViewModel(
     private val clock: java.time.Clock,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     currentYear: Int = Year.now().value,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<PaymentCardUiState, PaymentCardAction>(
         PaymentCardUiState(paymentMethodId = paymentMethodId, minimumExpirationYear = currentYear),
@@ -58,15 +58,25 @@ class PaymentCardViewModel(
         mutableState, viewModelScope, dispatchers, purchase, getPurchaseProgress, recordRecentPurchase, notices, redirects, ::fail
     )
     private val submission = PaymentCardSubmissionCoordinator(
-        mutableState, viewModelScope, dispatchers, purchase, paymentMethodId, getCurrentCart, submitCardPayment,
-        monitoring, notices, redirects, ::fail
+        mutableState, viewModelScope, dispatchers, purchase, paymentMethodId,
+        PaymentCardSubmissionServices(getCurrentCart, submitCardPayment, canStartOperation), monitoring, notices, redirects, ::fail
     )
 
     init {
         load()
     }
 
-    fun load() = savedCards.load()
+    /** Identificador recebido do backend; nunca contém dados do cartão ou o código de segurança. */
+    val recoveryPurchaseId: Long?
+        get() = purchase.trackedPurchase?.poll?.purchaseId?.takeIf { it > 0 }
+            ?: state.value.purchaseReview?.purchaseId?.takeIf { it > 0 }
+            ?: state.value.redirectPurchaseId?.takeIf { it > 0 }
+
+    fun load(): kotlinx.coroutines.Job = if (canStartOperation()) {
+        savedCards.load()
+    } else {
+        kotlinx.coroutines.Job().apply { complete() }
+    }
 
     fun changeNumber(value: String) = form.changeNumber(value)
     fun changeHolderName(value: String) = form.changeHolderName(value)
@@ -99,7 +109,9 @@ class PaymentCardViewModel(
         true
     }
 
-    fun submit() = submission.submit()
+    fun submit() {
+        if (canStartOperation()) submission.submit()
+    }
 
     private fun fail(error: AppError) = mutableState.dispatch(PaymentCardAction.Failed(error))
 }

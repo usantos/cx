@@ -331,18 +331,102 @@ class RegistrationViewModelTest {
         assertFalse(model.consumeCompletion())
     }
 
+    @Test fun `disabled module keeps registration draft and rejects a new write`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var writes = 0
+        val model = viewModel(register = {
+            writes++
+            AppResult.Success(Unit)
+        }, canStartWrite = { enabled })
+        model.changeZipCode("70000000")
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        model.toggleTerms()
+        val draft = model.state.value
+        enabled = false
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, writes)
+        assertEquals(draft, model.state.value)
+        enabled = true
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+        assertTrue(model.state.value.registered)
+    }
+
+    @Test fun `registration already submitted finishes after module disabled without resubmission`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var writes = 0
+        val pending = CompletableDeferred<AppResult<Unit>>()
+        val model = viewModel(register = {
+            writes++
+            pending.await()
+        }, canStartWrite = { enabled })
+        model.submit()
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        enabled = false
+        model.submit()
+        pending.complete(AppResult.Success(Unit))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+        assertTrue(model.state.value.registered)
+        assertTrue(model.consumeCompletion())
+    }
+
+    @Test fun `module disabled while registration waits for IO skips the write and permits a later retry`() = runTest {
+        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
+        var enabled = true
+        var writes = 0
+        val model = viewModel(ioDispatcher = io, register = {
+            writes++
+            AppResult.Success(Unit)
+        }, canStartWrite = { enabled })
+        model.changeZipCode("70000000")
+        io.scheduler.advanceUntilIdle()
+        model.toggleTerms()
+        val draft = model.state.value
+        model.submit()
+        enabled = false
+        io.scheduler.advanceUntilIdle()
+        assertEquals(0, writes)
+        assertEquals(draft, model.state.value)
+        enabled = true
+        model.submit()
+        io.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+        assertTrue(model.state.value.registered)
+    }
+
+    @Test fun `required registration keeps the explicit write permission after the optional module is disabled`() = runTest {
+        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
+        var enabled = true
+        val completionRequired = true
+        var writes = 0
+        val model = viewModel(ioDispatcher = io, register = {
+            writes++
+            AppResult.Success(Unit)
+        }, canStartWrite = { completionRequired || enabled })
+        model.submit()
+        enabled = false
+        io.scheduler.advanceUntilIdle()
+        assertEquals(1, writes)
+        assertTrue(model.state.value.registered)
+    }
+
     private fun viewModel(
         ioDispatcher: kotlinx.coroutines.CoroutineDispatcher = dispatcherRule.dispatcher,
         user: AuthenticatedUser? = AuthenticatedUser("Pessoa", "12345678901", "pessoa@caixa.gov.br", "19900101"),
         resolve: suspend (String) -> AppResult<ZipCodeLocation> = { AppResult.Success(location()) },
         register: suspend (AccountRegistration) -> AppResult<Unit> = { AppResult.Success(Unit) },
         isSessionCurrent: () -> Boolean = { true },
+        canStartWrite: () -> Boolean = { true },
     ) = RegistrationViewModel(
         CurrentUserIdentityProvider { user },
         ResolveZipCodeUseCase { resolve(it) },
         RegisterAccountUseCase { register(it) },
         FixedCoroutineDispatchers(ioDispatcher),
-        isSessionCurrent
+        isSessionCurrent,
+        canStartWrite
     )
 
     companion object {

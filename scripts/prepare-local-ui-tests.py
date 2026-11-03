@@ -12,6 +12,14 @@ import shutil
 
 def prepare(root, module, manifest, destination):
     sources = []
+    # O parser Java de recursos não suporta o pacote 0x80 dos splits; o parser nativo do SDK 36 preserva os recursos reais.
+    native_resources = module == "app" or (module.startswith("feature/") and module.endswith("/presentation"))
+    for name in ['build.gradle', 'build.gradle.kts']:
+        build = root / module / name
+        if build.is_file():
+            declaration = re.sub(r'/\*[\s\S]*?\*/|//[^\n]*', '', build.read_text())
+            native_resources |= bool(re.search(r"['\"]com\.android\.dynamic-feature['\"]", declaration))
+    sdk = 36 if native_resources else 35
     prefix = f'{module}/src/androidTest/'
     for line in manifest.read_text().splitlines():
         entry = line.strip()
@@ -48,20 +56,40 @@ def prepare(root, module, manifest, destination):
             output.parent.mkdir(parents=True, exist_ok=True)
             output.write_text(content)
             continue
+        parameterized = bool(re.search(
+            r'@(?:org\.junit\.runner\.)?RunWith\(\s*(?:org\.junit\.runners\.)?Parameterized::class\s*\)', content))
         runner = ('org.robolectric.ParameterizedRobolectricTestRunner'
                   if '@RunWith(Parameterized::class)' in content
                   else 'org.robolectric.RobolectricTestRunner')
-        if runner.endswith('ParameterizedRobolectricTestRunner'):
+        if native_resources:
+            runner = ('br.gov.caixa.loterias.core.testing.runner.DynamicFeatureParameterizedRobolectricTestRunner'
+                      if parameterized else 'br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner')
+            host = 'br.gov.caixa.loterias.apostas.HomeDrawerTestActivity'
+            rule_declaration = r'^([ \t]*@get:Rule[ \t]*(?:\n[ \t]*)?val\s+\w+\s*=\s*)'
+            content, compose_rule_count = re.subn(
+                rule_declaration + r'createComposeRule\(\)',
+                lambda match: match[1] + f'createAndroidComposeRule<{host}>()', content, flags=re.MULTILINE)
+            if compose_rule_count:
+                preserve_compose_import = bool(re.search(r'\bcreateComposeRule\s*\(', content))
+                content = re.sub(r'^import (androidx\.compose\.ui\.test\.junit4(?:\.v2)?)\.createComposeRule[ \t]*$',
+                                 lambda match: (match[0] + '\n' if preserve_compose_import else '') +
+                                 f'import {match[1]}.createAndroidComposeRule', content, flags=re.MULTILINE)
+            content = re.sub(
+                rule_declaration + r'createAndroidComposeRule<(?:androidx\.activity\.)?ComponentActivity>\(\)',
+                lambda match: match[1] + f'createAndroidComposeRule<{host}>()', content, flags=re.MULTILINE)
+        if runner == 'org.robolectric.ParameterizedRobolectricTestRunner':
             content = content.replace('@Parameterized.Parameters',
                                       '@org.robolectric.ParameterizedRobolectricTestRunner.Parameters')
         content = re.sub(r'^import org.junit.runner.RunWith\s*\n', '', content, flags=re.MULTILINE)
         content = re.sub(r'^@RunWith\([^\n]+\)\s*\n', '', content, flags=re.MULTILINE)
         annotation = (
             f'@org.junit.runner.RunWith({runner}::class)\n'
-            '@org.robolectric.annotation.Config(sdk = [35], application = android.app.Application::class, '
+            f'@org.robolectric.annotation.Config(sdk = [{sdk}], application = android.app.Application::class, '
             'qualifiers = "w411dp-h891dp-xhdpi")\n'
             '@org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)\n'
         )
+        if native_resources:
+            annotation += '@org.robolectric.annotation.ResourcesMode(org.robolectric.annotation.ResourcesMode.Mode.NATIVE)\n'
         content, count = re.subn(r'^(class \w+Test\b)', lambda m: annotation + m.group(1),
                                  content, count=1, flags=re.MULTILINE)
         if count != 1:

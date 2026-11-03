@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.home
 
-import android.Manifest
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import androidx.activity.compose.LocalActivityResultRegistryOwner
@@ -16,6 +15,7 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.navigation.rememberHomeTicketScannerEntry
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -47,7 +47,7 @@ class HomeTicketScannerPermissionTest {
     }
 
     private fun show(granted: Boolean, registry: PermissionRegistry, onOpen: () -> Unit) {
-        compose.setContent {
+        compose.setFeatureContent {
             val baseContext = LocalContext.current
             val context = object : ContextWrapper(baseContext) {
                 override fun checkPermission(permission: String, pid: Int, uid: Int): Int =

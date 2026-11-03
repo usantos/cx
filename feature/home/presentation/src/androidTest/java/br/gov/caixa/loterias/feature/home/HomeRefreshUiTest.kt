@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
@@ -31,6 +32,7 @@ import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
+import br.gov.caixa.loterias.feature.home.ui.R as DeliveryR
 import java.math.BigDecimal
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.cancel
@@ -86,7 +88,7 @@ class HomeRefreshUiTest {
             )
         )
         val model = model(AtomicInteger(), parameters)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val state = preferences.state.collectAsStateWithLifecycle()
                 if (!state.value.loaded) {
@@ -123,7 +125,7 @@ class HomeRefreshUiTest {
         val calls = AtomicInteger()
         val model = model(calls)
         val show = mutableStateOf(false)
-        compose.setContent {
+        compose.setFeatureContent {
             androidx.compose.runtime.CompositionLocalProvider(
                 br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration provides
                     br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration(true, "test")
@@ -168,7 +170,7 @@ class HomeRefreshUiTest {
         val model = model(AtomicInteger(), parametersSource = { response.get().await() })
         val show = mutableStateOf(true)
         try {
-            compose.setContent {
+            compose.setFeatureContent {
                 androidx.compose.runtime.CompositionLocalProvider(
                     br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration provides
                         br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration(false, "test")
@@ -219,9 +221,9 @@ class HomeRefreshUiTest {
             2, "NORMAL", "megasena", "Mega-Sena", 1234,
             BigDecimal.TEN, BigDecimal.ONE, "2026-10-21T21:00:00", "", true,
             HomeLotteryKind.LOTTERY, Color.Green, Color.Black, Color.White,
-            R.drawable.trevo_megasena_fundo_branco, R.drawable.ic_calendario, R.drawable.ic_calendario
+            DeliveryR.drawable.trevo_megasena_fundo_branco, DeliveryR.drawable.ic_calendario, DeliveryR.drawable.ic_calendario
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 val state = model.state.collectAsStateWithLifecycle()
                 HomeV2RouteContent(

@@ -49,3 +49,5 @@ dependencies {
 dependencies { implementation project(':core:persistence') }
 
 dependencies { implementation project(':core:common') }
+
+dependencies { api project(':core:domain') }

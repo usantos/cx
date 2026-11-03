@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.account
 
-import androidx.compose.ui.test.*
 import android.app.Activity
 import android.content.Intent
 import androidx.activity.compose.LocalActivityResultRegistryOwner
@@ -10,26 +9,30 @@ import androidx.activity.result.contract.ActivityResultContract
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
+import br.gov.caixa.loterias.feature.account.presentation.route.LoginRoute
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
+import java.math.BigDecimal
+import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicInteger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import java.math.BigDecimal
-import java.util.concurrent.CopyOnWriteArrayList
-import java.util.concurrent.atomic.AtomicBoolean
-import java.util.concurrent.atomic.AtomicInteger
-import br.gov.caixa.loterias.feature.account.presentation.route.LoginRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
 
 class LoginCoordinationUiTest {
     @get:Rule val compose = createComposeRule()
@@ -41,16 +44,26 @@ class LoginCoordinationUiTest {
         val automatic = mutableStateOf(true)
         val version = mutableStateOf("first")
         val viewModel = LoginViewModel(authentication, verifyAccess = allowed())
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
                 LoteriasCaixaDSTheme(darkTheme = false) {
-                    LoginRoute(viewModel, authentication, version.value, { destinations += it }, {}, {},
-                        authorizeOnEnter = automatic.value)
+                    LoginRoute(
+                        viewModel,
+                        authentication,
+                        version.value,
+                        { destinations += it },
+                        {},
+                        {},
+                        authorizeOnEnter = automatic.value
+                    )
                 }
             }
         }
         compose.onNodeWithText("Não foi possível abrir o navegador para entrar. Tente novamente.").assertIsDisplayed()
-        compose.runOnIdle { automatic.value = false; version.value = "second" }
+        compose.runOnIdle {
+            automatic.value = false
+            version.value = "second"
+        }
         compose.waitForIdle()
         compose.runOnIdle { automatic.value = true }
         compose.waitForIdle()
@@ -78,16 +91,26 @@ class LoginCoordinationUiTest {
         val version = mutableStateOf("first")
         val prompts = AtomicInteger()
         val disposals = AtomicInteger()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 if (visible.value) {
-                    LoginRoute(viewModel, authentication, version.value, {}, {}, {}, authorizeOnEnter = true,
+                    LoginRoute(
+                        viewModel,
+                        authentication,
+                        version.value,
+                        {},
+                        {},
+                        {},
+                        authorizeOnEnter = true,
                         biometricPrompt = { _, _, _ ->
                             prompts.incrementAndGet()
                             val cancel: () -> Unit = { disposals.incrementAndGet() }
                             cancel
-                        })
-                } else Text("Fora do login")
+                        }
+                    )
+                } else {
+                    Text("Fora do login")
+                }
             }
         }
         compose.waitUntil { prompts.get() == 1 }
@@ -113,14 +136,22 @@ class LoginCoordinationUiTest {
         val prompts = AtomicInteger()
         val destinations = CopyOnWriteArrayList<String>()
         val viewModel = LoginViewModel(authentication, verifyAccess = allowed())
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
                 LoteriasCaixaDSTheme(darkTheme = false) {
-                    LoginRoute(viewModel, authentication, "test", { destinations += it }, {}, {},
-                        authorizeOnEnter = true, biometricPrompt = { _, _, _ ->
+                    LoginRoute(
+                        viewModel,
+                        authentication,
+                        "test",
+                        { destinations += it },
+                        {},
+                        {},
+                        authorizeOnEnter = true,
+                        biometricPrompt = { _, _, _ ->
                             prompts.incrementAndGet()
                             error("Synthetic prompt launch failure")
-                        })
+                        }
+                    )
                 }
             }
         }
@@ -140,14 +171,23 @@ class LoginCoordinationUiTest {
     @Test fun enrollmentDialogPrecedesBlockedNoticeAndOnlyBlockedAcknowledgmentInvalidatesSession() {
         val authentication = Authentication(available = false)
         val invalidations = AtomicInteger()
-        val viewModel = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase {
-            PostLoginAccessResult.BlockedAccountCheckFailed
-        })
+        val viewModel = LoginViewModel(
+            authentication,
+            verifyAccess = VerifyPostLoginAccessUseCase {
+                PostLoginAccessResult.BlockedAccountCheckFailed
+            }
+        )
         viewModel.setBiometricEnabled(true)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
-                LoginRoute(viewModel, authentication, "test", { error("Must not authenticate") }, {},
-                    { invalidations.incrementAndGet() })
+                LoginRoute(
+                    viewModel,
+                    authentication,
+                    "test",
+                    { error("Must not authenticate") },
+                    {},
+                    { invalidations.incrementAndGet() }
+                )
             }
         }
         compose.runOnIdle { viewModel.complete { authentication.completeAuthorization(null) } }
@@ -173,7 +213,10 @@ class LoginCoordinationUiTest {
     private class SuccessfulRegistry : ActivityResultRegistryOwner {
         val launches = AtomicInteger()
         override val activityResultRegistry = object : ActivityResultRegistry() {
-            override fun <I, O> onLaunch(requestCode: Int, contract: ActivityResultContract<I, O>, input: I,
+            override fun <I, O> onLaunch(
+                requestCode: Int,
+                contract: ActivityResultContract<I, O>,
+                input: I,
                 options: ActivityOptionsCompat?,
             ) {
                 launches.incrementAndGet()

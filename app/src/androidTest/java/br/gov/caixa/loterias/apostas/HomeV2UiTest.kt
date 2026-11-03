@@ -6,18 +6,27 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.CxHomeV2Colors
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Modality
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeV2Presentation
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
+import br.gov.caixa.loterias.feature.home.ui.R as HomeUiR
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -94,7 +103,7 @@ class HomeV2UiTest {
             "duplasena", "lotomania", "quina", "timemania", "lotofacil", "supersete"
         )
             .map { lottery().copy(resultCode = it) }
-        compose.setContent { HomeV2TestContent(lotteries, false, emptyMap(), preferences, actions) }
+        compose.setFeatureContent { HomeV2TestContent(lotteries, false, emptyMap(), preferences, actions) }
 
         compose.onAllNodesWithText("Lotofácil").assertCountEquals(0)
         compose.onAllNodesWithText("Super Sete").assertCountEquals(0)
@@ -118,7 +127,7 @@ class HomeV2UiTest {
             br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel.DEFAULT_ORDER
         }, { _, _ -> }) { actions }
         val lottery = lottery()
-        compose.setContent {
+        compose.setFeatureContent {
             if (hostTheme.value) {
                 LoteriasCaixaDSTheme { HomeV2TestContent(listOf(lottery), false, emptyMap(), preferences, actions) }
             } else {
@@ -144,7 +153,7 @@ class HomeV2UiTest {
     }
 
     @Test fun octoberRibbonOpensInfoWithoutPermanentHomeBanner() {
-        compose.setContent {
+        compose.setFeatureContent {
             HomeV2TestContent(
                 listOf(lottery()),
                 false,
@@ -164,7 +173,7 @@ class HomeV2UiTest {
 
     @Test fun octoberHeroButtonsUseLegacySurfaceRoles() {
         poolsEnabled = true
-        compose.setContent {
+        compose.setFeatureContent {
             HomeV2TestContent(
                 listOf(lottery()),
                 false,
@@ -189,7 +198,7 @@ class HomeV2UiTest {
     }
 
     private fun show() {
-        compose.setContent { HomeV2TestContent(listOf(lottery()), false, emptyMap(), preferences, actions) }
+        compose.setFeatureContent { HomeV2TestContent(listOf(lottery()), false, emptyMap(), preferences, actions) }
     }
 
     private fun lottery(): HomeLottery = HomeLottery(
@@ -197,8 +206,8 @@ class HomeV2UiTest {
         BigDecimal("100000000"), BigDecimal("6"), "2026-10-15T21:00:00", "", true,
         HomeLotteryKind.LOTTERY, LoteriasCaixaDSColorTokens.MegaSenaLight,
         LoteriasCaixaDSColorTokens.MegaSenaDark, LoteriasCaixaDSColorTokens.White,
-        br.gov.caixa.loterias.feature.home.R.drawable.trevo_megasena_fundo_branco,
-        br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario,
-        br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario
+        HomeUiR.drawable.trevo_megasena_fundo_branco,
+        HomeUiR.drawable.ic_calendario,
+        HomeUiR.drawable.ic_calendario
     )
 }

@@ -16,6 +16,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMe
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingMutationBarrier
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessage
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessages
+import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingWriteNotAdmitted
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogMode
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogUiState
@@ -35,6 +36,7 @@ class BettingCatalogViewModel(
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     private val recoveryMessages: BettingRecoveryMessages = BettingRecoveryMessages.Identifiers,
     private val checkpointSession: BettingCheckpointSession? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<BettingCatalogUiState, BettingCatalogAction>(
         BettingCatalogUiState(),
@@ -44,7 +46,7 @@ class BettingCatalogViewModel(
     }
     val state = mutableState.state
     private var additionJob: Job? = null
-    private val mutation = BettingMutationBarrier(checkpointSession)
+    private val mutation = BettingMutationBarrier(checkpointSession, canStartOperation)
 
     init {
         load()
@@ -65,6 +67,7 @@ class BettingCatalogViewModel(
     fun toggleSurprise() = mutableState.dispatch(BettingCatalogAction.SurpriseToggled)
 
     fun addSelectedCombo() {
+        if (!canStartOperation()) return
         val task = synchronized(mutableState) {
             val current = state.value
             if (additionJob?.isCompleted == false || current.loading || current.parameters == null) return
@@ -82,6 +85,14 @@ class BettingCatalogViewModel(
             mutation.run("ADD_COMBO", { it: AppResult<*> -> it is AppResult.Success }) {
                 addCombo(comboId, quantity, surprise)
             }
+        } catch (denied: BettingWriteNotAdmitted) {
+            mutableState.dispatch(BettingCatalogAction.CartAdditionPreparationCancelled)
+            if (denied.checkpointed) {
+                mutableState.dispatch(
+                    BettingCatalogAction.RecoveryRequired(recoveryMessages.text(BettingRecoveryMessage.RECONCILE_REQUIRED))
+                )
+            }
+            return
         } catch (cancelled: CancellationException) {
             if (viewModelScope.isActive && checkpointSession?.isCurrent() != false) {
                 mutableState.dispatch(

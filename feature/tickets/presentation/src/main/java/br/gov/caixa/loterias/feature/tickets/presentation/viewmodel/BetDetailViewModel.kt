@@ -33,7 +33,8 @@ class BetDetailViewModel(
     private val getBettingParameters: GetBettingParametersUseCase? = null,
     private val loadConfirmedBet: br.gov.caixa.loterias.feature.tickets.domain.usecase.LoadConfirmedBetUseCase? = null,
     private val downloadPrizeReceipt: br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadPrizeReceiptUseCase? = null,
-    private val getConfirmedBetResults: br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase? = null
+    private val getConfirmedBetResults: br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<BetDetailUiState, BetDetailStateAction>(
         BetDetailUiState(bet),
@@ -58,8 +59,10 @@ class BetDetailViewModel(
         downloadBetReceipt,
         downloadPrizeReceipt
     )
-    private val favorites = BetDetailFavoriteCoordinator(mutableState, viewModelScope, dispatchers, validateFavoriteBet, saveFavoriteBet)
-    private val repeat = BetDetailRepeatCoordinator(mutableState, viewModelScope, dispatchers, addBetToCart, getBettingParameters)
+    private val favorites =
+        BetDetailFavoriteCoordinator(mutableState, viewModelScope, dispatchers, validateFavoriteBet, saveFavoriteBet, canStartOperation)
+    private val repeat =
+        BetDetailRepeatCoordinator(mutableState, viewModelScope, dispatchers, addBetToCart, getBettingParameters, canStartOperation)
 
     init {
         if (bet.id > 0) {

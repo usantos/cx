@@ -15,7 +15,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppBettingBindings {
     @Provides @Singleton
-    fun bettingRepository(source: BettingRemoteDataSource,
+    fun bettingRepository(
+        source: BettingRemoteDataSource,
         local: br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository,
         tokenStore: SessionTokenStore,
         hostConfiguration: HostFeatureConfiguration,

@@ -1,22 +1,24 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.apostas.navigation.startup.startupDestination
 import br.gov.caixa.loterias.apostas.navigation.startup.mockStartDestination
+import br.gov.caixa.loterias.apostas.navigation.startup.startupDestination
+import br.gov.caixa.loterias.core.auth.session.ForegroundSessionStatus
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import br.gov.caixa.loterias.feature.tickets.navigation.visualTestPurchase
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import br.gov.caixa.loterias.core.auth.session.ForegroundSessionStatus
 
 class MockScenarioNavigationTest {
     @Test
     fun `startup opens home only with an active owned session`() {
         assertEquals("home", startupDestination(ForegroundSessionStatus.ACTIVE, hasIdentity = true))
         assertEquals("account/login", startupDestination(ForegroundSessionStatus.ACTIVE, hasIdentity = false))
-        listOf(ForegroundSessionStatus.MISSING, ForegroundSessionStatus.EXPIRED,
-            ForegroundSessionStatus.AUTHORIZATION_PENDING).forEach { status ->
+        listOf(
+            ForegroundSessionStatus.MISSING,
+            ForegroundSessionStatus.EXPIRED,
+            ForegroundSessionStatus.AUTHORIZATION_PENDING
+        ).forEach { status ->
             assertEquals("account/login", startupDestination(status, hasIdentity = true))
             assertEquals("account/login", startupDestination(status, hasIdentity = false))
         }

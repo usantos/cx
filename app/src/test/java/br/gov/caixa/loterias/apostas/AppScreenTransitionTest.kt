@@ -8,30 +8,33 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.apostas.navigation.transition.AppScreenNavHost
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AppScreenTransitionTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
 
     private fun graph() {
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             Box(Modifier.fillMaxSize().background(Color.White).testTag("screen")) {
                 AppScreenNavHost(nav, "first") {

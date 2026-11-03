@@ -22,7 +22,7 @@ internal class MarketplaceLoadingCoordinator(
     private val filter: MarketplaceFilter,
     private val getBettingParameters: br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase?,
     private val filteredSearch: Boolean,
-    private val getSpecialContests: br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase? = null
+    private val getSpecialContests: br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase? = null,
 ) {
     private val pagination = MarketplaceSearchPagination(filter)
     private var searchJob: Job? = null

@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.cart
 
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Test
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteBetClovers
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteBetComplement
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteBetNumbers
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteBetSummaryText
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteDetailModalityName
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.favoriteSummaryModalityName
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Test
 
 class FavoriteCartFormattersTest {
     private val bet = FavoriteCartBet(1, "Mega-Sena", listOf(10, 1, 100), modalityId = 2)

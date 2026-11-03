@@ -12,6 +12,7 @@ import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.apostas.composition.startup.ForceUpdateGateContent
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.ForceUpdateState
 import org.junit.Assert.assertEquals
@@ -26,7 +27,7 @@ class ForceUpdateGateUiTest {
     @Test fun finishingUpdateCheckDoesNotRestartSplashPlayback() {
         val state = mutableStateOf(ForceUpdateState.CHECKING)
         compose.mainClock.autoAdvance = false
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 ForceUpdateGateContent(state.value, {}) { SplashScreen() }
             }
@@ -61,7 +62,7 @@ class ForceUpdateGateUiTest {
     @Test fun forceUpdatePreventsLoginAndBackAndKeepsBlockingAfterOpeningStore() {
         val state = mutableStateOf(ForceUpdateState.CHECKING)
         var store = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 ForceUpdateGateContent(state.value, { store++ }) { LoteriasCaixaDSText("LOGIN FIXTURE") }
             }

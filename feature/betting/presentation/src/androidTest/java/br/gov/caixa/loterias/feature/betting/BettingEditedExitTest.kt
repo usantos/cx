@@ -7,20 +7,21 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 class BettingEditedExitTest {
     @get:Rule val compose = createComposeRule()
@@ -46,7 +47,7 @@ class BettingEditedExitTest {
                     override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> = error("No cart submission permitted")
                 }
             )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { exits++ }, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, { exits++ }, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.runOnIdle { vm.toggleNumber(1) }
         compose.onNodeWithContentDescription("Voltar").performClick()

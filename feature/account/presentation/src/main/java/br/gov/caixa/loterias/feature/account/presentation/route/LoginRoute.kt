@@ -12,9 +12,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.auth.biometric.showBiometricPrompt
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
 import br.gov.caixa.loterias.feature.account.presentation.components.LoginDialogActions
 import br.gov.caixa.loterias.feature.account.presentation.components.LoginDialogs
 import br.gov.caixa.loterias.feature.account.presentation.screen.LoginScreen
+import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
 
 @Composable
@@ -38,13 +40,16 @@ fun LoginRoute(
         br.gov.caixa.loterias.core.auth.gateway.launchBiometricEnrollment(activity::startActivity)
     },
     silentAuthorizeOnEnter: Boolean = false,
+    requiredAuthentication: Boolean = false,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val canStartAuthentication = br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission(
+        br.gov.caixa.loterias.core.domain.configuration.model.AppModule.ACCOUNT
+    )
     androidx.lifecycle.compose.LifecycleResumeEffect(viewModel) {
         viewModel.refreshBiometricAvailability()
         onPauseOrDispose {}
     }
-    var automaticAuthorizationConsumed by rememberSaveable { mutableStateOf(false) }
     val authorization = rememberLoginAuthorization(
         viewModel,
         authentication,
@@ -54,9 +59,46 @@ fun LoginRoute(
         networkAvailability,
         returnFromBrowser
     )
-    val authorize = authorization.authorize
+    val authorize: () -> Unit = {
+        if (requiredAuthentication || canStartAuthentication()) authorization.authorize()
+    }
     val promptHost = authorization.promptHost
-    SilentLoginOnEnter(silentAuthorizeOnEnter, viewModel, authentication, networkAvailability)
+    SilentLoginOnEnter(
+        silentAuthorizeOnEnter && (requiredAuthentication || canStartAuthentication()),
+        viewModel,
+        authentication,
+        networkAvailability
+    )
+    LoginRouteEffects(state, authorization, authorizeOnEnter, silentAuthorizeOnEnter, networkAvailability, authorize, onAuthenticated)
+    if (authorization.offline) {
+        offlineScreen({ if (requiredAuthentication || canStartAuthentication()) authorization.retry() }, authorization.waitingForBrowser)
+        return
+    }
+    LoginScreen(
+        state = state,
+        versionName = versionName,
+        onTryNow = { if (viewModel.enterVisitor()) onTryNow() },
+        onLogin = authorize,
+        onSwitchUser = { if (requiredAuthentication || canStartAuthentication()) authorization.switchUser() },
+        onBiometricChanged = viewModel::setBiometricEnabled,
+        environmentSelector = environmentSelector,
+        environmentSelectorVisible = environmentSelectorVisible, modifier = Modifier.uiId("account.0018"),
+        access = loginEntryAccess(state, requiredAuthentication)
+    )
+    LoginRouteDialogs(state, viewModel, promptHost, biometricEnrollment, onSessionInvalidated)
+}
+
+@Composable
+private fun LoginRouteEffects(
+    state: LoginUiState,
+    authorization: LoginAuthorization,
+    authorizeOnEnter: Boolean,
+    silentAuthorizeOnEnter: Boolean,
+    networkAvailability: br.gov.caixa.loterias.core.common.network.NetworkAvailability?,
+    authorize: () -> Unit,
+    onAuthenticated: (String) -> Unit,
+) {
+    var automaticAuthorizationConsumed by rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(authorizeOnEnter, silentAuthorizeOnEnter) {
         if (authorizeOnEnter && !silentAuthorizeOnEnter && !automaticAuthorizationConsumed) {
             automaticAuthorizationConsumed = true
@@ -73,20 +115,23 @@ fun LoginRoute(
             authorization.connectionLost()
         }
     }
-    if (authorization.offline) {
-        offlineScreen(authorization.retry, authorization.waitingForBrowser)
-        return
+}
+
+private fun loginEntryAccess(state: LoginUiState, requiredAuthentication: Boolean): FeatureEntryAccess =
+    if (requiredAuthentication || state.authorizationPending || state.browserFallbackPending || state.isLoading) {
+        FeatureEntryAccess.CONTINUATION
+    } else {
+        FeatureEntryAccess.OPTIONAL
     }
-    LoginScreen(
-        state = state,
-        versionName = versionName,
-        onTryNow = { if (viewModel.enterVisitor()) onTryNow() },
-        onLogin = authorize,
-        onSwitchUser = authorization.switchUser,
-        onBiometricChanged = viewModel::setBiometricEnabled,
-        environmentSelector = environmentSelector,
-        environmentSelectorVisible = environmentSelectorVisible, modifier = Modifier.uiId("account.0018")
-    )
+
+@Composable
+private fun LoginRouteDialogs(
+    state: LoginUiState,
+    viewModel: LoginViewModel,
+    promptHost: Activity?,
+    biometricEnrollment: (Activity) -> Unit,
+    onSessionInvalidated: () -> Unit,
+) {
     LoginDialogs(
         state,
         LoginDialogActions(

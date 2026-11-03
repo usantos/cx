@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -52,7 +53,7 @@ class FavoriteBetsResponsiveLayoutTest {
             MEGA_SENA_ID to "Mega-Sena"
         )
         var selected: Int? = null
-        compose.setContent {
+        compose.setFeatureContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, fontScale)) {
                 LoteriasCaixaDSTheme {
@@ -84,7 +85,7 @@ class FavoriteBetsResponsiveLayoutTest {
         )
         var cancelled = 0
         var confirmed = 0
-        compose.setContent {
+        compose.setFeatureContent {
             // Renderiza uma janela de 360dp, produzindo o modal relatado de 312dp, em qualquer densidade de emulador.
             val widthPx = LocalResources.current.displayMetrics.widthPixels
             CompositionLocalProvider(LocalDensity provides Density(widthPx / WINDOW_WIDTH_DP, fontScale)) {

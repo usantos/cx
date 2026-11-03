@@ -86,3 +86,34 @@
     public static *** wtf(...);
     public static *** println(...);
 }
+
+# Entrada tipada do FAQ resolvida após a instalação do split.
+-keep class br.gov.caixa.loterias.feature.support.faq.SupportFaqEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.account.ui.AccountUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.home.ui.HomeUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.onboarding.ui.OnboardingUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.betting.ui.BettingUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.marketplace.ui.MarketplaceUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.marketplacefilter.ui.MarketplaceFilterUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.cart.ui.CartUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.payment.ui.PaymentUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.tickets.ui.TicketsUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.results.ui.ResultsUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.notifications.ui.NotificationsUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.responsiblegaming.ui.ResponsibleGamingUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.retail.ui.RetailUiEntryImpl { public <init>(); *; }
+
+-keep class br.gov.caixa.loterias.feature.support.ui.SupportUiEntryImpl { public <init>(); *; }

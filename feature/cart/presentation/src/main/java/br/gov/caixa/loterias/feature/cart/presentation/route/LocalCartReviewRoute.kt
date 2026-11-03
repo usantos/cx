@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.cart.presentation.route
 
-import br.gov.caixa.loterias.feature.cart.presentation.screen.LocalCartReviewContent
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +9,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
+import br.gov.caixa.loterias.feature.cart.presentation.screen.LocalCartReviewContent
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.LocalCartReviewViewModel
 
 @Composable

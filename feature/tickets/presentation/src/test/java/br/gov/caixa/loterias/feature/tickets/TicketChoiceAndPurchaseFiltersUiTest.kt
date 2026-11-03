@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -17,6 +17,8 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
@@ -37,13 +39,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], qualifiers = "w480dp-h900dp")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36], qualifiers = "w480dp-h900dp")
 class TicketChoiceAndPurchaseFiltersUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun ticketChoiceSelectsEveryLegacyModalityAndSavesExactSelection() {
         val modalities =
@@ -206,7 +211,7 @@ class TicketChoiceAndPurchaseFiltersUiTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { LoteriasCaixaDSTheme { content() } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { content() } }
     }
     private fun model(modalities: GetLotteryModalitiesUseCase) = TicketsViewModel(
         GetConfirmedBetsUseCase {

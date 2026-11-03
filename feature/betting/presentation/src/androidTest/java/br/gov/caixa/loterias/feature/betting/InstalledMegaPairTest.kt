@@ -10,13 +10,17 @@ import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.mapper.legacyBettingHelp
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.io.File
 import java.math.BigDecimal
@@ -25,9 +29,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
-import br.gov.caixa.loterias.feature.betting.presentation.mapper.legacyBettingHelp
 
 /** Mesmo concurso e preços públicos da captura instalada; todos os serviços são simulações locais. */
 class InstalledMegaPairTest {
@@ -35,24 +36,31 @@ class InstalledMegaPairTest {
 
     @Test fun publicContest3067ManualQuantityRecurrenceAndHelpWithoutSubmission() {
         val sends = AtomicInteger(0)
-        val prices = (6..20).map { n -> BetPrice(n,0,BigDecimal.valueOf(combinations(n,6)*6)) }
-        assertEquals(BigDecimal("6"),prices[0].amount)
-        assertEquals(BigDecimal("42"),prices[1].amount)
-        assertEquals(BigDecimal("168"),prices[2].amount)
-        assertEquals(BigDecimal("504"),prices[3].amount)
-        assertEquals(BigDecimal("1260"),prices[4].amount)
-        assertEquals(BigDecimal("2772"),prices[5].amount)
+        val prices = (6..20).map { n -> BetPrice(n, 0, BigDecimal.valueOf(combinations(n, 6) * 6)) }
+        assertEquals(BigDecimal("6"), prices[0].amount)
+        assertEquals(BigDecimal("42"), prices[1].amount)
+        assertEquals(BigDecimal("168"), prices[2].amount)
+        assertEquals(BigDecimal("504"), prices[3].amount)
+        assertEquals(BigDecimal("1260"), prices[4].amount)
+        assertEquals(BigDecimal("2772"), prices[5].amount)
         val game = LotteryGameParameters(
-            modality = LotteryModality(2,"Mega-Sena","MEGA_SENA"),contestNumber=3067,drawDate="06/10/2026",
-            maximumNumber=60,minimumSelection=6,maximumSelection=20,maximumSurprises=100,
-            recurringOptions=listOf(0,2,3,4,6,8,9,12),prices=prices,
+            modality = LotteryModality(2, "Mega-Sena", "MEGA_SENA"), contestNumber = 3067, drawDate = "06/10/2026",
+            maximumNumber = 60, minimumSelection = 6, maximumSelection = 20, maximumSurprises = 100,
+            recurringOptions = listOf(0, 2, 3, 4, 6, 8, 9, 12), prices = prices
         )
-        val vm = BettingGameViewModel(2,GetBettingParametersUseCase {
-            AppResult.Success(BettingParameters(BigDecimal("500"),BigDecimal("30"),50,listOf(game)))
-        },object:AddBetToCartUseCase {
-            override suspend fun invoke(draft:BetDraft):AppResult<ShoppingCart> { sends.incrementAndGet();return AppResult.Success(ShoppingCart(1,BigDecimal.ZERO,emptyList())) }
-        })
-        compose.setContent {
+        val vm = BettingGameViewModel(
+            2,
+            GetBettingParametersUseCase {
+                AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
+            },
+            object : AddBetToCartUseCase {
+                override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> {
+                    sends.incrementAndGet()
+                    return AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList()))
+                }
+            }
+        )
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}, cartTotal = BigDecimal.ZERO, cartBetCount = 0) }
         }
         compose.waitUntil(10_000) { vm.state.value.game != null }

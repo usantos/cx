@@ -14,7 +14,7 @@ internal fun marketplaceModalityNames(games: List<LotteryGameParameters>): Map<P
         (if (special) game.modality.specialName else "").lowercase(Locale.forLanguageTag("pt-BR"))
 }
 
-internal fun marketplacePoolModalityLabel(
+fun marketplacePoolModalityLabel(
     pool: MarketplacePool,
     names: Map<Pair<String, Int>, String>,
     specialContests: MarketplaceSpecialContests = MarketplaceSpecialContests(),

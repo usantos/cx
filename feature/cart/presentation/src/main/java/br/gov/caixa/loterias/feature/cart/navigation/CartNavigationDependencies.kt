@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.navigation
 
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAddedUse
 
 /** Dependências deste grafo de destinos, fornecidas pela raiz de composição do aplicativo. */
 interface CartNavigationDependencies {
+    val appModulesConfiguration: br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
     val addFavoriteCartToCurrent: AddFavoriteCartToCurrentUseCase
     val authenticatedSessionContent: br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
     val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
@@ -47,11 +48,16 @@ interface CartNavigationDependencies {
     val verifyCartPaymentAccount: br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
     val visitorCart: br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
     val wasFavoriteCartAdded: WasFavoriteCartAddedUseCase
-    val sessionIdentityChanges: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>
+    val sessionIdentityChanges:
+        kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>
 
     @androidx.compose.runtime.Composable
-    fun SimulationRecoveryPanel(loading: Boolean, message: String?, onRetry: () -> Unit,
-        onBack: () -> Unit, onDismissMessage: () -> Unit,
+    fun SimulationRecoveryPanel(
+        loading: Boolean,
+        message: String?,
+        onRetry: () -> Unit,
+        onBack: () -> Unit,
+        onDismissMessage: () -> Unit,
         networkAvailability: br.gov.caixa.loterias.core.common.network.NetworkAvailability,
     )
 }

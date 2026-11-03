@@ -1,35 +1,40 @@
 package br.gov.caixa.loterias.feature.payment
 
 import androidx.lifecycle.ViewModelStore
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import java.math.BigDecimal
-import kotlinx.coroutines.CompletableDeferred
-import kotlinx.coroutines.Job
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.CardPaymentRequest
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
-import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
-import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentCardSelection
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchasePolling
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchasePolling
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseSubmission
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
+import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.SubmitCardPaymentUseCase
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.acceptedBrands
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.formatCardNumber
+import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
+import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentCardViewModel
+import java.math.BigDecimal
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.advanceTimeBy
-import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -39,11 +44,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
-import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentCardViewModel
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.acceptedBrands
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.formatCardNumber
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PaymentCardViewModelTest {
@@ -59,10 +59,11 @@ class PaymentCardViewModelTest {
     private val recordedAmounts = mutableListOf<java.math.BigDecimal>()
     private var recordResult: AppResult<Unit> = AppResult.Success(Unit)
     private var cartResult: AppResult<br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart> = AppResult.Success(
-        br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal("30.50"), emptyList()),
+        br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal("30.50"), emptyList())
     )
 
     @Before fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
+
     @After fun tearDown() = Dispatchers.resetMain()
 
     @Test fun `new card edits normalize values and validate form`() = runTest {
@@ -148,7 +149,7 @@ class PaymentCardViewModelTest {
         listOf(
             PaymentCardStage.PREVIEW,
             PaymentCardStage.CVV,
-            PaymentCardStage.CONFIRM,
+            PaymentCardStage.CONFIRM
         ).forEach { stage ->
             val viewModel = viewModel(initialStage = stage)
             advanceUntilIdle()
@@ -167,14 +168,20 @@ class PaymentCardViewModelTest {
     @Test fun `new and saved cards preserve submission and business failure`() = runTest {
         val approved = viewModel()
         validVisa(approved)
-        approved.continueFromCard(); approved.changeCvv("123"); approved.continueFromCvv(); approved.submit()
+        approved.continueFromCard()
+        approved.changeCvv("123")
+        approved.continueFromCvv()
+        approved.submit()
         advanceUntilIdle()
         assertEquals(PaymentCardStage.SUCCESS, approved.state.value.stage)
         assertTrue(submitted!!.selection is PaymentCardSelection.New)
 
         submitResult = AppResult.Failure(AppError.Validation("Pagamento não autorizado."))
         val rejected = viewModel(savedCardId = "saved")
-        rejected.continueFromCard(); rejected.changeCvv("123"); rejected.continueFromCvv(); rejected.submit()
+        rejected.continueFromCard()
+        rejected.changeCvv("123")
+        rejected.continueFromCvv()
+        rejected.submit()
         advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, rejected.state.value.stage)
         assertTrue(submitted!!.selection is PaymentCardSelection.Saved)
@@ -184,42 +191,49 @@ class PaymentCardViewModelTest {
         submitResult = AppResult.Success(PurchaseSubmission(10, 1, 2, 1))
         progressResults.add(AppResult.Success(PurchaseProgress(10, 8)))
         val approved = submitReadyViewModel()
-        approved.submit(); advanceUntilIdle()
+        approved.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.SUCCESS, approved.state.value.stage)
 
         progressResults.add(AppResult.Failure(AppError.Validation("Pagamento não autorizado.")))
         val rejected = submitReadyViewModel()
-        rejected.submit(); advanceUntilIdle()
+        rejected.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, rejected.state.value.stage)
 
         progressResults.add(AppResult.Success(PurchaseProgress(10, 1, PurchasePolling(0, 2))))
         progressResults.add(AppResult.Success(PurchaseProgress(10, 1, PurchasePolling(0, 2))))
         submitResult = AppResult.Success(PurchaseSubmission(10, 0, 2, 1))
         val exhausted = submitReadyViewModel()
-        exhausted.submit(); advanceUntilIdle()
+        exhausted.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.SUCCESS, exhausted.state.value.stage)
     }
 
     @Test fun `submission and polling errors map every application error`() = runTest {
         submitResult = AppResult.Failure(AppError.Validation("Cartão recusado"))
         val validation = submitReadyViewModel()
-        validation.submit(); advanceUntilIdle()
+        validation.submit()
+        advanceUntilIdle()
         assertEquals("Cartão recusado", validation.state.value.errorMessage)
 
         submitResult = AppResult.Failure(AppError.Validation(""))
         val emptyValidation = submitReadyViewModel()
-        emptyValidation.submit(); advanceUntilIdle()
+        emptyValidation.submit()
+        advanceUntilIdle()
         assertTrue(emptyValidation.state.value.errorMessage!!.contains("processar"))
 
         submitResult = AppResult.Failure(AppError.Unexpected)
         val unexpected = submitReadyViewModel()
-        unexpected.submit(); advanceUntilIdle()
+        unexpected.submit()
+        advanceUntilIdle()
         assertTrue(unexpected.state.value.errorMessage!!.contains("inesperado"))
 
         submitResult = AppResult.Success(PurchaseSubmission(10, 1, 1, 1))
         progressResults.add(AppResult.Failure(AppError.Network))
         val network = submitReadyViewModel()
-        network.submit(); advanceUntilIdle()
+        network.submit()
+        advanceUntilIdle()
         assertTrue(network.state.value.errorMessage!!.contains("internet"))
         assertFalse(network.state.value.formValid.not())
     }
@@ -235,9 +249,14 @@ class PaymentCardViewModelTest {
         val vm = viewModel()
         vm.submit()
         assertNull(submitted)
-        validVisa(vm); vm.continueFromCard(); vm.changeCvv("123"); vm.continueFromCvv()
+        validVisa(vm)
+        vm.continueFromCard()
+        vm.changeCvv("123")
+        vm.continueFromCvv()
         recordResult = AppResult.Failure(br.gov.caixa.loterias.core.common.result.AppError.Unexpected)
-        vm.submit(); vm.submit(); advanceUntilIdle()
+        vm.submit()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
         assertEquals(listOf(java.math.BigDecimal("30.50")), recordedAmounts)
         vm.submit()
@@ -246,13 +265,20 @@ class PaymentCardViewModelTest {
 
     @Test fun `unavailable or nonpositive cart cannot submit or record a card purchase`() = runTest {
         val vm = viewModel()
-        validVisa(vm); vm.continueFromCard(); vm.changeCvv("123"); vm.continueFromCvv()
+        validVisa(vm)
+        vm.continueFromCard()
+        vm.changeCvv("123")
+        vm.continueFromCvv()
         cartResult = AppResult.Failure(br.gov.caixa.loterias.core.common.result.AppError.Network)
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertNull(submitted)
-        cartResult = AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.ZERO, emptyList()))
-        vm.retry(); vm.submit(); advanceUntilIdle()
+        cartResult =
+            AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.ZERO, emptyList()))
+        vm.retry()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertNull(submitted)
         assertTrue(recordedAmounts.isEmpty())
@@ -261,8 +287,12 @@ class PaymentCardViewModelTest {
     @Test fun `rejected card purchase does not create a recent purchase warning`() = runTest {
         submitResult = AppResult.Failure(AppError.Validation("Pagamento não autorizado."))
         val vm = viewModel()
-        validVisa(vm); vm.continueFromCard(); vm.changeCvv("123"); vm.continueFromCvv()
-        vm.submit(); advanceUntilIdle()
+        validVisa(vm)
+        vm.continueFromCard()
+        vm.changeCvv("123")
+        vm.continueFromCvv()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertTrue(recordedAmounts.isEmpty())
     }
@@ -287,7 +317,8 @@ class PaymentCardViewModelTest {
         for (status in (0..14)) {
             progressResults.add(AppResult.Success(PurchaseProgress(10, status)))
             val vm = submitReadyViewModel()
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals("Protocol completion $status", PaymentCardStage.SUCCESS, vm.state.value.stage)
         }
         assertEquals(15, progressCalls)
@@ -298,7 +329,8 @@ class PaymentCardViewModelTest {
         for (status in listOf(6, 8, 13, 14)) {
             submitResult = AppResult.Success(PurchaseSubmission(10, 1000, 3, status))
             val vm = submitReadyViewModel()
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals("Status $status", PaymentCardStage.SUCCESS, vm.state.value.stage)
         }
         assertEquals(4, progressCalls)
@@ -311,12 +343,15 @@ class PaymentCardViewModelTest {
         progressResults.add(AppResult.Success(PurchaseProgress(30, 7, PurchasePolling(8000, 2))))
         val vm = submitReadyViewModel()
         vm.submit()
-        advanceTimeBy(1000); runCurrent()
+        advanceTimeBy(1000)
+        runCurrent()
         assertEquals(listOf(10L), polledIds)
         assertEquals(PaymentCardStage.PROCESSING, vm.state.value.stage)
-        advanceTimeBy(3999); runCurrent()
+        advanceTimeBy(3999)
+        runCurrent()
         assertEquals(1, progressCalls)
-        advanceTimeBy(1); runCurrent()
+        advanceTimeBy(1)
+        runCurrent()
         assertEquals(listOf(10L, 20L), polledIds)
         assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
         assertEquals(1, recordedAmounts.size)
@@ -327,7 +362,8 @@ class PaymentCardViewModelTest {
         for (attempts in listOf(0, -1)) {
             submitResult = AppResult.Success(PurchaseSubmission(10, -1, attempts, 2))
             val vm = submitReadyViewModel()
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
         }
         assertEquals(0, progressCalls)
@@ -338,19 +374,25 @@ class PaymentCardViewModelTest {
         progressResults.add(AppResult.Success(PurchaseProgress(20, 7, PurchasePolling(2, 3))))
         progressResults.add(AppResult.Failure(AppError.Network))
         val vm = submitReadyViewModel()
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertTrue(vm.state.value.trackingPurchase)
         assertEquals("", vm.state.value.cvv)
         // Um carrinho alterado não deve mudar o valor original da compra ao repetir uma consulta.
-        cartResult = AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.TEN, emptyList()))
+        cartResult =
+            AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.TEN, emptyList()))
         progressResults.add(AppResult.Success(PurchaseProgress(20, 8)))
-        vm.retry(); vm.retry(); vm.submit(); advanceUntilIdle()
+        vm.retry()
+        vm.retry()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(listOf(10L, 20L, 20L), polledIds)
         assertEquals(1, submitCalls)
         assertEquals(listOf(java.math.BigDecimal("30.50")), recordedAmounts)
         assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
-        vm.retry(); vm.submit()
+        vm.retry()
+        vm.submit()
         assertEquals(1, submitCalls)
     }
 
@@ -358,11 +400,13 @@ class PaymentCardViewModelTest {
         submitResult = AppResult.Success(PurchaseSubmission(10, 1, 2, 2))
         progressResults.add(AppResult.Failure(AppError.Unexpected))
         val vm = submitReadyViewModel()
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals("Não foi possível consultar sua compra.", vm.state.value.errorMessage)
         submitResult = AppResult.Success(PurchaseSubmission(0, 0, 0, 8))
         val invalid = submitReadyViewModel()
-        invalid.submit(); advanceUntilIdle()
+        invalid.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.REVIEW_REQUIRED, invalid.state.value.stage)
         assertEquals(CardSubmissionOutcome.ReviewRequired(), invalid.state.value.purchaseReview)
         assertTrue(recordedAmounts.isEmpty())
@@ -372,11 +416,19 @@ class PaymentCardViewModelTest {
         submitResult = AppResult.Success(PurchaseSubmission(10, 1000, 3, 2))
         val vm = submitReadyViewModel()
         vm.submit()
-        vm.continueFromCard(); vm.changeCvv("123"); vm.continueFromCvv(); vm.load(); vm.retry(); vm.submit()
+        vm.continueFromCard()
+        vm.changeCvv("123")
+        vm.continueFromCvv()
+        vm.load()
+        vm.retry()
+        vm.submit()
         assertEquals(PaymentCardStage.PROCESSING, vm.state.value.stage)
         assertEquals(1, submitCalls)
         advanceUntilIdle()
-        vm.load(); vm.continueFromCard(); vm.continueFromCvv(); vm.submit()
+        vm.load()
+        vm.continueFromCard()
+        vm.continueFromCvv()
+        vm.submit()
         assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
         assertEquals(1, submitCalls)
         assertEquals(1, recordedAmounts.size)
@@ -388,17 +440,25 @@ class PaymentCardViewModelTest {
             val vm = submitReadyViewModel()
             assertFalse(vm.acknowledgePurchaseReview())
             val callsBefore = submitCalls
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(PaymentCardStage.REVIEW_REQUIRED, vm.state.value.stage)
             assertEquals(id, vm.state.value.purchaseReview?.purchaseId)
             assertEquals("", vm.state.value.cvv)
             assertNull(vm.state.value.errorMessage)
-            vm.retry(); vm.load(); vm.continueFromCard(); vm.continueFromCvv(); vm.submit(); advanceUntilIdle()
+            vm.retry()
+            vm.load()
+            vm.continueFromCard()
+            vm.continueFromCvv()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(callsBefore + 1, submitCalls)
             assertEquals(PaymentCardStage.REVIEW_REQUIRED, vm.state.value.stage)
             assertTrue(vm.acknowledgePurchaseReview())
             assertFalse(vm.acknowledgePurchaseReview())
-            vm.dismissError(); vm.retry(); vm.submit()
+            vm.dismissError()
+            vm.retry()
+            vm.submit()
             assertEquals(callsBefore + 1, submitCalls)
         }
         assertEquals(0, progressCalls)
@@ -408,12 +468,15 @@ class PaymentCardViewModelTest {
     @Test fun `preparation failure still allows correction before any purchase outcome`() = runTest {
         submitResult = AppResult.Failure(AppError.Validation("Código de segurança inválido"))
         val vm = submitReadyViewModel()
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertNull(vm.state.value.purchaseReview)
         assertFalse(vm.acknowledgePurchaseReview())
         submitResult = AppResult.Success(PurchaseSubmission(91, 0, 0, 2))
-        vm.retry(); vm.submit(); advanceUntilIdle()
+        vm.retry()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(PaymentCardStage.SUCCESS, vm.state.value.stage)
         assertEquals(2, submitCalls)
         assertFalse(vm.acknowledgePurchaseReview())
@@ -426,12 +489,17 @@ class PaymentCardViewModelTest {
                 val vm = submitReadyViewModel()
                 assertFalse(vm.consumeRedirect(destination))
                 val before = submitCalls
-                vm.submit(); advanceUntilIdle()
+                vm.submit()
+                advanceUntilIdle()
                 assertEquals(PaymentCardStage.REDIRECT_REQUIRED, vm.state.value.stage)
                 assertEquals(destination, vm.state.value.redirect)
                 assertEquals(id, vm.state.value.redirectPurchaseId)
                 assertFalse(vm.consumeRedirect(PurchaseRedirect.entries.first { it != destination }))
-                vm.retry(); vm.submit(); vm.load(); vm.continueFromCard(); vm.continueFromCvv()
+                vm.retry()
+                vm.submit()
+                vm.load()
+                vm.continueFromCard()
+                vm.continueFromCvv()
                 advanceUntilIdle()
                 assertEquals(before + 1, submitCalls)
                 assertTrue(vm.consumeRedirect(destination))
@@ -441,22 +509,29 @@ class PaymentCardViewModelTest {
                 assertNull(vm.state.value.redirectPurchaseId)
                 assertEquals(before + 1, submitCalls)
                 assertTrue(vm.state.value.redirectPaused)
-                vm.submit(); vm.retry(); vm.load(); advanceUntilIdle()
+                vm.submit()
+                vm.retry()
+                vm.load()
+                advanceUntilIdle()
                 assertFalse(vm.acknowledgePurchaseReview())
                 assertEquals(before + 1, submitCalls)
-                vm.resumeAfterRedirect(); advanceUntilIdle()
+                vm.resumeAfterRedirect()
+                advanceUntilIdle()
                 assertFalse(vm.state.value.redirectPaused)
                 assertEquals(before + 1, submitCalls)
                 if (id == null) {
                     assertEquals(PaymentCardStage.CONFIRM, vm.state.value.stage)
                     // É necessária uma nova ação explícita após satisfazer a pré-condição.
-                    vm.submit(); advanceUntilIdle()
+                    vm.submit()
+                    advanceUntilIdle()
                     assertEquals(before + 2, submitCalls)
                 } else {
                     assertEquals(PaymentCardStage.REVIEW_REQUIRED, vm.state.value.stage)
                     assertEquals(CardSubmissionOutcome.ReviewRequired(id), vm.state.value.purchaseReview)
                     assertEquals("", vm.state.value.cvv)
-                    vm.submit(); vm.retry(); advanceUntilIdle()
+                    vm.submit()
+                    vm.retry()
+                    advanceUntilIdle()
                     assertEquals(before + 1, submitCalls)
                 }
             }
@@ -473,21 +548,31 @@ class PaymentCardViewModelTest {
             val before = submitCalls
             val recordedBefore = recordedAmounts.size
             val queriesBefore = polledIds.size
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(PaymentCardStage.REDIRECT_REQUIRED, vm.state.value.stage)
             assertTrue(vm.state.value.trackingPurchase)
             assertEquals(recordedBefore, recordedAmounts.size)
-            vm.retry(); vm.submit(); vm.load(); advanceUntilIdle()
+            vm.retry()
+            vm.submit()
+            vm.load()
+            advanceUntilIdle()
             assertEquals(queriesBefore + 1, polledIds.size)
             assertTrue(vm.consumeRedirect(destination))
             assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
             assertFalse(vm.consumeRedirect(destination))
-            vm.submit(); vm.retry(); advanceUntilIdle()
+            vm.submit()
+            vm.retry()
+            advanceUntilIdle()
             assertEquals(queriesBefore + 1, polledIds.size)
-            vm.resumeAfterRedirect(); advanceUntilIdle()
+            vm.resumeAfterRedirect()
+            advanceUntilIdle()
             assertEquals(queriesBefore + 1, polledIds.size)
             progressResults.add(AppResult.Success(PurchaseProgress(20, 8)))
-            vm.retry(); vm.retry(); vm.submit(); advanceUntilIdle()
+            vm.retry()
+            vm.retry()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(listOf(10L, 20L), polledIds.drop(queriesBefore))
             assertEquals(before + 1, submitCalls)
             assertEquals(recordedBefore + 1, recordedAmounts.size)
@@ -501,13 +586,19 @@ class PaymentCardViewModelTest {
             val vm = submitReadyViewModel()
             val before = submitCalls
             assertFalse(vm.consumeNotice(PurchaseNoticeUiState("Old", false), false))
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(PaymentCardStage.NOTICE_REQUIRED, vm.state.value.stage)
             val notice = requireNotNull(vm.state.value.notice)
             if (reason == PurchaseNoticeReason.BUSINESS_RULE) assertEquals("Mensagem\n\nE1\n07/09/2026 12:00:00", notice.message)
             assertFalse(vm.consumeNotice(notice.copy(), false))
             if (!notice.offerMoreBets) assertFalse(vm.consumeNotice(notice, true))
-            vm.submit(); vm.retry(); vm.load(); vm.continueFromCard(); vm.continueFromCvv(); vm.dismissError()
+            vm.submit()
+            vm.retry()
+            vm.load()
+            vm.continueFromCard()
+            vm.continueFromCvv()
+            vm.dismissError()
             advanceUntilIdle()
             assertEquals(PaymentCardStage.NOTICE_REQUIRED, vm.state.value.stage)
             assertEquals(before + 1, submitCalls)
@@ -517,7 +608,8 @@ class PaymentCardViewModelTest {
             assertEquals(PaymentCardStage.CONFIRM, vm.state.value.stage)
             advanceUntilIdle()
             assertEquals(before + 1, submitCalls)
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(before + 2, submitCalls)
             // Um callback antigo não pode dispensar um aviso idêntico posterior.
             assertFalse(vm.consumeNotice(notice, false))
@@ -530,14 +622,19 @@ class PaymentCardViewModelTest {
     @Test fun `Apostar mais consumes once and pauses card actions during navigation`() = runTest {
         outcomeOverride = AppResult.Success(CardSubmissionOutcome.NoticeRequired(PurchaseNotice(PurchaseNoticeReason.MORE_BETS_REQUIRED)))
         val vm = submitReadyViewModel()
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         val notice = requireNotNull(vm.state.value.notice)
         assertTrue(vm.consumeNotice(notice, true))
         assertFalse(vm.consumeNotice(notice, true))
         assertTrue(vm.state.value.redirectPaused)
-        vm.submit(); vm.retry(); vm.load(); advanceUntilIdle()
+        vm.submit()
+        vm.retry()
+        vm.load()
+        advanceUntilIdle()
         assertEquals(1, submitCalls)
-        vm.resumeAfterRedirect(); advanceUntilIdle()
+        vm.resumeAfterRedirect()
+        advanceUntilIdle()
         assertEquals(1, submitCalls)
     }
 
@@ -549,11 +646,14 @@ class PaymentCardViewModelTest {
             val before = submitCalls
             val queriesBefore = polledIds.size
             val recordedBefore = recordedAmounts.size
-            vm.submit(); advanceUntilIdle()
+            vm.submit()
+            advanceUntilIdle()
             val notice = requireNotNull(vm.state.value.notice)
             assertEquals(PaymentCardStage.NOTICE_REQUIRED, vm.state.value.stage)
             assertEquals(recordedBefore, recordedAmounts.size)
-            vm.retry(); vm.submit(); advanceUntilIdle()
+            vm.retry()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(queriesBefore + 1, polledIds.size)
             assertTrue(vm.consumeNotice(notice, false))
             assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
@@ -561,7 +661,10 @@ class PaymentCardViewModelTest {
             advanceUntilIdle()
             assertEquals(queriesBefore + 1, polledIds.size)
             progressResults.add(AppResult.Success(PurchaseProgress(20, 8)))
-            vm.retry(); vm.retry(); vm.submit(); advanceUntilIdle()
+            vm.retry()
+            vm.retry()
+            vm.submit()
+            advanceUntilIdle()
             assertEquals(before + 1, submitCalls)
             assertEquals(listOf(10L, 20L), polledIds.drop(queriesBefore))
             assertEquals(recordedBefore + 1, recordedAmounts.size)
@@ -570,24 +673,32 @@ class PaymentCardViewModelTest {
     }
 
     @Test fun `registration consent pauses card even on lifecycle resume and never reposts on browser return`() = runTest {
-        outcomeOverride = AppResult.Success(CardSubmissionOutcome.NoticeRequired(PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION)))
+        outcomeOverride =
+            AppResult.Success(CardSubmissionOutcome.NoticeRequired(PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION)))
         val vm = submitReadyViewModel()
         assertFalse(vm.consumeRegistrationNotice(PurchaseNoticeUiState("other", false)))
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         val declined = requireNotNull(vm.state.value.notice)
         assertTrue(vm.consumeNotice(declined, false))
         assertFalse(vm.state.value.registrationPending)
         assertEquals(1, submitCalls)
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         val consent = requireNotNull(vm.state.value.notice)
         assertFalse(vm.consumeRegistrationNotice(declined))
         assertFalse(vm.consumeRegistrationNotice(consent.copy()))
         assertTrue(vm.consumeRegistrationNotice(consent))
         assertFalse(vm.consumeRegistrationNotice(consent))
-        vm.resumeAfterRedirect(); vm.load(); vm.submit(); vm.retry(); advanceUntilIdle()
+        vm.resumeAfterRedirect()
+        vm.load()
+        vm.submit()
+        vm.retry()
+        advanceUntilIdle()
         assertTrue(vm.state.value.registrationPending)
         assertEquals(2, submitCalls)
-        vm.registrationFinished(); advanceUntilIdle()
+        vm.registrationFinished()
+        advanceUntilIdle()
         assertFalse(vm.state.value.registrationPending)
         assertEquals(2, submitCalls)
         assertTrue(recordedAmounts.isEmpty())
@@ -595,16 +706,24 @@ class PaymentCardViewModelTest {
 
     @Test fun `registration during polling blocks retry until return and then queries only the original purchase`() = runTest {
         submitResult = AppResult.Success(PurchaseSubmission(91, 1, 2, 2))
-        progressResults.add(AppResult.Success(PurchaseProgress(91, 0, notice = PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION))))
+        progressResults.add(
+            AppResult.Success(PurchaseProgress(91, 0, notice = PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION)))
+        )
         val vm = submitReadyViewModel()
-        vm.submit(); advanceUntilIdle()
+        vm.submit()
+        advanceUntilIdle()
         assertTrue(vm.consumeRegistrationNotice(requireNotNull(vm.state.value.notice)))
-        vm.resumeAfterRedirect(); vm.retry(); vm.submit(); advanceUntilIdle()
+        vm.resumeAfterRedirect()
+        vm.retry()
+        vm.submit()
+        advanceUntilIdle()
         assertEquals(listOf(91L), polledIds)
-        vm.registrationFinished(); advanceUntilIdle()
+        vm.registrationFinished()
+        advanceUntilIdle()
         assertEquals(listOf(91L), polledIds)
         progressResults.add(AppResult.Success(PurchaseProgress(91, 8)))
-        vm.retry(); advanceUntilIdle()
+        vm.retry()
+        advanceUntilIdle()
         assertEquals(listOf(91L, 91L), polledIds)
         assertEquals(1, submitCalls)
     }
@@ -613,14 +732,27 @@ class PaymentCardViewModelTest {
         val cart = CompletableDeferred<AppResult<ShoppingCart>>()
         val post = CompletableDeferred<AppResult<CardSubmissionOutcome>>()
         val requests = mutableListOf<CardPaymentRequest>()
-        val model = viewModel(cart = GetCurrentCartUseCase { cart.await() },
-            submission = SubmitCardPaymentUseCase { requests += it; post.await() })
-        validVisa(model); model.toggleSave()
-        model.continueFromCard(); model.changeCvv("123"); model.continueFromCvv()
-        model.submit(); model.submit()
+        val model = viewModel(
+            cart = GetCurrentCartUseCase { cart.await() },
+            submission = SubmitCardPaymentUseCase {
+                requests += it
+                post.await()
+            }
+        )
+        validVisa(model)
+        model.toggleSave()
+        model.continueFromCard()
+        model.changeCvv("123")
+        model.continueFromCvv()
+        model.submit()
+        model.submit()
         assertEquals(PaymentCardStage.PROCESSING, model.state.value.stage)
-        model.changeNumber("5555 5555 5555 4444"); model.changeHolderName("Outro nome")
-        model.changeMonth("01"); model.changeYear("2031"); model.toggleSave(); model.changeCvv("999")
+        model.changeNumber("5555 5555 5555 4444")
+        model.changeHolderName("Outro nome")
+        model.changeMonth("01")
+        model.changeYear("2031")
+        model.toggleSave()
+        model.changeCvv("999")
         val reload: Job = model.load()
         reload.join()
         assertTrue(requests.isEmpty())
@@ -648,18 +780,27 @@ class PaymentCardViewModelTest {
     @Test fun `clearing viewmodel cancels saved card loads including the public load job`() = runTest {
         val result = CompletableDeferred<AppResult<List<SavedPaymentCard>>>()
         var cancelled = 0
-        val model = viewModel(savedCardId = "saved", cards = GetSavedCardsUseCase {
-            try { result.await() } finally { cancelled++ }
-        })
+        val model = viewModel(
+            savedCardId = "saved",
+            cards = GetSavedCardsUseCase {
+                try {
+                    result.await()
+                } finally {
+                    cancelled++
+                }
+            }
+        )
         val store = ViewModelStore().apply { put("card", model) }
         val loadJob: Job = model.load()
         assertEquals(PaymentCardStage.LOADING, model.state.value.stage)
         assertFalse(loadJob.isCompleted)
         val snapshot = model.state.value
-        store.clear(); runCurrent()
+        store.clear()
+        runCurrent()
         assertEquals(2, cancelled)
         assertTrue(loadJob.isCancelled)
-        result.complete(AppResult.Success(listOf(saved))); advanceUntilIdle()
+        result.complete(AppResult.Success(listOf(saved)))
+        advanceUntilIdle()
         assertEquals(snapshot, model.state.value)
         assertEquals(0, submitCalls)
     }
@@ -669,23 +810,38 @@ class PaymentCardViewModelTest {
             val pending = CompletableDeferred<Unit>()
             var cancelled = false
             var posts = 0
-            suspend fun waitForResult() { try { pending.await() } finally { cancelled = true } }
-            val model = viewModel(cart = GetCurrentCartUseCase {
-                if (waitForCart) waitForResult()
-                AppResult.Success(ShoppingCart(1, BigDecimal("30.50"), emptyList()))
-            }, submission = SubmitCardPaymentUseCase {
-                posts++
-                if (!waitForCart) waitForResult()
-                AppResult.Success(CardSubmissionOutcome.Submitted(PurchaseSubmission(91, 0, 0, 8)))
-            })
+            suspend fun waitForResult() {
+                try {
+                    pending.await()
+                } finally {
+                    cancelled = true
+                }
+            }
+            val model = viewModel(
+                cart = GetCurrentCartUseCase {
+                    if (waitForCart) waitForResult()
+                    AppResult.Success(ShoppingCart(1, BigDecimal("30.50"), emptyList()))
+                },
+                submission = SubmitCardPaymentUseCase {
+                    posts++
+                    if (!waitForCart) waitForResult()
+                    AppResult.Success(CardSubmissionOutcome.Submitted(PurchaseSubmission(91, 0, 0, 8)))
+                }
+            )
             val store = ViewModelStore().apply { put("card", model) }
-            validVisa(model); model.continueFromCard(); model.changeCvv("123"); model.continueFromCvv(); model.submit()
+            validVisa(model)
+            model.continueFromCard()
+            model.changeCvv("123")
+            model.continueFromCvv()
+            model.submit()
             assertEquals(PaymentCardStage.PROCESSING, model.state.value.stage)
             val snapshot = model.state.value
             assertEquals(if (waitForCart) 0 else 1, posts)
-            store.clear(); runCurrent()
+            store.clear()
+            runCurrent()
             assertTrue(cancelled)
-            pending.complete(Unit); advanceUntilIdle()
+            pending.complete(Unit)
+            advanceUntilIdle()
             assertEquals(snapshot, model.state.value)
             assertEquals(if (waitForCart) 0 else 1, posts)
             assertTrue(recordedAmounts.isEmpty())
@@ -701,20 +857,35 @@ class PaymentCardViewModelTest {
             val model = viewModel(
                 submission = SubmitCardPaymentUseCase {
                     AppResult.Success(CardSubmissionOutcome.Submitted(PurchaseSubmission(91, 1000, 2, 2)))
-                }, progress = GetPurchaseProgressUseCase {
+                },
+                progress = GetPurchaseProgressUseCase {
                     queries += it
-                    try { pending.await() } finally { queryCancelled = true }
-                })
+                    try {
+                        pending.await()
+                    } finally {
+                        queryCancelled = true
+                    }
+                }
+            )
             val store = ViewModelStore().apply { put("card", model) }
-            validVisa(model); model.continueFromCard(); model.changeCvv("123"); model.continueFromCvv(); model.submit()
+            validVisa(model)
+            model.continueFromCard()
+            model.changeCvv("123")
+            model.continueFromCvv()
+            model.submit()
             assertTrue(model.state.value.trackingPurchase)
             assertEquals("", model.state.value.cvv)
-            if (duringQuery) { advanceTimeBy(1000); runCurrent() }
+            if (duringQuery) {
+                advanceTimeBy(1000)
+                runCurrent()
+            }
             assertEquals(if (duringQuery) listOf(91L) else emptyList<Long>(), queries)
             val snapshot = model.state.value
-            store.clear(); runCurrent()
+            store.clear()
+            runCurrent()
             assertEquals(duringQuery, queryCancelled)
-            pending.complete(AppResult.Success(PurchaseProgress(91, 8))); advanceUntilIdle()
+            pending.complete(AppResult.Success(PurchaseProgress(91, 8)))
+            advanceUntilIdle()
             assertEquals(snapshot, model.state.value)
             assertEquals(if (duringQuery) listOf(91L) else emptyList<Long>(), queries)
             assertTrue(recordedAmounts.isEmpty())
@@ -728,18 +899,30 @@ class PaymentCardViewModelTest {
         val model = viewModel(
             submission = SubmitCardPaymentUseCase {
                 AppResult.Success(CardSubmissionOutcome.Submitted(PurchaseSubmission(91, 0, 0, 8)))
-            }, record = RecordRecentPurchaseUseCase {
+            },
+            record = RecordRecentPurchaseUseCase {
                 amounts += it
-                try { pending.await() } finally { cancelled = true }
-            })
+                try {
+                    pending.await()
+                } finally {
+                    cancelled = true
+                }
+            }
+        )
         val store = ViewModelStore().apply { put("card", model) }
-        validVisa(model); model.continueFromCard(); model.changeCvv("123"); model.continueFromCvv(); model.submit()
+        validVisa(model)
+        model.continueFromCard()
+        model.changeCvv("123")
+        model.continueFromCvv()
+        model.submit()
         assertEquals(listOf(BigDecimal("30.50")), amounts)
         assertEquals(PaymentCardStage.PROCESSING, model.state.value.stage)
         val snapshot = model.state.value
-        store.clear(); runCurrent()
+        store.clear()
+        runCurrent()
         assertTrue(cancelled)
-        pending.complete(AppResult.Success(Unit)); advanceUntilIdle()
+        pending.complete(AppResult.Success(Unit))
+        advanceUntilIdle()
         assertEquals(snapshot, model.state.value)
         assertEquals(listOf(BigDecimal("30.50")), amounts)
     }
@@ -763,6 +946,21 @@ class PaymentCardViewModelTest {
         assertEquals(1, submitCalls)
     }
 
+    @Test fun `disabled payment preserves card draft and blocks a new submission`() = runTest {
+        var enabled = true
+        val model = viewModel(canStartOperation = { enabled })
+        validVisa(model)
+        model.continueFromCard()
+        model.changeCvv("123")
+        model.continueFromCvv()
+        enabled = false
+        model.submit()
+        advanceUntilIdle()
+        assertEquals(0, submitCalls)
+        assertEquals(PaymentCardStage.CONFIRM, model.state.value.stage)
+        assertEquals("4111111111111111", model.state.value.normalizedNumber)
+    }
+
     private fun validVisa(viewModel: PaymentCardViewModel) {
         viewModel.changeNumber("4111 1111 1111 1111")
         viewModel.changeHolderName("Pessoa")
@@ -780,6 +978,7 @@ class PaymentCardViewModelTest {
         submission: SubmitCardPaymentUseCase? = null,
         progress: GetPurchaseProgressUseCase? = null,
         record: RecordRecentPurchaseUseCase? = null,
+        canStartOperation: () -> Boolean = { true },
     ): PaymentCardViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return PaymentCardViewModel(
@@ -807,7 +1006,8 @@ class PaymentCardViewModelTest {
                 progressResults.removeFirstOrNull() ?: AppResult.Success(PurchaseProgress(it, 1))
             },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
-            currentYear = currentYear
+            currentYear = currentYear,
+            canStartOperation = canStartOperation
         )
     }
 }

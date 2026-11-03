@@ -1,12 +1,17 @@
 package br.gov.caixa.loterias.apostas
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertCountEquals
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.apostas.composition.startup.AppStartupStatusPanel
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -21,22 +26,33 @@ class StartupConnectionRecoveryUiTest {
         var connection = ConnectionAvailability.CONNECTED
         var retries = 0
         val network = NetworkAvailability { connection }
-        compose.setContent { LoteriasCaixaDSTheme {
-            AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, { retries++; loading.value = true }, network, loading.value)
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, {
+                    retries++
+                    loading.value = true
+                }, network, loading.value)
+            }
+        }
         compose.onNodeWithText("Código do erro: LTR-503").assertExists()
         compose.onNodeWithText("Tentar novamente").performClick()
         compose.onAllNodes(isDialog()).assertCountEquals(0)
-        compose.runOnIdle { assertEquals(1, retries); connection = ConnectionAvailability.DISCONNECTED; loading.value = false }
+        compose.runOnIdle {
+            assertEquals(1, retries)
+            connection = ConnectionAvailability.DISCONNECTED
+            loading.value = false
+        }
         compose.onNodeWithText("Código do erro: LTR-001").assertExists()
         compose.onNodeWithText("Verifique sua conexão\ne tente novamente").assertExists()
         compose.onAllNodes(isDialog()).assertCountEquals(0)
     }
 
     @Test fun backAsksBeforeClosingAndCancelKeepsScreen() {
-        compose.setContent { LoteriasCaixaDSTheme {
-            AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, {}, NetworkAvailability { ConnectionAvailability.DISCONNECTED })
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                AppStartupStatusPanel(StartupStatusKind.UNAVAILABLE, {}, NetworkAvailability { ConnectionAvailability.DISCONNECTED })
+            }
+        }
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         compose.onNodeWithText("Deseja sair do aplicativo?").assertIsDisplayed()
         compose.onNodeWithText("Cancelar").performClick()

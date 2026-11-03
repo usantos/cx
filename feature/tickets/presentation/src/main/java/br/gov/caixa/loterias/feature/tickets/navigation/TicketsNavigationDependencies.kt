@@ -24,7 +24,9 @@ import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBetU
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.SavePurchaseAsFavoriteUseCase
 
 /** Dependências deste grafo de destinos, fornecidas pela raiz de composição do aplicativo. */
-interface TicketsNavigationDependencies : br.gov.caixa.loterias.feature.payment.navigation.MercadoPagoRegistrationDependencies, br.gov.caixa.loterias.core.navigation.fixture.VisualBetNavigationFixtures {
+interface TicketsNavigationDependencies :
+    br.gov.caixa.loterias.feature.payment.navigation.MercadoPagoRegistrationDependencies,
+    br.gov.caixa.loterias.core.navigation.fixture.VisualBetNavigationFixtures {
     val addBetToCart: AddBetToCartUseCase
     val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
     val bettingParameters: GetBettingParametersUseCase
@@ -50,5 +52,4 @@ interface TicketsNavigationDependencies : br.gov.caixa.loterias.feature.payment.
     val validateDam: ValidateDamUseCase
     val validateFavoriteBet: ValidateFavoriteBetUseCase
     val validateFavoriteCartName: ValidateFavoriteCartNameUseCase
-
 }

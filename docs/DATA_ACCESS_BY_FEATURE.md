@@ -14,6 +14,25 @@ Referência do código atual, conferida em 29/10/2026. Veja também os [serviço
 | Apostas ainda no carrinho | [GetCurrentCartUseCase](../feature/cart/domain/src/main/kotlin/br/gov/caixa/loterias/feature/cart/domain/usecase/GetCurrentCartUseCase.kt)`()` | Retorna `ShoppingCart`; escolhe o carrinho remoto autenticado ou o local do visitante. |
 | Parâmetros de negócio do app | [GetHomeFeatureConfigurationUseCase](../core/domain/src/main/kotlin/br/gov/caixa/loterias/core/domain/configuration/usecase/ConfigurationUseCases.kt)`()` | Flags da Home, concursos especiais e campanhas de parâmetros do backend; não reúne todos os dados do app. |
 
+## Interfaces com entrega híbrida
+
+A expansão de 02/11/2026 altera a entrega da interface; os casos de uso, serviços,
+endpoints, parâmetros e retornos descritos neste guia permanecem na base. Para
+obter dados, continue chamando os contratos de Domain pelo ViewModel. Não use
+`*UiEntry` nem o instalador como serviço de dados.
+
+As Routes e os proprietários dos ViewModels permanecem em `feature/*/presentation`.
+Os renderizadores concretos estão nos módulos `*_ui`, além de `support:faq`.
+`FeatureModuleContent` carrega a entrada tipada somente após verificar a entrega;
+`FeatureModuleAdmission` controla novas jornadas. O [guia de Dynamic Features](DYNAMIC_FEATURES.md)
+detalha as 15 chaves JSON, os três módulos install-time e os doze sob demanda.
+
+`AppModulesConfigurationUseCase` observa disponibilidade e consulta o valor atual
+antes de novos efeitos. A configuração não substitui autenticação ou autorização
+do backend. Continuidade de compra usa evidência tipada vinculada ao proprietário
+e à sessão atual; a restauração salva somente proprietário, tipo e ID necessários,
+sem código Pix, CVV, senha ou concessão privada da sessão.
+
 ## Onde chamar e como receber
 
 A tela Compose chama ações do seu ViewModel e observa `state` com coleta consciente do lifecycle. O ViewModel recebe os contratos de casos de uso por construtor; a Route e os módulos Hilt fazem a composição. O estado e os reducers permanecem em Presentation/ReduxKotlin. Regras de negócio ficam em Domain e acesso a rede/persistência em Data/Transport.
@@ -155,6 +174,34 @@ da exclusão de um carrinho. O contrato de `GET logado/carrinhos-favoritos`
 fornece somente `id` e `nome`, sem data de criação; o critério usa o ID e não
 altera nomes, identificadores, conteúdo das apostas ou parâmetros do serviço.
 
+A confirmação de país no checkout usa `CheckCheckoutLocationUseCase` e a
+porta `CheckoutLocationSource`, implementada por `AndroidCheckoutLocationSource`
+em Data. O adaptador Android aceita somente posições válidas com até 60 segundos
+de idade, medida pelo relógio monotônico; posições futuras ou sem precisão
+válida são descartadas. Sem cache válido, solicita posição atual pela rede e,
+se necessário, pelo GPS, com limite de 7,5 segundos por provedor. As coordenadas
+são transitórias e não são persistidas nem registradas.
+
+O país vem do `Geocoder` do Android, sem endpoint Retrofit próprio. País `BR`
+permite seguir para histórico/validação do carrinho; outro país mantém o bloqueio
+territorial. Ausência de posição/país ou falha de geocodificação mantém o
+pagamento bloqueado com aviso próprio de indisponibilidade. O diálogo DS oferece
+**Tentar novamente** (repete a verificação completa de conta/carrinho/localização)
+e **Entendi** (fecha o aviso e permanece no carrinho). A falha de localização
+não solicita exclusão nem limpeza de apostas e não autoriza pagamento sem
+confirmar Brasil. A nova tentativa preserva as verificações de sessão e as
+regras existentes de atualização de reservas expiradas. Permissões e GPS
+desligado continuam usando o consentimento e os encaminhamentos Android existentes.
+
+Validação da correção de localização em 03/11/2026: `qualityGate`,
+`verifyCleanArchitecture`, `verifyAutomationIds` e `:app:assembleTqsDebug`
+aprovados. A rodada global teve 3.874 testes em 802 suítes, sem falhas, erros
+ou skips, e JaCoCo global de 95,29% (63.347/66.477 linhas). As regressões
+incluem cache antigo/futuro, timeout da rede com fallback GPS, falha de
+geocodificação, cancelamento, retry e preservação do carrinho; não houve
+execução desta correção no Samsung. Evidências em
+`simlo-artifacts/2026-11-03/checkout-location/final-verified.log`, fora do Git.
+
 A exclusão de uma aposta visitante passa por `CartViewModel.requestRemoval` e
 `confirmRemoval`, `RemoveCartItem` e `VisitorCartRepositoryImpl.remove`. A
 transação local remove somente o ID selecionado; uma Lotomania com espelho
@@ -278,6 +325,18 @@ Consumidores: [NotificationsViewModel](../feature/notifications/presentation/src
 
 Consumidor: [ResponsibleGamingViewModel](../feature/responsible-gaming/presentation/src/main/java/br/gov/caixa/loterias/feature/responsiblegaming/presentation/viewmodel/ResponsibleGamingViewModel.kt).
 
+Para a suspensão iniciada pela navegação, `SuspensionUseCasesFactory.forCurrentSession()`
+cria o caso de uso vinculado à identidade antes da fila de IO. A implementação Data
+`SessionSuspensionRepositoryFactory` captura uma única `AccountVerificationSession`;
+`LoteriasApi.currentBoundUserProfile` chama `GET usuarios/recuperar-dados` e
+`LoteriasApi.suspendBoundAccount` chama `POST usuarios/suspender-conta-apostador`,
+com o mesmo corpo `SuspendAccountRequestDto` e retorno `ApiEnvelope<AccountSuspensionDto>`.
+O parâmetro `@Tag` é metadado local do cliente, não é enviado como query/body/header.
+O vínculo é validado pelo mecanismo de sessão existente; trocar usuário entre
+as duas chamadas impede o POST, e uma resposta de sessão substituída não atualiza a UI.
+A suspensão protetiva continua permitida com o módulo opcional desabilitado.
+
+
 ## Ajuda e termos — Support
 
 | Necessidade | Classe | Retorno / efeito |
@@ -287,6 +346,29 @@ Consumidor: [ResponsibleGamingViewModel](../feature/responsible-gaming/presentat
 | Aceitar termos | [AcceptTermsUseCase](../feature/support/domain/src/main/kotlin/br/gov/caixa/loterias/feature/support/domain/usecase/AcceptTermsUseCase.kt) | Escrita; carregar o texto não implica aceitar. |
 
 Consumidor: [SupportViewModel](../feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/viewmodel/SupportViewModel.kt).
+
+### Disponibilidade e entrega do FAQ
+
+O split `:feature:support:faq` possui o conteúdo Compose concreto; consultas de
+seções/perguntas continuam com os casos de uso e `SupportLoteriasApi` acima.
+Termos, privacidade, aceite e ajuda por modalidade permanecem na base. A mudança
+não cria endpoint HTTP nem altera parâmetros/DTOs de Support.
+
+| Necessidade | Entrada / origem | Retorno e limites |
+| --- | --- | --- |
+| Disponibilidade opcional | `FirebaseAppModulesConfigurationRepositoryImpl`, por `AppModulesConfigurationRepository` e `AppModulesConfigurationUseCase` de Core Domain; SDK Firebase Remote Config, parâmetro `app_modules` configurado como tipo JSON no console e lido com `getString()` no Android | Configuração tipada, schema 1, `modules.support_faq.enabled`; padrão local false. Ausência/schema inválido não habilitam; atualização inválida preserva último valor válido da sessão. Sem endpoint Retrofit próprio. |
+| Instalação | `PlaySupportModuleDelivery`, por `SupportModuleDelivery`; Play Feature Delivery, split fixo `faq` | Verificação, progresso, confirmação quando exigida, pronto ou falha recuperável. Reentrada consulta instalação real; tentativa explícita não repete operações de negócio. |
+| Apresentação do gate | `SupportModuleGate` / `SupportModuleViewModel`, compostos por `SupportDynamicModule` | Estado Redux. Desabilitado mostra Empty State do DS mesmo instalado; habilitado resolve conteúdo após instalação. Não há fallback FAQ na base. |
+
+A composição do host chama `createAppModulesConfigurationUseCase` em Onboarding
+DI e `createSupportModuleDelivery` em Support DI. Essas fábricas preservam o
+acesso a Data dentro da funcionalidade proprietária; o host recebe contratos.
+
+O JSON não contém URL de download, classe, credencial nem autorização de serviço.
+Chaves futuras não criam novas features. Cache/defaults e observação de
+configuração seguem os contratos existentes; não há garantia de atualização
+instantânea. Consulte [Dynamic Features](DYNAMIC_FEATURES.md) para os dois valores
+JSON completos e o roteiro local, separado de qualquer evidência Google Play.
 
 ## Home, preferências e Aposta Shake — Home
 
@@ -646,7 +728,7 @@ Fontes de montagem e interpretação: [PaymentPayloadMapper](../feature/payment/
 | Autorizar login — AppAuth | GET no `ssoAuthUrl` do ambiente; navegador/SSO. | `client_id`, `redirect_uri`, `response_type=code`, `state`, `nonce`, PKCE (`code_challenge`, `code_challenge_method`), `scope` quando configurado; adicionais `deviceid`, `nivel`, `app`, `origem`. Reautenticação silenciosa usa `prompt=none`; troca de usuário usa `prompt=login`. | Callback com código ou erro. Não fornece sozinho cadastro/carrinho; depois há troca de código e verificações pós-login. |
 | Trocar código / renovar sessão — AppAuth | POST no `ssoTokenUrl`; formulário OAuth gerado pelo SDK. | Código: `grant_type=authorization_code`, `code`, `redirect_uri`, `client_id`, `code_verifier`; renovação: `grant_type=refresh_token`, `refresh_token`, identificação do cliente conforme configuração. | `access_token`, `token_type`, expiração e, conforme resposta/protocolo, `refresh_token`, `id_token`, `scope`. O fluxo valida a identidade antes de persistir. |
 | Encerrar sessão SSO — AppAuth | Endpoint `ssoLogoutUrl` do ambiente. | `id_token_hint` quando disponível, `post_logout_redirect_uri`, `state`, `client_id` conforme montagem do pedido. | Callback de encerramento; coordenado com `usuarios/sair` e limpeza local. |
-| Ícone por campanha / atualização / pins — Firebase Remote Config | SDK Firebase: fetch/activate e listener de atualização; não há endpoint Retrofit próprio. | Chaves como `app_launcher_icon`, `force_update`, `tls_pinning_keyset`. Calendário anual inclui `default_icon`, `timezone`, `campaigns[]` com `icon/start/end`. | Configuração ativada; calendário decide ícone padrão/campanha; conjunto de pins assinado passa por validação antes de reconfigurar clientes. Recuperação periódica ocorre com app em primeiro plano. |
+| Ícone por campanha / atualização / pins — Firebase Remote Config | SDK Firebase: fetch/activate e listener de atualização; não há endpoint Retrofit próprio. | Chaves como `app_launcher_icon`, `app_modules`, `force_update`, `tls_pinning_keyset`. Calendário anual inclui `default_icon`, `timezone`, `campaigns[]` com `icon/start/end`. | Configuração ativada; calendário decide ícone padrão/campanha; conjunto de pins assinado passa por validação antes de reconfigurar clientes. Recuperação periódica ocorre com app em primeiro plano. |
 | Push — Firebase Messaging | SDK FCM obtém/renova token; cadastro no backend está em `push/registros`. | Body `PushRegistrationRequestDto`: `identificadores`, `token`, `plataforma="android"`, `canal="loterias"`. | `PushRegistrationEnvelopeDto`; mensagens chegam pelo serviço Firebase do app. |
 | Fila de acesso | SDK de fila configurado pelo host. | Conta/sistema e callbacks do fluxo de fila. | Liberação/erro/status do SDK; não há contrato Retrofit de fila nas tabelas. |
 | Home e Aposta Shake | Configuração comum + preferências/sensores locais; carrinho e novas apostas usam Betting/Cart. | Habilitação/preferências e evento do sensor; sem endpoint exclusivo chamado “ApostaShake”. | Estado da funcionalidade e execução do fluxo de aposta correspondente. |

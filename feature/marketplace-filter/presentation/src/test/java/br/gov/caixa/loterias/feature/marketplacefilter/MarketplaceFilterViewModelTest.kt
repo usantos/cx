@@ -1,19 +1,25 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
-import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
+import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
-import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
-import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParameters
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.viewmodel.MarketplaceFilterViewModel
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import java.math.BigDecimal
@@ -29,11 +35,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.viewmodel.MarketplaceFilterViewModel
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MarketplaceFilterViewModelTest {
@@ -124,9 +125,16 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `opening restores applied filter and clearing restores the original entry modality`() = runTest {
-        val applied = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter(
-            "10.50", "20.00", 2, 10, 4, 7, "", "", listOf(1, 2), listOf(3), 2, 1)
-        val vm = viewModel(initial = applied, clean = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(2, 1))
+        val applied = MarketplaceFilter(
+            "10.50", "20.00", 2, 10, 4, 7, "", "",
+            listOf(
+                1,
+                2
+            ),
+            listOf(3), 2, 1
+        )
+        val vm =
+            viewModel(initial = applied, clean = MarketplaceFilter.forModality(2, 1))
         assertEquals(2, vm.state.value.selectedModality?.id)
         assertEquals("10,50", vm.state.value.minimumValue)
         assertEquals(4, vm.state.value.selectedBetQuantity)
@@ -140,7 +148,7 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `retailer selection switches the modality constraint to all like CX`() = runTest {
-        val vm = viewModel(initial = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(2, 1))
+        val vm = viewModel(initial = MarketplaceFilter.forModality(2, 1))
         assertFalse(vm.state.value.modalities.any { it.isAll })
         val modality = vm.state.value.modalities.first()
         vm.onAction(MarketplaceFilterAction.SelectModality(modality))
@@ -206,7 +214,7 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `opening restores the matching retailer display without accepting a different retailer`() = runTest {
-        val applied = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.empty().withLottery("101")
+        val applied = MarketplaceFilter.empty().withLottery("101")
         val retained = retailer(101, "Centro")
         val vm = viewModel(initial = applied, initialRetailer = retained)
         assertEquals(retained, vm.state.value.selectedRetailer)
@@ -220,14 +228,19 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `back without applying clears constraints using current search modality instead of edited or clean modality`() = runTest {
-        val initial = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter(
-            "10", "20", 2, 10, 4, 7, "101", "", listOf(1), listOf(2), 2, 1)
-        val clean = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(8, 2)
+        val initial = MarketplaceFilter(
+            "10", "20", 2, 10, 4, 7, "101", "",
+            listOf(
+                1
+            ),
+            listOf(2), 2, 1
+        )
+        val clean = MarketplaceFilter.forModality(8, 2)
         val vm = viewModel(initial = initial, clean = clean)
         vm.onAction(MarketplaceFilterAction.ChangeMinimumValue("15,00"))
         vm.onAction(MarketplaceFilterAction.SelectModality(MarketplaceFilterModalityUi(8, "Lotofácil", "Lotofácil", 2, listOf(15), 25)))
         val result = vm.filterAfterBack()
-        assertEquals(br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(2, 1), result)
+        assertEquals(MarketplaceFilter.forModality(2, 1), result)
         assertEquals(8, vm.state.value.selectedModality?.id)
     }
 
@@ -251,7 +264,7 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `erasing retailer restores previous modality and clears dependent filters`() = runTest {
-        val vm = viewModel(initial = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(2, 1))
+        val vm = viewModel(initial = MarketplaceFilter.forModality(2, 1))
         vm.onAction(MarketplaceFilterAction.SelectRetailer(retailer(101, "Centro")))
         vm.onAction(MarketplaceFilterAction.SelectBetQuantity(4))
         vm.onAction(MarketplaceFilterAction.SelectNumberQuantity(10))
@@ -271,12 +284,16 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `erasing retailer restores last selected special rather than first modality`() = runTest {
-        val parameters = bettingParameters().copy(availablePoolModalities = listOf(
-            PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"),
-            PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL"),
-        ))
-        val vm = viewModel(parameters = parameters,
-            initial = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(2, 1))
+        val parameters = bettingParameters().copy(
+            availablePoolModalities = listOf(
+                PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"),
+                PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL")
+            )
+        )
+        val vm = viewModel(
+            parameters = parameters,
+            initial = MarketplaceFilter.forModality(2, 1)
+        )
         vm.onAction(MarketplaceFilterAction.SelectModality(vm.state.value.modalities.last()))
         vm.onAction(MarketplaceFilterAction.SelectRetailer(retailer(101, "Centro")))
         vm.onAction(MarketplaceFilterAction.ChangeLottery(""))
@@ -311,19 +328,25 @@ class MarketplaceFilterViewModelTest {
     }
 
     @Test fun `loads temporary contest configuration for available pool modality`() = runTest {
-        val parameters = bettingParameters().copy(availablePoolModalities = listOf(
-            PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL", contestNumber = 3000)))
-        val vm = viewModel(parameters = parameters, specialContests = GetMarketplaceSpecialContestsUseCase {
-            AppResult.Success(MarketplaceSpecialContests(megaThirtyYearsContest = 3000))
-        })
+        val parameters = bettingParameters().copy(
+            availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL", contestNumber = 3000))
+        )
+        val vm = viewModel(
+            parameters = parameters,
+            specialContests = GetMarketplaceSpecialContestsUseCase {
+                AppResult.Success(MarketplaceSpecialContests(megaThirtyYearsContest = 3000))
+            }
+        )
         assertEquals("mega-sena\n30 anos", vm.state.value.modalities.single().name)
         assertNull(vm.state.value.configurationError)
     }
 
     @Test fun `unavailable optional special configuration preserves filter availability`() = runTest {
-        val vm = viewModel(specialContests = GetMarketplaceSpecialContestsUseCase {
-            AppResult.Failure(AppError.Network)
-        })
+        val vm = viewModel(
+            specialContests = GetMarketplaceSpecialContestsUseCase {
+                AppResult.Failure(AppError.Network)
+            }
+        )
         assertEquals("mega sena", vm.state.value.modalities.single().name)
         assertNull(vm.state.value.configurationError)
         assertTrue(vm.state.value.canApply)
@@ -335,15 +358,20 @@ class MarketplaceFilterViewModelTest {
         bettingFails: Boolean = false,
         parameters: BettingParameters = bettingParameters(),
         retailerSearch: suspend (String) -> AppResult<List<Retailer>> = { AppResult.Success(emptyList()) },
-        initial: br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.empty(),
-        clean: br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.forModality(initial.modalityId ?: 0, initial.contestType ?: 0),
+        initial: MarketplaceFilter = MarketplaceFilter.empty(),
+        clean: MarketplaceFilter = MarketplaceFilter.forModality(
+            initial.modalityId ?: 0,
+            initial.contestType ?: 0
+        ),
         lotteryEnabled: Boolean = true,
         initialRetailer: Retailer? = null,
         specialContests: GetMarketplaceSpecialContestsUseCase? = null,
     ) = MarketplaceFilterViewModel(
-        getFilterParameters = GetMarketplaceFilterParameters(configurationRepository {
-            if (filterFails) error("offline") else filterParameters
-        }),
+        getFilterParameters = GetMarketplaceFilterParameters(
+            configurationRepository {
+                if (filterFails) error("offline") else filterParameters
+            }
+        ),
         getBettingParameters = GetBettingParametersUseCase {
             if (bettingFails) AppResult.Failure(AppError.Network) else AppResult.Success(parameters)
         },
@@ -353,7 +381,7 @@ class MarketplaceFilterViewModelTest {
         clearFilter = clean,
         lotteryEnabled = lotteryEnabled,
         initialRetailer = initialRetailer,
-        getSpecialContests = specialContests,
+        getSpecialContests = specialContests
     )
 
     private fun bettingParameters() = BettingParameters(
@@ -370,18 +398,15 @@ class MarketplaceFilterViewModelTest {
                 20,
                 0,
                 emptyList(),
-                listOf(BetPrice(6, 0, BigDecimal.ONE), BetPrice(7, 0, BigDecimal.TEN)),
-            ),
+                listOf(BetPrice(6, 0, BigDecimal.ONE), BetPrice(7, 0, BigDecimal.TEN))
+            )
         ),
-        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL")),
+        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
     )
 
-    private fun retailer(id: Long, name: String) =
-        Retailer(id, "0001-01", name, "", "", "", "", "", false)
+    private fun retailer(id: Long, name: String) = Retailer(id, "0001-01", name, "", "", "", "", "", false)
 
-    private fun configurationRepository(
-        parameters: suspend () -> MarketplaceFilterParameters,
-    ) = object : AppConfigurationRepository {
+    private fun configurationRepository(parameters: suspend () -> MarketplaceFilterParameters) = object : AppConfigurationRepository {
         override suspend fun isVersionSupported(versionName: String) = true
         override suspend fun marketplaceFilterParameters() = parameters()
     }

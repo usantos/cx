@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_1_s_4c75be">"(%1$s)"</string>
+
+    <string name="ui_adicionando_6ae81e" formatted="false">"Adicionando…"</string>
+    <string name="ui_adicionar_ao_carrinho_bf86b8" formatted="false">"Adicionar ao carrinho"</string>
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_ao_carrinho_de_apostas_ef1eb2" formatted="false">"\nao carrinho de apostas"</string>
+
+
+        <string name="ui_bolao_99927e" formatted="false">"Bolão"</string>
+
+
+        <string name="ui_carrinho_de_apostas_23d953" formatted="false">"Carrinho de apostas"</string>
+
+    <string name="ui_coluna_1_s_numero_2_s_4e3a5f">"Coluna %1$s, número %2$s"</string>
+
+    <string name="ui_concurso_1997f5" formatted="false">"Concurso"</string>
+        <string name="ui_detalhes_62c950" formatted="false">"Detalhes"</string>
+
+
+
+        <string name="ui_excluir_loterica_favorita_1ab99f" formatted="false">"Excluir lotérica favorita"</string>
+
+    <string name="ui_favoritar_loterica_9b9006" formatted="false">"Favoritar lotérica"</string>
+
+    <string name="ui_jogo_1_s_aa1e61">"Jogo %1$s"</string>
+
+
+
+
+
+
+    <string name="ui_mes_de_sorte_1_s_42ca39">"Mês de sorte: %1$s"</string>
+
+
+
+
+
+    <string name="ui_premio_estimado_63dd56" formatted="false">"Prêmio Estimado"</string>
+    <string name="ui_premio_estimado_699ac4" formatted="false">"Prêmio estimado"</string>
+    <string name="ui_premio_estimado_do_concurso_1_s_f15d0b">"Prêmio estimado do concurso %1$s"</string>
+    <string name="ui_quantidade_de_cotas_ddb3fd" formatted="false">"Quantidade de Cotas"</string>
+
+
+    <string name="ui_sorteio_a49bf4" formatted="false">"Sorteio"</string>
+
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_time_do_coracao_1_s_7e407c">"Time do coração: %1$s"</string>
+
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_trevos_0f4867" formatted="false">"Trevos"</string>
+
+    <string name="ui_valor_dessa_aposta_4e1785" formatted="false">"Valor dessa aposta"</string>
+
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+</resources>

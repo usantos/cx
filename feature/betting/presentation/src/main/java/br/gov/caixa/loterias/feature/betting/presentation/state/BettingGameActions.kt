@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
-internal data class BettingGameActions(
+data class BettingGameActions(
     val toggleNumber: (Int) -> Unit,
     val chooseNumberQuantity: (Int) -> Unit,
     val decreaseSurpriseQuantity: () -> Unit,

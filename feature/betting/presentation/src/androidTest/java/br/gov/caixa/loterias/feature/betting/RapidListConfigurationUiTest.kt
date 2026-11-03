@@ -8,6 +8,7 @@ import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.route.RapidListRoute
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidListViewModel
@@ -16,9 +17,9 @@ import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import java.math.BigDecimal
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Assert.assertEquals
 
 class RapidListConfigurationUiTest {
     @get:Rule val compose = createComposeRule()
@@ -30,11 +31,12 @@ class RapidListConfigurationUiTest {
             GenerateRapidBetsUseCase { ServiceResult.Success(cart) },
             RemoveCartItemUseCase { AppResult.Success(cart) },
             ValidateCartUseCase { AppResult.Success(CartValidationResult.Accepted) },
-            autoLoad = false,
+            autoLoad = false
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
-                RapidListRoute(viewModel, onBack = {}, onPayment = {}, onValidationRedirect = {}, onConfiguration = { configurationRequests++ })
+                RapidListRoute(viewModel, onBack = {
+                }, onPayment = {}, onValidationRedirect = {}, onConfiguration = { configurationRequests++ })
             }
         }
         compose.onNodeWithContentDescription("Configuração").assertIsDisplayed().assertHasClickAction().performClick()

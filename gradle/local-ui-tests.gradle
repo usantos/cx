@@ -3,10 +3,24 @@
 subprojects { owner ->
     def configureLocalTests = {
         owner.android.testOptions.unitTests.includeAndroidResources = true
+        if (owner.plugins.hasPlugin('com.android.dynamic-feature') || owner.path == ':app' ||
+                owner.path.startsWith(':feature:') && owner.path.endsWith(':presentation')) {
+            def runnerSources = rootProject.file('core/testing/src/testSupport/kotlin')
+            owner.android.sourceSets.test.java.srcDir(runnerSources)
+            owner.android.sourceSets.test.kotlin.srcDir(runnerSources)
+            owner.android.sourceSets.test.resources.srcDir(rootProject.file('core/testing/src/testSupport/resources'))
+            owner.android.sourceSets.test.java.srcDir(rootProject.file('core/testing/src/moduleTestSupport/kotlin'))
+            owner.android.sourceSets.test.kotlin.srcDir(rootProject.file('core/testing/src/moduleTestSupport/kotlin'))
+        }
         owner.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.17')
         owner.tasks.withType(Test).configureEach {
             systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
             jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED', '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
+            // Recursos nativos do SDK 36 acessam FileDescriptor pelo contrato interno do JDK 21 apenas nos testes.
+            if (owner.plugins.hasPlugin('com.android.dynamic-feature') || owner.path == ':app' ||
+                owner.path.startsWith(':feature:') && owner.path.endsWith(':presentation')) {
+                jvmArgs '--add-exports=java.base/jdk.internal.access=ALL-UNNAMED'
+            }
             maxHeapSize = '2g'
             maxParallelForks = 1
         }
@@ -39,6 +53,7 @@ subprojects { owner ->
             def output = owner.layout.buildDirectory.dir('generated/local-ui-tests/kotlin')
             def prepare = owner.tasks.register('prepareLocalUiTests', Exec) {
                 inputs.file(manifest)
+                inputs.file(owner.buildFile)
                 inputs.file(rootProject.file('scripts/prepare-local-ui-tests.py'))
                 inputs.dir(owner.file('src/androidTest'))
                 outputs.dir(output)
@@ -55,6 +70,7 @@ subprojects { owner ->
             }
         }
     }
+    owner.plugins.withId('com.android.dynamic-feature') { configureLocalTests() }
     owner.plugins.withId('com.android.library') { configureLocalTests() }
     owner.plugins.withId('com.android.application') { configureLocalTests() }
 }

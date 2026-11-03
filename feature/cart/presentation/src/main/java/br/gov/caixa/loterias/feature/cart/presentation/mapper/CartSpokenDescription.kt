@@ -7,7 +7,7 @@ import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
 import java.util.Locale
 
 /** Fala apenas de apresentação; nunca altera números, preços, seleções ou estado de reserva. */
-internal fun cartSpokenDescription(item: CartItem, expiry: PoolExpiry? = null): String {
+fun cartSpokenDescription(item: CartItem, expiry: PoolExpiry? = null): String {
     val words = PortugueseSpeech
     return buildList {
         add(words.expand(currentCartModalityName(item).replace("+", "mais ")))

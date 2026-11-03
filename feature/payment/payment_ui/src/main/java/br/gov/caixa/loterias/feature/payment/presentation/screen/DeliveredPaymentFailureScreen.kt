@@ -1,0 +1,74 @@
+package br.gov.caixa.loterias.feature.payment.presentation.screen
+
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import br.gov.caixa.loterias.core.designsystem.automation.uiId
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSFooterButton
+import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSOutlinedButton
+import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
+import br.gov.caixa.loterias.feature.payment.ui.R as DeliveryR
+
+@Composable
+fun PaymentFailureScreenDelivered(spec: WorkflowSpec, onNavigate: (String) -> Unit) {
+    val uiStrings = androidx.compose.ui.platform.LocalResources.current
+    LoteriasCaixaDSScaffold(title = spec.title, onBack = { onNavigate("home") }, modifier = Modifier.uiId("pay.0093")) { padding ->
+        Column(
+            Modifier.fillMaxSize().padding(padding).padding(horizontal = 32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                Modifier.size(76.dp).border(3.dp, LoteriasCaixaDS.colors.error, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    LoteriasCaixaDSIcons.Close,
+                    contentDescription = null,
+                    tint = LoteriasCaixaDS.colors.error,
+                    modifier = (Modifier.size(38.dp)).uiId("pay.0094")
+                )
+            }
+            Text(
+                spec.description,
+                (Modifier.padding(top = 24.dp)).uiId("pay.0095"),
+                color = LoteriasCaixaDS.colors.cartDark,
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center
+            )
+            Text(
+                uiStrings.getString(DeliveryR.string.ui_revise_os_dados_do_pagamento_ou_esco_b71aea),
+                (Modifier.padding(top = 12.dp)).uiId("pay.0096"),
+                color = LoteriasCaixaDS.colors.graphite,
+                textAlign = TextAlign.Center
+            )
+            LoteriasCaixaDSFooterButton(
+                spec.primaryAction,
+                { onNavigate("payment/method") },
+                (Modifier.width(220.dp).padding(top = 32.dp)).uiId("pay.0097")
+            )
+            LoteriasCaixaDSOutlinedButton(
+                spec.secondaryAction.orEmpty(),
+                { onNavigate("home") },
+                (Modifier.width(220.dp).padding(top = 12.dp)).uiId("pay.0098")
+            )
+        }
+    }
+}

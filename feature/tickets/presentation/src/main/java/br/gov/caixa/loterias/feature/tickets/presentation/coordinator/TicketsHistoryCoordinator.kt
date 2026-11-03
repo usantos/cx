@@ -26,7 +26,7 @@ internal class TicketsHistoryCoordinator(
     getPurchaseMonths: GetPurchaseMonthsUseCase,
     purchaseFiltersSources: TicketsPurchaseFilterSources,
     isSessionCurrent: () -> Boolean,
-    fail: (String) -> Unit
+    fail: (String) -> Unit,
 ) {
     private val pagination = TicketsHistoryPagination(
         mutableState,

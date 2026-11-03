@@ -1,15 +1,16 @@
 package br.gov.caixa.loterias.feature.betting.presentation.screen
 
 import androidx.compose.runtime.Composable
-import br.gov.caixa.loterias.feature.betting.presentation.components.AnimatedLotteryTutorial
-import br.gov.caixa.loterias.feature.betting.presentation.state.BettingFlowUiState
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleContent
+import br.gov.caixa.loterias.feature.betting.presentation.delivery.BettingUiEntry
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingRoute
-import br.gov.caixa.loterias.feature.betting.presentation.mapper.tutorialDefinition
-import br.gov.caixa.loterias.feature.betting.presentation.components.SuperSevenTutorial
+import br.gov.caixa.loterias.feature.betting.presentation.state.BettingFlowUiState
 
 /** Renderiza o estado do tutorial; ciclo de vida e navegação permanecem em BettingRoute. */
+
 @Composable
-internal fun BettingScreen(
+fun BettingScreen(
     state: BettingFlowUiState,
     onPageSelected: (Int) -> Unit,
     onBack: () -> Unit,
@@ -17,25 +18,12 @@ internal fun BettingScreen(
     onSecondary: () -> Unit,
     onToggleDoNotShowAgain: () -> Unit,
 ) {
-    val definition = tutorialDefinition(state.spec.route)
-    if (definition.usesLegacyOverlayControls) {
-        AnimatedLotteryTutorial(
-            state = state,
-            definition = definition,
-            onPageSelected = onPageSelected,
-            onClose = onBack,
-            onPrimary = onPrimary,
-            onSecondary = onSecondary,
-            onToggleDoNotShowAgain = onToggleDoNotShowAgain,
-        )
-    } else {
-        SuperSevenTutorial(
-            state = state,
-            definition = definition,
-            onPageSelected = onPageSelected,
-            onBack = onBack,
-            onPrimary = onPrimary,
-            onSkip = onSecondary,
-        )
+    FeatureModuleContent(
+        module = AppModule.BETTING,
+        entryType = BettingUiEntry::class.java,
+        onBack = onBack,
+        preserveActive = false
+    ) { entry ->
+        entry.BettingScreen(state, onPageSelected, onBack, onPrimary, onSecondary, onToggleDoNotShowAgain)
     }
 }

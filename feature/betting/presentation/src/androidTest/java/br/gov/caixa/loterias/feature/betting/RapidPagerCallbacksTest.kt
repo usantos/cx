@@ -12,11 +12,12 @@ import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.betting.presentation.components.RapidPagerSynchronization
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.components.RapidPagerSynchronization
 
 class RapidPagerCallbacksTest {
     @get:Rule val compose = createComposeRule()
@@ -26,12 +27,15 @@ class RapidPagerCallbacksTest {
         val second = mutableListOf<Int>()
         val replace = mutableStateOf(false)
         lateinit var pager: PagerState
-        compose.setContent {
+        compose.setFeatureContent {
             pager = rememberPagerState(pageCount = { 7 })
             RapidPagerSynchronization(pager, 0, if (replace.value) ({ second.add(it) }) else ({ first.add(it) }))
             HorizontalPager(pager, Modifier.fillMaxSize().testTag("pages")) { Box(Modifier.fillMaxSize()) }
         }
-        compose.runOnIdle { first.clear(); replace.value = true }
+        compose.runOnIdle {
+            first.clear()
+            replace.value = true
+        }
         compose.waitForIdle()
         compose.onNodeWithTag("pages").performTouchInput { swipeLeft() }
         compose.waitForIdle()

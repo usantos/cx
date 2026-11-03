@@ -1,10 +1,8 @@
 package br.gov.caixa.loterias.feature.betting
 
-import br.gov.caixa.loterias.feature.betting.R
-
 import android.content.Context
-import android.content.res.Configuration
 import android.content.res.ColorStateList
+import android.content.res.Configuration
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
@@ -24,26 +22,28 @@ import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButton
 import br.gov.caixa.loterias.core.designsystem.components.button.LoteriasCaixaDSBettingButtonDefaults
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import com.google.android.material.button.MaterialButton
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 /** Referência de pixels independente da geometria do Compose: o estilo real do MaterialButton nativo
  * usado em rodape_simula.xml e activity_simula_aposta.xml. Apenas os limites externos
@@ -96,7 +96,7 @@ class BettingButtonNativeInsetTest {
                 densityDpi = 450
             }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 Box(Modifier.background(androidx.compose.ui.graphics.Color.White)) {
                     CompositionLocalProvider(LocalDensity provides Density(450f / 160f)) {
@@ -191,7 +191,7 @@ class BettingButtonNativeInsetTest {
             AddBetToCartUseCase { error("Geometry never submits a bet") },
             initialParameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(model, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(model, {}, {}) } }
         return model
     }
 }

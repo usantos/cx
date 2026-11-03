@@ -10,6 +10,7 @@ sealed interface RegistrationAction {
     data class ZipCodeFailed(val zipCode: String, val version: Long, val error: String?, val validationError: String?) : RegistrationAction
     data class GenderChanged(val gender: Gender) : RegistrationAction
     data object NotificationsToggled : RegistrationAction
+    data object SubmitCancelled : RegistrationAction
     data object SubmitStarted : RegistrationAction
     data object CompletionConsumed : RegistrationAction
     data object Submitted : RegistrationAction
@@ -58,6 +59,7 @@ fun reduceRegistrationState(state: RegistrationUiState, action: RegistrationActi
 
 private fun reduceRegistrationSubmission(state: RegistrationUiState, action: RegistrationAction): RegistrationUiState = when (action) {
     RegistrationAction.SubmitStarted -> state.copy(loading = true, errorMessage = null)
+    RegistrationAction.SubmitCancelled -> state.copy(loading = false)
     RegistrationAction.CompletionConsumed -> state.copy(completionConsumed = true)
     RegistrationAction.Submitted -> state.copy(loading = false, registered = true, completionConsumed = false)
     is RegistrationAction.SubmitFailed -> state.copy(loading = false, errorMessage = action.message)

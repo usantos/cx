@@ -1,13 +1,15 @@
 package br.gov.caixa.loterias.feature.tickets
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performCustomAccessibilityActionWithLabel
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
@@ -18,14 +20,17 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 @OptIn(ExperimentalTestApi::class)
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], qualifiers = "w480dp-h900dp")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36], qualifiers = "w480dp-h900dp")
 class ExpandedBetFiltersUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val events = mutableListOf<String>()
     private val options = listOf(TicketFilterOption(1, "Opção inicial"), TicketFilterOption(2, "Outra opção"))
     private val state = TicketsUiState(
@@ -89,7 +94,7 @@ class ExpandedBetFiltersUiTest {
     }
 
     private fun show(value: TicketsUiState = state) {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 BetFiltersDialog(
                     value,

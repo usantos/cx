@@ -1,32 +1,33 @@
 package br.gov.caixa.loterias.feature.betting
 
-import androidx.compose.ui.test.assertCountEquals
-
-import androidx.compose.ui.test.isDialog
-
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.hasAnyAncestor
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isDialog
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.lifecycle.viewModelScope
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.presentation.route.FavoriteBetsRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
@@ -34,13 +35,11 @@ import kotlinx.coroutines.cancel
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.FavoriteBetsRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
 
 class FavoriteBetsCoordinationTest {
     @get:Rule val compose = createComposeRule()
@@ -57,7 +56,7 @@ class FavoriteBetsCoordinationTest {
     @Test fun filterIsAppliedExplicitlyAndEmptyModalityCreatesTheSelectedFavorite() {
         val fixture = Fixture()
         val created = mutableListOf<Int>()
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create() }
             LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, { created += it }) }
         }
@@ -82,7 +81,7 @@ class FavoriteBetsCoordinationTest {
 
     @Test fun singleNormalContestKeepsTheFirstRecurringValueAndMirrorUntilExplicitAdd() {
         val fixture = Fixture(listOf(favorite(1, lotomania)), listOf(game(lotomania, recurring = listOf(4, 2, 4))))
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create() }
             LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
         }
@@ -110,7 +109,7 @@ class FavoriteBetsCoordinationTest {
         val first = Fixture(listOf(favorite(1, quina)), listOf(game(quina), game(quina, "ESPECIAL")))
         val second = Fixture(listOf(favorite(2, quina)), listOf(game(quina), game(quina, "ESPECIAL")))
         val selected = mutableIntStateOf(0)
-        compose.setContent {
+        compose.setFeatureContent {
             val old = remember { first.create() }
             val current = remember {
                 second.create().also {
@@ -150,7 +149,7 @@ class FavoriteBetsCoordinationTest {
     @Test fun contiguousHeadersAndDeleteCancellationRemainVisibleAfterFailure() {
         val fixture = Fixture(listOf(favorite(1, quina), favorite(2, lotomania), favorite(3, quina)))
         fixture.deleteResult = AppResult.Failure(AppError.Validation("Exclusão recusada"))
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create() }
             LoteriasCaixaDSTheme { FavoriteBetsRoute(model, {}, {}, {}) }
         }

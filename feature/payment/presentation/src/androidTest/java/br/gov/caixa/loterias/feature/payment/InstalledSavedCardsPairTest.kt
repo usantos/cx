@@ -1,35 +1,42 @@
 package br.gov.caixa.loterias.feature.payment
 
-import androidx.compose.ui.test.*
-import org.junit.Assert.*
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.height
 import androidx.compose.ui.test.junit4.createComposeRule
-import br.gov.caixa.loterias.core.common.result.AppResult
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
+import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
-import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
-import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
-import java.time.Clock
-import kotlinx.coroutines.Dispatchers
-import org.junit.Rule
-import org.junit.Test
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentDataRoute
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
 import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentViewModel
+import java.time.Clock
+import kotlinx.coroutines.Dispatchers
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
 
 /** Um cartão Mercado Pago, com alternativa para bandeira desconhecida; todos os campos do cartão são inventados. */
 class InstalledSavedCardsPairTest {
     @get:Rule val compose = createComposeRule()
-    private val card = SavedPaymentCard("CONTROLLED-SAVED-CARD", 1, "000000", "0000", 3, 2030,
-        3, "CONTROLLED-UNKNOWN", "CONTROLLED")
+    private val card = SavedPaymentCard(
+        "CONTROLLED-SAVED-CARD", 1, "000000", "0000", 3, 2030,
+        3, "CONTROLLED-UNKNOWN", "CONTROLLED"
+    )
 
     @Test fun installedSingleCardCaptureNeverDeletesOrSubmits() {
         show()
@@ -71,23 +78,30 @@ class InstalledSavedCardsPairTest {
     }
 
     private fun show() {
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember {
-                PaymentViewModel(mode = PaymentMode.CARDS,
+                PaymentViewModel(
+                    mode = PaymentMode.CARDS,
                     getMethods = GetPaymentMethodsUseCase { AppResult.Success(listOf(PaymentMethod(1, "Mercado Pago"))) },
-                    getCards = GetSavedCardsUseCase { check(it == 1L); AppResult.Success(listOf(card)) },
+                    getCards = GetSavedCardsUseCase {
+                        check(it == 1L)
+                        AppResult.Success(listOf(card))
+                    },
                     deleteCard = DeleteSavedCardUseCase { _, _ -> error("No saved-card deletion authorized") },
                     generatePixCharge = GeneratePixChargeUseCase { error("No financial submission authorized") },
                     getPurchaseProgress = GetPurchaseProgressUseCase { error("No financial polling authorized") },
                     validateDam = ValidateDamUseCase { error("No purchase validation authorized") },
                     getCurrentCart = GetCurrentCartUseCase { error("No cart access required") },
                     recordRecentPurchase = RecordRecentPurchaseUseCase { error("No purchase completion authorized") },
-                    clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate))
+                    clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
+                )
             }
             LoteriasCaixaDSTheme(darkTheme = false) {
-                PaymentDataRoute(PaymentMode.CARDS, model, onBack = {}, onHelp = {}, onPix = {},
+                PaymentDataRoute(
+                    PaymentMode.CARDS, model, onBack = {}, onHelp = {}, onPix = {},
                     onAddCard = { error("No card creation authorized") }, onOpenCard = {}, onApproved = {},
-                    onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {})
+                    onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {}
+                )
             }
         }
     }

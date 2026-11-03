@@ -41,7 +41,7 @@ def check(root=ROOT):
     spec=importlib.util.spec_from_file_location('simlo_robot_ids',module_path)
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
     errors+=mod.validar(package,root)
-    sources=list((root/'feature').glob('*/presentation/src/main/**/*.kt'))+list((root/'core/design-system').glob('src/main/**/*.kt'))
+    sources=mod.fontes_android(root)
     for p in sources:
         rel=p.relative_to(root).as_posix()
         if rel in PROTECTED:continue

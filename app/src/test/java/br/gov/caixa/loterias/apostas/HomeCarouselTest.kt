@@ -8,7 +8,6 @@ import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailabili
 import br.gov.caixa.loterias.feature.home.presentation.components.carouselCardScale
 import br.gov.caixa.loterias.feature.home.presentation.components.infiniteCarouselInitialPage
 import br.gov.caixa.loterias.feature.home.presentation.components.loopedCarouselIndex
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.home.presentation.mapper.shouldShowPoolButton
 import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
@@ -51,8 +50,8 @@ class HomeCarouselTest {
             games = listOf(
                 game(2, "Mega-Sena", "MEGA_SENA"),
                 game(1502, "Instantânea", "INSTANTANEA"),
-                game(999, "Desconhecida", "UNKNOWN"),
-            ),
+                game(999, "Desconhecida", "UNKNOWN")
+            )
         )
 
         val withoutCombos = parameters.toHomeLotteries(hasCombos = false)
@@ -63,7 +62,7 @@ class HomeCarouselTest {
         val withCombos = parameters.toHomeLotteries(hasCombos = true)
         assertEquals(
             listOf(HomeLotteryKind.LOTTERY, HomeLotteryKind.INSTANT, HomeLotteryKind.COMBO),
-            withCombos.map(HomeLottery::kind),
+            withCombos.map(HomeLottery::kind)
         )
         assertEquals("Combo", withCombos.last().name)
     }
@@ -74,7 +73,7 @@ class HomeCarouselTest {
             dailyLimit = BigDecimal.TEN,
             minimumCartAmount = BigDecimal.TEN,
             maximumCartBets = 10,
-            games = listOf(game(0, "Combo", "COMBO")),
+            games = listOf(game(0, "Combo", "COMBO"))
         )
 
         assertEquals(1, parameters.toHomeLotteries(hasCombos = true).size)
@@ -90,7 +89,7 @@ class HomeCarouselTest {
         assertEquals(false, shouldShowPoolButton(false, available, mega))
         assertEquals(
             false,
-            shouldShowPoolButton(true, available.copy(availablePoolModalities = emptyList()), mega),
+            shouldShowPoolButton(true, available.copy(availablePoolModalities = emptyList()), mega)
         )
         // PrincipalActivity do legado mantém a venda de bolões independente do estado do concurso selecionado.
         assertEquals(true, shouldShowPoolButton(true, available, mega.copy(open = false)))
@@ -101,11 +100,11 @@ class HomeCarouselTest {
     @Test
     fun `pool availability also matches normalized modality code`() {
         val parameters = parametersWithPoolAvailability().copy(
-            availablePoolModalities = listOf(PoolModalityAvailability(0, "MEGA_SENA", "NORMAL")),
+            availablePoolModalities = listOf(PoolModalityAvailability(0, "MEGA_SENA", "NORMAL"))
         )
         assertEquals(
             true,
-            shouldShowPoolButton(true, parameters, parameters.toHomeLotteries(false).single()),
+            shouldShowPoolButton(true, parameters, parameters.toHomeLotteries(false).single())
         )
     }
 
@@ -114,7 +113,7 @@ class HomeCarouselTest {
         minimumCartAmount = BigDecimal.TEN,
         maximumCartBets = 10,
         games = listOf(game(2, "Mega-Sena", "MEGA_SENA")),
-        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL")),
+        availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
     )
 
     private fun game(id: Int, name: String, code: String) = LotteryGameParameters(
@@ -126,6 +125,6 @@ class HomeCarouselTest {
         maximumSelection = 20,
         maximumSurprises = 15,
         recurringOptions = emptyList(),
-        prices = emptyList(),
+        prices = emptyList()
     )
 }

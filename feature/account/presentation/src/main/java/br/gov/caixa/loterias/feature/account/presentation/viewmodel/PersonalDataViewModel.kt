@@ -36,6 +36,7 @@ class PersonalDataViewModel(
     },
     private val deferInitialLoad: Boolean = false,
     private val isSessionCurrent: () -> Boolean = { true },
+    private val canStartWrite: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<PersonalDataUiState, PersonalDataAction>(
         PersonalDataUiState(loading = !deferInitialLoad, awaitingInitialProfile = true),
@@ -112,7 +113,7 @@ class PersonalDataViewModel(
     fun dismissError() = mutableState.dispatch(PersonalDataAction.ErrorDismissed)
 
     fun recalculateLimit() = viewModelScope.launch(dispatchers.io) {
-        if (!isSessionCurrent()) return@launch
+        if (!canStartWrite() || !isSessionCurrent()) return@launch
         mutableState.dispatch(PersonalDataAction.LimitRecalculationStarted)
         val result = recalculateAuthorizedLimit()
         if (!isSessionCurrent()) return@launch
@@ -134,7 +135,7 @@ class PersonalDataViewModel(
 
     fun submit() {
         val task = synchronized(mutableState) {
-            if (!isSessionCurrent() || submissionJob?.isCompleted == false ||
+            if (!canStartWrite() || !isSessionCurrent() || submissionJob?.isCompleted == false ||
                 state.value.loading || state.value.saving || state.value.saved
             ) {
                 return
@@ -155,16 +156,24 @@ class PersonalDataViewModel(
                     dailyLimit = limit,
                     acceptsNotifications = current.acceptsNotifications
                 )
-                if (!isSessionCurrent()) return@launch
-                val result = updatePersonalData(update, original)
-                if (!isSessionCurrent()) return@launch
-                when (result) {
-                    is AppResult.Success -> mutableState.dispatch(PersonalDataAction.Submitted)
-                    is AppResult.Failure -> mutableState.dispatch(PersonalDataAction.SubmitFailed(result.error.userMessage()))
-                }
+                updateProfile(update, original)
             }.also { submissionJob = it }
         }
         task.start()
+    }
+
+    private suspend fun updateProfile(update: PersonalDataUpdate, original: AccountProfile) {
+        if (!isSessionCurrent()) return
+        if (!canStartWrite()) {
+            mutableState.dispatch(PersonalDataAction.SubmitCancelled)
+            return
+        }
+        val result = updatePersonalData(update, original)
+        if (!isSessionCurrent()) return
+        when (result) {
+            is AppResult.Success -> mutableState.dispatch(PersonalDataAction.Submitted)
+            is AppResult.Failure -> mutableState.dispatch(PersonalDataAction.SubmitFailed(result.error.userMessage()))
+        }
     }
 
     private fun lookupZipCode(zipCode: String, requestVersion: Long) = viewModelScope.launch(dispatchers.io) {
@@ -199,7 +208,7 @@ class PersonalDataViewModel(
     }
 }
 
-internal fun parseBrazilianCurrency(value: String): BigDecimal? = runCatching {
+fun parseBrazilianCurrency(value: String): BigDecimal? = runCatching {
     val normalized = value.trim()
         .removePrefix("R$")
         .replace(".", "")
@@ -208,7 +217,7 @@ internal fun parseBrazilianCurrency(value: String): BigDecimal? = runCatching {
     normalized.takeIf(String::isNotBlank)?.toBigDecimal()
 }.getOrNull()
 
-internal fun formatAccountCurrency(value: BigDecimal): String = NumberFormat
+fun formatAccountCurrency(value: BigDecimal): String = NumberFormat
     .getCurrencyInstance(Locale.forLanguageTag("pt-BR"))
     .format(value)
     .replace('\u00A0', ' ')

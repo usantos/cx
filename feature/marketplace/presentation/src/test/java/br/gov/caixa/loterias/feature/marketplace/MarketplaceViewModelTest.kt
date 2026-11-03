@@ -1,28 +1,31 @@
 package br.gov.caixa.loterias.feature.marketplace
 
 import androidx.lifecycle.ViewModelStore
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
 import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.SearchMarketplace
-import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
-import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailersUseCase
+import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceAction
+import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
+import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailersUseCase
+import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import java.math.BigDecimal
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,9 +36,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceAction
-import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
-import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MarketplaceViewModelTest {
@@ -59,7 +59,7 @@ class MarketplaceViewModelTest {
         estimatedPrize = "1000000",
         regularSharePriceWithFee = BigDecimal.TEN,
         serviceFeePerShare = BigDecimal("2.50"),
-        lastSharePriceWithFeeValue = BigDecimal("12.50"),
+        lastSharePriceWithFeeValue = BigDecimal("12.50")
     )
 
     @Test
@@ -70,26 +70,47 @@ class MarketplaceViewModelTest {
             val next = when (filter.searchArea) {
                 br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY ->
                     if (page == 1) br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE else null
+
                 br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE ->
                     br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL
+
                 else -> null
             }
-            MarketplacePage(listOf(pool.copy(code = "${filter.searchArea}-$page")), page,
-                if (filter.searchArea == br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY) 1 else 0, 1, next)
+            MarketplacePage(
+                listOf(pool.copy(code = "${filter.searchArea}-$page")),
+                page,
+                if (filter.searchArea ==
+                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                ) {
+                    1
+                } else {
+                    0
+                },
+                1,
+                next
+            )
         }
-        val viewModel = viewModel(repository, filter = MarketplaceFilter.empty().withSearchArea(
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY))
+        val viewModel =
+            viewModel(
+                repository,
+                filter = MarketplaceFilter.empty().withSearchArea(
+                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                )
+            )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         repeat(3) {
             viewModel.loadMore()
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         }
-        assertEquals(listOf(
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 0,
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 1,
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE to 0,
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL to 0,
-        ), calls)
+        assertEquals(
+            listOf(
+                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 0,
+                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 1,
+                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE to 0,
+                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL to 0
+            ),
+            calls
+        )
         assertEquals(4, viewModel.state.value.pools.size)
         assertFalse(viewModel.state.value.canLoadMore)
     }
@@ -100,11 +121,27 @@ class MarketplaceViewModelTest {
         val repository = MarketplaceRepository { filter, page ->
             calls += page
             val area = requireNotNull(filter.searchArea)
-            MarketplacePage(if (area == br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL) listOf(pool) else emptyList(),
-                0, 0, 1, area.next())
+            MarketplacePage(
+                if (area ==
+                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL
+                ) {
+                    listOf(pool)
+                } else {
+                    emptyList()
+                },
+                0,
+                0,
+                1,
+                area.next()
+            )
         }
-        val viewModel = viewModel(repository, filter = MarketplaceFilter.empty().withSearchArea(
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY))
+        val viewModel =
+            viewModel(
+                repository,
+                filter = MarketplaceFilter.empty().withSearchArea(
+                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                )
+            )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(listOf(0, 0, 0), calls)
         assertEquals(listOf(pool), viewModel.state.value.pools)
@@ -125,7 +162,7 @@ class MarketplaceViewModelTest {
         val game = br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters(
             br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
             4100, "2026-12-31", 60, 6, 20, 1, emptyList(), emptyList(),
-            estimatedPrize = BigDecimal("7654321"),
+            estimatedPrize = BigDecimal("7654321")
         )
         val vm = MarketplaceViewModel(
             SearchMarketplace(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) }),
@@ -135,9 +172,10 @@ class MarketplaceViewModelTest {
             SetRetailerFavoriteUseCase { _, _ -> AppResult.Success(Unit) },
             FixedCoroutineDispatchers(dispatcherRule.dispatcher),
             getBettingParameters = br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase {
-                AppResult.Success(br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters(
-                    BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game)))
-            },
+                AppResult.Success(
+                    br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game))
+                )
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(4100, vm.state.value.contestHeader?.contestNumber)
@@ -177,7 +215,10 @@ class MarketplaceViewModelTest {
         val viewModel = viewModel(repository)
 
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals("Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.", viewModel.state.value.errorMessage)
+        assertEquals(
+            "Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.",
+            viewModel.state.value.errorMessage
+        )
         fails = false
         viewModel.onAction(MarketplaceAction.Retry)
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -189,10 +230,12 @@ class MarketplaceViewModelTest {
     @Test
     fun `does not load more without another page`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
-        val viewModel = viewModel(MarketplaceRepository { _, _ ->
-            calls++
-            MarketplacePage(emptyList(), 0, 0, 0)
-        })
+        val viewModel = viewModel(
+            MarketplaceRepository { _, _ ->
+                calls++
+                MarketplacePage(emptyList(), 0, 0, 0)
+            }
+        )
         viewModel.loadMore()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.loadMore()
@@ -225,7 +268,7 @@ class MarketplaceViewModelTest {
             favorite = SetRetailerFavoriteUseCase { id, favorite ->
                 calls += id to favorite
                 AppResult.Success(Unit)
-            },
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -246,7 +289,7 @@ class MarketplaceViewModelTest {
     fun `favorite failure exposes legacy error and can be dismissed`() = runTest(dispatcherRule.dispatcher) {
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
-            favorite = SetRetailerFavoriteUseCase { _, _ -> AppResult.Failure(AppError.Network) },
+            favorite = SetRetailerFavoriteUseCase { _, _ -> AppResult.Failure(AppError.Network) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.requestFavorite("B1")
@@ -266,7 +309,7 @@ class MarketplaceViewModelTest {
             add = AddMarketplacePoolToCartUseCase { order ->
                 received = order
                 AppResult.Success(cartWithReservation())
-            },
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.increaseShares("B1")
@@ -289,9 +332,12 @@ class MarketplaceViewModelTest {
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
             add = AddMarketplacePoolToCartUseCase {
-                if (missingReservation) AppResult.Success(ShoppingCart(1, BigDecimal.TEN, emptyList()))
-                else AppResult.Failure(AppError.Network)
-            },
+                if (missingReservation) {
+                    AppResult.Success(ShoppingCart(1, BigDecimal.TEN, emptyList()))
+                } else {
+                    AppResult.Failure(AppError.Network)
+                }
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.addToCart("B1")
@@ -309,7 +355,7 @@ class MarketplaceViewModelTest {
     fun `lottery filter is exposed and invalid retailer is ignored`() = runTest(dispatcherRule.dispatcher) {
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool.copy(lotteryId = 0)), 0, 0, 1) },
-            filter = MarketplaceFilter("", "", null, null, null, null, "Mega-Sena", "", emptyList(), emptyList()),
+            filter = MarketplaceFilter("", "", null, null, null, null, "Mega-Sena", "", emptyList(), emptyList())
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.requestFavorite("B1")
@@ -323,7 +369,7 @@ class MarketplaceViewModelTest {
         val retailer = retailer()
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(emptyList(), 0, 0, 0) },
-            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer)) },
+            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer)) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -338,7 +384,7 @@ class MarketplaceViewModelTest {
         var favorites = emptyList<Retailer>()
         val model = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool.copy(favoriteLottery = false)), 0, 0, 1) },
-            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(favorites) },
+            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(favorites) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         model.onAction(MarketplaceAction.IncreaseShares("B1"))
@@ -363,7 +409,7 @@ class MarketplaceViewModelTest {
                 calls += id to favorite
                 AppResult.Success(Unit)
             },
-            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) },
+            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -384,7 +430,7 @@ class MarketplaceViewModelTest {
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(emptyList(), 0, 0, 0) },
             favorite = SetRetailerFavoriteUseCase { _, _ -> AppResult.Failure(AppError.Network) },
-            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) },
+            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -403,7 +449,7 @@ class MarketplaceViewModelTest {
     fun `favorite retailer loading failure exposes its own state`() = runTest(dispatcherRule.dispatcher) {
         val viewModel = viewModel(
             MarketplaceRepository { _, _ -> MarketplacePage(emptyList(), 0, 0, 0) },
-            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Failure(AppError.Network) },
+            favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Failure(AppError.Network) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -423,7 +469,7 @@ class MarketplaceViewModelTest {
             favoriteRetailers = GetFavoriteRetailersUseCase {
                 favorites++
                 AppResult.Success(emptyList())
-            },
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.observeChildRevision(7)
@@ -456,7 +502,10 @@ class MarketplaceViewModelTest {
             val viewModel = viewModel(
                 MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool.copy(favoriteLottery = true)), 0, 0, 1) },
                 favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) },
-                favorite = SetRetailerFavoriteUseCase { _, _ -> calls++; result.await() },
+                favorite = SetRetailerFavoriteUseCase { _, _ ->
+                    calls++
+                    result.await()
+                }
             )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             viewModel.requestFavoriteRetailerRemoval(10)
@@ -480,11 +529,14 @@ class MarketplaceViewModelTest {
     fun `failed area append retains pools and retry resets the original search area`() = runTest(dispatcherRule.dispatcher) {
         val calls = mutableListOf<Pair<MarketplaceSearchArea?, Int>>()
         var failAppend = true
-        val model = viewModel(MarketplaceRepository { filter, page ->
-            calls += filter.searchArea to page
-            if (filter.searchArea == MarketplaceSearchArea.STATE && failAppend) error("offline")
-            MarketplacePage(listOf(pool), 0, 0, 2, MarketplaceSearchArea.STATE)
-        }, filter = MarketplaceFilter.empty().withSearchArea(MarketplaceSearchArea.MUNICIPALITY))
+        val model = viewModel(
+            MarketplaceRepository { filter, page ->
+                calls += filter.searchArea to page
+                if (filter.searchArea == MarketplaceSearchArea.STATE && failAppend) error("offline")
+                MarketplacePage(listOf(pool), 0, 0, 2, MarketplaceSearchArea.STATE)
+            },
+            filter = MarketplaceFilter.empty().withSearchArea(MarketplaceSearchArea.MUNICIPALITY)
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         model.loadMore()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -498,22 +550,35 @@ class MarketplaceViewModelTest {
         assertTrue(model.state.value.isLoading)
         assertNull(model.state.value.errorMessage)
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(listOf(
-            MarketplaceSearchArea.MUNICIPALITY to 0,
-            MarketplaceSearchArea.STATE to 0,
-            MarketplaceSearchArea.MUNICIPALITY to 0,
-        ), calls)
+        assertEquals(
+            listOf(
+                MarketplaceSearchArea.MUNICIPALITY to 0,
+                MarketplaceSearchArea.STATE to 0,
+                MarketplaceSearchArea.MUNICIPALITY to 0
+            ),
+            calls
+        )
         assertEquals(listOf(pool), model.state.value.pools)
     }
 
     @Test
     fun `initial requests keep their order and retry does not reload favorite retailers`() = runTest(dispatcherRule.dispatcher) {
         val calls = mutableListOf<String>()
-        val model = viewModel(MarketplaceRepository { _, _ ->
-            calls += "pools"; MarketplacePage(listOf(pool), 0, 0, 1)
-        }, filter = MarketplaceFilter.forModality(2, 1),
-            favoriteRetailers = GetFavoriteRetailersUseCase { calls += "retailers"; AppResult.Success(emptyList()) },
-            parameters = GetBettingParametersUseCase { calls += "header"; AppResult.Failure(AppError.Network) })
+        val model = viewModel(
+            MarketplaceRepository { _, _ ->
+                calls += "pools"
+                MarketplacePage(listOf(pool), 0, 0, 1)
+            },
+            filter = MarketplaceFilter.forModality(2, 1),
+            favoriteRetailers = GetFavoriteRetailersUseCase {
+                calls += "retailers"
+                AppResult.Success(emptyList())
+            },
+            parameters = GetBettingParametersUseCase {
+                calls += "header"
+                AppResult.Failure(AppError.Network)
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(listOf("pools", "retailers", "header"), calls)
         model.retry()
@@ -529,22 +594,45 @@ class MarketplaceViewModelTest {
         val regular = headerGame("NORMAL", 4000)
         val special = headerGame("eSpEcIaL", 5000)
         var response: AppResult<BettingParameters> = AppResult.Success(
-            BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-                listOf(regular, special.copy(modality = LotteryModality(3, "Lotofácil", "LOTOFACIL")), special)))
-        val model = viewModel(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
-            filter = MarketplaceFilter.forModality(2, 2), parameters = GetBettingParametersUseCase { response })
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                listOf(regular, special.copy(modality = LotteryModality(3, "Lotofácil", "LOTOFACIL")), special)
+            )
+        )
+        val model = viewModel(
+            MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
+            filter = MarketplaceFilter.forModality(2, 2),
+            parameters = GetBettingParametersUseCase { response }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(5000, model.state.value.contestHeader?.contestNumber)
-        response = AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            listOf(special.copy(contestType = "E", contestNumber = 5001))))
-        model.retry(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        response = AppResult.Success(
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                listOf(special.copy(contestType = "E", contestNumber = 5001))
+            )
+        )
+        model.retry()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(5001, model.state.value.contestHeader?.contestNumber)
-        response = AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            listOf(special.copy(contestNumber = 0))))
-        model.retry(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        response = AppResult.Success(
+            BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                listOf(special.copy(contestNumber = 0))
+            )
+        )
+        model.retry()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNull(model.state.value.contestHeader)
         response = AppResult.Failure(AppError.Network)
-        model.retry(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        model.retry()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNull(model.state.value.contestHeader)
         assertNull(model.state.value.errorMessage)
     }
@@ -553,12 +641,17 @@ class MarketplaceViewModelTest {
     fun `retailer filter and missing modality load label metadata without a contest header`() = runTest(dispatcherRule.dispatcher) {
         var parameterCalls = 0
         for (filter in listOf(MarketplaceFilter.empty(), MarketplaceFilter.forModality(2, 1).withLottery("0010"))) {
-            val model = viewModel(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
-                filter = filter, parameters = GetBettingParametersUseCase {
-                    parameterCalls++; AppResult.Failure(AppError.Network)
-                })
+            val model = viewModel(
+                MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
+                filter = filter,
+                parameters = GetBettingParametersUseCase {
+                    parameterCalls++
+                    AppResult.Failure(AppError.Network)
+                }
+            )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            model.retry(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            model.retry()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertNull(model.state.value.contestHeader)
             assertEquals(listOf(pool), model.state.value.pools)
         }
@@ -569,13 +662,20 @@ class MarketplaceViewModelTest {
     fun `pool favorite and retailer removal share the same pending retailer lock`() = runTest(dispatcherRule.dispatcher) {
         val pending = CompletableDeferred<AppResult<Unit>>()
         val calls = mutableListOf<Pair<Long, Boolean>>()
-        val model = viewModel(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
+        val model = viewModel(
+            MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
             favoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(listOf(retailer())) },
-            favorite = SetRetailerFavoriteUseCase { id, favorite -> calls += id to favorite; pending.await() })
+            favorite = SetRetailerFavoriteUseCase { id, favorite ->
+                calls += id to favorite
+                pending.await()
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        model.requestFavorite("B1"); model.confirmFavorite()
+        model.requestFavorite("B1")
+        model.confirmFavorite()
         dispatcherRule.dispatcher.scheduler.runCurrent()
-        model.requestFavorite("B1"); model.requestFavoriteRetailerRemoval(10)
+        model.requestFavorite("B1")
+        model.requestFavoriteRetailerRemoval(10)
         assertNull(model.state.value.pendingFavoritePoolCode)
         assertNull(model.state.value.pendingFavoriteRetailerRemoval)
         assertEquals(setOf(10L), model.state.value.updatingFavoriteLotteryIds)
@@ -583,7 +683,8 @@ class MarketplaceViewModelTest {
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(model.state.value.pools.single().favoriteLottery)
         assertEquals(listOf(retailer()), model.state.value.favoriteRetailers)
-        model.requestFavoriteRetailerRemoval(10); model.confirmFavoriteRetailerRemoval()
+        model.requestFavoriteRetailerRemoval(10)
+        model.confirmFavoriteRetailerRemoval()
         model.requestFavorite("B1")
         assertNull(model.state.value.pendingFavoritePoolCode)
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -596,12 +697,20 @@ class MarketplaceViewModelTest {
     fun `cart submission freezes shares until reservation and clears only the purchased selection`() = runTest(dispatcherRule.dispatcher) {
         val pending = CompletableDeferred<AppResult<ShoppingCart>>()
         val orders = mutableListOf<MarketplacePoolOrder>()
-        val model = viewModel(MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool, pool.copy(code = "B2")), 0, 0, 2) },
-            add = AddMarketplacePoolToCartUseCase { orders += it; pending.await() })
+        val model = viewModel(
+            MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool, pool.copy(code = "B2")), 0, 0, 2) },
+            add = AddMarketplacePoolToCartUseCase {
+                orders += it
+                pending.await()
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        model.increaseShares("B1"); model.increaseShares("B2")
+        model.increaseShares("B1")
+        model.increaseShares("B2")
         model.addToCart("B1")
-        model.increaseShares("B1"); model.decreaseShares("B1"); model.addToCart("B1")
+        model.increaseShares("B1")
+        model.decreaseShares("B1")
+        model.addToCart("B1")
         dispatcherRule.dispatcher.scheduler.runCurrent()
         assertEquals(2, model.state.value.selectedShares["B1"])
         assertEquals(setOf("B1"), model.state.value.addingPoolCodes)
@@ -623,26 +732,52 @@ class MarketplaceViewModelTest {
         val cancelled = mutableListOf<String>()
         var searches = 0
         suspend fun waitForResult(name: String) {
-            try { pending.await() } finally { cancelled += name }
+            try {
+                pending.await()
+            } finally {
+                cancelled += name
+            }
         }
-        val model = viewModel(MarketplaceRepository { _, _ ->
-            if (searches++ > 0) waitForResult("search")
-            MarketplacePage(listOf(pool), 0, 0, 1)
-        }, filter = MarketplaceFilter.forModality(2, 1),
-            favoriteRetailers = GetFavoriteRetailersUseCase { waitForResult("retailers"); AppResult.Success(emptyList()) },
-            parameters = GetBettingParametersUseCase { waitForResult("header"); AppResult.Failure(AppError.Network) },
-            favorite = SetRetailerFavoriteUseCase { _, _ -> waitForResult("favorite"); AppResult.Success(Unit) },
-            add = AddMarketplacePoolToCartUseCase { waitForResult("cart"); AppResult.Success(cartWithReservation()) })
+        val model = viewModel(
+            MarketplaceRepository { _, _ ->
+                if (searches++ > 0) waitForResult("search")
+                MarketplacePage(listOf(pool), 0, 0, 1)
+            },
+            filter = MarketplaceFilter.forModality(2, 1),
+            favoriteRetailers = GetFavoriteRetailersUseCase {
+                waitForResult("retailers")
+                AppResult.Success(emptyList())
+            },
+            parameters = GetBettingParametersUseCase {
+                waitForResult("header")
+                AppResult.Failure(AppError.Network)
+            },
+            favorite = SetRetailerFavoriteUseCase { _, _ ->
+                waitForResult("favorite")
+                AppResult.Success(Unit)
+            },
+            add = AddMarketplacePoolToCartUseCase {
+                waitForResult("cart")
+                AppResult.Success(cartWithReservation())
+            }
+        )
         val store = ViewModelStore().apply { put("marketplace", model) }
         dispatcherRule.dispatcher.scheduler.runCurrent()
-        model.requestFavorite("B1"); model.confirmFavorite(); model.addToCart("B1"); model.retry()
+        model.requestFavorite("B1")
+        model.confirmFavorite()
+        model.addToCart("B1")
+        model.retry()
         dispatcherRule.dispatcher.scheduler.runCurrent()
         assertEquals(listOf("header"), cancelled)
         val snapshot = model.state.value
-        store.clear(); dispatcherRule.dispatcher.scheduler.runCurrent()
-        assertEquals(mapOf("search" to 1, "retailers" to 1, "header" to 2, "favorite" to 1, "cart" to 1),
-            cancelled.groupingBy { it }.eachCount())
-        pending.complete(Unit); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        store.clear()
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        assertEquals(
+            mapOf("search" to 1, "retailers" to 1, "header" to 2, "favorite" to 1, "cart" to 1),
+            cancelled.groupingBy { it }.eachCount()
+        )
+        pending.complete(Unit)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(snapshot, model.state.value)
     }
 
@@ -671,6 +806,30 @@ class MarketplaceViewModelTest {
         return viewModel
     }
 
+    @Test fun `disabled marketplace list blocks new cart and favorite mutations`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var writes = 0
+        val vm = viewModel(
+            MarketplaceRepository { _, _ -> MarketplacePage(listOf(pool), 0, 0, 1) },
+            add = AddMarketplacePoolToCartUseCase {
+                writes++
+                AppResult.Success(cartWithReservation())
+            },
+            favorite = SetRetailerFavoriteUseCase { _, _ ->
+                writes++
+                AppResult.Success(Unit)
+            },
+            canStartOperation = { enabled }
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestFavorite(pool.code)
+        enabled = false
+        vm.confirmFavorite()
+        vm.addToCart(pool.code)
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, writes)
+    }
+
     private fun viewModel(
         repository: MarketplaceRepository,
         add: AddMarketplacePoolToCartUseCase = AddMarketplacePoolToCartUseCase {
@@ -685,6 +844,7 @@ class MarketplaceViewModelTest {
         },
         parameters: GetBettingParametersUseCase? = null,
         initialTab: MarketplaceTab = MarketplaceTab.POOLS,
+        canStartOperation: () -> Boolean = { true },
     ) = MarketplaceViewModel(
         SearchMarketplace(repository),
         filter,
@@ -693,7 +853,8 @@ class MarketplaceViewModelTest {
         favorite,
         FixedCoroutineDispatchers(dispatcherRule.dispatcher),
         parameters,
-        initialTab = initialTab
+        initialTab = initialTab,
+        canStartOperation = canStartOperation
     )
 
     private fun cartWithReservation() = ShoppingCart(

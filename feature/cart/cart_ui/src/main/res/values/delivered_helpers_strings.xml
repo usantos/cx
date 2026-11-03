@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_concurso">"Concurso"</string>
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+
+        <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+
+
+
+
+
+
+        <string name="ui_concurso_1_s_32ee4c">"Concurso %1$s"</string>
+
+
+        <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+        <string name="ui_excluir_aposta_86e1ac" formatted="false">"Excluir aposta"</string>
+
+        <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+        <string name="ui_surpresinha_34302e" formatted="false">"Surpresinha"</string>
+
+        <string name="ui_trevos_1_s_946f5c">"Trevos: %1$s"</string>
+
+
+
+
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+    <string name="ui_voltar_ao_inicio_372787" formatted="false">"Voltar ao início"</string>
+</resources>

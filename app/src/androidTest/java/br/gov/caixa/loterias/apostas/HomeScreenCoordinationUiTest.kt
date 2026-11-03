@@ -31,6 +31,8 @@ import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampai
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaignSettings
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
@@ -46,7 +48,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingAc
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRoute
@@ -220,7 +221,11 @@ class HomeScreenCoordinationUiTest {
                 }
             }
         }
-        if (restoration != null) restoration.setContent(content) else compose.setContent(content)
+        if (restoration != null) {
+            restoration.setContent { InstalledFeatureTestContent(content) }
+        } else {
+            compose.setFeatureContent(content)
+        }
         compose.waitUntil(5_000) { fixture.viewModel.state.value.parameters != null && !fixture.viewModel.state.value.loading }
         compose.waitForIdle()
     }

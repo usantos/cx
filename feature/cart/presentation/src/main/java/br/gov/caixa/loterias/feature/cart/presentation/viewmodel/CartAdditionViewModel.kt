@@ -25,7 +25,7 @@ class CartAdditionViewModel(
     drawDate: String = "",
     amount: BigDecimal = BigDecimal.ZERO,
     minimumCartAmount: BigDecimal = BigDecimal.ZERO,
-    private val ticker: CountdownTicker = CountdownTicker { delay(1_000) }
+    private val ticker: CountdownTicker = CountdownTicker { delay(1_000) },
 ) : ViewModel() {
     private val expiration = reservationExpirationInstant(expiresAt)
     private val poolSeconds = if (kind == CartAdditionKind.POOL_SHARE) reservationRemainingSeconds(expiresAt, serverTime.now()) else 0
@@ -63,7 +63,7 @@ class CartAdditionViewModel(
     }
 }
 
-internal fun formatRemainingTime(totalSeconds: Int): String {
+fun formatRemainingTime(totalSeconds: Int): String {
     val safeSeconds = totalSeconds.coerceAtLeast(0)
     return "%02d:%02d".format(safeSeconds / 60, safeSeconds % 60)
 }

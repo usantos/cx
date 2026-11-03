@@ -27,7 +27,8 @@ internal class CartContentsCoordinator(
     private val reservationSessionCurrent: () -> Boolean,
     private val isCartRequestRunning: () -> Boolean,
     private val setCartRequestRunning: (Boolean) -> Unit,
-    private val errorMessage: (AppError) -> String
+    private val errorMessage: (AppError) -> String,
+    private val canStartOperation: () -> Boolean,
 ) {
     private var cartRequestRunning: Boolean
         get() = isCartRequestRunning()
@@ -55,12 +56,17 @@ internal class CartContentsCoordinator(
     fun dismissConfirmation() = mutableState.dispatch(CartContentsAction.ConfirmationDismissed)
 
     fun confirmRemoval() {
-        if (mutableState.value.loading) return
+        if (mutableState.value.loading || cartRequestRunning) return
         val item = mutableState.value.pendingRemoval ?: return
         cartRequestRunning = true
-        mutableState.dispatch(CartContentsAction.RemovalStarted)
+        mutableState.dispatch(CartContentsAction.PreparationStarted)
         viewModelScope.launch(dispatchers.io) {
             try {
+                if (!canStartOperation() || !reservationSessionCurrent()) {
+                    mutableState.dispatch(CartContentsAction.LoadFinished)
+                    return@launch
+                }
+                mutableState.dispatch(CartContentsAction.RemovalStarted)
                 applyResult(removeCartItem(item))
             } finally {
                 cartRequestRunning = false
@@ -69,11 +75,16 @@ internal class CartContentsCoordinator(
     }
 
     fun confirmClear() {
-        if (mutableState.value.loading || !mutableState.value.clearConfirmation) return
+        if (mutableState.value.loading || cartRequestRunning || !mutableState.value.clearConfirmation) return
         cartRequestRunning = true
-        mutableState.dispatch(CartContentsAction.ClearStarted)
+        mutableState.dispatch(CartContentsAction.PreparationStarted)
         viewModelScope.launch(dispatchers.io) {
             try {
+                if (!canStartOperation() || !reservationSessionCurrent()) {
+                    mutableState.dispatch(CartContentsAction.LoadFinished)
+                    return@launch
+                }
+                mutableState.dispatch(CartContentsAction.ClearStarted)
                 val result = clearCart()
                 coroutineContext.ensureActive()
                 if (!reservationSessionCurrent()) return@launch

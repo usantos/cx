@@ -43,3 +43,9 @@ dependencies {
     api project(':core:network')
     api project(':feature:support:domain')
 }
+
+dependencies { implementation libs.play.feature.delivery }
+
+dependencies { testImplementation libs.androidx.activity.compose }
+
+dependencies { implementation project(':core:module-delivery') }

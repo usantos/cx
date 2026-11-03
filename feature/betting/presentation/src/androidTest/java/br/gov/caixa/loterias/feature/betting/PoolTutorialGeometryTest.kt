@@ -23,6 +23,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.R
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.tutorialDefinition
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingRoute
@@ -44,7 +45,7 @@ class PoolTutorialGeometryTest {
 
     @Test fun introductionUsesNativeInsideImagePagerAndLowerQuarterButtonConstraints() {
         val vm = BettingFlowViewModel(spec)
-        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
         compose.waitForIdle()
         val viewport = bounds("pool-tutorial-viewport")
         val pager = bounds("pool-tutorial-pager")
@@ -81,7 +82,7 @@ class PoolTutorialGeometryTest {
 
     @Test fun firstIntroIsBoldButReturningIntroUsesRegularQuestionAndNativeTextAppearance() {
         val vm = BettingFlowViewModel(spec)
-        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
         val layouts = mutableListOf<TextLayoutResult>()
         compose.onNodeWithText("Vamos começar", useUnmergedTree = true)
             .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { it(layouts) }
@@ -123,7 +124,7 @@ class PoolTutorialGeometryTest {
 
     @Test fun skipSettlesDirectlyOnFinalInsteadOfPublishingIntermediateAnimationPages() {
         val vm = BettingFlowViewModel(spec)
-        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
         compose.onNodeWithTag("pool-tutorial-skip").performClick()
         compose.waitForIdle()
         compose.runOnIdle { assertEquals("Pular para o final must settle on page 5", 4, vm.state.value.page) }
@@ -137,7 +138,7 @@ class PoolTutorialGeometryTest {
         val vm = BettingFlowViewModel(spec, SetBettingTutorialDismissedUseCase { kind, value -> dismissed += kind to value })
         vm.selectPage(4)
         var completed = 0
-        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, { completed++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, { completed++ }) } }
         compose.waitForIdle()
         val pager = bounds("pool-tutorial-pager")
         val primary = bounds("pool-tutorial-primary")
@@ -158,7 +159,7 @@ class PoolTutorialGeometryTest {
         val vm = BettingFlowViewModel(spec)
         vm.selectPage(4)
         vm.toggleDoNotShowAgain()
-        compose.setContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BettingRoute(vm, {}, {}) } }
         val image = compose.onNodeWithTag("pool-tutorial-checkbox", useUnmergedTree = true).captureToImage().toPixelMap()
         assertEquals("CX ic_base_checkbox_selected fill", Color(0xFF007BFF), image[image.width / 2, image.height / 4])
     }

@@ -1,15 +1,20 @@
 package br.gov.caixa.loterias.apostas.navigation.startup
 
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 
 internal fun mockStartDestination(scenario: MockBackendScenario): String = when (scenario) {
     MockBackendScenario.REGISTRATION_REQUIRED -> "account/register"
+
     MockBackendScenario.TERMS_REQUIRED -> "support/terms-acceptance"
+
     MockBackendScenario.SELF_ASSESSMENT_REQUIRED -> "responsible/start/required"
+
     MockBackendScenario.CART_EXPIRED_POOL -> "cart/current"
+
     MockBackendScenario.PURCHASE_PROCESSING -> "payment/confirmation"
+
     MockBackendScenario.PURCHASE_REJECTED -> "payment/failure"
+
     MockBackendScenario.PURCHASE_RESPONSE_LOST,
     MockBackendScenario.PURCHASE_LOGIN_REQUIRED,
     MockBackendScenario.PURCHASE_TERMS_REQUIRED,

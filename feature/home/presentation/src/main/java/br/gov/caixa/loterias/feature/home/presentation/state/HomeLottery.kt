@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.feature.home.presentation.state
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.Color
 import java.math.BigDecimal
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 
 enum class HomeSpecialBanner { MEGA_THIRTY_YEARS, LOTECA_FATHERS_DAY }
 

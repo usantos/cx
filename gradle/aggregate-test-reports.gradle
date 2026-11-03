@@ -15,10 +15,12 @@ subprojects.each { owner -> evaluationDependsOn(owner.path) }
 def modules = subprojects.findAll { owner ->
     owner.plugins.hasPlugin('com.android.application') ||
             owner.plugins.hasPlugin('com.android.library') ||
+            owner.plugins.hasPlugin('com.android.dynamic-feature') ||
             owner.extensions.findByName('sourceSets')?.findByName('main') != null
 }.collect { owner ->
-    def android = owner.plugins.hasPlugin('com.android.application') || owner.plugins.hasPlugin('com.android.library')
-    def variant = owner.path == ':app' ? 'prdDebug' : 'debug'
+    def android = owner.plugins.hasPlugin('com.android.application') || owner.plugins.hasPlugin('com.android.library') ||
+            owner.plugins.hasPlugin('com.android.dynamic-feature')
+    def variant = owner.path == ':app' || owner.plugins.hasPlugin('com.android.dynamic-feature') ? 'prdDebug' : 'debug'
     def capitalized = variant.capitalize()
     def testName = android ? "test${capitalized}UnitTest" : 'test'
     def suite = owner.tasks.findByName(testName)

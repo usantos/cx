@@ -16,4 +16,5 @@
     <string name="workflow_cart_favoritas">Favoritas</string>
     <string name="workflow_cart_apostas_do_carrinho_favorito_escolhido">Apostas do carrinho favorito escolhido</string>
     <string name="workflow_cart_excluir_aposta">Excluir aposta</string>
+    <string name="workflow_cart_localizacao_indisponivel">Não foi possível verificar sua localização. Suas apostas continuam no carrinho. Tente novamente para confirmar que você está no Brasil.</string>
 </resources>

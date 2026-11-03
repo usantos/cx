@@ -6,7 +6,7 @@ package br.gov.caixa.loterias.feature.retail
 import androidx.compose.runtime.key
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.test.hasSetTextAction
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -27,6 +27,8 @@ import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
@@ -63,13 +65,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 class RetailNavigationGraphUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
     private val requested = mutableListOf<Long>()
     private var syntheticSubmissionEnabled = false
@@ -159,7 +164,7 @@ class RetailNavigationGraphUiTest {
             { error("No payment expected") },
             {}
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, "home") {

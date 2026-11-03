@@ -1,0 +1,61 @@
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.feature.marketplacefilter.ui'
+    compileSdk 36
+    defaultConfig {
+        minSdk 29
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    flavorDimensions 'environment'
+    productFlavors {
+        prd { dimension 'environment' }
+        tqs { dimension 'environment'; isDefault = true }
+        automacao { dimension 'environment' }
+    }
+    buildFeatures { compose = true }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+    testOptions.unitTests.all {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
+}
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    androidTestImplementation project(':feature:marketplace-filter:presentation')
+    implementation libs.androidx.compose.ui.tooling.preview
+
+    implementation project(':app')
+    compileOnly project(':feature:marketplace-filter:presentation')
+    implementation project(':core:design-system')
+    implementation project(':core:domain')
+    implementation project(':core:presentation')
+    implementation project(':feature:marketplace:domain')
+    implementation project(':feature:retail:domain')
+    implementation project(':feature:betting:domain')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.compose.webview
+    implementation libs.kotlinx.coroutines.core
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    testImplementation project(':core:testing')
+    testImplementation project(':core:navigation')
+    testImplementation project(':feature:marketplace-filter:presentation')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation project(':core:testing')
+    debugImplementation libs.androidx.compose.ui.test.manifest
+}

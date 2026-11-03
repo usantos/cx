@@ -21,10 +21,6 @@ data class BetDetailUiState(
     val drawResults: List<br.gov.caixa.loterias.feature.results.domain.model.DrawResult> = emptyList(),
 )
 
-data class RepeatContestOption(
-    val contestType: String,
-    val label: String,
-    val conversionMessage: String = "",
-)
+data class RepeatContestOption(val contestType: String, val label: String, val conversionMessage: String = "")
 
 data class BetReceipt(val bytes: ByteArray, val fileName: String)

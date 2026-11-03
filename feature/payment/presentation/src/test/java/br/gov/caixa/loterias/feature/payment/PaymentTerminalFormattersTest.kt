@@ -2,11 +2,11 @@ package br.gov.caixa.loterias.feature.payment
 
 import androidx.compose.ui.text.font.FontWeight
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.legacyPaymentTextStyle
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.legacyProcessingText
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.legacyPaymentTextStyle
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.legacyProcessingText
 
 class PaymentTerminalFormattersTest {
     @Test fun plainAndEmptyMessagesKeepTheirTextWithoutEmphasis() {
@@ -18,7 +18,11 @@ class PaymentTerminalFormattersTest {
     }
 
     @Test fun eachRecognizedExpressionKeepsItsExactEmphasisRange() {
-        listOf(Triple("Compra EFETIVADA.", 7, 16), Triple("A compra não garante participação", 9, 20), Triple("Veja Minhas Compras", 5, 19)).forEach { (text, start, end) ->
+        listOf(
+            Triple("Compra EFETIVADA.", 7, 16),
+            Triple("A compra não garante participação", 9, 20),
+            Triple("Veja Minhas Compras", 5, 19)
+        ).forEach { (text, start, end) ->
             val actual = legacyProcessingText(text)
             assertEquals(text, actual.text)
             val span = actual.spanStyles.single()

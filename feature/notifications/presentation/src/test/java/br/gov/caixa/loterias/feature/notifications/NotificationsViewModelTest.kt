@@ -39,6 +39,7 @@ import org.junit.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotificationsViewModelTest {
     private val repository = FakeRepository()
+    private var entryEnabled = true
 
     @Before fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
 
@@ -318,6 +319,58 @@ class NotificationsViewModelTest {
         )
     }
 
+    @Test fun `disabled module blocks pending mutation preference and expansion write`() = runTest {
+        val viewModel = viewModel(repository)
+        advanceUntilIdle()
+        val firstMessage = viewModel.state.value.messages.first()
+        viewModel.requestDeleteAll()
+        entryEnabled = false
+        viewModel.confirmDialog()
+        viewModel.togglePreference(NotificationCategory.TIPS_NEWS, true)
+        viewModel.toggleExpanded(firstMessage)
+        advanceUntilIdle()
+        assertEquals(3, repository.messages.size)
+        assertFalse(repository.messages.first().isRead)
+        assertFalse(viewModel.state.value.preferences.last().enabled)
+    }
+
+    @Test fun `disabled module never starts a legacy notifications load`() = runTest {
+        entryEnabled = false
+        val viewModel = viewModel(repository)
+        viewModel.load()
+        advanceUntilIdle()
+        assertEquals(0, repository.loads)
+        assertTrue(viewModel.state.value.messages.isEmpty())
+    }
+
+    @Test fun `started read mutation completes after disabling without another write`() = runTest {
+        val viewModel = viewModel(repository)
+        advanceUntilIdle()
+        val firstMessage = viewModel.state.value.messages.first()
+        val pending = kotlinx.coroutines.CompletableDeferred<Unit>()
+        repository.readBarrier = pending
+        viewModel.toggleExpanded(firstMessage)
+        entryEnabled = false
+        pending.complete(Unit)
+        advanceUntilIdle()
+        assertTrue(repository.messages.first().isRead)
+        assertTrue(viewModel.state.value.messages.first().isRead)
+    }
+
+    @Test fun `queued preference does not start after disabling while accepted preference completes`() = runTest {
+        val viewModel = viewModel(repository)
+        advanceUntilIdle()
+        val pending = kotlinx.coroutines.CompletableDeferred<Unit>()
+        repository.preferenceBarrier = pending
+        viewModel.togglePreference(NotificationCategory.TIPS_NEWS, true)
+        viewModel.togglePreference(NotificationCategory.TIPS_NEWS, false)
+        entryEnabled = false
+        pending.complete(Unit)
+        advanceUntilIdle()
+        assertTrue(viewModel.state.value.preferences.last().enabled)
+        assertEquals(1, repository.preferenceWrites)
+    }
+
     private fun viewModel(repository: FakeRepository): NotificationsViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return NotificationsViewModel(
@@ -328,7 +381,8 @@ class NotificationsViewModelTest {
             MarkAllNotificationsRead(repository),
             GetNotificationPreferences(repository),
             SetNotificationPreference(repository),
-            FixedCoroutineDispatchers(dispatcher)
+            FixedCoroutineDispatchers(dispatcher),
+            isEntryEnabled = { entryEnabled }
         )
     }
 
@@ -340,6 +394,9 @@ class NotificationsViewModelTest {
         )
         private val enabled = mutableSetOf<NotificationCategory>()
         private var allEnabled = false
+        var loads = 0
+        var preferenceWrites = 0
+        var preferenceBarrier: kotlinx.coroutines.CompletableDeferred<Unit>? = null
         var failure: Throwable? = null
         var readBarrier: kotlinx.coroutines.CompletableDeferred<Unit>? = null
         var failPreferenceRead = false
@@ -349,6 +406,7 @@ class NotificationsViewModelTest {
         }
 
         override suspend fun getNotifications(): List<AppNotification> {
+            loads++
             checkFailure()
             return messages.toList()
         }
@@ -389,7 +447,9 @@ class NotificationsViewModelTest {
         }
 
         override suspend fun setPreference(category: NotificationCategory?, enabled: Boolean) {
+            preferenceWrites++
             checkFailure()
+            preferenceBarrier?.await()
             if (category == null) {
                 allEnabled = enabled
             } else if (enabled) {

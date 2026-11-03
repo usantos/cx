@@ -17,6 +17,7 @@ internal sealed interface BetDetailStateAction {
     data object FavoriteValidationStarted : BetDetailFavoriteAction
     data class FavoriteNameRejected(val message: String = messageText("por_favor_insira_o_nome_da_apost_ca54f1")) : BetDetailFavoriteAction
     data object FavoriteSavingStarted : BetDetailFavoriteAction
+    data object FavoritePreparationCancelled : BetDetailFavoriteAction
     data class FavoriteOverwriteRequired(val message: String) : BetDetailFavoriteAction
     data class FavoriteValidationFailed(val message: String) : BetDetailFavoriteAction
     data object FavoriteOverwriteConfirmed : BetDetailFavoriteAction
@@ -31,6 +32,7 @@ internal sealed interface BetDetailStateAction {
     data object CartAdditionDismissed : BetDetailRepeatAction
     data class RepeatSelectionMissing(val message: String = messageText("nao_foi_possivel_recuperar_os_da_cb8122")) : BetDetailRepeatAction
     data object RepeatLoading : BetDetailRepeatAction
+    data object RepeatPreparationCancelled : BetDetailRepeatAction
     data class RepeatParametersFailed(val message: String) : BetDetailRepeatAction
     data class RepeatContestSelected(val index: Int) : BetDetailRepeatAction
     data object RepeatContestConfirmed : BetDetailRepeatAction

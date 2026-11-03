@@ -20,6 +20,7 @@ internal class CartFavoritesCoordinator(
     private val validateFavoriteCartName: ValidateFavoriteCartNameUseCase?,
     private val saveCurrentCartFavorite: SaveCurrentCartFavoriteUseCase?,
     private val errorMessage: (AppError) -> String,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     private fun AppError.userMessage(): String = errorMessage(this)
 
@@ -28,15 +29,25 @@ internal class CartFavoritesCoordinator(
     fun updateFavoriteName(name: String) = mutableState.dispatch(CartFavoriteAction.NameChanged(name))
 
     fun submitFavoriteName() {
+        if (!canStartOperation()) return
         if (mutableState.value.loading) return
         val name = mutableState.value.favoriteName.trim()
         if (name.isBlank()) {
             mutableState.dispatch(CartFavoriteAction.NameRejected(messageText("informe_o_nome_do_carrinho_favor_fe59d0")))
             return
         }
-        mutableState.dispatch(CartFavoriteAction.ValidationStarted)
+        mutableState.dispatch(CartFavoriteAction.PreparationStarted)
         viewModelScope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(CartFavoriteAction.PreparationCancelled())
+                return@launch
+            }
+            mutableState.dispatch(CartFavoriteAction.ValidationStarted)
             val validation = validateFavoriteCartName?.invoke(name) ?: AppResult.Success(Unit)
+            if (!canStartOperation()) {
+                mutableState.dispatch(CartFavoriteAction.PreparationCancelled())
+                return@launch
+            }
             when (validation) {
                 is AppResult.Success -> saveFavorite(name)
 
@@ -49,12 +60,17 @@ internal class CartFavoritesCoordinator(
     }
 
     fun confirmFavoriteOverwrite() = viewModelScope.launch(dispatchers.io) {
+        if (!canStartOperation()) return@launch
         val name = mutableState.value.favoriteName.trim()
         mutableState.dispatch(CartFavoriteAction.OverwriteStarted)
-        saveFavorite(name)
+        saveFavorite(name, overwrite = true)
     }
 
-    suspend fun saveFavorite(name: String) {
+    private suspend fun saveFavorite(name: String, overwrite: Boolean = false) {
+        if (!canStartOperation()) {
+            mutableState.dispatch(CartFavoriteAction.PreparationCancelled(overwrite))
+            return
+        }
         when (val result = saveCurrentCartFavorite?.invoke(name) ?: AppResult.Success(Unit)) {
             is AppResult.Success -> mutableState.dispatch(CartFavoriteAction.Saved)
             is AppResult.Failure -> mutableState.dispatch(CartFavoriteAction.SaveFailed(result.error.userMessage()))

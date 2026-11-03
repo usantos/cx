@@ -1,0 +1,12 @@
+package br.gov.caixa.loterias.feature.support.faq.mapper
+
+import androidx.compose.ui.text.PlatformTextStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
+
+internal fun supportRegularStyle(size: Int) = TextStyle(
+    fontFamily = LoteriasCaixaDSRegularFontFamily,
+    fontSize = size.sp,
+    platformStyle = PlatformTextStyle(includeFontPadding = true)
+)

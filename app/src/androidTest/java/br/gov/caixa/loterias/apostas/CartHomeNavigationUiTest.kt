@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.navigation.action.returnToModalitiesHome
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Rule
@@ -41,7 +42,7 @@ class CartHomeNavigationUiTest {
     }
 
     private fun showGraph(start: String) {
-        compose.setContent {
+        compose.setFeatureContent {
             val nav = rememberNavController()
             SideEffect { controller = nav }
             NavHost(nav, startDestination = start) {

@@ -1,14 +1,12 @@
 package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurchaseContext
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentCardState
 
 internal class PaymentCardRedirectCoordinator(
     private val mutableState: ReduxStateStore<PaymentCardUiState, PaymentCardAction>,

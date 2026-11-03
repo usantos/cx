@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
@@ -60,6 +61,7 @@ class CartViewModel(
     private val reservationSessionChanges:
     kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>? = null,
     private val removeExpiredPoolShare: br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private var cartRequestRunning = false
     private val mutableState = reduxStateStore<CartUiState, CartAction>(
@@ -85,7 +87,7 @@ class CartViewModel(
 
     private val contents = CartContentsCoordinator(
         mutableState, viewModelScope, dispatchers, getCurrentCart, removeCartItem, clearCart,
-        ::reservationSessionCurrent, { cartRequestRunning }, { cartRequestRunning = it }, { it.userMessage() }
+        ::reservationSessionCurrent, { cartRequestRunning }, { cartRequestRunning = it }, { it.userMessage() }, canStartOperation
     )
     private val favorites = CartFavoritesCoordinator(
         mutableState,
@@ -93,7 +95,8 @@ class CartViewModel(
         dispatchers,
         validateFavoriteCartName,
         saveCurrentCartFavorite,
-        { it.userMessage() }
+        { it.userMessage() },
+        canStartOperation
     )
     private val parameters = CartParametersCoordinator(
         mutableState,
@@ -103,6 +106,10 @@ class CartViewModel(
         ::reservationSessionCurrent,
         { reservations.invalidateReservationSession() }
     )
+
+    private fun startOperation(action: () -> Unit) {
+        if (canStartOperation()) action()
+    }
 
     private fun reservationSessionCurrent() = reservations.reservationSessionCurrent()
 
@@ -123,15 +130,15 @@ class CartViewModel(
     fun updateFavoriteName(name: String) = favorites.updateFavoriteName(name)
     fun dismissConfirmation() = contents.dismissConfirmation()
 
-    fun confirmRemoval() = contents.confirmRemoval()
+    fun confirmRemoval() = startOperation { contents.confirmRemoval() }
 
-    fun confirmClear() = contents.confirmClear()
+    fun confirmClear() = startOperation { contents.confirmClear() }
 
-    fun submitFavoriteName() = favorites.submitFavoriteName()
+    fun submitFavoriteName() = startOperation { favorites.submitFavoriteName() }
 
     fun confirmFavoriteOverwrite() = favorites.confirmFavoriteOverwrite()
 
-    fun requestPayment() = checkout.requestPayment()
+    fun requestPayment() = startOperation { checkout.requestPayment() }
 
     fun acceptLocationConsent() = checkout.acceptLocationConsent()
 
@@ -145,6 +152,14 @@ class CartViewModel(
     fun declineLocationConsent() = checkout.declineLocationConsent()
 
     fun locationLaunchFailed() = checkout.locationLaunchFailed()
+
+    fun retryLocation() {
+        if (state.value.locationPrompt == CheckoutLocationStatus.UNAVAILABLE &&
+            checkout.dismissLocationBlock()
+        ) {
+            requestPayment()
+        }
+    }
 
     fun dismissLocationBlock(): Boolean = checkout.dismissLocationBlock()
 

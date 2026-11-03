@@ -1,45 +1,45 @@
 package br.gov.caixa.loterias.core.network.api
 
-import com.google.gson.JsonElement
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Body
-import retrofit2.http.DELETE
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
-import retrofit2.http.Tag
-import retrofit2.http.Path
 import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
+import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
+import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
+import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityDto
 import br.gov.caixa.loterias.feature.account.data.dto.NeighborhoodDto
 import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.SaveFavoriteCartRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
+import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
+import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
+import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
+import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
+import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
+import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
+import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
 import br.gov.caixa.loterias.feature.cart.data.dto.AddFavoriteCartRequestDto
-import br.gov.caixa.loterias.feature.support.data.dto.SupportSectionDto
-import br.gov.caixa.loterias.feature.support.data.dto.TermsDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
+import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
+import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
+import br.gov.caixa.loterias.feature.cart.data.dto.SaveFavoriteCartRequestDto
 import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
 import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePoolDetailDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
 import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.AccountSuspensionDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentPayloadDto
 import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentAnswerDto
+import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentPayloadDto
 import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SocialTransfersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
+import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
+import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.feature.support.data.dto.SupportSectionDto
+import br.gov.caixa.loterias.feature.support.data.dto.TermsDto
+import com.google.gson.JsonElement
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
+import retrofit2.http.Query
+import retrofit2.http.QueryMap
+import retrofit2.http.Tag
 
 interface LoteriasApi {
     @GET("app/valida-versao/{version}")
@@ -88,24 +88,22 @@ interface LoteriasApi {
     suspend fun latestResult(@Path("modalidade") modality: String): ApiEnvelope<DrawResultDto>
 
     @GET("resultados/{modalidade}/{concurso}")
-    suspend fun resultByContest(
-        @Path("modalidade") modality: String,
-        @Path("concurso") contest: Int,
-    ): ApiEnvelope<DrawResultDto>
+    suspend fun resultByContest(@Path("modalidade") modality: String, @Path("concurso") contest: Int): ApiEnvelope<DrawResultDto>
 
     @GET("autoavaliacoes/recuperar-perguntas")
     suspend fun selfAssessmentQuestions(): ApiEnvelope<SelfAssessmentPayloadDto>
 
     @POST("autoavaliacoes/grava-resposta")
-    suspend fun submitSelfAssessment(
-        @Body answers: List<SelfAssessmentAnswerDto>,
-    ): ApiEnvelope<SelfAssessmentPayloadDto>
+    suspend fun submitSelfAssessment(@Body answers: List<SelfAssessmentAnswerDto>): ApiEnvelope<SelfAssessmentPayloadDto>
 
     @GET("repassometro")
     suspend fun socialTransfers(): ApiEnvelope<SocialTransfersDto>
 
     @GET("usuarios/recuperar-dados")
     suspend fun currentUserProfile(): ApiEnvelope<UserProfileDto>
+
+    @GET("usuarios/recuperar-dados")
+    suspend fun currentBoundUserProfile(@Tag session: AccountVerificationSession): ApiEnvelope<UserProfileDto>
 
     @GET("municipios")
     suspend fun municipalities(@Query("idUF") stateId: Long): ApiEnvelope<List<MunicipalityDto>>
@@ -171,4 +169,10 @@ interface LoteriasApi {
 
     @POST("usuarios/suspender-conta-apostador")
     suspend fun suspendAccount(@Body request: SuspendAccountRequestDto): ApiEnvelope<AccountSuspensionDto>
+
+    @POST("usuarios/suspender-conta-apostador")
+    suspend fun suspendBoundAccount(
+        @Body request: SuspendAccountRequestDto,
+        @Tag session: AccountVerificationSession,
+    ): ApiEnvelope<AccountSuspensionDto>
 }

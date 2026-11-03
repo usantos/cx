@@ -137,10 +137,10 @@ data class BettingGameUiState(
     } == true
 }
 
-internal const val LOTOGOL_ID = 14
-internal const val LOTECA_ID = 19
-internal const val TIMEMANIA_ID = 20
-internal const val SUPER_SEVEN_ID = 7
-internal const val DIA_DE_SORTE_ID = 11
-internal const val MAIS_MILIONARIA_ID = 9
+const val LOTOGOL_ID = 14
+const val LOTECA_ID = 19
+const val TIMEMANIA_ID = 20
+const val SUPER_SEVEN_ID = 7
+const val DIA_DE_SORTE_ID = 11
+const val MAIS_MILIONARIA_ID = 9
 private const val SUPER_SEVEN_COLUMNS = 7

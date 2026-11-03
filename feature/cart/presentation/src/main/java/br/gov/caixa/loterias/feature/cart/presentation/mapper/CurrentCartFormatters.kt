@@ -1,9 +1,5 @@
 package br.gov.caixa.loterias.feature.cart.presentation.mapper
 
-import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.PlatformTextStyle
@@ -12,25 +8,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
 
-internal val CartItemKind.sectionTitle: String
+val CartItemKind.sectionTitle: String
     get() = when (this) {
         CartItemKind.POOL_SHARE -> messageText("cotas_bolao_86b8bf")
         CartItemKind.INDIVIDUAL_BET -> "Apostas Individuais"
         CartItemKind.COMBO -> messageText("combo_de_apostas_c1d6d3")
     }
 
-internal val CartItemBadge.label: String
+val CartItemBadge.label: String
     get() = when (this) {
         CartItemBadge.EXCHANGE -> "TROCA"
         CartItemBadge.POOL -> messageText("bolao_e1fa12")
@@ -41,7 +39,7 @@ internal val CartItemBadge.label: String
     }
 
 @Composable
-internal fun cartModalityColor(code: String): Color {
+fun cartModalityColor(code: String): Color {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val style = loteriasCaixaDSLotteryStyle(0, code)
     if (style != resolveLoteriasCaixaDSLotteryStyle(0, code, LoteriasCaixaDSCampaign.DEFAULT)) return style.textOnSurface
@@ -59,20 +57,20 @@ internal fun cartModalityColor(code: String): Color {
     }
 }
 
-internal fun formatCartAmount(value: BigDecimal?): String = NumberFormat
+fun formatCartAmount(value: BigDecimal?): String = NumberFormat
     .getCurrencyInstance(Locale.forLanguageTag("pt-BR"))
     .format(value ?: BigDecimal.ZERO)
     .replace('\u00A0', ' ')
     .replace('\u202F', ' ')
 
-internal fun cartText(size: Int = 14, weight: FontWeight = FontWeight.Normal) = TextStyle(
+fun cartText(size: Int = 14, weight: FontWeight = FontWeight.Normal) = TextStyle(
     fontFamily = LoteriasCaixaDSFontFamily,
     fontSize = size.sp,
     fontWeight = weight,
     platformStyle = PlatformTextStyle(includeFontPadding = true)
 )
 
-internal fun currentCartModalityName(item: CartItem): String {
+fun currentCartModalityName(item: CartItem): String {
     val title = item.title.lowercase(Locale.ROOT)
     // Descrições de concursos especiais fornecidas pelo servidor preservam seus próprios rótulos.
     if (listOf(

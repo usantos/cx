@@ -8,16 +8,21 @@ import androidx.compose.ui.test.performClick
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
+import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.io.File
 import java.math.BigDecimal
@@ -30,10 +35,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
-import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 /** Apenas massas de retratos públicos. Não invoca primaryAction em um bilhete preenchido. */
 @RunWith(Parameterized::class)
@@ -41,18 +42,23 @@ class ExtendedInstalledPairsTest(private val caseName: String, private val snaps
     @get:Rule val compose = createComposeRule()
 
     @Test fun publicManualSelectionSurpriseOptionsHelpAndComplementWithoutCartSubmission() {
-        val sends=AtomicInteger(0)
-        val game=game(snapshot)
-        val vm=BettingGameViewModel(game.modality.id,GetBettingParametersUseCase {
-            AppResult.Success(BettingParameters(BigDecimal("500"),BigDecimal("30"),50,listOf(game)))
-        },object:AddBetToCartUseCase {
-            override suspend fun invoke(draft:BetDraft):AppResult<ShoppingCart> {
-                sends.incrementAndGet(); error("Pair fixtures must not submit a ticket")
+        val sends = AtomicInteger(0)
+        val game = game(snapshot)
+        val vm = BettingGameViewModel(
+            game.modality.id,
+            GetBettingParametersUseCase {
+                AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
+            },
+            object : AddBetToCartUseCase {
+                override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> {
+                    sends.incrementAndGet()
+                    error("Pair fixtures must not submit a ticket")
+                }
             }
-        })
+        )
         // Reproduz o resumo do carrinho da captura de produção somente para leitura (2 apostas / R$ 12,00).
         // Este estado é apenas de exibição: o teste nunca envia uma aposta nem altera um carrinho.
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(
                     viewModel = vm,

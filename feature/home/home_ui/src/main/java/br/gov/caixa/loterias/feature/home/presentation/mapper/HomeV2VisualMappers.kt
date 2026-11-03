@@ -1,0 +1,66 @@
+package br.gov.caixa.loterias.feature.home.presentation.mapper
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSLotteryArtwork
+import br.gov.caixa.loterias.core.designsystem.artwork.loteriasCaixaDSCampaignDrawable
+import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
+import br.gov.caixa.loterias.core.designsystem.tokens.CxHomeV2Colors
+import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.feature.home.presentation.formatting.localizedMessage as messageText
+import br.gov.caixa.loterias.feature.home.presentation.screen.HomeV2Presentation
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
+import br.gov.caixa.loterias.feature.home.ui.R as DeliveryR
+
+internal val HomeLottery.tipoModalidade: HomeV2Modality
+    get() = HomeV2Modality.entries.firstOrNull { it.resultCode == resultCode } ?: HomeV2Modality.OTHER
+
+fun HomeV2Presentation.prize(item: HomeLottery) = HomeV2Formatting.prize(item.estimatedPrize)
+fun HomeV2Presentation.date(item: HomeLottery) = HomeV2Formatting.date(item.drawDate)
+fun HomeV2Presentation.name(type: HomeV2Modality): String = when (type) {
+    HomeV2Modality.MEGA_SENA -> "Mega-Sena"
+    HomeV2Modality.MAIS_MILIONARIA -> messageText("milionaria_11be79")
+    HomeV2Modality.DIA_DE_SORTE -> messageText("dia_de_sorte_b5c7a5")
+    HomeV2Modality.DUPLA_SENA -> "Dupla Sena"
+    HomeV2Modality.SUPER_7 -> "Super Sete"
+    HomeV2Modality.LOTOFACIL -> messageText("lotofacil_d3ed7c")
+    else -> type.name.lowercase().replaceFirstChar { it.titlecase() }
+}
+
+@Composable internal fun HomeV2Presentation.colors(type: HomeV2Modality): List<Color> {
+    val campaign = LocalLoteriasCaixaDSMegaSenaCampaign.current
+    if (type == HomeV2Modality.MEGA_SENA && campaign != LoteriasCaixaDSCampaign.DEFAULT) {
+        val style = resolveLoteriasCaixaDSLotteryStyle(2, "", campaign)
+        return listOf(style.light, style.dark)
+    }
+    return when (type) {
+        HomeV2Modality.MEGA_SENA -> listOf(CxHomeV2Colors.CFF008852, CxHomeV2Colors.CFF006B43)
+        HomeV2Modality.MAIS_MILIONARIA -> listOf(CxHomeV2Colors.CFF6533C7, CxHomeV2Colors.CFF4A28A3)
+        HomeV2Modality.LOTECA -> listOf(CxHomeV2Colors.CFFD32E49, CxHomeV2Colors.CFFBF2943)
+        HomeV2Modality.DUPLA_SENA -> listOf(CxHomeV2Colors.CFFAF2255, CxHomeV2Colors.CFF94214C)
+        HomeV2Modality.DIA_DE_SORTE -> listOf(CxHomeV2Colors.CFFFFC52B, CxHomeV2Colors.CFFF5B816)
+        HomeV2Modality.LOTOMANIA -> listOf(CxHomeV2Colors.CFFFF852A, CxHomeV2Colors.CFFF06C12)
+        HomeV2Modality.QUINA -> listOf(CxHomeV2Colors.CFF075AC0, CxHomeV2Colors.CFF06489D)
+        HomeV2Modality.LOTOFACIL -> listOf(CxHomeV2Colors.CFF8B2387, CxHomeV2Colors.CFF731B70)
+        else -> listOf(CxHomeV2Colors.CFF6A35C7, CxHomeV2Colors.CFF49279F)
+    }
+}
+
+@Composable internal fun HomeV2Presentation.icon(type: HomeV2Modality): Int {
+    if (type == HomeV2Modality.MEGA_SENA) {
+        loteriasCaixaDSCampaignDrawable(2, "", LoteriasCaixaDSLotteryArtwork.CLOVER_ON_LIGHT)?.let { return it }
+    }
+    return when (type) {
+        HomeV2Modality.MEGA_SENA -> DeliveryR.drawable.trevo_megasena_fundo_branco
+        HomeV2Modality.MAIS_MILIONARIA -> DeliveryR.drawable.trevo_mais_milionaria
+        HomeV2Modality.DIA_DE_SORTE -> DeliveryR.drawable.trevo_dia_de_sorte_fundo_branco
+        HomeV2Modality.LOTECA -> DeliveryR.drawable.trevo_loteca_fundo_escuro
+        HomeV2Modality.DUPLA_SENA -> DeliveryR.drawable.trevo_dupla_sena_fundo_escuro
+        HomeV2Modality.LOTOMANIA -> DeliveryR.drawable.trevo_lotomania
+        HomeV2Modality.QUINA -> DeliveryR.drawable.trevo_quina_fundo_branco
+        HomeV2Modality.TIMEMANIA -> DeliveryR.drawable.trevo_timemania_fundo_escuro
+        HomeV2Modality.SUPER_7 -> DeliveryR.drawable.trevo_super_sete_fundo_branco
+        else -> DeliveryR.drawable.trevo_lotofacil_fundo_branco
+    }
+}

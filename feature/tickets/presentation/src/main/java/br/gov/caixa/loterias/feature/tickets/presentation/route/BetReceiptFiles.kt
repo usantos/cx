@@ -1,14 +1,13 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.route
 
-import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
-
 import android.content.ClipData
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.content.FileProvider
-import java.io.File
+import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetReceipt
+import java.io.File
 
 /** Reproduz a abertura direta nativa sem exigir permissão de armazenamento ou diálogo para salvar. */
 fun writeBetReceipt(context: Context, receipt: BetReceipt): Uri {

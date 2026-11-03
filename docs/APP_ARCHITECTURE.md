@@ -2,6 +2,17 @@
 
 Para saber **quais classes chamar para obter dados**, consulte [Acesso aos dados por funcionalidade](DATA_ACCESS_BY_FEATURE.md): identidade e cadastro, apostas confirmadas, carrinho, resultados, configurações e catálogo de contratos por feature.
 
+## Entrega híbrida das funcionalidades — 02/11/2026
+
+O App Bundle registra 15 capacidades de interface. Account, Home e Responsible Gaming são install-time; Onboarding, Betting, Cart, Payment, Tickets, Marketplace, Marketplace Filter, Results, Notifications, Retail, Support Help e FAQ são on-demand. Renderizadores Compose e recursos exclusivos pertencem aos splits reais. Core, bootstrap, contratos, Domain/Data/DI, ViewModels, Redux e coordenação das jornadas permanecem na base.
+
+`AppModule` identifica capacidades permitidas e entradas tipadas. O JSON `app_modules`, schema 1, controla novas entradas/operações; não concede autorização de backend nem distribui código. Os novos padrões são habilitados e o FAQ conserva `false`. Ausências usam os padrões locais; publicações inválidas preservam a configuração válida em cache durável, inclusive após recriação do processo.
+
+A admissão ocorre antes de criar novos proprietários. `FeatureModuleViewModel` observa a instalação compartilhada, mantém estado Redux e rejeita respostas antigas. O resolvedor carrega a implementação somente após confirmar o split. Desabilitar apresenta Empty State nas novas entradas; jornadas já admitidas preservam dados/operações, bloqueando novas escritas antes do efeito, inclusive as enfileiradas. Aceite obrigatório e continuidade financeira usam evidência dos proprietários da base. Não cancelar nem repetir POST devido à flag.
+
+A dependência de produção do split para a aplicação exige plugin dinâmico e declaração pela base exata. Artefatos de testes, sem relação de produção inversa, permitem às suítes da base exercitar os renderizadores reais. JaCoCo inclui todos os fontes manuais. O [guia de Dynamic Features](DYNAMIC_FEATURES.md) contém JSON, tabela de entrega e limites de distribuição. Evidências históricas do piloto não comprovam a expansão.
+
+
 ## Revisão por ViewModel — 02/11/2026
 
 A [revisão dos 46 ViewModels de features e dos dois de Core](architecture/MVVM_REVIEW_20261102.md) registra os contratos corrigidos de propriedade das operações, consumo de navegação, consulta por geração e isolamento de sessão. Os resultados e limites dessa rodada ficam separados das evidências históricas abaixo.

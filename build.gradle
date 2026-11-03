@@ -30,7 +30,9 @@ apply from: rootProject.file('gradle/android-lint.gradle')
 apply from: rootProject.file('gradle/verify-feature-modules.gradle')
 apply from: rootProject.file('gradle/persistence-coverage.gradle')
 apply from: rootProject.file('gradle/local-ui-tests.gradle')
+apply from: rootProject.file('gradle/dynamic-feature-tests.gradle')
 apply from: rootProject.file('gradle/aggregate-test-reports.gradle')
+apply from: rootProject.file('gradle/dynamic-feature-test-classpath.gradle')
 apply from: rootProject.file('gradle/static-analysis.gradle')
 apply from: rootProject.file('gradle/quality-gate.gradle')
 apply from: rootProject.file('gradle/source-tracking.gradle')
@@ -158,7 +160,7 @@ tasks.register('verifyComposeMigration') {
                     root.depthFirst().every { it.name() in ['resources', 'style', 'item'] }
             // Apenas os dois rótulos de campanha existentes com várias linhas estão aprovados;
             // layouts e recursos de valores arbitrários continuam proibidos, inclusive neste arquivo.
-            def campaignLabels = file('feature/home/presentation/src/main/res/values/home_special_contests.xml').canonicalFile
+            def campaignLabels = file('feature/home/home_ui/src/main/res/values/home_special_contests.xml').canonicalFile
             def expectedCampaignLabels = ['home_mega_sena_30_anos_duas_linhas', 'home_loteca_pais_duas_linhas'] as Set
             def isCampaignLabels = source == campaignLabels && root.name() == 'resources' &&
                     root.attributes().isEmpty() && root.children().size() == expectedCampaignLabels.size() &&

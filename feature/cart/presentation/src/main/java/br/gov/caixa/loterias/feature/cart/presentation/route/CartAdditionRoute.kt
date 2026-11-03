@@ -3,9 +3,10 @@ package br.gov.caixa.loterias.feature.cart.presentation.route
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.feature.cart.presentation.screen.LegacyBetAddition
 import br.gov.caixa.loterias.feature.cart.presentation.screen.LegacyPoolAddition
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAdditionKind

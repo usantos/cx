@@ -18,9 +18,11 @@ internal class NotificationsLoading(
     private val getNotifications: GetNotificationsUseCase,
     private val getPreferences: GetNotificationPreferencesUseCase,
     private val operations: NotificationPreferenceOperations = NotificationPreferenceOperations(),
+    private val isEntryEnabled: () -> Boolean = { true },
 ) {
 
     fun load() = operations.enqueue(scope, dispatchers) {
+        if (!isEntryEnabled()) return@enqueue
         mutableState.dispatch(NotificationsAction.LoadStarted)
         val messages = getNotifications()
         val preferences = getPreferences()

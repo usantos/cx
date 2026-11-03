@@ -70,11 +70,21 @@ internal fun CartLocationDialogs(state: CartUiState, viewModel: CartViewModel, o
             onDismiss = {}
         )
 
-        CheckoutLocationStatus.OUTSIDE_BRAZIL, CheckoutLocationStatus.UNAVAILABLE -> LoteriasCaixaDSDialog(
+        CheckoutLocationStatus.OUTSIDE_BRAZIL -> LoteriasCaixaDSDialog(
             title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
             message = CART_LOCATION_BLOCKED,
             positiveLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
             onPositive = { if (viewModel.dismissLocationBlock()) onBlockedHome() },
+            onDismiss = {}
+        )
+
+        CheckoutLocationStatus.UNAVAILABLE -> LoteriasCaixaDSDialog(
+            title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),
+            message = uiStrings.getString(LocalizedR.string.workflow_cart_localizacao_indisponivel),
+            positiveLabel = uiStrings.getString(LocalizedR.string.ui_tentar_novamente_b9e106),
+            onPositive = viewModel::retryLocation,
+            negativeLabel = uiStrings.getString(LocalizedR.string.ui_entendi_9f9373),
+            onNegative = { viewModel.dismissLocationBlock() },
             onDismiss = {}
         )
 

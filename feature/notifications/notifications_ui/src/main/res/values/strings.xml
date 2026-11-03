@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notifications_excluir_todas_as_notificacoes">Excluir todas as notificações</string>
+    <string name="notifications_todas">Todas</string>
+    <string name="notifications_nao_lidas_1_d">Não lidas (%1$d)</string>
+    <string name="notifications_nao_ha_notificacoes_nao_lidas">Não há notificações não lidas.</string>
+    <string name="notifications_ainda_nao_ha_notificacoes">Ainda não há notificações.</string>
+    <string name="notifications_faca_login_para_visualizar_suas_notificacoes">Faça login para visualizar suas notificações.</string>
+    <string name="notifications_fique_de_olho_nas_novidades_e_atualizacoes">Fique de olho nas novidades e atualizações.</string>
+    <string name="notifications_tentar_novamente">Tentar novamente</string>
+    <string name="notifications_excluir_notificacao_1_s">Excluir notificação: %1$s</string>
+    <string name="notifications_notificacoes">Notificações</string>
+    <string name="notifications_pesquisar">Pesquisar</string>
+    <string name="notifications_marcar_todas_as_mensagens_como_lidas">Marcar todas as mensagens como lidas</string>
+    <string name="notifications_excluir_todas_as_mensagens">Excluir todas as mensagens</string>
+    <string name="notifications_nao_lidas">Não Lidas</string>
+    <string name="notifications_preferencias_de_notificacoes">Preferências de Notificações</string>
+    <string name="notifications_termos_de_uso">Termos de Uso</string>
+    <string name="notifications_escolha_os_assuntos_que_deseja_receber_notificacoes_no_seu_app">Escolha os assuntos que deseja receber notificações no seu App:</string>
+    <string name="notifications_deseja_excluir_todas_a_mensagens">Deseja excluir todas a mensagens ?</string>
+    <string name="notifications_deseja_marcar_todas_a_mensagens_como_lidas">Deseja marcar todas a mensagens como lidas ?</string>
+    <string name="notifications_deseja_excluir_esta_mensagem">Deseja excluir esta mensagem ?</string>
+    <string name="notifications_deseja_marcar_esta_mensagem_como_lida">Deseja marcar esta mensagem como lida ?</string>
+    <string name="notifications_marcar_mensagem_como_lida">Marcar mensagem como lida</string>
+    <string name="notifications_excluir_mensagem">Excluir mensagem</string>
+
+    <string name="notifications_atencao">Atenção</string>
+    <string name="notifications_sim">Sim</string>
+    <string name="notifications_nao">Não</string>
+    <string name="notifications_entendi">Entendi</string>
+    <string name="notifications_excluir_notificacoes">Excluir notificações</string>
+    <string name="notifications_excluir_notificacao">Excluir notificação</string>
+    <string name="notifications_deseja_marcar_todas_as_notificacoes_como_lidas">Deseja marcar todas as notificações como lidas?</string>
+    <string name="notifications_deseja_excluir_todas_as_notificacoes">Deseja excluir todas as notificações?</string>
+    <string name="notifications_deseja_excluir_a_notificacao_1_s">Deseja excluir a notificação \"%1$s\"?</string>
+</resources>

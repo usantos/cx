@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolExpansion
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplacePoolSummary
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import java.io.ByteArrayOutputStream
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -53,7 +54,7 @@ class MarketplaceExpandedListLayoutTest {
     private fun checkExpansion(width: Int) {
         val actions = mutableListOf<String>()
         lateinit var sceneDensity: Density
-        compose.setContent {
+        compose.setFeatureContent {
             BoxWithConstraints {
                 val base = LocalDensity.current
                 sceneDensity = Density(base.density * minOf(1f, maxWidth.value / width), base.fontScale)
@@ -93,7 +94,7 @@ class MarketplaceExpandedListLayoutTest {
     }
 
     @Test fun expandedPriceAlignsWithRetailerInsteadOfStartingBelowItsName() {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 Column(Modifier.width(384.dp)) {
                     LoteriasCaixaDSMarketplacePoolSummary(

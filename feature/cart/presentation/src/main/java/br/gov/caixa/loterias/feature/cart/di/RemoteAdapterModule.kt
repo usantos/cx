@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.di
 
-import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSourceImpl
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
+import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSourceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,5 +15,7 @@ object RemoteAdapterModule {
     fun remoteAdapter(api: LoteriasApiProvider): CartRemoteDataSourceImpl = CartRemoteDataSourceImpl(api)
 
     @Provides
-    fun boundCartRemoval(source: CartRemoteDataSourceImpl): br.gov.caixa.loterias.feature.cart.data.datasource.remote.BoundCartRemovalRemoteDataSource = source
+    fun boundCartRemoval(
+        source: CartRemoteDataSourceImpl,
+    ): br.gov.caixa.loterias.feature.cart.data.datasource.remote.BoundCartRemovalRemoteDataSource = source
 }

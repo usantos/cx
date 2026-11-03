@@ -10,13 +10,11 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
-import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.core.presentation.state.serviceFailurePresentation
 import br.gov.caixa.loterias.feature.betting.domain.recovery.BettingCheckpointSession
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.rapidServiceFailurePresentation
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingMutationBarrier
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessage
@@ -47,6 +45,7 @@ class RapidListViewModel(
     private val checkpointSession: BettingCheckpointSession? = null,
     private val recoveryMode: Boolean = false,
     private val getCurrentCart: GetCurrentCartUseCase? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<RapidListUiState, RapidListAction>(
         RapidListUiState(loading = autoLoad),
@@ -56,7 +55,7 @@ class RapidListViewModel(
     }
     val state = mutableState.state
 
-    private val mutation = BettingMutationBarrier(checkpointSession)
+    private val mutation = BettingMutationBarrier(checkpointSession, canStartOperation)
     init {
         if (recoveryMode) {
             reconcile()
@@ -89,6 +88,7 @@ class RapidListViewModel(
     }
 
     fun generate(quantity: Int = 0) = viewModelScope.launch(dispatchers.io) {
+        if (!canStartOperation()) return@launch
         if (!isSessionCurrent()) return@launch
         mutableState.dispatch(RapidListAction.CartOperationStarted)
         val result =
@@ -112,6 +112,7 @@ class RapidListViewModel(
     }
 
     fun remove(item: CartItem) = viewModelScope.launch(dispatchers.io) {
+        if (!canStartOperation()) return@launch
         if (!isSessionCurrent()) return@launch
         mutableState.dispatch(RapidListAction.LoadingStarted)
         val result =
@@ -128,6 +129,7 @@ class RapidListViewModel(
     }
 
     fun advance() {
+        if (!canStartOperation()) return
         synchronized(mutableState) {
             if (!isSessionCurrent()) return
             if (state.value.loading || state.value.readyForPayment || state.value.validationFailure.pending) return

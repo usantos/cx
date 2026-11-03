@@ -15,6 +15,7 @@ internal class MarketplacePoolFavoriteCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val setRetailerFavorite: SetRetailerFavoriteUseCase,
     private val onFavoriteChanged: (Long, Boolean) -> Unit,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     fun requestFavorite(poolCode: String) {
         mutableState.dispatch(MarketplaceStateAction.PoolFavoriteRequested(poolCode))
@@ -34,6 +35,10 @@ internal class MarketplacePoolFavoriteCoordinator(
         val pool = state.pools.firstOrNull { it.code == code } ?: return
         val newFavorite = !pool.favoriteLottery
         scope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(MarketplaceStateAction.PoolFavoriteWriteAborted(pool.lotteryId))
+                return@launch
+            }
             when (setRetailerFavorite(pool.lotteryId, newFavorite)) {
                 is AppResult.Success -> {
                     mutableState.dispatch(MarketplaceStateAction.PoolFavoriteSaved(pool.lotteryId, newFavorite))

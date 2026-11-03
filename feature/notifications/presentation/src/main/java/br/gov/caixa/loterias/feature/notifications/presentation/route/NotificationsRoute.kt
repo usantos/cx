@@ -7,11 +7,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleContent
 import br.gov.caixa.loterias.feature.notifications.R
-import br.gov.caixa.loterias.feature.notifications.presentation.components.NotificationDialogs
-import br.gov.caixa.loterias.feature.notifications.presentation.screen.MessagesScreen
+import br.gov.caixa.loterias.feature.notifications.presentation.delivery.NotificationsUiEntry
 import br.gov.caixa.loterias.feature.notifications.presentation.screen.NotificationMessageActions
-import br.gov.caixa.loterias.feature.notifications.presentation.screen.PreferencesScreen
 import br.gov.caixa.loterias.feature.notifications.presentation.state.NotificationEffect
 import br.gov.caixa.loterias.feature.notifications.presentation.viewmodel.NotificationsViewModel
 import kotlinx.coroutines.flow.collectLatest
@@ -35,27 +35,33 @@ fun NotificationsRoute(route: String, viewModel: NotificationsViewModel, onBack:
         }
     }
 
-    when (route) {
-        "notifications/messages" -> MessagesScreen(
-            state = state,
-            actions = NotificationMessageActions(
-                updateQuery = viewModel::updateQuery,
-                requestMarkAllRead = viewModel::requestMarkAllRead,
-                requestDeleteAll = viewModel::requestDeleteAll,
-                selectFilter = viewModel::selectFilter,
-                toggleExpanded = viewModel::toggleExpanded,
-                requestMarkRead = viewModel::requestMarkRead,
-                requestDelete = viewModel::requestDelete,
-                share = viewModel::share,
-                performCategoryAction = viewModel::performCategoryAction
-            ),
-            onBack = onBack
-        )
+    FeatureModuleContent(
+        module = AppModule.NOTIFICATIONS,
+        entryType = NotificationsUiEntry::class.java,
+        onBack = onBack
+    ) { entry ->
+        when (route) {
+            "notifications/messages" -> entry.MessagesScreen(
+                state = state,
+                actions = NotificationMessageActions(
+                    updateQuery = viewModel::updateQuery,
+                    requestMarkAllRead = viewModel::requestMarkAllRead,
+                    requestDeleteAll = viewModel::requestDeleteAll,
+                    selectFilter = viewModel::selectFilter,
+                    toggleExpanded = viewModel::toggleExpanded,
+                    requestMarkRead = viewModel::requestMarkRead,
+                    requestDelete = viewModel::requestDelete,
+                    share = viewModel::share,
+                    performCategoryAction = viewModel::performCategoryAction
+                ),
+                onBack = onBack
+            )
 
-        "notifications/preferences" -> PreferencesScreen(state, viewModel::togglePreference, onBack, onHelp)
+            "notifications/preferences" -> entry.PreferencesScreen(state, viewModel::togglePreference, onBack, onHelp)
 
-        else -> error("Rota de notificações sem layout Compose: $route")
+            else -> error("Rota de notificações sem layout Compose: $route")
+        }
+
+        entry.NotificationDialogs(state, viewModel::confirmDialog, viewModel::dismissDialog)
     }
-
-    NotificationDialogs(state, viewModel::confirmDialog, viewModel::dismissDialog)
 }

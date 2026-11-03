@@ -59,6 +59,8 @@ abstract class PrizeRedemptionTestFixture {
     protected var redemptionCalls = 0
     protected var cancelCalls = 0
     protected var codeCalls = 0
+    protected var detailsCalls = 0
+    protected var entryEnabled = true
     protected val game =
         LotteryGameParameters(
             LotteryModality(
@@ -81,7 +83,10 @@ abstract class PrizeRedemptionTestFixture {
 
     protected fun viewModel(betReceipt: DownloadBetReceiptUseCase = DownloadBetReceiptUseCase { betPdfResult }) = PrizeRedemptionViewModel(
         PrizeRedemptionInput(REDEMPTION_BET_ID, "initial@caixa.gov.br", "12345678901"),
-        GetPrizeDetailsUseCase { detailsResult },
+        GetPrizeDetailsUseCase {
+            detailsCalls++
+            detailsResult
+        },
         GenerateLotteryRedemptionCodeUseCase {
             codeCalls++
             codeResult
@@ -109,7 +114,8 @@ abstract class PrizeRedemptionTestFixture {
             connectionReads++
             connection
         },
-        FixedCoroutineDispatchers(dispatcher)
+        FixedCoroutineDispatchers(dispatcher),
+        isEntryEnabled = { entryEnabled }
     )
 }
 

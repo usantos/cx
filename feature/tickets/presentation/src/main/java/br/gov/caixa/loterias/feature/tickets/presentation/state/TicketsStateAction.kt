@@ -81,6 +81,7 @@ internal sealed interface TicketsStateAction {
     data class PurchaseFavoriteNameRejected(val message: String = messageText("informe_o_nome_do_carrinho_favor_fe59d0")) :
         TicketsFavoriteAction
     data object PurchaseFavoriteValidationStarted : TicketsFavoriteAction
+    data object PurchaseFavoritePreparationCancelled : TicketsFavoriteAction
     data object PurchaseFavoriteOverwriteRequired : TicketsFavoriteAction
     data object PurchaseFavoriteOverwriteConfirmed : TicketsFavoriteAction
     data object PurchaseFavoriteOverwriteCancelled : TicketsFavoriteAction

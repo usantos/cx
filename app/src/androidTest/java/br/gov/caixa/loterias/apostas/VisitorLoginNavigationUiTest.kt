@@ -10,7 +10,10 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openResponsibleAssessment
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
-import org.junit.Assert.*
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -24,12 +27,25 @@ class VisitorLoginNavigationUiTest {
     private var protectedRoute = "account/personal-data"
 
     private fun show(openPersonal: Boolean) {
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             NavHost(nav, startDestination = "home") {
                 composable("home") { Text("Home") }
                 composable("responsible/start") { Text("Welcome") }
-                listOf("account/personal-data", "tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route -> composable(route) { Text(route) } }
+                listOf(
+                    "account/personal-data",
+                    "tickets/my-bets",
+                    "tickets/purchases",
+                    "betting/favorites",
+                    "cart/favorite-carts",
+                    "payment/cards",
+                    "responsible/form",
+                    "betting/rapid",
+                    "betting/rapid-list",
+                    "betting/rapid-config"
+                ).forEach { route ->
+                    composable(route) { Text(route) }
+                }
                 composable(br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation.pattern) { Text("Login") }
             }
         }
@@ -38,14 +54,26 @@ class VisitorLoginNavigationUiTest {
     }
 
     private fun callbacks() = VisitorLoginCallbacks(
-        route = protectedRoute, navController = nav,
-        pendingRequest = { request }, clearRequest = { request = null },
-        continueAfterLogin = { continuation = it },
+        route = protectedRoute,
+        navController = nav,
+        pendingRequest = { request },
+        clearRequest = { request = null },
+        continueAfterLogin = { continuation = it }
     )
 
     @Test fun allPrivateDrawerEntriesOpenUnderPromptAndDeclineOnceToHome() {
         show(false)
-        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route ->
+        listOf(
+            "tickets/my-bets",
+            "tickets/purchases",
+            "betting/favorites",
+            "cart/favorite-carts",
+            "payment/cards",
+            "responsible/form",
+            "betting/rapid",
+            "betting/rapid-list",
+            "betting/rapid-config"
+        ).forEach { route ->
             compose.runOnIdle {
                 protectedRoute = route
                 openVisitorDrawerDestination(route, nav) { request = it }
@@ -64,7 +92,17 @@ class VisitorLoginNavigationUiTest {
 
     @Test fun allPrivateDrawerAcceptsRetainContinuationAndDuplicateCallbacksCannotNavigateTwice() {
         show(false)
-        listOf("tickets/my-bets", "tickets/purchases", "betting/favorites", "cart/favorite-carts", "payment/cards", "responsible/form", "betting/rapid", "betting/rapid-list", "betting/rapid-config").forEach { route ->
+        listOf(
+            "tickets/my-bets",
+            "tickets/purchases",
+            "betting/favorites",
+            "cart/favorite-carts",
+            "payment/cards",
+            "responsible/form",
+            "betting/rapid",
+            "betting/rapid-list",
+            "betting/rapid-config"
+        ).forEach { route ->
             compose.runOnIdle {
                 protectedRoute = route
                 openVisitorDrawerDestination(route, nav) { request = it }
@@ -76,7 +114,8 @@ class VisitorLoginNavigationUiTest {
                 assertEquals(route, continuation)
                 assertEquals(route, nav.previousBackStackEntry?.destination?.route)
                 val login = nav.currentBackStackEntry
-                callback.onPositive(); callback.onNegative()
+                callback.onPositive()
+                callback.onNegative()
                 assertSame(login, nav.currentBackStackEntry)
                 nav.popBackStack("home", false)
             }

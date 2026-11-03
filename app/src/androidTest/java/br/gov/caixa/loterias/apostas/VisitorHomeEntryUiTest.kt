@@ -24,6 +24,7 @@ import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfigur
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -52,7 +53,7 @@ class VisitorHomeEntryUiTest {
         val vm = visitorHomeViewModel()
         lateinit var nav: NavHostController
         var request by mutableStateOf<String?>(null)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, startDestination = "home") {

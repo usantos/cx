@@ -1,16 +1,18 @@
 package br.gov.caixa.loterias.feature.marketplace
 
-import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceDetailRepository
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
-import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceDetail
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceDetailRepository
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceDetail
+import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailAction
+import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceDetailViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -20,8 +22,6 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailAction
-import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceDetailViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MarketplaceDetailViewModelTest {
@@ -32,12 +32,14 @@ class MarketplaceDetailViewModelTest {
         var requestedCode = ""
         val viewModel = MarketplaceDetailViewModel(
             poolCode = "B123",
-            getMarketplaceDetail = GetMarketplaceDetail(MarketplaceDetailRepository { code ->
-                requestedCode = code
-                detail(availableShares = 2)
-            }),
+            getMarketplaceDetail = GetMarketplaceDetail(
+                MarketplaceDetailRepository { code ->
+                    requestedCode = code
+                    detail(availableShares = 2)
+                }
+            ),
             addMarketplacePoolToCart = failingAddUseCase(),
-            dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
 
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -63,7 +65,7 @@ class MarketplaceDetailViewModelTest {
             "B0",
             GetMarketplaceDetail(MarketplaceDetailRepository { detail(availableShares = 0) }),
             failingAddUseCase(),
-            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(0, viewModel.state.value.selectedShares)
@@ -76,12 +78,14 @@ class MarketplaceDetailViewModelTest {
         var fails = true
         val viewModel = MarketplaceDetailViewModel(
             "B1",
-            GetMarketplaceDetail(MarketplaceDetailRepository {
-                if (fails) error("offline")
-                detail(availableShares = 1)
-            }),
+            GetMarketplaceDetail(
+                MarketplaceDetailRepository {
+                    if (fails) error("offline")
+                    detail(availableShares = 1)
+                }
+            ),
             failingAddUseCase(),
-            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
 
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -106,7 +110,7 @@ class MarketplaceDetailViewModelTest {
             "B1",
             GetMarketplaceDetail(MarketplaceDetailRepository { detail(availableShares = 3) }),
             addUseCase,
-            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.increaseShares()
@@ -129,7 +133,7 @@ class MarketplaceDetailViewModelTest {
             "B1",
             GetMarketplaceDetail(MarketplaceDetailRepository { detail(availableShares = 1) }),
             AddMarketplacePoolToCartUseCase { AppResult.Success(ShoppingCart(1, BigDecimal.TEN, emptyList())) },
-            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.addToCart()
@@ -149,7 +153,7 @@ class MarketplaceDetailViewModelTest {
                 calls++
                 AppResult.Failure(AppError.Network)
             },
-            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher)
         )
         viewModel.addToCart()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -158,6 +162,29 @@ class MarketplaceDetailViewModelTest {
 
         assertEquals(1, calls)
         assertTrue(viewModel.state.value.addToCartError!!.contains("adicionar a cota"))
+    }
+
+    @Test
+    fun `disabled marketplace keeps selected shares and blocks a new cart addition`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var additions = 0
+        val vm = MarketplaceDetailViewModel(
+            "B1",
+            GetMarketplaceDetail(MarketplaceDetailRepository { detail(availableShares = 2) }),
+            AddMarketplacePoolToCartUseCase {
+                additions++
+                AppResult.Success(cartWithReservation("later"))
+            },
+            FixedCoroutineDispatchers(dispatcherRule.dispatcher),
+            canStartOperation = { enabled }
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.increaseShares()
+        enabled = false
+        vm.addToCart()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, additions)
+        assertEquals(2, vm.state.value.selectedShares)
     }
 
     private fun detail(availableShares: Int) = MarketplacePoolDetail(
@@ -181,7 +208,7 @@ class MarketplaceDetailViewModelTest {
         contestType = 1,
         drawDate = "01/01/2026",
         serviceFeePerShare = BigDecimal.ONE,
-        lastSharePriceWithFeeValue = BigDecimal.TEN,
+        lastSharePriceWithFeeValue = BigDecimal.TEN
     )
 
     private fun failingAddUseCase() = AddMarketplacePoolToCartUseCase {
@@ -198,8 +225,8 @@ class MarketplaceDetailViewModelTest {
                 title = "Mega-Sena",
                 description = "Cota 1",
                 amount = BigDecimal.TEN,
-                poolShare = CartPoolShare("B1", 1, 10, expiresAt),
-            ),
-        ),
+                poolShare = CartPoolShare("B1", 1, 10, expiresAt)
+            )
+        )
     )
 }

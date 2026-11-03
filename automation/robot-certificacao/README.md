@@ -78,7 +78,7 @@ O runner cria diretório único em results com `log.html`, `report.html`, `outpu
 
 ## IDs e implementação Android
 
-Leia [docs/IDS_ANDROID.md](docs/IDS_ANDROID.md). O app exporta `automationId`/`uiId` como resource-id via Compose `testTagsAsResourceId`. Assim `id=simlo.account.login.experimente` localiza o botão independentemente do texto. IDs antigos foram preservados. Elementos repetidos podem compartilhar um ID de componente: localize a linha/contêiner correto antes do filho. Nenhum ID novo incorpora CPF, nome, cartão ou token.
+Leia [docs/IDS_ANDROID.md](docs/IDS_ANDROID.md). O inventário aponta agora para os renderizadores nos splits `*_ui` e para a apresentação compartilhada da base. Os IDs e as Pages existentes continuam compatíveis; `modulo.estado` identifica a preparação, falha ou indisponibilidade de uma capacidade. O app exporta `automationId`/`uiId` como resource-id via Compose `testTagsAsResourceId`. Assim `id=simlo.account.login.experimente` localiza o botão independentemente do texto. IDs antigos foram preservados. Elementos repetidos podem compartilhar um ID de componente: localize a linha/contêiner correto antes do filho. Nenhum ID novo incorpora CPF, nome, cartão ou token.
 
 Os IDs só existirão no APK que contém a alteração Android. Instalar este pacote Python não altera um APK antigo. Não copiar os IDs como `package:id/...`: os tags Compose são usados literalmente. A configuração desativa a autocomplementação de ID no UiAutomator2.
 

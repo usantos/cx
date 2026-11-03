@@ -6,15 +6,12 @@ import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 import java.time.Duration
 import java.time.Instant
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.ZoneId
 import java.util.Locale
 
 internal val CART_LOCATION_CONSENT get() = messageText("as_apostas_so_podem_ocorrer_em_t_ee6a34")
 internal val CART_LOCATION_BLOCKED get() = messageText("as_apostas_so_podem_ocorrer_em_t_efd4af")
 
-internal fun drawDateLabel(value: String): String {
+fun drawDateLabel(value: String): String {
     val trimmed = value.trim()
     val slashDate = Regex("(\\d{2})/(\\d{2})").find(trimmed)
     if (slashDate != null) return slashDate.value
@@ -29,9 +26,9 @@ internal fun totalCartCents(lines: List<CartLine>): Int =
 
 internal fun formatCurrency(cents: Int): String = "R$ %,.2f".format(Locale.forLanguageTag("pt-BR"), cents.coerceAtLeast(0) / 100.0)
 
-internal data class CartSectionItems(val kind: CartItemKind, val items: List<CartItem>)
+data class CartSectionItems(val kind: CartItemKind, val items: List<CartItem>)
 
-internal fun visibleCartSections(items: List<CartItem>): List<CartSectionItems> = listOf(
+fun visibleCartSections(items: List<CartItem>): List<CartSectionItems> = listOf(
     CartItemKind.POOL_SHARE,
     CartItemKind.INDIVIDUAL_BET,
     CartItemKind.COMBO
@@ -45,17 +42,17 @@ internal fun canClearCart(cart: ShoppingCart?): Boolean = cart?.items?.isNotEmpt
 internal fun canFavoriteCart(cart: ShoppingCart?, authenticated: Boolean): Boolean =
     authenticated && cart?.items?.isNotEmpty() == true && cart.items.none { it.kind == CartItemKind.POOL_SHARE }
 
-internal fun quantityLabel(quantity: Int, singular: String, plural: String): String =
+fun quantityLabel(quantity: Int, singular: String, plural: String): String =
     "${quantity.coerceAtLeast(0)} ${if (quantity == 1) singular else plural}"
 
-internal enum class PoolExpiryState { UNKNOWN, ACTIVE, WARNING, EXPIRED }
+enum class PoolExpiryState { UNKNOWN, ACTIVE, WARNING, EXPIRED }
 
-internal data class PoolExpiry(val state: PoolExpiryState, val remainingLabel: String)
+data class PoolExpiry(val state: PoolExpiryState, val remainingLabel: String)
 
 internal fun hasExpiredPoolShares(cart: ShoppingCart?, now: Instant): Boolean =
     br.gov.caixa.loterias.feature.cart.domain.rule.CartReservationExpiry.hasExpiredPoolShares(cart, now)
 
-internal fun poolExpiry(expiresAt: String, now: Instant): PoolExpiry {
+fun poolExpiry(expiresAt: String, now: Instant): PoolExpiry {
     val expiration = reservationExpirationInstant(expiresAt)
         ?: return PoolExpiry(PoolExpiryState.UNKNOWN, "--:--")
     val remaining = Duration.between(now, expiration)

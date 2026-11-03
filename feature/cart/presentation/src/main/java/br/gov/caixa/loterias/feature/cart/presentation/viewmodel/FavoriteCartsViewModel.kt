@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.MarkFavoriteCartAddedUs
 import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAddedUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.FavoriteCartsFailures
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.FavoriteCartsImport
+import br.gov.caixa.loterias.feature.cart.presentation.coordinator.FavoriteCartsImportServices
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.FavoriteCartsLoading
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.FavoriteCartsRemoval
 import br.gov.caixa.loterias.feature.cart.presentation.state.FavoriteCartsAction
@@ -32,7 +33,8 @@ class FavoriteCartsViewModel(
     private val markFavoriteCartAdded: MarkFavoriteCartAddedUseCase = MarkFavoriteCartAddedUseCase { },
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     autoLoad: Boolean = true,
-    private val isSessionCurrent: () -> Boolean = { true }
+    private val isSessionCurrent: () -> Boolean = { true },
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<FavoriteCartsUiState, FavoriteCartsAction>(
         FavoriteCartsUiState(loading = autoLoad),
@@ -40,6 +42,10 @@ class FavoriteCartsViewModel(
     ).also {
         addCloseable(it)
     }
+    private fun startOperation(action: () -> Unit) {
+        if (canStartOperation()) action()
+    }
+
     val state = mutableState.state
     private val betsCache = mutableMapOf<Long, List<FavoriteCartBet>>()
     private val importedFavoriteCartIds = mutableSetOf<Long>()
@@ -50,12 +56,12 @@ class FavoriteCartsViewModel(
     )
     private val removal = FavoriteCartsRemoval(
         mutableState, viewModelScope, dispatchers, cartId, failures,
-        deleteFavoriteCart, deleteFavoriteCartBet, betsCache, loading
+        deleteFavoriteCart, deleteFavoriteCartBet, betsCache, loading, { canStartOperation() && isSessionCurrent() }
     )
     private val importing = FavoriteCartsImport(
         mutableState, viewModelScope, dispatchers, cartId, failures,
-        getFavoriteCartBets, addFavoriteCartToCurrent, wasFavoriteCartAdded, markFavoriteCartAdded,
-        isSessionCurrent, betsCache, importedFavoriteCartIds
+        FavoriteCartsImportServices(getFavoriteCartBets, addFavoriteCartToCurrent, wasFavoriteCartAdded, markFavoriteCartAdded),
+        isSessionCurrent, betsCache, importedFavoriteCartIds, canStartOperation
     )
 
     init {
@@ -74,15 +80,15 @@ class FavoriteCartsViewModel(
 
     fun dismissConfirmation() = mutableState.dispatch(FavoriteCartsAction.ConfirmationDismissed)
 
-    fun confirmCartRemoval() = removal.confirmCartRemoval()
+    fun confirmCartRemoval() = startOperation { removal.confirmCartRemoval() }
 
-    fun confirmBetRemoval() = removal.confirmBetRemoval()
+    fun confirmBetRemoval() = startOperation { removal.confirmBetRemoval() }
 
-    fun requestImport(id: Long? = cartId) = importing.requestImport(id)
+    fun requestImport(id: Long? = cartId) = startOperation { importing.requestImport(id) }
 
-    fun confirmExistingCartImport() = importing.confirmExistingCartImport()
+    fun confirmExistingCartImport() = startOperation { importing.confirmExistingCartImport() }
 
-    fun selectSpecialMode(selection: Int) = importing.selectSpecialMode(selection)
+    fun selectSpecialMode(selection: Int) = startOperation { importing.selectSpecialMode(selection) }
 
     fun consumeImported() = mutableState.dispatch(FavoriteCartsAction.ImportedConsumed)
 }

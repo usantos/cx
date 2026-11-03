@@ -89,3 +89,11 @@ tasks.register('jacocoNoticeVerification', JacocoCoverageVerification) {
     violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
 }
 tasks.named('check').configure { dependsOn tasks.named('jacocoNoticeVerification') }
+
+dependencies {
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.activity.compose
+    implementation libs.play.feature.delivery
+}
+
+dependencies { testImplementation project(':core:testing'); testImplementation libs.kotlinx.coroutines.test }

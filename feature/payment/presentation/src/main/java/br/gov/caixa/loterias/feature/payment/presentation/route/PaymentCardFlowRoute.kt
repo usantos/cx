@@ -1,25 +1,23 @@
 package br.gov.caixa.loterias.feature.payment.presentation.route
 
-import androidx.compose.ui.res.stringResource
-
-import br.gov.caixa.loterias.feature.payment.R as LocalizedR
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
+import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseNoticeDialog
+import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectEffect
+import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectResumeEffect
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_REVIEW_GUIDANCE
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardActions
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardFlowScreen
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentCardViewModel
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_REVIEW_GUIDANCE
-import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseNoticeDialog
-import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectEffect
-import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectResumeEffect
 
 @Composable
 fun PaymentCardFlowRoute(

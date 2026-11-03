@@ -4,7 +4,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import kotlinx.coroutines.flow.first
 
@@ -24,35 +26,40 @@ internal fun NavGraphBuilder.registerMockPrizeRoutes(
         "retail/prize-mercado-pago-success" to Triple(null, PrizeRedemptionChannel.MERCADO_PAGO, "mp-success")
     ).forEach { (route, setup) ->
         composable(route) {
-            if (!appContainer.mockBackendEnabled) {
-                LaunchedEffect(Unit) {
-                    navController.navigate("tickets/my-bets") {
-                        popUpTo(route) { inclusive = true }
-                        launchSingleTop = true
+            FeatureModuleAdmission(
+                module = AppModule.RETAIL,
+                onBack = navController::popBackStack
+            ) {
+                if (!appContainer.mockBackendEnabled) {
+                    LaunchedEffect(Unit) {
+                        navController.navigate("tickets/my-bets") {
+                            popUpTo(route) { inclusive = true }
+                            launchSingleTop = true
+                        }
                     }
+                    return@FeatureModuleAdmission
                 }
-                return@composable
+                PrizeRedemptionDestination(
+                    appContainer = appContainer,
+                    betId = MOCK_PRIZE_BET_ID,
+                    keySuffix = "alias-${setup.third}",
+                    onRedirect = actions.onPrizeRedirect,
+                    onBetEntry = actions.onPrizeBetEntry,
+                    initialChannel = setup.first,
+                    previewSuccessChannel = setup.second,
+                    onBack = navController::popBackStack,
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onHome = {
+                        navController.navigate("home") {
+                            popUpTo("home") { inclusive = false }
+                            launchSingleTop = true
+                        }
+                    },
+                    onMyBets = {
+                        navController.navigate("tickets/my-bets") { launchSingleTop = true }
+                    }
+                )
             }
-            PrizeRedemptionDestination(
-                appContainer = appContainer,
-                betId = MOCK_PRIZE_BET_ID,
-                keySuffix = "alias-${setup.third}",
-                onRedirect = actions.onPrizeRedirect,
-                onBetEntry = actions.onPrizeBetEntry,
-                initialChannel = setup.first,
-                previewSuccessChannel = setup.second,
-                onBack = navController::popBackStack,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onHome = {
-                    navController.navigate("home") {
-                        popUpTo("home") { inclusive = false }
-                        launchSingleTop = true
-                    }
-                },
-                onMyBets = {
-                    navController.navigate("tickets/my-bets") { launchSingleTop = true }
-                }
-            )
         }
     }
 }

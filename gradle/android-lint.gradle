@@ -18,6 +18,14 @@ def policyProblems = { policy ->
     if (policy.disable || policy.ignore || policy.ignoreWarnings) problems += 'Supressões globais não são permitidas'
     problems
 }
+// A seleção pura é compartilhada pelas fixtures e pelo grafo real do AGP.
+def lintTaskPaths = { String path, boolean dynamic, List bases ->
+    if (!dynamic) return ["${path}:lint${path == ':app' ? 'PrdDebug' : 'Debug'}".toString()]
+    if (bases.size() != 1) throw new GradleException("Dynamic Feature deve ter uma base Lint exata: ${path}")
+    ["${path}:generatePrdDebugLintModel", "${path}:lintAnalyzePrdDebug",
+     "${path}:lintAnalyzePrdDebugAndroidTest", "${path}:lintAnalyzePrdDebugUnitTest",
+     "${bases[0]}:lintPrdDebug"].collect { it.toString() }
+}
 def verifyLintPolicy = tasks.register('verifyLintPolicy') {
     group = 'verification'
     description = 'Checks actual Lint severities and isolated positive/negative policy fixtures.'
@@ -36,6 +44,18 @@ def verifyLintPolicy = tasks.register('verifyLintPolicy') {
                 throw new GradleException("Fixture negativa da política Lint aceita: ${mutation.keySet()}")
             }
         }
+        def splitTasks = lintTaskPaths(':feature:support:faq', true, [':app'])
+        if (splitTasks != [':feature:support:faq:generatePrdDebugLintModel', ':feature:support:faq:lintAnalyzePrdDebug',
+                           ':feature:support:faq:lintAnalyzePrdDebugAndroidTest', ':feature:support:faq:lintAnalyzePrdDebugUnitTest',
+                           ':app:lintPrdDebug']) throw new GradleException('Seleção Lint do split omitiu análise/modelo/relatório da base')
+        if (lintTaskPaths(':core:common', false, []) != [':core:common:lintDebug']) {
+            throw new GradleException('Biblioteca perdeu sua seleção Lint independente')
+        }
+        [[], [':app', ':other']].each { bases ->
+            boolean rejected = false
+            try { lintTaskPaths(':feature:support:faq', true, bases) } catch (GradleException expected) { rejected = true }
+            if (!rejected) throw new GradleException('Split sem base única foi aceito na seleção Lint')
+        }
         lintModels.each { path, model ->
             def actual = [abortOnError: model.abortOnError, warningsAsErrors: model.warningsAsErrors,
                           informational: model.informational, disable: model.disable, ignore: model.ignore,
@@ -43,16 +63,27 @@ def verifyLintPolicy = tasks.register('verifyLintPolicy') {
             def problems = policyProblems(actual)
             if (problems) throw new GradleException("Política Lint inválida em ${path}: ${problems.join('; ')}")
         }
-        logger.lifecycle("Lint policy: ${lintModels.size()} módulos e 8 fixtures verificados; somente 4 recomendações informativas.")
+        logger.lifecycle("Lint policy: ${lintModels.size()} módulos e 12 fixtures verificados; somente 4 recomendações informativas.")
     }
 }
 
-def expectedLintTasks = []
+def lintOwners = []
+def lintTasksFor = { owner ->
+    def dynamic = owner.plugins.hasPlugin('com.android.dynamic-feature')
+    def bases = dynamic ? subprojects.findAll { candidate ->
+        candidate.plugins.hasPlugin('com.android.application') && candidate.android.dynamicFeatures.contains(owner.path)
+    }*.path : []
+    // AGP analisa o split e seus testes separadamente, mas publica resultados pelo relatório da base.
+    lintTaskPaths(owner.path, dynamic, bases)
+}
+def expectedLintTasks = {
+    lintOwners.findAll { rootProject.incrementalScope().contains(it) }.collectMany { lintTasksFor(it) }.unique()
+}
 def lintQuality = tasks.register('lintQualityCheck') {
     group = 'verification'
-    description = 'Checks Android modules in scope once (product app PRD Debug, other Android modules Debug).'
+    description = 'Checks Android modules in scope once (product app/dynamic features PRD Debug, other Android modules Debug).'
     dependsOn verifyLintPolicy
-    dependsOn { expectedLintTasks.findAll { rootProject.incrementalScope()*.path.contains(it.substring(0, it.lastIndexOf(':'))) } }
+    dependsOn { expectedLintTasks() }
     doFirst {
         if (updateBaselines) {
             throw new GradleException('Baseline updates are separate from validation. Run lintQualityBaseline, then lintQualityCheck without -PupdateLintBaseline.')
@@ -70,9 +101,9 @@ def baselineQuality = tasks.register('lintQualityBaseline') {
 }
 
 subprojects { owner ->
-    ['com.android.application', 'com.android.library'].each { pluginId ->
+    ['com.android.application', 'com.android.library', 'com.android.dynamic-feature'].each { pluginId ->
         owner.pluginManager.withPlugin(pluginId) {
-            def variant = owner.path == ':app' ? 'PrdDebug' : 'Debug'
+            def variant = owner.path == ':app' || owner.plugins.hasPlugin('com.android.dynamic-feature') ? 'PrdDebug' : 'Debug'
             def baselineFile = rootProject.file("config/lint/baselines/${owner.path.substring(1).replace(':', '/')}.xml")
             owner.extensions.getByName('android').lint {
                 abortOnError = true
@@ -81,7 +112,7 @@ subprojects { owner ->
                 // continuam no relatório; verificações de correção e segurança seguem bloqueantes.
                 informational += ['AndroidGradlePluginVersion', 'GradleDependency', 'NewerVersionAvailable', 'OldTargetApi']
                 checkReleaseBuilds = true
-                // Cada módulo Android possui sua tarefa canônica de lint. Não repete a análise/geração de relatórios de
+                // Bibliotecas/aplicação possuem tarefa canônica; splits usam análise própria e relatório da base. Não repete a análise de
                 // dependências para cada consumidor; os detectores de lint das dependências continuam sendo carregados.
                 checkDependencies = false
                 checkGeneratedSources = false
@@ -105,12 +136,20 @@ subprojects { owner ->
                 }
             }
             lintModels[owner.path] = owner.extensions.getByName('android').lint
-            expectedLintTasks += "${owner.path}:lint${variant}"
+            lintOwners.add(owner)
             if (updateBaselines) {
                 owner.tasks.matching { it.name == "updateLintBaseline${variant}" }.configureEach {
                     doFirst { baselineFile.parentFile.mkdirs() }
                 }
-                baselineQuality.configure { dependsOn "${owner.path}:updateLintBaseline${variant}" }
+                if (owner.plugins.hasPlugin('com.android.dynamic-feature')) {
+                    baselineQuality.configure {
+                        dependsOn { lintTasksFor(owner).findAll { it.endsWith(':lintPrdDebug') }.collect {
+                            it.replace(':lintPrdDebug', ':updateLintBaselinePrdDebug')
+                        } }
+                    }
+                } else {
+                    baselineQuality.configure { dependsOn "${owner.path}:updateLintBaseline${variant}" }
+                }
             }
         }
     }
@@ -121,7 +160,7 @@ gradle.taskGraph.whenReady { graph ->
         if (!gradle.startParameter.excludedTaskNames.isEmpty()) {
             throw new GradleException("Mandatory quality stages excluded: task exclusions (-x) are not permitted in lintQualityCheck: ${gradle.startParameter.excludedTaskNames}")
         }
-        def omitted = expectedLintTasks.findAll { rootProject.incrementalScope()*.path.contains(it.substring(0, it.lastIndexOf(':'))) && !graph.hasTask(it) }
+        def omitted = expectedLintTasks().findAll { !graph.hasTask(it) }
         if (!omitted.isEmpty()) throw new GradleException("Required Android Lint tasks excluded: ${omitted}")
     }
 }

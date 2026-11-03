@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.responsiblegaming.navigation
 
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestionsUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SubmitSelfAssessmentUseCase
@@ -14,8 +14,8 @@ class ResponsibleGamingNavigationDependenciesAdapter @Inject constructor(
     override val selfAssessmentQuestions: GetSelfAssessmentQuestionsUseCase,
     override val socialTransfers: GetSocialTransfersUseCase,
     override val submitSelfAssessment: SubmitSelfAssessmentUseCase,
-    override val suspendAccount: SuspendAccountUseCase,
+    private val suspensionOperations: br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SuspensionUseCasesFactory,
     override val serverTimeSource: br.gov.caixa.loterias.core.common.time.ServerTimeSource,
 ) : ResponsibleGamingNavigationDependencies {
-
+    override val suspendAccount: SuspendAccountUseCase get() = suspensionOperations.forCurrentSession()
 }

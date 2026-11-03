@@ -1,0 +1,88 @@
+// Dependências exclusivas de testes: as fachadas da base exercitam as implementações
+// reais dos splits, sem criar dependência de produção da base para módulos dinâmicos.
+    def base = project(':app')
+    def splits = base.android.dynamicFeatures.collect { project(it) }
+    def artifacts = splits.collect { split ->
+        def archive = split.tasks.register('realUiTestClassesJar', Jar) {
+            dependsOn split.tasks.named('compilePrdDebugKotlin'), split.tasks.named('compilePrdDebugJavaWithJavac')
+            archiveFileName = "${split.name}-test-classes.jar"
+            destinationDirectory = split.layout.buildDirectory.dir('generated/ui-test-classpath')
+            from split.layout.buildDirectory.dir('tmp/kotlin-classes/prdDebug')
+            from split.layout.buildDirectory.dir('intermediates/javac/prdDebug/compilePrdDebugJavaWithJavac/classes')
+        }
+        def resources = split.layout.buildDirectory.file('intermediates/compile_and_runtime_not_namespaced_r_class_jar/prdDebug/processPrdDebugResources/R.jar')
+        [owner: split, archive: archive, resources: split.files(resources).builtBy(split.tasks.named('processPrdDebugResources'))]
+    }
+    def host = base.tasks.register('realUiTestHostJar', Jar) {
+        dependsOn base.tasks.named('transformPrdDebugClassesWithAsm')
+        archiveFileName = 'base-test-host.jar'
+        destinationDirectory = base.layout.buildDirectory.dir('generated/ui-test-classpath')
+        from(base.layout.buildDirectory.dir('intermediates/classes/prdDebug/transformPrdDebugClassesWithAsm/dirs')) {
+            include 'br/gov/caixa/loterias/apostas/HomeDrawerTestActivity.class'
+        }
+    }
+    def hostElements = base.configurations.create('realUiTestHostElements') {
+        canBeConsumed = true
+        canBeResolved = false
+    }
+    base.artifacts.add(hostElements.name, host)
+    def resourceApk = base.layout.buildDirectory.file('generated/dynamic-feature-test-resources/prdDebug/universal.apk')
+    subprojects.findAll { owner ->
+        owner == base || owner in splits || owner.path.startsWith(':feature:') && owner.path.endsWith(':presentation')
+    }.each { owner ->
+        artifacts.findAll { it.owner != owner }.each { artifact ->
+            owner.dependencies.add('testRuntimeOnly', owner.files(artifact.archive))
+            owner.dependencies.add('testRuntimeOnly', artifact.resources)
+        }
+        artifacts.findAll { it.owner != owner }.each { artifact ->
+            owner.dependencies.add('testCompileOnly', artifact.resources)
+            owner.dependencies.add('androidTestCompileOnly', artifact.resources)
+            owner.tasks.matching { it.name ==~ /(?:compile|ksp).*AndroidTest.*/ }.configureEach { dependsOn artifact.resources }
+            owner.tasks.matching { it.name ==~ /(?:compile|ksp).*UnitTest.*/ }.configureEach { dependsOn artifact.resources }
+        }
+        owner.tasks.withType(Test).configureEach {
+            if (!name.endsWith('DebugUnitTest')) return
+            def variant = owner == base || owner in splits ? name.substring(4, name.length() - 'UnitTest'.length()).uncapitalize() : 'prdDebug'
+            def capitalized = variant.capitalize()
+            def resourceOwners = [base] + splits
+            def tables = resourceOwners.collect { source ->
+                source.files(source.layout.buildDirectory.file(
+                        "intermediates/compile_and_runtime_not_namespaced_r_class_jar/${variant}/process${capitalized}Resources/R.jar"
+                )).builtBy(source.tasks.named("process${capitalized}Resources"))
+            }
+            // Os IDs são os gerados pelo mesmo APK real, sem adaptar valores para os testes.
+            // A tabela unitária de uma biblioteca possui IDs próprios e não representa o AAB.
+            classpath = owner.files(tables).plus(classpath)
+            dependsOn tables
+            if (!owner.fileTree('src/androidTest/res').isEmpty()) {
+                def fixtureVariant = owner == base || owner in splits ? variant : 'debug'
+                def fixtureCapitalized = fixtureVariant.capitalize()
+                def fixtureTask = owner.tasks.named("process${fixtureCapitalized}AndroidTestResources")
+                def fixtureApk = owner.layout.buildDirectory.file(
+                        "intermediates/linked_resources_binary_format/${fixtureVariant}AndroidTest/process${fixtureCapitalized}AndroidTestResources/linked-resources-binary-format.ap_"
+                )
+                dependsOn fixtureTask
+                inputs.file(fixtureApk).withPropertyName('nativeFixtureResourceApk').withPathSensitivity(PathSensitivity.RELATIVE)
+                systemProperty 'simlo.dynamicFeature.fixtureResourceApk', fixtureApk.get().asFile.absolutePath
+            }
+        }
+        if (owner != base && !(owner in splits)) {
+            owner.dependencies.add('testImplementation', owner.dependencies.project(path: base.path, configuration: hostElements.name))
+            owner.tasks.matching { it.name ==~ /(?:compile|ksp).*UnitTest.*/ }.configureEach { dependsOn host }
+        }
+        owner.tasks.withType(Test).configureEach {
+            dependsOn artifacts.findAll { it.owner != owner }.collect { it.archive }
+            dependsOn artifacts.findAll { it.owner != owner }.collect { it.resources }
+        }
+        if (!(owner in splits)) {
+            owner.tasks.withType(Test).configureEach {
+                dependsOn base.tasks.named('preparePrdDebugDynamicFeatureTestResources')
+                inputs.file(resourceApk).withPropertyName('dynamicFeatureResourceApk').withPathSensitivity(PathSensitivity.RELATIVE)
+                systemProperty 'simlo.dynamicFeature.resourceApk', resourceApk.get().asFile.absolutePath
+                systemProperty 'simlo.dynamicFeature.baseApplicationId', base.android.applicationVariants.find { it.name == 'prdDebug' }.applicationId
+            }
+        }
+        def helpers = rootProject.file('core/testing/src/moduleTestSupport/kotlin')
+        owner.android.sourceSets.androidTest.java.srcDir(helpers)
+        owner.android.sourceSets.androidTest.kotlin.srcDir(helpers)
+    }

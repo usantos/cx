@@ -4,7 +4,7 @@ import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 
-internal fun MarketplaceFilterUiState.toDomain() = MarketplaceFilter(
+fun MarketplaceFilterUiState.toDomain() = MarketplaceFilter(
     minimumValue.toBackendMoney(),
     maximumValue.toBackendMoney(),
     minimumShares.toIntOrNull(),
@@ -14,7 +14,7 @@ internal fun MarketplaceFilterUiState.toDomain() = MarketplaceFilter(
     selectedRetailer?.id?.toString() ?: restoredRetailerId,
     selectedModality?.name.orEmpty(),
     wantedNumbers,
-    unwantedNumbers,
+    unwantedNumbers
 ).withModality(selectedModality?.id, selectedModality?.contestType)
 
 private fun String.toBackendMoney(): String {
@@ -23,8 +23,16 @@ private fun String.toBackendMoney(): String {
 }
 
 internal fun marketplaceFilterState(filter: MarketplaceFilter, lotteryEnabled: Boolean) = MarketplaceFilterUiState(
-    selectedModality = filter.modalityId?.let { MarketplaceFilterModalityUi(it, filter.modality,
-        filter.modality, filter.contestType, allNumberQuantityOptions, 80) },
+    selectedModality = filter.modalityId?.let {
+        MarketplaceFilterModalityUi(
+            it,
+            filter.modality,
+            filter.modality,
+            filter.contestType,
+            allNumberQuantityOptions,
+            80
+        )
+    },
     lottery = filter.lottery,
     restoredRetailerId = filter.lottery,
     minimumValue = filter.minimumValue.replace('.', ','),
@@ -37,5 +45,5 @@ internal fun marketplaceFilterState(filter: MarketplaceFilter, lotteryEnabled: B
     unwantedNumbers = filter.unwantedNumbers,
     numberOptions = allNumberQuantityOptions,
     lotteryEnabled = lotteryEnabled,
-    allModalitiesHighlighted = filter.lottery.isNotBlank(),
+    allModalitiesHighlighted = filter.lottery.isNotBlank()
 )

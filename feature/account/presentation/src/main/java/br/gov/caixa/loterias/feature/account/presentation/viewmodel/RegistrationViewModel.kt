@@ -28,6 +28,7 @@ class RegistrationViewModel(
     private val registerAccount: RegisterAccountUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     private val isSessionCurrent: () -> Boolean = { true },
+    private val canStartWrite: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<RegistrationUiState, RegistrationAction>(
         identityProvider.currentUser().toState(),
@@ -63,7 +64,11 @@ class RegistrationViewModel(
 
     fun submit() {
         val task = synchronized(mutableState) {
-            if (!isSessionCurrent() || submissionJob?.isCompleted == false || state.value.loading || state.value.registered) return
+            if (!canStartWrite() || !isSessionCurrent() || submissionJob?.isCompleted == false || state.value.loading ||
+                state.value.registered
+            ) {
+                return
+            }
             val current = state.value
             mutableState.dispatch(RegistrationAction.SubmitStarted)
             viewModelScope.launch(dispatchers.io, start = CoroutineStart.LAZY) {
@@ -75,6 +80,10 @@ class RegistrationViewModel(
                     acceptsNotifications = current.acceptsNotifications
                 )
                 if (!isSessionCurrent()) return@launch
+                if (!canStartWrite()) {
+                    mutableState.dispatch(RegistrationAction.SubmitCancelled)
+                    return@launch
+                }
                 val result = registerAccount(registration)
                 if (!isSessionCurrent()) return@launch
                 when (result) {

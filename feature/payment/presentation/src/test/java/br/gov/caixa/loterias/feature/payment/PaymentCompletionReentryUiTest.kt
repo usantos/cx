@@ -2,11 +2,13 @@ package br.gov.caixa.loterias.feature.payment
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -38,16 +40,19 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 private const val SYNTHETIC_PURCHASE_ID = 9L
 private const val APPROVED_PURCHASE_STATUS = 8
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class PaymentCompletionReentryUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val store = ViewModelStore()
     private val visible = mutableStateOf(true)
     private val clock = Clock.fixed(Instant.parse("2026-09-07T15:00:00Z"), ZoneOffset.UTC)
@@ -159,7 +164,7 @@ class PaymentCompletionReentryUiTest {
     }
 
     private fun show(route: @Composable () -> Unit) {
-        compose.setContent { LoteriasCaixaDSTheme { if (visible.value) route() } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { if (visible.value) route() } }
         compose.waitForIdle()
     }
 

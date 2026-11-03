@@ -1,9 +1,12 @@
 package br.gov.caixa.loterias.feature.home
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeExitConfirmation
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -14,7 +17,7 @@ class HomeExitConfirmationTest {
 
     @Test fun deviceBackRequiresExplicitConfirmationToExit() {
         var exits = 0
-        compose.setContent { LoteriasCaixaDSTheme { HomeExitConfirmation { exits++ } } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { HomeExitConfirmation { exits++ } } }
         compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
         compose.onNodeWithText("Deseja sair do aplicativo?").assertIsDisplayed()
         compose.onNodeWithText("Cancelar").performClick()

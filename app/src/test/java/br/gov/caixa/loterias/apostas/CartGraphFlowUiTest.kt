@@ -22,6 +22,8 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -41,12 +43,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class CartGraphFlowUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
@@ -88,7 +91,7 @@ class CartGraphFlowUiTest {
 
     private fun show(route: String) {
         val dependencies = dependencies()
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             val navigation = rememberAppNavigationState(null)
             val sessionState = rememberAppSessionState()

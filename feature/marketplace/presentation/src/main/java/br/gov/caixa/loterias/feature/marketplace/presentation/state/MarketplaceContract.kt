@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.feature.marketplace.presentation.state
 
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 
 enum class MarketplaceTab { POOLS, FAVORITE_RETAILERS }
@@ -27,10 +29,10 @@ data class MarketplaceUiState(
     val favoriteRetailersOpening: Boolean = false,
     val favoriteRetailersError: String? = null,
     val pendingFavoriteRetailerRemoval: Long? = null,
-    val contestHeader: br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters? = null,
+    val contestHeader: LotteryGameParameters? = null,
     val modalityNames: Map<Pair<String, Int>, String> = emptyMap(),
     val showModalityInList: Boolean = lotteryFiltered,
-    val specialContests: br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests(),
+    val specialContests: MarketplaceSpecialContests = MarketplaceSpecialContests(),
     val contestSpecialName: String? = null,
 ) {
     // A CX usa uma resposta de busca ordenada para as duas seções, nunca um endpoint separado para o carrossel.

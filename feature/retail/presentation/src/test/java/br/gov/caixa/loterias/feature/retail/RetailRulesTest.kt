@@ -1,27 +1,15 @@
 package br.gov.caixa.loterias.feature.retail
 
-import org.junit.Assert.assertEquals
-import org.junit.Test
-import br.gov.caixa.loterias.feature.retail.presentation.state.PrizePixKeySource
-import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
-import br.gov.caixa.loterias.feature.retail.presentation.mapper.LotteryQrUrgency
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.canContinuePix
-import br.gov.caixa.loterias.feature.retail.presentation.mapper.formatRemainingTime
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.isValidPixKey
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.isValidPrizeEmail
-import br.gov.caixa.loterias.feature.retail.presentation.mapper.lotteryQrUrgency
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.selectedPixKey
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizePixKeySource
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class RetailRulesTest {
-    @Test fun `formats countdown using minutes and seconds`() {
-        assertEquals("14:59", formatRemainingTime(899))
-        assertEquals("01:00", formatRemainingTime(60))
-        assertEquals("00:09", formatRemainingTime(9))
-    }
-
-    @Test fun `negative countdown is clamped to zero`() {
-        assertEquals("00:00", formatRemainingTime(-1))
-    }
 
     @Test fun `prize email requires local part domain and suffix`() {
         assertEquals(true, isValidPrizeEmail("apostador@caixa.gov.br"))
@@ -34,8 +22,13 @@ class RetailRulesTest {
 
     @Test fun `mercado pago rejects malformed addresses before redemption`() {
         listOf(
-            " apostador@caixa.gov.br ", "a@@caixa.gov.br", "a b@caixa.gov.br",
-            "a..b@caixa.gov.br", "a@caixa.b", "a@caixa.123", "a@caixa.gov.br\n",
+            " apostador@caixa.gov.br ",
+            "a@@caixa.gov.br",
+            "a b@caixa.gov.br",
+            "a..b@caixa.gov.br",
+            "a@caixa.b",
+            "a@caixa.123",
+            "a@caixa.gov.br\n"
         ).forEach { email -> assertEquals(email, false, isValidPrizeEmail(email)) }
     }
 
@@ -64,17 +57,9 @@ class RetailRulesTest {
 
         val other = cpf.copy(
             pixKeySource = PrizePixKeySource.OTHER,
-            pixKey = "cliente@caixa.gov.br",
+            pixKey = "cliente@caixa.gov.br"
         )
         assertEquals(false, other.canContinuePix())
         assertEquals(true, other.copy(pixOwnershipAccepted = true).canContinuePix())
-    }
-
-    @Test fun `qr urgency preserves legacy thresholds`() {
-        assertEquals(LotteryQrUrgency.NORMAL, lotteryQrUrgency(61))
-        assertEquals(LotteryQrUrgency.RED, lotteryQrUrgency(60))
-        assertEquals(LotteryQrUrgency.PULSE, lotteryQrUrgency(10))
-        assertEquals(LotteryQrUrgency.VIBRATE, lotteryQrUrgency(3))
-        assertEquals(LotteryQrUrgency.EXPIRED, lotteryQrUrgency(0))
     }
 }

@@ -10,14 +10,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.apostas.HomeDrawerTestActivity
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
 @Config(sdk = [TEST_API_LEVEL], application = Application::class)
 class RecoveryNavControllerTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
@@ -27,13 +32,15 @@ class RecoveryNavControllerTest {
         var automaticEntries = 0
         lateinit var nav: NavHostController
         restoration.setContent {
-            LoteriasCaixaDSTheme {
-                nav = rememberRecoveryNavController()
-                NavHost(nav, startDestination = "home") {
-                    composable("home") { Text("Home") }
-                    composable("betting/rapid-list") {
-                        LaunchedEffect(Unit) { automaticEntries++ }
-                        Text("Rapid list")
+            InstalledFeatureTestContent {
+                LoteriasCaixaDSTheme {
+                    nav = rememberRecoveryNavController()
+                    NavHost(nav, startDestination = "home") {
+                        composable("home") { Text("Home") }
+                        composable("betting/rapid-list") {
+                            LaunchedEffect(Unit) { automaticEntries++ }
+                            Text("Rapid list")
+                        }
                     }
                 }
             }
@@ -54,11 +61,13 @@ class RecoveryNavControllerTest {
         val restoration = StateRestorationTester(compose)
         lateinit var nav: NavHostController
         restoration.setContent {
-            LoteriasCaixaDSTheme {
-                nav = rememberRecoveryNavController()
-                NavHost(nav, startDestination = "home") {
-                    composable("home") { Text("Home") }
-                    composable("payment/success") { Text("Success") }
+            InstalledFeatureTestContent {
+                LoteriasCaixaDSTheme {
+                    nav = rememberRecoveryNavController()
+                    NavHost(nav, startDestination = "home") {
+                        composable("home") { Text("Home") }
+                        composable("payment/success") { Text("Success") }
+                    }
                 }
             }
         }
@@ -69,4 +78,4 @@ class RecoveryNavControllerTest {
     }
 }
 
-private const val TEST_API_LEVEL = 35
+private const val TEST_API_LEVEL = 36

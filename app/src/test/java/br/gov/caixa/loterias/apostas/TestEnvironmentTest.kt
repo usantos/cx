@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.apostas
 
 import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import br.gov.caixa.loterias.feature.home.presentation.mapper.homeEnvironmentLabel
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class TestEnvironmentTest {
@@ -14,7 +14,7 @@ class TestEnvironmentTest {
             "INTERNO_ESTEIRA" to "https://silce-simlo.tqs.caixa/silce-servico-rest/rest/v1/",
             "EXTERNO_ESTEIRA" to "https://silce.simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/",
             "HMP" to "https://nbcfvgbhnjmkasdef-lce.caixa.gov.br/",
-            "PILOTO" to "https://pilotoloterias.caixa.gov.br/silce-servico-rest/rest/v1/",
+            "PILOTO" to "https://pilotoloterias.caixa.gov.br/silce-servico-rest/rest/v1/"
         )
         assertEquals(expected, TestEnvironment.entries.associate { it.name to it.apiBaseUrl })
         expected.forEach { (name, url) ->

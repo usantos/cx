@@ -2,12 +2,22 @@ package br.gov.caixa.loterias.apostas
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextContains
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextReplacement
 import androidx.lifecycle.viewModelScope
-import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.route.ResultsRoute
@@ -16,7 +26,9 @@ import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -24,12 +36,14 @@ class ResultsCoordinationUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
     private val models = mutableListOf<ResultsViewModel>()
 
-    @After fun cleanup() { models.forEach { it.viewModelScope.cancel() } }
+    @After fun cleanup() {
+        models.forEach { it.viewModelScope.cancel() }
+    }
 
     @Test fun backClearsTheSelectedModalityBeforeLeavingResults() {
         val fixture = Fixture()
         var exits = 0
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create() }
             LoteriasCaixaDSTheme { ResultsRoute(model, onBack = { exits++ }) }
         }
@@ -52,7 +66,7 @@ class ResultsCoordinationUiTest {
         val fixture = Fixture()
         val response = CompletableDeferred<DrawResult>()
         fixture.pending = response
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create().also { it.selectModality("megasena") } }
             LoteriasCaixaDSTheme { ResultsRoute(model, onBack = {}, showDetail = true) }
         }
@@ -82,7 +96,7 @@ class ResultsCoordinationUiTest {
         val second = Fixture(200)
         val selected = mutableIntStateOf(0)
         val exits = mutableListOf<Int>()
-        compose.setContent {
+        compose.setFeatureContent {
             val old = remember { first.create().also { it.selectModality("megasena") } }
             val current = remember { second.create().also { it.selectModality("quina") } }
             val index = selected.intValue
@@ -122,12 +136,15 @@ class ResultsCoordinationUiTest {
                 requests += "$modality:$contest"
                 AppResult.Success(pending?.await() ?: draw(modality, contest))
             },
-            dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
-        ).also { model = it; models += it }
+            dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
+        ).also {
+            model = it
+            models += it
+        }
     }
 
     private fun draw(modality: String, contest: Int) = DrawResult(
         modality, contest, "18 out 2026", "SÃO PAULO - SP", listOf(1, 2, 3, 4, 5, 6),
-        emptyList(), emptyList(), false, "0", "100", "", listOf(DrawPayout("0001", 0, "0")),
+        emptyList(), emptyList(), false, "0", "100", "", listOf(DrawPayout("0001", 0, "0"))
     )
 }

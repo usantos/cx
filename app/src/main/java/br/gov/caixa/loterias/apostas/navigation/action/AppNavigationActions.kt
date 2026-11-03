@@ -1,18 +1,16 @@
 package br.gov.caixa.loterias.apostas.navigation.action
 
-import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
 import br.gov.caixa.loterias.apostas.navigation.session.AppSessionCoordinator
+import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
-import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.destination.BettingSimulationRoute
+import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
+import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.accountCompletionRedirects
 import br.gov.caixa.loterias.core.navigation.state.loggedContinuation
-import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
 import br.gov.caixa.loterias.core.navigation.state.ticketQueryContinuation
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import br.gov.caixa.loterias.feature.payment.navigation.paymentRedirectRoute
 
 internal fun appNavigationActions(
@@ -35,21 +33,25 @@ internal fun appNavigationActions(
                 }
                 navController.navigate(BettingSimulationRoute.from(decision.game))
             }
+
             is BetEntryDecision.CompleteAccount -> {
                 session.state.accountCompletionRequired = true
-                navController.navigate(when (decision.destination) {
-                PostLoginDestination.HOME -> "home"
-                PostLoginDestination.REGISTRATION -> "account/register"
-                PostLoginDestination.TERMS -> "support/terms-acceptance"
-                PostLoginDestination.SELF_ASSESSMENT -> "responsible/start/required"
-                }) { launchSingleTop = true }
+                navController.navigate(
+                    when (decision.destination) {
+                        PostLoginDestination.HOME -> "home"
+                        PostLoginDestination.REGISTRATION -> "account/register"
+                        PostLoginDestination.TERMS -> "support/terms-acceptance"
+                        PostLoginDestination.SELF_ASSESSMENT -> "responsible/start/required"
+                    }
+                ) { launchSingleTop = true }
             }
         }
     }
     val onPrizeBetEntry: (BetEntryDecision) -> Unit = { handleBetEntry(it, true) }
     val onPrizeRedirect: (br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect) -> Unit = { destination ->
         if (destination in accountCompletionRedirects) {
-            val betId = navController.currentBackStackEntry?.arguments?.getLong("betId")?.takeIf { it > 0 } ?: navigation.details.selectedBet?.id
+            val betId =
+                navController.currentBackStackEntry?.arguments?.getLong("betId")?.takeIf { it > 0 } ?: navigation.details.selectedBet?.id
             session.state.visitorReturnRoute = loggedContinuation("retail/prize", betId)
             session.state.visitorReturnOwnerKey = sessionDependencies.account.authenticatedSessionIdentity.captureIdentity()?.ownerKey
         }
@@ -77,5 +79,12 @@ internal fun appNavigationActions(
             launchSingleTop = true
         }
     }
-    return AppNavigationActions(handleBetEntry, onPrizeBetEntry, onPrizeRedirect, onTicketServiceRedirect, onPaymentRedirect, onPaymentMoreBets)
+    return AppNavigationActions(
+        handleBetEntry,
+        onPrizeBetEntry,
+        onPrizeRedirect,
+        onTicketServiceRedirect,
+        onPaymentRedirect,
+        onPaymentMoreBets
+    )
 }

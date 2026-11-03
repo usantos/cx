@@ -34,6 +34,8 @@ import br.gov.caixa.loterias.core.network.provider.BetsHistoryApiProvider
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.core.network.provider.PaymentApiProvider
 import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.environment.ChangeEnvironment
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import java.time.Duration
@@ -49,15 +51,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 import org.robolectric.shadows.ShadowNetworkCapabilities
 import org.robolectric.shadows.ShadowNetworkInfo
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class HostCompositionBindingsJvmTest {
     @get:Rule
@@ -191,7 +194,7 @@ class HostCompositionBindingsJvmTest {
         val startup = HostFeatureConfigurationModule.startupStatusPresentation()
         val offline = HostFeatureConfigurationModule.loginConnectionPresentation(network)
         val cart = HostFeatureConfigurationModule.cartRecoveryStatusPresentation()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 when (mode.value) {
                     0 -> startup.Content(StartupStatusKind.UNAVAILABLE, { retries++ }, network, false)

@@ -1,29 +1,29 @@
 package br.gov.caixa.loterias.feature.cart
 
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
+import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
-import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartsUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.MarkFavoriteCartAddedUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAddedUseCase
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.FavoriteCartsViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.FavoriteCartsViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class FavoriteCartsViewModelTest {
@@ -481,6 +481,23 @@ class FavoriteCartsViewModelTest {
             assertEquals(2, imports)
         }
 
+    @Test fun `disabled favorite carts blocks confirmed removal without discarding the loaded cart`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var removals = 0
+        val vm = viewModel(canStartOperation = { enabled }, deleteCart = {
+            removals++
+            AppResult.Success(emptyList())
+        })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestCartRemoval(1)
+        val before = vm.state.value
+        enabled = false
+        vm.confirmCartRemoval()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, removals)
+        assertEquals(before, vm.state.value)
+    }
+
     private fun viewModel(
         autoLoad: Boolean = true,
         isSessionCurrent: () -> Boolean = { true },
@@ -492,6 +509,7 @@ class FavoriteCartsViewModelTest {
         import: suspend (Long, Int) -> AppResult<ShoppingCart> = { _, _ -> AppResult.Success(cart()) },
         wasAdded: suspend (Long) -> Boolean = { false },
         markAdded: suspend (Long) -> Unit = { },
+        canStartOperation: () -> Boolean = { true },
     ) = FavoriteCartsViewModel(
         cartId,
         GetFavoriteCartsUseCase { loadCarts() },
@@ -503,7 +521,8 @@ class FavoriteCartsViewModelTest {
         MarkFavoriteCartAddedUseCase(markAdded),
         dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
         autoLoad = autoLoad,
-        isSessionCurrent = isSessionCurrent
+        isSessionCurrent = isSessionCurrent,
+        canStartOperation = canStartOperation
     )
 
     companion object {

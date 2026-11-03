@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.route
 
+import br.gov.caixa.loterias.feature.tickets.presentation.state.BetReceipt
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.withContext
-import br.gov.caixa.loterias.feature.tickets.presentation.state.BetReceipt
 
 internal suspend fun <T : Any> deliverBetReceipt(
     receipt: BetReceipt,

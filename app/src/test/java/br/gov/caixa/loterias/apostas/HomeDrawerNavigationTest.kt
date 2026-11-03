@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.apostas
 
 import br.gov.caixa.loterias.feature.home.presentation.mapper.homeDrawerRoute
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeDrawerConfirmation
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeDrawerItem
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class HomeDrawerNavigationTest {

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_nao_informada_c6f460" formatted="false">"Não informada"</string>
+    <string name="ui_nao_informado_01af1e" formatted="false">"Não informado"</string>
+    <string name="ui_proximo_sorteio_a5035e" formatted="false">"Próximo sorteio"</string>
+    <string name="ui_regras_do_jogo_e96ce2" formatted="false">"Regras do jogo"</string>
+</resources>

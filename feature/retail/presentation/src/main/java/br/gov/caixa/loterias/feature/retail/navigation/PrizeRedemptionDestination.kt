@@ -5,6 +5,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.payment.navigation.PaymentRegistrationHost
 import br.gov.caixa.loterias.feature.payment.navigation.paymentRegistrationViewModel
@@ -29,6 +31,7 @@ internal fun PrizeRedemptionDestination(
     onMyBets: () -> Unit,
     onForegroundHostChanged: (Boolean) -> Unit = {},
 ) {
+    val isEntryEnabled = rememberFeatureWritePermission(AppModule.RETAIL)
     val authenticatedUser = appContainer.currentUserIdentity.currentUser()
     val prizeViewModel = viewModel(key = "prize-redemption-$keySuffix") {
         PrizeRedemptionViewModel(
@@ -49,7 +52,8 @@ internal fun PrizeRedemptionDestination(
             prepareBetEntry = appContainer.prepareBetEntry,
             localClock = appContainer.localClock,
             networkAvailability = appContainer.networkAvailability,
-            dispatchers = appContainer.dispatchers
+            dispatchers = appContainer.dispatchers,
+            isEntryEnabled = isEntryEnabled
         )
     }
     val prizeState by prizeViewModel.state.collectAsStateWithLifecycle()

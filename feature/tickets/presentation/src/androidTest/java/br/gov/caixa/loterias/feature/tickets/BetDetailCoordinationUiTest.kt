@@ -1,50 +1,72 @@
 package br.gov.caixa.loterias.feature.tickets
 
-import androidx.compose.ui.test.*
-import org.junit.Assert.*
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.performTextInput
 import androidx.lifecycle.viewModelScope
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
+import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceiptUseCase
-import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
-import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.LoadConfirmedBetUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBetUseCase
+import br.gov.caixa.loterias.feature.tickets.presentation.components.BetRepeatActionsOverlay
+import br.gov.caixa.loterias.feature.tickets.presentation.mapper.contestType
+import br.gov.caixa.loterias.feature.tickets.presentation.route.BetDetailDataRoute
+import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.BetDetailViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.tickets.presentation.mapper.contestType
-import br.gov.caixa.loterias.feature.tickets.presentation.route.BetDetailDataRoute
-import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.BetDetailViewModel
-import br.gov.caixa.loterias.feature.tickets.presentation.components.BetRepeatActionsOverlay
 
 /** Caracterização da rota pública com ViewModels reais e fronteiras locais de serviço. */
 class BetDetailCoordinationUiTest {
     @get:Rule val compose = createComposeRule()
     private val models = mutableListOf<BetDetailViewModel>()
-    private val bet = ConfirmedBet(41, "Mega-Sena", 2800, "14/10/2026", "Não premiada",
-        listOf(1, 2, 3, 4, 5, 6), modalityId = 2, statusId = 9)
+    private val bet = ConfirmedBet(
+        41,
+        "Mega-Sena",
+        2800,
+        "14/10/2026",
+        "Não premiada",
+        listOf(1, 2, 3, 4, 5, 6),
+        modalityId = 2,
+        statusId = 9
+    )
 
-    @After fun cancelModels() { compose.runOnIdle { models.forEach { it.viewModelScope.cancel() } } }
+    @After fun cancelModels() {
+        compose.runOnIdle { models.forEach { it.viewModelScope.cancel() } }
+    }
 
     @Test fun failedHydrationCanRetryAndActionsReceiveTheRecoveredBet() {
         val fixture = Fixture().apply { recovery = AppResult.Failure(AppError.Network) }
@@ -53,11 +75,20 @@ class BetDetailCoordinationUiTest {
         val edited = mutableListOf<Long>()
         val redeemed = mutableListOf<Long>()
         var cart = 0
-        compose.setContent { LoteriasCaixaDSTheme {
-            BetDetailDataRoute(model, {}, { viewed.add(it.id) },
-                onRedeemPrize = { redeemed.add(it.id) }, onEdit = { edited.add(it.id) },
-                onCart = { cart++ }, cartTotal = BigDecimal("35.00"), cartBetCount = 3)
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                BetDetailDataRoute(
+                    model,
+                    {},
+                    { viewed.add(it.id) },
+                    onRedeemPrize = { redeemed.add(it.id) },
+                    onEdit = { edited.add(it.id) },
+                    onCart = { cart++ },
+                    cartTotal = BigDecimal("35.00"),
+                    cartBetCount = 3
+                )
+            }
+        }
         compose.onNodeWithText("Não foi possível consultar esta aposta").assertIsDisplayed()
         compose.onNodeWithTag("bet-detail-footer").assertDoesNotExist()
         compose.runOnIdle { fixture.recovery = AppResult.Success(bet.copy(id = 42, prize = BigDecimal.TEN)) }
@@ -80,7 +111,7 @@ class BetDetailCoordinationUiTest {
     @Test fun favoriteEditorCanCancelAndConflictRequiresConsentBeforeSaving() {
         val fixture = Fixture().apply { validation = AppResult.Failure(AppError.Validation("Duplicada")) }
         val model = fixture.model()
-        compose.setContent { LoteriasCaixaDSTheme { BetDetailDataRoute(model, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BetDetailDataRoute(model, {}, {}) } }
         compose.onNodeWithText("Favoritar aposta").performClick()
         compose.onNodeWithContentDescription("Informe o nome da aposta").performTextInput("Minha aposta")
         compose.onNodeWithText("Cancelar").performClick()
@@ -118,12 +149,14 @@ class BetDetailCoordinationUiTest {
         val fixture = Fixture().apply { games = listOf(game("NORMAL"), game("ESPECIAL")) }
         val model = fixture.model()
         var changes = 0
-        compose.setContent { LoteriasCaixaDSTheme {
-            BetRepeatActionsOverlay(model, onCartChanged = {
-                assertFalse(model.state.value.cartAdditionConfirmed)
-                changes++
-            })
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                BetRepeatActionsOverlay(model, onCartChanged = {
+                    assertFalse(model.state.value.cartAdditionConfirmed)
+                    changes++
+                })
+            }
+        }
         compose.runOnIdle { model.addCurrentBetToCart() }
         compose.onNodeWithText("Tipo de concurso").assertIsDisplayed()
         compose.onNodeWithText("Mega da Virada").performClick()
@@ -141,7 +174,7 @@ class BetDetailCoordinationUiTest {
     @Test fun repeatConversionCanBeDeclinedAndOnlyConsentAddsTheConvertedBet() {
         val fixture = Fixture().apply { games = listOf(game("NORMAL")) }
         val model = fixture.model(bet.copy(contestTypeId = 2))
-        compose.setContent { LoteriasCaixaDSTheme { BetRepeatActionsOverlay(model) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BetRepeatActionsOverlay(model) } }
         compose.runOnIdle { model.addCurrentBetToCart() }
         compose.onNodeWithText("A modalidade Mega da Virada não está vigente.", substring = true).assertIsDisplayed()
         compose.onNodeWithText("Não").performClick()
@@ -162,12 +195,14 @@ class BetDetailCoordinationUiTest {
         val model = fixture.model()
         val count = mutableStateOf(0)
         val redirects = mutableListOf<ServiceRedirect>()
-        compose.setContent { LoteriasCaixaDSTheme {
-            BetDetailDataRoute(model, {}, {}, onServiceRedirect = {
-                assertNull(model.state.value.serviceFailure)
-                redirects.add(it)
-            }, cartBetCount = count.value)
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                BetDetailDataRoute(model, {}, {}, onServiceRedirect = {
+                    assertNull(model.state.value.serviceFailure)
+                    redirects.add(it)
+                }, cartBetCount = count.value)
+            }
+        }
         compose.runOnIdle {
             assertEquals(listOf(ServiceRedirect.LOGIN), redirects)
             assertFalse(model.state.value.detailsReady)
@@ -184,7 +219,7 @@ class BetDetailCoordinationUiTest {
         val newModel = newFixture.model(bet.copy(id = 42))
         val current = mutableStateOf(oldModel)
         val count = mutableStateOf(0)
-        compose.setContent { LoteriasCaixaDSTheme { BetDetailDataRoute(current.value, {}, {}, cartBetCount = count.value) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { BetDetailDataRoute(current.value, {}, {}, cartBetCount = count.value) } }
         compose.waitForIdle()
         compose.runOnIdle { current.value = newModel }
         compose.onNodeWithTag("bet-detail-scroll").performScrollToNode(hasText("Gerar comprovante"))
@@ -217,21 +252,36 @@ class BetDetailCoordinationUiTest {
         val added = mutableListOf<BetDraft>()
         fun model(initial: ConfirmedBet = bet): BetDetailViewModel = BetDetailViewModel(
             initial,
-            RecoverConfirmedBetUseCase { loads++; recovery ?: AppResult.Success(it) },
-            DownloadBetReceiptUseCase { downloads.add(it); AppResult.Success("invalid PDF".toByteArray()) },
-            ValidateFavoriteBetUseCase { validated.add(it); validation },
-            SaveFavoriteBetUseCase { saved.add(it); AppResult.Success(Unit) },
-            AddBetToCartUseCase { added.add(it); AppResult.Success(ShoppingCart(1, BigDecimal.TEN, emptyList())) },
+            RecoverConfirmedBetUseCase {
+                loads++
+                recovery ?: AppResult.Success(it)
+            },
+            DownloadBetReceiptUseCase {
+                downloads.add(it)
+                AppResult.Success("invalid PDF".toByteArray())
+            },
+            ValidateFavoriteBetUseCase {
+                validated.add(it)
+                validation
+            },
+            SaveFavoriteBetUseCase {
+                saved.add(it)
+                AppResult.Success(Unit)
+            },
+            AddBetToCartUseCase {
+                added.add(it)
+                AppResult.Success(ShoppingCart(1, BigDecimal.TEN, emptyList()))
+            },
             FixedCoroutineDispatchers(Dispatchers.Main.immediate),
             getBettingParameters = GetBettingParametersUseCase {
                 AppResult.Success(BettingParameters(BigDecimal.TEN, BigDecimal.ONE, 20, games))
             },
-            loadConfirmedBet = rejection?.let { failure -> LoadConfirmedBetUseCase { ServiceResult.Rejected(failure) } },
+            loadConfirmedBet = rejection?.let { failure -> LoadConfirmedBetUseCase { ServiceResult.Rejected(failure) } }
         ).also(models::add)
     }
 
     private fun game(type: String) = LotteryGameParameters(
         LotteryModality(2, "Mega-Sena", "MEGA_SENA", specialName = "Mega da Virada"),
-        2800, "14/10/2026", 60, 6, 20, 10, emptyList(), emptyList(), contestType = type,
+        2800, "14/10/2026", 60, 6, 20, 10, emptyList(), emptyList(), contestType = type
     )
 }

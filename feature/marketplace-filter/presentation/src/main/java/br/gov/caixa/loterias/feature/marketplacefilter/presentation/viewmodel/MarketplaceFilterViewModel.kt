@@ -37,7 +37,7 @@ class MarketplaceFilterViewModel(
     ),
     lotteryEnabled: Boolean = true,
     initialRetailer: br.gov.caixa.loterias.feature.retail.domain.model.Retailer? = null,
-    private val getSpecialContests: GetMarketplaceSpecialContestsUseCase? = null
+    private val getSpecialContests: GetMarketplaceSpecialContestsUseCase? = null,
 ) : ViewModel() {
     private val mutableState = reduxStateStore<MarketplaceFilterUiState, MarketplaceFilterStateAction>(
         marketplaceFilterState(initialFilter, lotteryEnabled).let { restored ->

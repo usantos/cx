@@ -32,7 +32,7 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.feature.onboarding.R as LocalizedR
 
 @Composable
-internal fun AgeConfirmationDialog(onConfirmAdult: () -> Unit, onRejectAdult: () -> Unit) {
+fun AgeConfirmationDialog(onConfirmAdult: () -> Unit, onRejectAdult: () -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     LoteriasCaixaDSDialog(
         title = uiStrings.getString(LocalizedR.string.ui_atencao_b0f8a4),

@@ -7,7 +7,6 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.provider.Settings
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
@@ -17,7 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.Snapshot
-import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.app.ActivityOptionsCompat
@@ -27,6 +26,8 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
@@ -54,16 +55,21 @@ import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 /** Captura encaminhamentos Android localmente; não abre configurações do sistema, geocodificador ou serviço de pagamento. */
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class CartLocationDialogsUiTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private var status = CheckoutLocationStatus.PERMISSION_REQUIRED
     private var checks = 0
+    private var histories = 0
+    private var validations = 0
     private var requests = 0
     private var blockedHome = 0
     private val registry = object : ActivityResultRegistry(), ActivityResultRegistryOwner {
@@ -90,9 +96,13 @@ class CartLocationDialogsUiTest {
                 },
                 VerifyCartPaymentAccountUseCase { AppResult.Success(CartPaymentAccountDecision.Allowed) },
                 ValidateCartUseCase {
-                    error("Location must block before remote validation")
+                    validations++
+                    AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult.Accepted)
                 },
-                HasRecentPurchaseUseCase { error("Location must block before history") },
+                HasRecentPurchaseUseCase {
+                    histories++
+                    AppResult.Success(false)
+                },
                 CheckCheckoutLocationUseCase {
                     checks++
                     AppResult.Success(status)
@@ -106,7 +116,7 @@ class CartLocationDialogsUiTest {
                     ConnectionAvailability.CONNECTED
                 }
             )
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
                 LoteriasCaixaDSTheme {
                     val state by model.state.collectAsState()
@@ -161,6 +171,52 @@ class CartLocationDialogsUiTest {
         }
     }
 
+    @Test fun `localizacao indisponivel permite repetir e cancelar sem perder carrinho nem liberar pagamento`() {
+        status = CheckoutLocationStatus.UNAVAILABLE
+        val model = show()
+        compose.onNodeWithText(
+            listOf(
+                "Não foi possível verificar sua localização. Suas apostas continuam no carrinho.",
+                "Tente novamente para confirmar que você está no Brasil."
+            ).joinToString(" ")
+        ).assertExists()
+        compose.onNodeWithText("Tentar novamente").performClick()
+        flush()
+        compose.runOnIdle {
+            assertEquals(2, checks)
+            assertEquals(0, histories)
+            assertEquals(0, validations)
+            assertEquals(5L, model.state.value.cart!!.id)
+            assertEquals(1, model.state.value.cart!!.items.size)
+            assertFalse(model.state.value.paymentReady)
+            assertEquals(0, blockedHome)
+        }
+        compose.onNodeWithText("Entendi").performClick()
+        flush()
+        compose.runOnIdle {
+            assertNull(model.state.value.locationPrompt)
+            assertEquals(0, blockedHome)
+            assertEquals(5L, model.state.value.cart!!.id)
+        }
+    }
+
+    @Test fun `nova tentativa somente libera checkout depois de confirmar Brasil`() {
+        status = CheckoutLocationStatus.UNAVAILABLE
+        val model = show()
+        compose.runOnIdle { status = CheckoutLocationStatus.IN_BRAZIL }
+        compose.onNodeWithText("Tentar novamente").performClick()
+        flush()
+        compose.runOnIdle {
+            assertEquals(2, checks)
+            assertEquals(1, histories)
+            assertEquals(1, validations)
+            assertTrue(model.state.value.paymentReady)
+            assertEquals(5L, model.state.value.cart!!.id)
+            assertEquals(1, model.state.value.cart!!.items.size)
+            assertEquals(0, blockedHome)
+        }
+    }
+
     @Test fun `provider settings consent sends exact settings action and unavailable return blocks checkout`() {
         status = CheckoutLocationStatus.PROVIDER_DISABLED
         val model = show()
@@ -176,7 +232,7 @@ class CartLocationDialogsUiTest {
         compose.onNodeWithText("Entendi").performClick()
         flush()
         compose.runOnIdle {
-            assertEquals(1, blockedHome)
+            assertEquals(0, blockedHome)
             assertEquals(2, checks)
             assertFalse(model.state.value.paymentReady)
         }
@@ -191,7 +247,7 @@ class CartLocationDialogsUiTest {
         flush()
         compose.runOnIdle {
             assertEquals(1, requests)
-            assertEquals(1, blockedHome)
+            assertEquals(0, blockedHome)
             assertEquals(1, registry.inputs.size)
             assertEquals(5L, model.state.value.cart!!.id)
             assertFalse(model.state.value.paymentReady)
@@ -207,7 +263,7 @@ class CartLocationDialogsUiTest {
         compose.runOnIdle {
             assertTrue(registry.inputs.isEmpty())
             assertEquals(0, requests)
-            assertEquals(1, blockedHome)
+            assertEquals(0, blockedHome)
             assertFalse(model.state.value.paymentReady)
         }
     }

@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "modules": {
+    "account": {
+      "enabled": true
+    },
+    "home": {
+      "enabled": true
+    },
+    "onboarding": {
+      "enabled": true
+    },
+    "betting": {
+      "enabled": true
+    },
+    "marketplace": {
+      "enabled": true
+    },
+    "marketplace_filter": {
+      "enabled": true
+    },
+    "cart": {
+      "enabled": true
+    },
+    "payment": {
+      "enabled": true
+    },
+    "tickets": {
+      "enabled": true
+    },
+    "results": {
+      "enabled": true
+    },
+    "notifications": {
+      "enabled": true
+    },
+    "responsible_gaming": {
+      "enabled": true
+    },
+    "retail": {
+      "enabled": true
+    },
+    "support_help": {
+      "enabled": true
+    },
+    "support_faq": {
+      "enabled": false
+    }
+  }
+}

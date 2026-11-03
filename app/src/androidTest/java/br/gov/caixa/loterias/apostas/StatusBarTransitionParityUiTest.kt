@@ -6,6 +6,7 @@ import androidx.core.view.WindowCompat
 import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
 import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBarColor
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +17,7 @@ class StatusBarTransitionParityUiTest {
     @Test fun incomingWhiteScreenKeepsDarkIconsWhenOutgoingBlueScreenDisposes() {
         val outgoing = mutableStateOf(true)
         val incoming = mutableStateOf(false)
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSStatusBar {
                 if (outgoing.value) LoteriasCaixaDSStatusBarColor(LoteriasCaixaDSColorTokens.Blue700, darkIcons = false)
                 if (incoming.value) LoteriasCaixaDSStatusBarColor(LoteriasCaixaDSColorTokens.White, darkIcons = true)

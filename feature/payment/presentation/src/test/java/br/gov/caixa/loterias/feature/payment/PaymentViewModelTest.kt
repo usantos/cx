@@ -610,6 +610,7 @@ class PaymentViewModelTest {
         selectedPaymentMethodId: Long? = null,
         autoLoad: Boolean = true,
         isSessionCurrent: () -> Boolean = { true },
+        canStartOperation: () -> Boolean = { true },
         methods: suspend () -> AppResult<List<PaymentMethod>> = { methodResult },
         cards: suspend (Long) -> AppResult<List<SavedPaymentCard>> = { cardResult },
     ): PaymentViewModel {
@@ -643,7 +644,8 @@ class PaymentViewModelTest {
             getCurrentCart = GetCurrentCartUseCase { cartResult },
             dispatchers = FixedCoroutineDispatchers(dispatcher),
             autoLoad = autoLoad,
-            isSessionCurrent = isSessionCurrent
+            isSessionCurrent = isSessionCurrent,
+            canStartOperation = canStartOperation
         )
     }
 }

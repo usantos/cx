@@ -1,0 +1,8 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="support_module_title">Dúvidas</string>
+    <string name="support_module_disabled">Este módulo não está disponível no momento.</string>
+    <string name="support_module_failed">Não foi possível abrir este módulo. Tente novamente.</string>
+    <string name="support_module_installing">Preparando o módulo. Aguarde a instalação.</string>
+    <string name="support_module_retry">Tentar novamente</string>
+    <string name="support_module_back">Voltar</string>
+</resources>

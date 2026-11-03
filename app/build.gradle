@@ -59,6 +59,23 @@ def topazWorkManagerDefaults = [
 
 android {
     namespace = 'br.gov.caixa.loterias.apostas'
+    dynamicFeatures = [
+            ':feature:account:account_ui',
+            ':feature:home:home_ui',
+            ':feature:onboarding:onboarding_ui',
+            ':feature:betting:betting_ui',
+            ':feature:cart:cart_ui',
+            ':feature:payment:payment_ui',
+            ':feature:tickets:tickets_ui',
+            ':feature:marketplace:marketplace_ui',
+            ':feature:marketplace-filter:marketplace_filter_ui',
+            ':feature:results:results_ui',
+            ':feature:notifications:notifications_ui',
+            ':feature:responsible-gaming:responsible_gaming_ui',
+            ':feature:retail:retail_ui',
+            ':feature:support:support_ui',
+            ':feature:support:faq',
+    ]
     compileSdk 36
 
     defaultConfig {
@@ -285,3 +302,7 @@ tasks.withType(Test).configureEach {
     jacoco.includeNoLocationClasses = true
     jacoco.excludes = ['jdk.internal.*']
 }
+
+dependencies { implementation libs.play.feature.delivery }
+
+dependencies { implementation project(':core:module-delivery') }

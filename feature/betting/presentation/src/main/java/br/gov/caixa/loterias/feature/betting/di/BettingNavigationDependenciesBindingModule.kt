@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class BettingNavigationDependenciesBindingModule {
     @Binds
-    abstract fun bindBettingNavigationDependenciesDependencies(implementation: BettingNavigationDependenciesAdapter): BettingNavigationDependencies
+    abstract fun bindBettingNavigationDependenciesDependencies(
+        implementation: BettingNavigationDependenciesAdapter,
+    ): BettingNavigationDependencies
 }

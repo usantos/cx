@@ -17,7 +17,8 @@ internal class ResponsibleGamingSuspension(
     private val scope: CoroutineScope,
     private val dispatchers: CoroutineDispatchers,
     private val suspendAccount: SuspendAccountUseCase,
-    private val serverTimeSource: br.gov.caixa.loterias.core.common.time.ServerTimeSource
+    private val serverTimeSource: br.gov.caixa.loterias.core.common.time.ServerTimeSource,
+    private val isSessionCurrent: () -> Boolean = { true },
 ) {
 
     fun confirmSuspension() {
@@ -29,11 +30,14 @@ internal class ResponsibleGamingSuspension(
 
     @Synchronized
     fun submitSuspension() {
-        if (mutableState.value.loading || mutableState.value.suspension != null) return
+        if (!isSessionCurrent() || mutableState.value.loading || mutableState.value.suspension != null) return
         val hours = suspensionHours(mutableState.value.selectedSuspensionPeriod) ?: return
         mutableState.dispatch(ResponsibleGamingStateAction.LoadStarted)
         scope.launch(dispatchers.io) {
-            when (val result = suspendAccount(hours)) {
+            if (!isSessionCurrent()) return@launch
+            val result = suspendAccount(hours)
+            if (!isSessionCurrent()) return@launch
+            when (result) {
                 is AppResult.Success -> {
                     val end = serverTimeSource.now().plusSeconds(hours * 3_600L)
                         .atZone(java.time.ZoneId.of("America/Sao_Paulo"))

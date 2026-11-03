@@ -1,23 +1,23 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.filterRetailers
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceModalities
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.wantedNumberOptions
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.filterRetailers
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceModalities
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.wantedNumberOptions
 
 class MarketplaceModalitiesTest {
     @Test
@@ -28,9 +28,9 @@ class MarketplaceModalitiesTest {
             0,
             games = listOf(
                 game(2, "Mega-Sena", "MEGA_SENA", 60, listOf(8, 6, 8)),
-                game(3, "Quina", "QUINA", 80, listOf(5)),
+                game(3, "Quina", "QUINA", 80, listOf(5))
             ),
-            availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL")),
+            availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
         )
 
         val result = marketplaceModalities(parameters)
@@ -46,14 +46,14 @@ class MarketplaceModalitiesTest {
     fun `matches modality by code and labels special contests from backend`() {
         val special = game(8, "Lotofácil", "LOTOFACIL", 25, listOf(15)).copy(
             modality = LotteryModality(8, "Lotofácil", "LOTOFACIL", "Lotofácil da Independência"),
-            contestType = "ESPECIAL",
+            contestType = "ESPECIAL"
         )
         val parameters = BettingParameters(
             BigDecimal.ZERO,
             BigDecimal.ZERO,
             0,
             listOf(special),
-            listOf(PoolModalityAvailability(0, "LOTOFACIL", "E")),
+            listOf(PoolModalityAvailability(0, "LOTOFACIL", "E"))
         )
 
         val result = marketplaceModalities(parameters).last()
@@ -69,14 +69,14 @@ class MarketplaceModalitiesTest {
         listOf("Mega da Virada" to "mega da virada", "" to "mega-sena").forEach { (specialName, expected) ->
             val special = game(2, "Mega-Sena", "MEGA_SENA", 60, listOf(6)).copy(
                 modality = LotteryModality(2, "Mega-Sena", "MEGA_SENA", specialName),
-                contestType = "ESPECIAL",
+                contestType = "ESPECIAL"
             )
             val parameters = BettingParameters(
                 BigDecimal.ZERO,
                 BigDecimal.ZERO,
                 0,
                 listOf(special),
-                listOf(PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL")),
+                listOf(PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL"))
             )
 
             val result = marketplaceModalities(parameters).single()
@@ -94,7 +94,7 @@ class MarketplaceModalitiesTest {
             "lotofácil da independência" to "lotofácil da\nindependência",
             "mega da virada" to "mega da\nvirada",
             "dupla de páscoa" to "dupla de\npáscoa",
-            "loteca especial" to "loteca\nespecial",
+            "loteca especial" to "loteca\nespecial"
         )
         names.forEach { (name, label) ->
             val modality = MarketplaceFilterModalityUi(2, name, "Mega-Sena", 2, listOf(6), 60)
@@ -122,8 +122,8 @@ class MarketplaceModalitiesTest {
             listOf(
                 PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"),
                 PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"),
-                PoolModalityAvailability(99, "UNKNOWN", "NORMAL"),
-            ),
+                PoolModalityAvailability(99, "UNKNOWN", "NORMAL")
+            )
         )
         assertEquals(1, marketplaceModalities(parameters).size)
     }
@@ -161,11 +161,16 @@ class MarketplaceModalitiesTest {
             Triple(19, "LOTECA", (17..26).toList() to 80),
             Triple(16, "LOTOMANIA", (5..25).toList() to 80),
             Triple(14, "LOTOGOL", (5..25).toList() to 80),
-            Triple(1502, "INSTANTANEA", (5..25).toList() to 80),
+            Triple(1502, "INSTANTANEA", (5..25).toList() to 80)
         )
         cases.forEach { (id, code, expected) ->
-            val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-                games = emptyList(), availablePoolModalities = listOf(PoolModalityAvailability(id, code, "NORMAL")))
+            val parameters = BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
+                games = emptyList(),
+                availablePoolModalities = listOf(PoolModalityAvailability(id, code, "NORMAL"))
+            )
             val result = marketplaceModalities(parameters)
             assertEquals("Available $code must remain selectable", 1, result.size)
             assertEquals(id, result.single().id)
@@ -176,8 +181,13 @@ class MarketplaceModalitiesTest {
 
     @Test
     fun `available modality fallback resolves official code when numeric id is absent`() {
-        val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            games = emptyList(), availablePoolModalities = listOf(PoolModalityAvailability(0, "SUPER_7", "NORMAL")))
+        val parameters = BettingParameters(
+            BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            0,
+            games = emptyList(),
+            availablePoolModalities = listOf(PoolModalityAvailability(0, "SUPER_7", "NORMAL"))
+        )
         val result = marketplaceModalities(parameters)
         assertEquals(1, result.size)
         assertEquals(7, result.single().id)
@@ -187,8 +197,13 @@ class MarketplaceModalitiesTest {
 
     @Test
     fun `special available modality without simulation game retains contest identity`() {
-        val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            games = emptyList(), availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL")))
+        val parameters = BettingParameters(
+            BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            0,
+            games = emptyList(),
+            availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL"))
+        )
         val result = marketplaceModalities(parameters)
         assertEquals(1, result.size)
         assertEquals(2, result.single().contestType)
@@ -206,13 +221,18 @@ class MarketplaceModalitiesTest {
         val configured = MarketplaceSpecialContests(megaThirtyYearsContest = 3000, lotecaFathersDayContest = 1234)
         val cases = listOf(
             Triple(game(2, "Mega-Sena", "MEGA_SENA", 60, listOf(6)), 3000, "mega-sena\n30 anos"),
-            Triple(game(19, "Loteca", "LOTECA", 14, listOf(17)), 1234, "loteca\ndos pais"),
+            Triple(game(19, "Loteca", "LOTECA", 14, listOf(17)), 1234, "loteca\ndos pais")
         )
         cases.forEach { (simulation, availableNumber, expected) ->
-            val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
+            val parameters = BettingParameters(
+                BigDecimal.ZERO,
+                BigDecimal.ZERO,
+                0,
                 games = listOf(simulation.copy(contestNumber = 9999)),
-                availablePoolModalities = listOf(PoolModalityAvailability(
-                    simulation.modality.id, simulation.modality.code, "ESPECIAL", contestNumber = availableNumber)))
+                availablePoolModalities = listOf(
+                    PoolModalityAvailability(simulation.modality.id, simulation.modality.code, "ESPECIAL", contestNumber = availableNumber)
+                )
+            )
             val result = marketplaceModalities(parameters, configured).single()
             assertEquals(expected, result.name)
             assertEquals(expected, result.cardLabel)
@@ -227,12 +247,25 @@ class MarketplaceModalitiesTest {
         listOf(Triple(2, "MEGA_SENA", 3000), Triple(19, "LOTECA", 1234)).forEach { (id, code, gameNumber) ->
             val simulation = game(id, "Backend normal", code, 60, listOf(6)).copy(
                 contestNumber = gameNumber,
-                modality = LotteryModality(id, "Backend normal", code, "Backend especial"))
+                modality = LotteryModality(id, "Backend normal", code, "Backend especial")
+            )
             listOf("NORMAL", "ESPECIAL").forEach { type ->
-                val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-                    games = listOf(simulation), availablePoolModalities = listOf(
-                        PoolModalityAvailability(id, code, type, contestNumber = if (type == "NORMAL") gameNumber else 9999)))
-                val expected = if (type == "ESPECIAL") "backend especial" else if (id == 2) "mega sena" else "backend normal"
+                val parameters = BettingParameters(
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO,
+                    0,
+                    games = listOf(simulation),
+                    availablePoolModalities = listOf(
+                        PoolModalityAvailability(id, code, type, contestNumber = if (type == "NORMAL") gameNumber else 9999)
+                    )
+                )
+                val expected = if (type == "ESPECIAL") {
+                    "backend especial"
+                } else if (id == 2) {
+                    "mega sena"
+                } else {
+                    "backend normal"
+                }
                 assertEquals(expected, marketplaceModalities(parameters, configured).single().name)
             }
         }
@@ -241,21 +274,23 @@ class MarketplaceModalitiesTest {
     @Test
     fun `temporary special fallback labels work without simulation games`() {
         val configured = MarketplaceSpecialContests(megaThirtyYearsContest = 3000, lotecaFathersDayContest = 1234)
-        val parameters = BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            games = emptyList(), availablePoolModalities = listOf(
+        val parameters = BettingParameters(
+            BigDecimal.ZERO,
+            BigDecimal.ZERO,
+            0,
+            games = emptyList(),
+            availablePoolModalities = listOf(
                 PoolModalityAvailability(2, "MEGA_SENA", "ESPECIAL", contestNumber = 3000),
-                PoolModalityAvailability(19, "LOTECA", "E", contestNumber = 1234)))
-        assertEquals(listOf("mega-sena\n30 anos", "loteca\ndos pais"),
-            marketplaceModalities(parameters, configured).map { it.cardLabel })
+                PoolModalityAvailability(19, "LOTECA", "E", contestNumber = 1234)
+            )
+        )
+        assertEquals(
+            listOf("mega-sena\n30 anos", "loteca\ndos pais"),
+            marketplaceModalities(parameters, configured).map { it.cardLabel }
+        )
     }
 
-    private fun game(
-        id: Int,
-        name: String,
-        code: String,
-        maximum: Int,
-        quantities: List<Int>,
-    ) = LotteryGameParameters(
+    private fun game(id: Int, name: String, code: String, maximum: Int, quantities: List<Int>) = LotteryGameParameters(
         modality = LotteryModality(id, name, code),
         contestNumber = 1,
         drawDate = "",
@@ -264,9 +299,8 @@ class MarketplaceModalitiesTest {
         maximumSelection = quantities.maxOrNull() ?: 0,
         maximumSurprises = 0,
         recurringOptions = emptyList(),
-        prices = quantities.map { BetPrice(it, 0, BigDecimal.ONE) },
+        prices = quantities.map { BetPrice(it, 0, BigDecimal.ONE) }
     )
 
-    private fun retailer(id: Long, code: String, name: String) =
-        Retailer(id, code, name, "", "", "", "", "", false)
+    private fun retailer(id: Long, code: String, name: String) = Retailer(id, code, name, "", "", "", "", "", false)
 }

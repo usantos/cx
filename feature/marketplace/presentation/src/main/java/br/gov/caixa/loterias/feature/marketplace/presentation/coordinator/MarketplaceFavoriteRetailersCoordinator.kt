@@ -19,6 +19,7 @@ internal class MarketplaceFavoriteRetailersCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val getFavoriteRetailers: GetFavoriteRetailersUseCase,
     private val setRetailerFavorite: SetRetailerFavoriteUseCase,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     private var loadJob: Job? = null
     private var loadGeneration = 0L
@@ -54,6 +55,10 @@ internal class MarketplaceFavoriteRetailersCoordinator(
         val retailerId = snapshot.pendingFavoriteRetailerRemoval ?: return
         if (retailerId in snapshot.updatingFavoriteLotteryIds) return
         scope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(MarketplaceStateAction.RetailerRemovalAborted(retailerId))
+                return@launch
+            }
             when (setRetailerFavorite(retailerId, false)) {
                 is AppResult.Success -> {
                     invalidateLoad()

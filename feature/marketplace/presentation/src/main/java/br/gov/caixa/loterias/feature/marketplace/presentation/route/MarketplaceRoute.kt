@@ -1,19 +1,19 @@
 package br.gov.caixa.loterias.feature.marketplace.presentation.route
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
-import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceScreen
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceAction
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplacePoolConfirmation
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceScreen
 import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
+import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import java.math.BigDecimal
 
 @Composable
 fun MarketplaceRoute(

@@ -24,6 +24,7 @@ class CentralNotificationsViewModel(
     private val actions: NotificationInboxActions,
     private val identities: AuthenticatedSessionIdentityProvider,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val isEntryEnabled: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<CentralNotificationsState, CentralNotificationsAction>(
         CentralNotificationsState(),
@@ -47,6 +48,7 @@ class CentralNotificationsViewModel(
     }
 
     fun load() {
+        if (!isEntryEnabled()) return
         job?.cancel()
         val captured = identities.captureIdentity()
         if (captured !== identity) mutableState.dispatch(CentralNotificationsAction.IdentityChanged)
@@ -99,6 +101,7 @@ class CentralNotificationsViewModel(
         if (!state.value.loading && state.value.all.any { it.id == notification.id }) request(InboxConfirmation.Remove(notification))
     }
     private fun request(confirmation: InboxConfirmation) {
+        if (!isEntryEnabled()) return
         val captured = identity ?: return
         if (!current(captured)) return
         confirmationIdentity = captured
@@ -110,6 +113,7 @@ class CentralNotificationsViewModel(
     }
 
     fun confirm() {
+        if (!isEntryEnabled()) return
         val pending = state.value.pending ?: return
         val captured = confirmationIdentity ?: return
         if (state.value.loading || !current(captured)) return
@@ -117,48 +121,64 @@ class CentralNotificationsViewModel(
         dismissDialog()
         mutableState.dispatch(CentralNotificationsAction.MutationStarted)
         job = viewModelScope.launch(dispatchers.main) {
-            val failed = applyConfirmation(pending, captured, unreadIds)
-            if (current(captured)) refresh(captured, failed)
+            val result = applyConfirmation(pending, captured, unreadIds)
+            if (current(captured)) {
+                if (result.started) {
+                    refresh(captured, result.failed)
+                } else {
+                    mutableState.dispatch(CentralNotificationsAction.MutationNotStarted)
+                }
+            }
         }
     }
+
+    private data class MutationResult(val started: Boolean, val failed: Boolean = false)
 
     private suspend fun applyConfirmation(
         pending: InboxConfirmation,
         captured: AuthenticatedSessionIdentity,
         unreadIds: List<Long>,
-    ): Boolean = try {
+    ): MutationResult = try {
         when (pending) {
             InboxConfirmation.MarkAll -> markUnread(captured, unreadIds)
 
             InboxConfirmation.Clear -> {
-                withContext(dispatchers.io) { actions.clear(captured) }
-                false
+                MutationResult(performMutation(captured) { actions.clear(captured) })
             }
 
             is InboxConfirmation.Remove -> {
-                withContext(dispatchers.io) { actions.remove(captured, pending.notification.id) }
-                false
+                MutationResult(performMutation(captured) { actions.remove(captured, pending.notification.id) })
             }
         }
     } catch (cancelled: CancellationException) {
         throw cancelled
     } catch (_: Exception) {
-        true
+        MutationResult(started = true, failed = true)
     }
 
-    private suspend fun markUnread(captured: AuthenticatedSessionIdentity, unreadIds: List<Long>): Boolean {
+    private suspend fun performMutation(captured: AuthenticatedSessionIdentity, mutation: suspend () -> Unit): Boolean =
+        withContext(dispatchers.io) {
+            if (!isEntryEnabled() || !current(captured)) return@withContext false
+            mutation()
+            true
+        }
+
+    private suspend fun markUnread(captured: AuthenticatedSessionIdentity, unreadIds: List<Long>): MutationResult {
+        var started = false
         var failed = false
         for (id in unreadIds) {
-            if (!current(captured)) return failed
+            if (!current(captured)) return MutationResult(started, failed)
             try {
-                withContext(dispatchers.io) { actions.markRead(captured, id) }
+                if (!performMutation(captured) { actions.markRead(captured, id) }) break
+                started = true
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {
+                started = true
                 failed = true
             }
         }
-        return failed
+        return MutationResult(started, failed)
     }
 
     private companion object {

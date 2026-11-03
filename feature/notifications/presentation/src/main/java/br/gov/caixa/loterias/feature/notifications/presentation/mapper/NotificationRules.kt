@@ -20,13 +20,13 @@ internal fun filterMessages(
     }
 }
 
-internal fun NotificationCategory.primaryAction(): Int? = when (this) {
+fun NotificationCategory.primaryAction(): Int? = when (this) {
     NotificationCategory.LUCK_REMINDERS -> R.string.notifications_apostar_agora
     NotificationCategory.RESULTS_AVAILABLE -> R.string.notifications_conferir_agora
     else -> null
 }
 
-internal fun NotificationCategory.canShare(): Boolean = when (this) {
+fun NotificationCategory.canShare(): Boolean = when (this) {
     NotificationCategory.LUCK_REMINDERS,
     NotificationCategory.TIPS_NEWS,
     -> true

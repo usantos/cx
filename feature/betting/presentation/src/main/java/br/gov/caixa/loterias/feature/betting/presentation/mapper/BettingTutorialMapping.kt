@@ -6,7 +6,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.state.TutorialDefiniti
 import br.gov.caixa.loterias.feature.betting.presentation.state.TutorialMediaKind
 import br.gov.caixa.loterias.feature.betting.presentation.state.TutorialPage
 
-internal fun tutorialDefinition(route: String): TutorialDefinition = when (route) {
+fun tutorialDefinition(route: String): TutorialDefinition = when (route) {
     "betting/tutorial" -> poolTutorialDefinition()
     "betting/tutorial-plus" -> plusTutorialDefinition()
     "betting/tutorial-super-seven" -> superSevenTutorialDefinition()
@@ -129,7 +129,7 @@ private fun superSevenTutorialDefinition(): TutorialDefinition = TutorialDefinit
     finalPrimaryLabel = "Iniciar aposta"
 )
 
-internal fun tutorialPrimaryLabel(definition: TutorialDefinition, page: Int): String? = when {
+fun tutorialPrimaryLabel(definition: TutorialDefinition, page: Int): String? = when {
     !definition.usesLegacyOverlayControls && page == definition.pages.lastIndex -> definition.finalPrimaryLabel
     !definition.usesLegacyOverlayControls -> messageText("avancar_859e48")
     page == 0 -> messageText("vamos_comecar_ac24d9")
@@ -137,7 +137,7 @@ internal fun tutorialPrimaryLabel(definition: TutorialDefinition, page: Int): St
     else -> null
 }
 
-internal fun tutorialSecondaryLabel(definition: TutorialDefinition, page: Int): String =
+fun tutorialSecondaryLabel(definition: TutorialDefinition, page: Int): String =
     if (definition.usesLegacyOverlayControls && page == definition.pages.lastIndex) messageText("fechar_0f2bd8") else definition.skipLabel
 
 internal fun tutorialPageAfterPrimary(definition: TutorialDefinition, page: Int): Int? =
@@ -147,7 +147,7 @@ internal fun tutorialPageAfterSecondary(definition: TutorialDefinition, page: In
     if (definition.usesLegacyOverlayControls && page < definition.pages.lastIndex) definition.pages.lastIndex else null
 
 /** Instruções equivalentes ao texto desenhado como contornos vetoriais nas animações incluídas. */
-internal fun tutorialInstructionDescription(page: TutorialPage, index: Int, total: Int): String = listOfNotNull(
+fun tutorialInstructionDescription(page: TutorialPage, index: Int, total: Int): String = listOfNotNull(
     "Etapa ${PortugueseSpeech.number(index + 1)} de ${PortugueseSpeech.number(total)}",
     page.heading,
     page.description,

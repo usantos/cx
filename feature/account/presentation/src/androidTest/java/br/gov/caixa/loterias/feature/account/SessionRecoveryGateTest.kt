@@ -7,26 +7,34 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import org.junit.Rule
-import org.junit.Test
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.presentation.components.SessionRecoveryContent
 import br.gov.caixa.loterias.feature.account.presentation.state.SessionRecoveryState
+import org.junit.Rule
+import org.junit.Test
 
 class SessionRecoveryGateTest {
     @get:Rule val composeRule = createComposeRule()
 
     @Test fun checkingAndFailureNeverComposeProtectedContentAndRetryReturnsToChecking() {
         val state = mutableStateOf(SessionRecoveryState.CHECKING)
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
-                SessionRecoveryContent(state.value, { state.value = SessionRecoveryState.CHECKING }, {},
-                    loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
+                SessionRecoveryContent(
+                    state.value,
+                    { state.value = SessionRecoveryState.CHECKING },
+                    {},
+                    loading = { Text("Splash de referência") },
+                    content = { Text("Conteúdo protegido") }
+                )
             }
         }
         composeRule.onNodeWithText("Splash de referência").assertIsDisplayed()
         composeRule.onNodeWithText("Conteúdo protegido").assertDoesNotExist()
         composeRule.runOnIdle { state.value = SessionRecoveryState.FAILED }
-        composeRule.onNodeWithText("Não foi possível verificar ou concluir a limpeza dos dados da sessão anterior. Tente novamente para continuar com segurança.").assertIsDisplayed()
+        composeRule.onNodeWithText(
+            "Não foi possível verificar ou concluir a limpeza dos dados da sessão anterior. Tente novamente para continuar com segurança."
+        ).assertIsDisplayed()
         composeRule.onNodeWithText("Conteúdo protegido").assertDoesNotExist()
         composeRule.onNodeWithText("Tentar novamente").performClick()
         composeRule.onNodeWithText("Tentar novamente").assertDoesNotExist()
@@ -35,13 +43,20 @@ class SessionRecoveryGateTest {
 
     @Test fun recoveredCleanupRequiresAcknowledgmentAndDoesNotClaimBrowserLogout() {
         val state = mutableStateOf(SessionRecoveryState.AWAITING_ACKNOWLEDGMENT)
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
-                SessionRecoveryContent(state.value, {}, { state.value = SessionRecoveryState.READY },
-                    loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
+                SessionRecoveryContent(
+                    state.value,
+                    {},
+                    { state.value = SessionRecoveryState.READY },
+                    loading = { Text("Splash de referência") },
+                    content = { Text("Conteúdo protegido") }
+                )
             }
         }
-        composeRule.onNodeWithText("A limpeza dos dados locais da sessão anterior foi concluída. O encerramento da sessão no navegador não foi confirmado.").assertIsDisplayed()
+        composeRule.onNodeWithText(
+            "A limpeza dos dados locais da sessão anterior foi concluída. O encerramento da sessão no navegador não foi confirmado."
+        ).assertIsDisplayed()
         composeRule.onNodeWithText("Conteúdo protegido").assertDoesNotExist()
         composeRule.onNodeWithText("Entendi").performClick()
         composeRule.onNodeWithText("Conteúdo protegido").assertIsDisplayed()
@@ -49,10 +64,15 @@ class SessionRecoveryGateTest {
     }
 
     @Test fun ordinaryReadyEntryDoesNotAddAnAlertOrLoading() {
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
-                SessionRecoveryContent(SessionRecoveryState.READY, {}, {},
-                    loading = { Text("Splash de referência") }, content = { Text("Conteúdo protegido") })
+                SessionRecoveryContent(
+                    SessionRecoveryState.READY,
+                    {},
+                    {},
+                    loading = { Text("Splash de referência") },
+                    content = { Text("Conteúdo protegido") }
+                )
             }
         }
         composeRule.onNodeWithText("Conteúdo protegido").assertIsDisplayed()

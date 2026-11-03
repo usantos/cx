@@ -1,3 +1,7 @@
 # Original connected tests remain unchanged and executable on the device.
 # Compose/Robolectric PAUSED cannot inject an OS BACK event into a focused modal window.
 br.gov.caixa.loterias.apostas.ResponsibleGamingCoordinationUiTest.affirmativeAssessmentOffersLegacyHelpSheetAndReturnsToResultOnBack
+# Entrega real do split requer base de bundletool local-testing sem FAQ instalado.
+br.gov.caixa.loterias.apostas.SupportDynamicDeliveryUiTest.instalaFaqSobDemandaEDesabilitaConteudoSemRemoverOSplit
+# Requer AAB local-testing novo e instalação física real dos 15 splits.
+br.gov.caixa.loterias.apostas.AllFeaturesDynamicDeliveryUiTest.instalaCadaOpcionalPreservandoEssenciaisEModulosJaEntregues

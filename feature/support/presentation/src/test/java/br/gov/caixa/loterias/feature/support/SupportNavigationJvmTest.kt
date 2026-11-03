@@ -4,9 +4,11 @@
 package br.gov.caixa.loterias.feature.support
 
 import androidx.compose.material3.Text
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -19,38 +21,51 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModulesConfiguration
+import br.gov.caixa.loterias.core.domain.configuration.repository.AppModulesConfigurationRepository
+import br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.support.domain.delivery.SupportModuleDelivery
 import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
 import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
 import br.gov.caixa.loterias.feature.support.domain.usecase.AcceptTermsUseCase
 import br.gov.caixa.loterias.feature.support.domain.usecase.GetSupportQuestionsUseCase
 import br.gov.caixa.loterias.feature.support.domain.usecase.GetSupportSectionsUseCase
 import br.gov.caixa.loterias.feature.support.domain.usecase.GetTermsUseCase
+import br.gov.caixa.loterias.feature.support.navigation.SupportModuleNavigationDependencies
 import br.gov.caixa.loterias.feature.support.navigation.SupportNavigationDependenciesAdapter
 import br.gov.caixa.loterias.feature.support.navigation.supportGraph
+import br.gov.caixa.loterias.feature.support.presentation.dynamic.SupportFaqEntryLoader
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class SupportNavigationJvmTest {
     @get:Rule
-    val compose = createAndroidComposeRule<androidx.activity.ComponentActivity>()
+    val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
     private var accepts = 0
     private var rechecks = 0
     private val sectionRequests = mutableListOf<Long>()
     private var termsRequests = 0
+    private var sectionLists = 0
+    private var cancelledSectionLoads = 0
     private val session = object : SessionNavigationActions {
         override val state = AppSessionState()
         override val identity: AuthenticatedSessionIdentity? = null
@@ -67,19 +82,43 @@ class SupportNavigationJvmTest {
     }
 
     @Test
-    fun faqGraphOpensAndClosesSectionsWithoutLeavingTheDestination() {
+    fun disabledFaqDoesNotRequestSectionsOrResolveAnEntry() {
         show()
         compose.runOnIdle { nav.navigate("support") }
-        compose.onNodeWithText("Apostas").assertIsDisplayed().performClick()
-        compose.onNodeWithText("Como apostar?").assertIsDisplayed().performClick()
-        compose.onNodeWithText("Escolha uma modalidade.").assertIsDisplayed()
-        compose.onNodeWithText("Como pagar?").assertIsDisplayed().performClick()
-        compose.onNodeWithText("Use os meios disponíveis.").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Voltar").performClick()
-        compose.onNodeWithText("Apostas").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Voltar").performClick()
-        compose.onNodeWithText("Página inicial").assertIsDisplayed()
-        compose.runOnIdle { assertEquals(listOf(1L), sectionRequests) }
+        compose.onNodeWithText("Este módulo não está disponível no momento.").assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals(0, sectionLists)
+            assertEquals(emptyList<Long>(), sectionRequests)
+        }
+    }
+
+    @Test
+    fun faqDesabilitadoNaAbaPreservaUmCabecalhoEPermiteLerTermos() {
+        show()
+        compose.runOnIdle { nav.navigate("support/terms?tab=FAQ") }
+        compose.onNodeWithText("Este módulo não está disponível no momento.").assertIsDisplayed()
+        compose.onAllNodesWithContentDescription("Voltar").assertCountEquals(1)
+        compose.onNodeWithText("Termo de uso").assertIsDisplayed().performClick()
+        compose.onNodeWithTag("support_html").assertExists()
+        compose.onNodeWithText("Este módulo não está disponível no momento.").assertDoesNotExist()
+        compose.onAllNodesWithContentDescription("Voltar").assertCountEquals(1)
+        compose.runOnIdle { assertEquals(1, termsRequests) }
+    }
+
+    @Test
+    fun faqDesabilitadoCancelaCargaDeSecoesSemOcultarTermosComLoading() {
+        show(suspendFaqSections = true)
+        compose.runOnIdle { nav.navigate("support/terms?tab=FAQ") }
+        compose.onNodeWithText("Este módulo não está disponível no momento.").assertIsDisplayed()
+        compose.onNodeWithText("Carregando…").assertDoesNotExist()
+        compose.runOnIdle {
+            assertEquals(1, sectionLists)
+            assertEquals(1, cancelledSectionLoads)
+        }
+        compose.onNodeWithText("Termo de uso").assertIsDisplayed().performClick()
+        compose.onNodeWithTag("support_html").assertExists()
+        compose.onNodeWithText("Carregando…").assertDoesNotExist()
+        compose.runOnIdle { assertEquals(1, termsRequests) }
     }
 
     @Test
@@ -88,9 +127,6 @@ class SupportNavigationJvmTest {
         compose.runOnIdle { nav.navigate("support/terms-view") }
         compose.onNodeWithTag("support_terms_document").assertIsDisplayed()
         compose.onNodeWithText("Termo de uso").assertIsDisplayed()
-        compose.onNodeWithContentDescription("Voltar").performClick()
-        compose.runOnIdle { nav.navigate("support/terms?tab=FAQ") }
-        compose.onNodeWithText("Apostas").assertIsDisplayed()
         compose.onNodeWithContentDescription("Voltar").performClick()
         compose.runOnIdle { nav.navigate("support/terms") }
         compose.onNodeWithText("Termo de uso").assertIsDisplayed()
@@ -118,7 +154,17 @@ class SupportNavigationJvmTest {
         }
     }
 
-    private fun show() {
+    private fun show(suspendFaqSections: Boolean = false) {
+        val moduleDependencies = object : SupportModuleNavigationDependencies {
+            override val modules = AppModulesConfigurationUseCase(object : AppModulesConfigurationRepository {
+                override val configuration = MutableStateFlow(AppModulesConfiguration())
+                override suspend fun refresh() = Unit
+            })
+            override val delivery = object : SupportModuleDelivery {
+                override fun install() = error("FAQ desabilitado não solicita instalação")
+            }
+            override val entryLoader = SupportFaqEntryLoader { error("FAQ desabilitado não resolve classes") }
+        }
         val dependencies = SupportNavigationDependenciesAdapter(
             AcceptTermsUseCase {
                 accepts++
@@ -136,14 +182,23 @@ class SupportNavigationJvmTest {
                 )
             },
             GetSupportSectionsUseCase {
+                sectionLists++
+                if (suspendFaqSections) {
+                    try {
+                        awaitCancellation()
+                    } finally {
+                        cancelledSectionLoads++
+                    }
+                }
                 AppResult.Success(listOf(SupportSection(1, "Apostas", emptyList()), SupportSection(2, "Pagamentos", emptyList())))
             },
             GetTermsUseCase {
                 termsRequests++
                 AppResult.Success("<p>Termos oficiais</p>")
-            }
+            },
+            optionalModule = moduleDependencies
         )
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             LoteriasCaixaDSTheme {
                 NavHost(nav, startDestination = "fixture") {

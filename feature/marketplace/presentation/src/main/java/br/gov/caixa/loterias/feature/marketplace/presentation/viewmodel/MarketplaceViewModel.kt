@@ -33,6 +33,7 @@ class MarketplaceViewModel(
     private val filteredSearch: Boolean = false,
     private val getSpecialContests: br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase? = null,
     initialTab: MarketplaceTab = MarketplaceTab.POOLS,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private var lastChildRevision: Int? = null
     private val mutableState = reduxStateStore<MarketplaceUiState, MarketplaceStateAction>(
@@ -44,6 +45,10 @@ class MarketplaceViewModel(
         ),
         ::reduceMarketplaceState
     ).also { addCloseable(it) }
+    private fun startOperation(action: () -> Unit) {
+        if (canStartOperation()) action()
+    }
+
     val state: StateFlow<MarketplaceUiState> = mutableState.state
 
     private val loading = MarketplaceLoadingCoordinator(
@@ -61,17 +66,19 @@ class MarketplaceViewModel(
         viewModelScope,
         dispatchers,
         getFavoriteRetailers,
-        setRetailerFavorite
+        setRetailerFavorite,
+        canStartOperation
     )
     private val poolFavorites = MarketplacePoolFavoriteCoordinator(
         mutableState,
         viewModelScope,
         dispatchers,
         setRetailerFavorite,
-        favoriteRetailers::onPoolFavoriteChanged
+        favoriteRetailers::onPoolFavoriteChanged,
+        canStartOperation
     )
     private val shares = MarketplaceSharesCoordinator(mutableState)
-    private val cart = MarketplaceCartCoordinator(mutableState, viewModelScope, dispatchers, addMarketplacePoolToCart)
+    private val cart = MarketplaceCartCoordinator(mutableState, viewModelScope, dispatchers, addMarketplacePoolToCart, canStartOperation)
 
     init {
         search()
@@ -120,7 +127,7 @@ class MarketplaceViewModel(
 
     fun cancelFavoriteRetailerRemoval() = favoriteRetailers.cancelFavoriteRetailerRemoval()
 
-    fun confirmFavoriteRetailerRemoval() = favoriteRetailers.confirmFavoriteRetailerRemoval()
+    fun confirmFavoriteRetailerRemoval() = startOperation { favoriteRetailers.confirmFavoriteRetailerRemoval() }
 
     fun loadMore() = loading.loadMore()
 
@@ -138,9 +145,9 @@ class MarketplaceViewModel(
 
     fun cancelFavorite() = poolFavorites.cancelFavorite()
 
-    fun confirmFavorite() = poolFavorites.confirmFavorite()
+    fun confirmFavorite() = startOperation { poolFavorites.confirmFavorite() }
 
-    fun addToCart(poolCode: String) = cart.addToCart(poolCode)
+    fun addToCart(poolCode: String) = startOperation { cart.addToCart(poolCode) }
 
     fun consumeConfirmation() = cart.consumeConfirmation()
 

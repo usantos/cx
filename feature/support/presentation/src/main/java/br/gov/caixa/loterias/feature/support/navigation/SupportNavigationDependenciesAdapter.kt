@@ -15,4 +15,5 @@ class SupportNavigationDependenciesAdapter @Inject constructor(
     override val supportQuestions: GetSupportQuestionsUseCase,
     override val supportSections: GetSupportSectionsUseCase,
     override val terms: GetTermsUseCase,
+    override val optionalModule: SupportModuleNavigationDependencies,
 ) : SupportNavigationDependencies

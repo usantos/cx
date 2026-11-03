@@ -19,6 +19,7 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
 import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSPixPanelText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -62,7 +63,7 @@ class ControlledPixInteractionTest {
     private var progress = PurchaseProgress(9001, 10)
 
     @Test fun pendingUpdateActionHasVisibleWhiteTextOnLegacyGreenBackground() {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoteriasCaixaDSPixPanel(
                     9006, "CONTROLLED-VISIBILITY-DO-NOT-PAY", 284,
@@ -100,7 +101,7 @@ class ControlledPixInteractionTest {
     }
 
     @Test fun singlePaymentFootnoteRetainsPackedAdditionalStartMargin() {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoteriasCaixaDSPixPanel(
                     9005, "CONTROLLED-MARGIN-DO-NOT-PAY", 900,
@@ -228,7 +229,7 @@ class ControlledPixInteractionTest {
         val remaining = mutableStateOf(30L)
         lateinit var clipboard: androidx.compose.ui.platform.ClipboardManager
         var copied = 0
-        compose.setContent {
+        compose.setFeatureContent {
             clipboard = LocalClipboardManager.current
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoteriasCaixaDSPixPanel(
@@ -303,7 +304,7 @@ class ControlledPixInteractionTest {
     }
 
     private fun show(expired: Boolean = false) {
-        compose.setContent {
+        compose.setFeatureContent {
             backDispatcher = requireNotNull(androidx.activity.compose.LocalOnBackPressedDispatcherOwner.current)
                 .onBackPressedDispatcher
             val model = remember {

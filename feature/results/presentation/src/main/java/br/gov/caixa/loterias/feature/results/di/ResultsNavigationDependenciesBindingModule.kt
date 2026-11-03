@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class ResultsNavigationDependenciesBindingModule {
     @Binds
-    abstract fun bindResultsNavigationDependenciesDependencies(implementation: ResultsNavigationDependenciesAdapter): ResultsNavigationDependencies
+    abstract fun bindResultsNavigationDependenciesDependencies(
+        implementation: ResultsNavigationDependenciesAdapter,
+    ): ResultsNavigationDependencies
 }

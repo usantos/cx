@@ -1,22 +1,23 @@
 package br.gov.caixa.loterias.feature.betting
 
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.assertHasClickAction
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialFrameTransform
+import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialRoute
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialFrameTransform
-import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialRoute
 
 @RunWith(AndroidJUnit4::class)
 class ShakeTutorialGeometryTest {
@@ -24,13 +25,13 @@ class ShakeTutorialGeometryTest {
 
     @Test
     fun firstTutorialLayoutMatchesLegacyImageInsetsAndHeaderMetrics() {
-        compose.setContent { ShakeTutorialRoute(onComplete = {}) }
+        compose.setFeatureContent { ShakeTutorialRoute(onComplete = {}) }
         compose.waitForIdle()
 
         val rootBounds = compose.onRoot().fetchSemanticsNode().boundsInRoot
         val screenWidth = rootBounds.width
         val illustrationWidth = compose.onNodeWithContentDescription(
-            "Nova funcionalidade: Aposta Shake. Complete apostas automaticamente chacoalhando seu celular!",
+            "Nova funcionalidade: Aposta Shake. Complete apostas automaticamente chacoalhando seu celular!"
         ).fetchSemanticsNode().boundsInRoot.width
 
         val legacySideInsets = with(compose.density) { 96.dp.toPx() }
@@ -41,12 +42,11 @@ class ShakeTutorialGeometryTest {
         assertTrue("title stays in the top tutorial header", titleBounds.top < rootBounds.height * 0.12f)
         val titleHeightDp = with(compose.density) { titleBounds.height.toDp().value }
         assertTrue("title retains the legacy 20sp line metric", titleHeightDp in 20f..34f)
-
     }
 
     @Test
     fun arrowDescriptionBelongsToItsClickableButton() {
-        compose.setContent { ShakeTutorialRoute(onComplete = {}) }
+        compose.setFeatureContent { ShakeTutorialRoute(onComplete = {}) }
         compose.onNodeWithContentDescription("Próxima etapa").assertHasClickAction()
     }
 
@@ -75,5 +75,4 @@ class ShakeTutorialGeometryTest {
         assertEquals(458f, agitation.destinationHeight, 1f)
         assertEquals(61f, agitation.destinationTop, 1f)
     }
-
 }

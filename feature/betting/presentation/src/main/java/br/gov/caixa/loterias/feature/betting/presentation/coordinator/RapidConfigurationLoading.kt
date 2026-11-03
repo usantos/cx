@@ -6,14 +6,11 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfigurationUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationUiState
-import br.gov.caixa.loterias.feature.betting.presentation.state.reduceRapidConfigurationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

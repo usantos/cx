@@ -8,6 +8,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
@@ -51,7 +52,7 @@ class BettingLuckyMonthAlignmentTest {
         (1..7).forEach(vm::toggleNumber)
         vm.primaryAction()
         vm.selectLuckyMonth(months.first())
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithTag("lucky-month-Janeiro").assertIsSelected()
         names.forEach { label ->
             val cell = compose.onNodeWithTag("lucky-month-$label").fetchSemanticsNode().boundsInRoot
@@ -76,7 +77,7 @@ class BettingLuckyMonthAlignmentTest {
             AddBetToCartUseCase { error("Help title must never submit") },
             initialParameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithText("Como jogar").performClick()
         compose.onNodeWithText("Como Jogar: dia de sorte").assertIsDisplayed()
     }

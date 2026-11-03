@@ -12,6 +12,7 @@ sealed interface CentralNotificationsAction {
     data class ConfirmationRequested(val confirmation: InboxConfirmation) : CentralNotificationsAction
     data object DialogDismissed : CentralNotificationsAction
     data object MutationStarted : CentralNotificationsAction
+    data object MutationNotStarted : CentralNotificationsAction
 }
 
 fun reduceCentralNotificationsState(state: CentralNotificationsState, action: CentralNotificationsAction): CentralNotificationsState =
@@ -38,4 +39,6 @@ fun reduceCentralNotificationsState(state: CentralNotificationsState, action: Ce
         CentralNotificationsAction.DialogDismissed -> state.copy(pending = null, error = null)
 
         CentralNotificationsAction.MutationStarted -> state.copy(loading = true)
+
+        CentralNotificationsAction.MutationNotStarted -> state.copy(loading = false)
     }

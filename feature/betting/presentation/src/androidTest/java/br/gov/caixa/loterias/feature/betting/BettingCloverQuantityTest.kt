@@ -1,45 +1,56 @@
 package br.gov.caixa.loterias.feature.betting
 
-import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.assertCountEquals
-import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.assertIsSelected
-import androidx.compose.ui.test.assertIsNotSelected
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsNotSelected
+import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 class BettingCloverQuantityTest {
-    @get:Rule val compose=createComposeRule()
+    @get:Rule val compose = createComposeRule()
 
     @Test fun plusSurpriseNumberCounterChangesNumbersWithoutChangingGameQuantity() {
-        val game=LotteryGameParameters(LotteryModality(9,"+Milionária","MAIS_MILIONARIA"),396,"07/10/2026",50,6,7,100,listOf(0),
-            listOf(BetPrice(6,2,BigDecimal("6")),BetPrice(7,2,BigDecimal("42"))),minimumClovers=2,maximumClovers=6,maximumCloverNumber=6)
-        val parameters=BettingParameters(BigDecimal("500"),BigDecimal("30"),50,listOf(game))
-        val vm=BettingGameViewModel(9,GetBettingParametersUseCase {error("Prepared snapshot must avoid fetch")},
-            AddBetToCartUseCase {error("No cart submission permitted")},initialParameters=parameters)
+        val game = LotteryGameParameters(
+            LotteryModality(9, "+Milionária", "MAIS_MILIONARIA"), 396, "07/10/2026", 50, 6, 7, 100, listOf(0),
+            listOf(
+                BetPrice(6, 2, BigDecimal("6")),
+                BetPrice(7, 2, BigDecimal("42"))
+            ),
+            minimumClovers = 2, maximumClovers = 6, maximumCloverNumber = 6
+        )
+        val parameters = BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game))
+        val vm = BettingGameViewModel(
+            9,
+            GetBettingParametersUseCase { error("Prepared snapshot must avoid fetch") },
+            AddBetToCartUseCase { error("No cart submission permitted") },
+            initialParameters = parameters
+        )
         vm.selectMode(BetEntryMode.SURPRISE)
-        compose.setContent {LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.onNodeWithText("Escolha a quantidade de números").assertIsDisplayed()
         val plus = compose.onAllNodesWithText("+", useUnmergedTree = true)
         plus.assertCountEquals(2)
@@ -72,7 +83,7 @@ class BettingCloverQuantityTest {
                     override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> = error("No cart submission permitted")
                 }
             )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
         compose.runOnIdle { (1..6).forEach(vm::toggleNumber) }
         compose.onNodeWithText("Completar jogo").assertIsNotEnabled()

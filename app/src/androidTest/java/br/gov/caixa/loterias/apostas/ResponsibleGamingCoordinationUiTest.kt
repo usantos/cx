@@ -27,6 +27,7 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.AccountSuspension
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentAnswer
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
@@ -129,7 +130,7 @@ class ResponsibleGamingCoordinationUiTest {
     @Test fun welcomeConsumesSystemBackButOptionalCloseStillExits() {
         var systemBacks = 0
         var closes = 0
-        compose.setContent {
+        compose.setFeatureContent {
             androidx.activity.compose.BackHandler { systemBacks++ }
             val model = remember { Fixture().model("responsible/start") }
             LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/start", model, { closes++ }, {}, {}) }
@@ -171,7 +172,7 @@ class ResponsibleGamingCoordinationUiTest {
             override val onTryNow: () -> Unit = {}
         }
         lateinit var nav: androidx.navigation.NavHostController
-        compose.setContent {
+        compose.setFeatureContent {
             nav = androidx.navigation.compose.rememberNavController()
             LoteriasCaixaDSTheme {
                 androidx.navigation.compose.NavHost(nav, startDestination = "responsible/social") {
@@ -253,7 +254,7 @@ class ResponsibleGamingCoordinationUiTest {
     @Test fun assessmentRetryAndPrivateFlagKeepEmptyQuestionBehaviorWithoutExtraLoads() {
         val fixture = Fixture().apply { questionResult = AppResult.Failure(AppError.Network) }
         val privateData = mutableStateOf(true)
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.model("responsible/form") }
             LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/form", model, {}, {}, {}, privateDataEnabled = privateData.value) }
         }
@@ -363,7 +364,7 @@ class ResponsibleGamingCoordinationUiTest {
 
     private fun assertSocialDescriptionsFit(fontScale: Float) {
         val fixture = Fixture()
-        compose.setContent {
+        compose.setFeatureContent {
             val density = androidx.compose.ui.platform.LocalDensity.current
             val model = remember { fixture.model("responsible/social") }
             androidx.compose.runtime.CompositionLocalProvider(
@@ -395,7 +396,7 @@ class ResponsibleGamingCoordinationUiTest {
         val current = mutableStateOf(old)
         var backs = 0
         var completions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/start", current.value, { backs++ }, { completions++ }, {}) }
         }
         compose.runOnIdle { old.onAction(ResponsibleGamingAction.Back) }
@@ -425,7 +426,7 @@ class ResponsibleGamingCoordinationUiTest {
         onOpenTerms: () -> Unit = {},
         onSubmitSuspension: (() -> Unit)? = null,
     ) {
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.model(route, required) }
             LoteriasCaixaDSTheme {
                 ResponsibleGamingRoute(route, model, onBack, onComplete, onOpenTerms, onSubmitSuspension)

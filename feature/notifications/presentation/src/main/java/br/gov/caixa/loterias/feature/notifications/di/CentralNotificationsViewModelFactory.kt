@@ -12,5 +12,10 @@ class CentralNotificationsViewModelFactory @Inject constructor(
     private val identities: AuthenticatedSessionIdentityProvider,
     private val dispatchers: CoroutineDispatchers,
 ) {
-    fun create() = CentralNotificationsViewModel(NotificationInboxActions(repository), identities, dispatchers)
+    fun create(isEntryEnabled: () -> Boolean = { true }) = CentralNotificationsViewModel(
+        NotificationInboxActions(repository),
+        identities,
+        dispatchers,
+        isEntryEnabled
+    )
 }

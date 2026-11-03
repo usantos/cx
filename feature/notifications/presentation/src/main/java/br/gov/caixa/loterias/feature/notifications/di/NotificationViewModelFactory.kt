@@ -16,9 +16,9 @@ import javax.inject.Provider
 /** Raiz de composição: casos de uso de um destino compartilham um repositório local, nunca estado global do aplicativo. */
 class NotificationViewModelFactory @Inject constructor(
     private val repositories: Provider<NotificationRepository>,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : br.gov.caixa.loterias.feature.notifications.navigation.NotificationsViewModelProvider {
-    override fun create(): NotificationsViewModel {
+    override fun create(isEntryEnabled: () -> Boolean): NotificationsViewModel {
         val repository = repositories.get()
         return NotificationsViewModel(
             GetNotifications(repository),
@@ -28,7 +28,8 @@ class NotificationViewModelFactory @Inject constructor(
             MarkAllNotificationsRead(repository),
             GetNotificationPreferences(repository),
             SetNotificationPreference(repository),
-            dispatchers
+            dispatchers,
+            isEntryEnabled = isEntryEnabled
         )
     }
 }

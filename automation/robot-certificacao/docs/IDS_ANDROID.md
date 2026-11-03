@@ -12,21 +12,34 @@ O valor é literal, não derivado do texto visível, CPF, usuário ou idioma. ID
 | --- | --- |
 | account | 69 |
 | app | 8 |
-| betting | 289 |
-| cart | 142 |
+| betting | 273 |
+| cart | 144 |
 | dialog | 2 |
-| ds | 146 |
+| ds | 147 |
 | home | 161 |
-| marketplace | 121 |
 | marketplace-filter | 39 |
+| modules | 1 |
 | notifications | 49 |
-| onboarding | 46 |
 | payment | 134 |
+| marketplace | 121 |
 | responsible-gaming | 79 |
 | results | 95 |
 | retail | 131 |
-| support | 31 |
+| onboarding | 46 |
+| support | 32 |
 | tickets | 250 |
+
+O inventário acompanha o arquivo físico após a extração das UIs para os splits
+`*_ui`. Contratos, ViewModels e efeitos de plataforma permanecem nas bibliotecas
+`presentation`; mudar o proprietário do renderizador não altera o ID publicado.
+A descoberta confere também `core/presentation`, que fornece o estado de entrega
+compartilhado `simlo.modules.0001`, e somente os splits declarados no Gradle.
+
+Os seletores de conteúdo de uma UI sob demanda aparecem após a instalação e a
+admissão da capacidade. Durante preparação, falha ou indisponibilidade, use
+`modulo.estado` e a ação `modulo.acao` dentro desse contêiner. O contexto diferencia
+voltar de tentar novamente; o ID da ação permanece o do Design System. O FAQ
+conserva os seletores específicos já publicados.
 
 ## IDs dos cenários iniciais
 
@@ -102,3 +115,28 @@ cabeçalho do carrinho: `simlo.cart.0143` para excluir todas as apostas e
 iguais. Os localizadores `carrinho.excluir_todas` e `carrinho.salvar_favorito`
 apontam para esses IDs e respeitam as mesmas condições de visibilidade. Os novos
 helpers passam pelo validador normal de controles, sem novas exclusões.
+
+
+## FAQ em módulo dinâmico — 02/11/2026
+
+O FAQ mantém as chaves `help.0018` e `help.0026` a `help.0031` após a mudança
+para `feature/support/faq/src/main`. Termos e a mensagem compartilhada de erro
+`help.0025` permanecem na base; o inventário registra os novos proprietários.
+Os validadores usam a mesma seleção de fontes e incluem módulos com plugin
+`com.android.dynamic-feature` declarados no `settings.gradle` ou
+`settings.gradle.kts`. Diretórios temporários não declarados e `build/generated`
+não ampliam essa seleção; nenhum ID existente foi renumerado.
+
+O localizador `suporte.modulo.estado` (`id=simlo.help.0050`) identifica o
+Empty State de disponibilidade, instalação e falha. Dentro desse contêiner,
+`suporte.modulo.acao` usa `id=simlo.ds.0019`, o botão compartilhado do Design
+System. Ele oferece “Voltar” durante indisponibilidade/instalação e “Tentar
+novamente” após falha. O texto distingue os estados; não há um novo ID por
+estado. A confirmação de instalação pertence à interface de plataforma.
+
+Após a instalação habilitada, `suporte.faq.secoes` identifica a lista
+`id=simlo.help.0026` e `suporte.faq.perguntas` a lista `id=simlo.help.0029`.
+As linhas repetidas `help.0027`, `help.0030` e as respostas `help.0018` exigem
+escopo na respectiva lista/pergunta. A presença desses IDs na árvore nativa
+e a entrega do split dependem da execução no aplicativo; o gate estático
+valida somente declarações e localizadores.

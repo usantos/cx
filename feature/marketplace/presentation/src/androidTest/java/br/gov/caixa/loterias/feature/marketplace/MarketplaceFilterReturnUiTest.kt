@@ -1,17 +1,29 @@
 package br.gov.caixa.loterias.feature.marketplace
 
-import androidx.compose.runtime.*
-import androidx.navigation.compose.composable
-import androidx.compose.material3.Text
 import androidx.compose.foundation.clickable
+import androidx.compose.material3.Text
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.isRoot
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.printToString
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavHostController
-import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
-import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
@@ -19,8 +31,10 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
+import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
@@ -30,10 +44,15 @@ import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
-import br.gov.caixa.loterias.feature.marketplace.domain.usecase.*
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceDetailUseCase
+import br.gov.caixa.loterias.feature.marketplace.domain.usecase.SearchMarketplaceUseCase
 import br.gov.caixa.loterias.feature.marketplace.navigation.MarketplaceNavigationDependencies
 import br.gov.caixa.loterias.feature.marketplace.navigation.marketplaceGraph
-import br.gov.caixa.loterias.feature.retail.domain.usecase.*
+import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
+import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailersUseCase
+import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
+import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import java.math.BigDecimal
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicBoolean
@@ -67,13 +86,27 @@ class MarketplaceFilterReturnUiTest {
         override val searchMarketplace = SearchMarketplaceUseCase { _, page ->
             pages += page
             searchEvents += "page=$page failure=${failSearch.get()} thread=${Thread.currentThread().name}"
-            if (failSearch.get()) AppResult.Failure(AppError.Network)
-            else AppResult.Success(MarketplacePage(listOf(pool), page, page, 1))
+            if (failSearch.get()) {
+                AppResult.Failure(AppError.Network)
+            } else {
+                AppResult.Success(MarketplacePage(listOf(pool), page, page, 1))
+            }
         }
-        override val favoriteRetailers = GetFavoriteRetailersUseCase { favoriteReads.incrementAndGet(); AppResult.Success(emptyList()) }
-        override val bettingParameters = GetBettingParametersUseCase { AppResult.Success(BettingParameters(
-            BigDecimal.ZERO, BigDecimal.ZERO, 0, games = emptyList(),
-            availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL")))) }
+        override val favoriteRetailers = GetFavoriteRetailersUseCase {
+            favoriteReads.incrementAndGet()
+            AppResult.Success(emptyList())
+        }
+        override val bettingParameters = GetBettingParametersUseCase {
+            AppResult.Success(
+                BettingParameters(
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO,
+                    0,
+                    games = emptyList(),
+                    availablePoolModalities = listOf(PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
+                )
+            )
+        }
         override val addMarketplacePoolToCart = AddMarketplacePoolToCartUseCase { error("No cart mutation") }
         override val setRetailerFavorite = SetRetailerFavoriteUseCase { _, _ -> error("No favorite mutation") }
         override val marketplaceDetail = GetMarketplaceDetailUseCase { error("Detail not requested") }
@@ -82,25 +115,32 @@ class MarketplaceFilterReturnUiTest {
         }
         override val searchRetailers = SearchRetailersUseCase { AppResult.Success(emptyList()) }
     }
-    private val pool = MarketplacePool("B1", "MEGA_SENA", 2900, "Centro", "31/12/2026", "10.00",
-        10, 2, 6, false, 101, "Brasília - DF", 20)
+    private val pool = MarketplacePool(
+        "B1", "MEGA_SENA", 2900, "Centro", "31/12/2026", "10.00",
+        10, 2, 6, false, 101, "Brasília - DF", 20
+    )
 
     private fun show(applied: Boolean = false) {
-        compose.setContent { LoteriasCaixaDSTheme {
-            val nav = rememberNavController()
-            val navigation = rememberAppNavigationState(session.identity.ownerKey)
-            SideEffect { testNavigation = navigation; testNavController = nav }
-            remember(navigation.details) {
-                navigation.details.marketplaceFilter = MarketplaceFilter.forModality(2, 1)
-                navigation.details.marketplaceClearFilter = MarketplaceFilter.forModality(2, 1)
-                navigation.details.marketplaceFilterApplied = applied
-                true
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                val nav = rememberNavController()
+                val navigation = rememberAppNavigationState(session.identity.ownerKey)
+                SideEffect {
+                    testNavigation = navigation
+                    testNavController = nav
+                }
+                remember(navigation.details) {
+                    navigation.details.marketplaceFilter = MarketplaceFilter.forModality(2, 1)
+                    navigation.details.marketplaceClearFilter = MarketplaceFilter.forModality(2, 1)
+                    navigation.details.marketplaceFilterApplied = applied
+                    true
+                }
+                NavHost(nav, startDestination = "betting/pools") {
+                    marketplaceGraph(dependencies, nav, navigation, session)
+                    composable("retail/search") { Text("Busca de lotéricas aberta", Modifier.clickable { nav.popBackStack() }) }
+                }
             }
-            NavHost(nav, startDestination = "betting/pools") {
-                marketplaceGraph(dependencies, nav, navigation, session)
-                composable("retail/search") { Text("Busca de lotéricas aberta", Modifier.clickable { nav.popBackStack() }) }
-            }
-        } }
+        }
         compose.waitUntil(5_000) { pages.size == 1 }
         compose.waitUntil(5_000) { compose.onAllNodesWithTag("carousel-increase-B1").fetchSemanticsNodes().isNotEmpty() }
     }

@@ -7,7 +7,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -15,6 +15,8 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
@@ -34,13 +36,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class PersonalDataRouteUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun `zip help requires confirmation and notification preferences require explicit save`() {
         val opened = mutableListOf<String>()
@@ -50,7 +55,7 @@ class PersonalDataRouteUiTest {
             updates += update
             AppResult.Success(Unit)
         }
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(
                 LocalUriHandler provides object : UriHandler {
                     override fun openUri(uri: String) {
@@ -96,7 +101,7 @@ class PersonalDataRouteUiTest {
             updates++
             AppResult.Failure(AppError.Validation("Synthetic update rejected"))
         }
-        compose.setContent { LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { completed++ }) } }
         compose.onNodeWithText("Atualizar").performClick()
         flush()
         compose.onNodeWithText("Synthetic update rejected").assertExists()
@@ -118,7 +123,7 @@ class PersonalDataRouteUiTest {
             writes++
             AppResult.Success(Unit)
         }
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { if (visible.value) PersonalDataRoute(model, {}, { completed++ }) }
         }
         compose.onNodeWithText("Atualizar").performClick()

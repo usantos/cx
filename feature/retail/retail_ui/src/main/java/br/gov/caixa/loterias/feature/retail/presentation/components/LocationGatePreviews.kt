@@ -1,0 +1,29 @@
+package br.gov.caixa.loterias.feature.retail.presentation.components
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.feature.retail.presentation.screen.DeliveredLocationGateScreen
+import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateStatus
+import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateUiState
+
+@Preview(name = "Localização: permissão", showBackground = true)
+@Composable
+private fun LocationPermissionPreview() {
+    LoteriasCaixaDSTheme(darkTheme = false) {
+        DeliveredLocationGateScreen(
+            state = LocationGateUiState(LocationGateStatus.PERMISSION_REQUIRED),
+            versionName = "1.0",
+            lotteryIconResourceId = 0,
+            onAction = {}
+        )
+    }
+}
+
+@Preview(name = "Localização: falha", showBackground = true)
+@Composable
+private fun LocationFailurePreview() {
+    LoteriasCaixaDSTheme(darkTheme = false) {
+        DeliveredLocationGateScreen(LocationGateUiState(LocationGateStatus.ERROR), "1.0", 0, {})
+    }
+}

@@ -2,41 +2,42 @@ package br.gov.caixa.loterias.feature.betting
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
-import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfigurationUseCase
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveRapidBetConfigurationUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.RapidConfigurationRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidConfigurationViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.RapidConfigurationRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidConfigurationViewModel
 
 class RapidConfigurationCoordinationTest {
     @get:Rule val compose = createComposeRule()
@@ -151,7 +152,10 @@ class RapidConfigurationCoordinationTest {
         show(fixture)
         page(2)
         compose.onNodeWithText("Tentar novamente").performClick()
-        compose.runOnIdle { assertEquals(2, fixture.limitReads); fixture.failLimits = false }
+        compose.runOnIdle {
+            assertEquals(2, fixture.limitReads)
+            fixture.failLimits = false
+        }
         compose.onNodeWithText("Tentar novamente").performClick()
         compose.onAllNodesWithText("...")[0].performClick()
         compose.onNode(hasSetTextAction()).performTextReplacement("100")
@@ -188,7 +192,7 @@ class RapidConfigurationCoordinationTest {
         val first = Fixture()
         val second = Fixture()
         val replace = mutableStateOf(false)
-        compose.setContent {
+        compose.setFeatureContent {
             val firstModel = remember { first.create() }
             val secondModel = remember { second.create() }
             LoteriasCaixaDSTheme {
@@ -219,7 +223,7 @@ class RapidConfigurationCoordinationTest {
     }
 
     private fun show(fixture: Fixture, onSaved: () -> Unit = {}, onBack: () -> Unit = {}) {
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.create() }
             LoteriasCaixaDSTheme { RapidConfigurationRoute(model, onBack, onSaved) }
         }
@@ -234,17 +238,27 @@ class RapidConfigurationCoordinationTest {
 
         fun create() = RapidConfigurationViewModel(
             GetRapidBetConfigurationUseCase {
-                ServiceResult.Success(RapidBetConfiguration(BigDecimal("30"), BigDecimal("100"), BigDecimal.ZERO, setOf(1), setOf(2), modalities, emptySet()))
+                ServiceResult.Success(
+                    RapidBetConfiguration(BigDecimal("30"), BigDecimal("100"), BigDecimal.ZERO, setOf(1), setOf(2), modalities, emptySet())
+                )
             },
             GetLotteryModalitiesUseCase { AppResult.Success(modalities) },
-            SaveRapidBetConfigurationUseCase { saved.add(it); ServiceResult.Success(it) },
+            SaveRapidBetConfigurationUseCase {
+                saved.add(it)
+                ServiceResult.Success(it)
+            },
             FixedCoroutineDispatchers(Dispatchers.Main.immediate),
             getParameters = GetBettingParametersUseCase {
                 limitReads++
-                if (failLimits) AppResult.Failure(AppError.Network)
-                else AppResult.Success(BettingParameters(BigDecimal("200"), BigDecimal("30"), 100, emptyList()))
+                if (failLimits) {
+                    AppResult.Failure(AppError.Network)
+                } else {
+                    AppResult.Success(BettingParameters(BigDecimal("200"), BigDecimal("30"), 100, emptyList()))
+                }
             },
-            verifyAccess = VerifyAccountAccessUseCase { AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal("200"))) },
+            verifyAccess = VerifyAccountAccessUseCase {
+                AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal("200")))
+            }
         ).also { model = it }
     }
 }

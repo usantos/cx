@@ -13,6 +13,7 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -24,7 +25,7 @@ class QueueWebConnectionUiTest {
         var connection = ConnectionAvailability.CONNECTED
         var pageInstances = 0
         val network = NetworkAvailability { connection }
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 QueueWebConnectionGate(network) { failed ->
                     DisposableEffect(Unit) {

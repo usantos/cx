@@ -36,6 +36,7 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
@@ -148,7 +149,7 @@ class PostLoginTutorialNavigationUiTest {
             },
             settings
         )
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             val navigation = rememberAppNavigationState(session.lease?.ownerKey)
             var pending by remember { mutableStateOf<PostLoginTutorialRequest?>(null) }

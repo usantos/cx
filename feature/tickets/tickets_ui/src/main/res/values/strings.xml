@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tickets_scanner_title">Resultado</string>
+    <string name="tickets_scanner_close">Fechar</string>
+    <string name="tickets_scanner_permission_message">Permita o acesso à câmera para ler o código do bilhete.</string>
+    <string name="tickets_scanner_permission_action">Permitir câmera</string>
+    <string name="tickets_scanner_qr_instruction">Posicione a câmera sobre o QR Code e aguarde. A leitura é automática.</string>
+</resources>

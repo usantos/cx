@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.payment.presentation.mapper
 
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
-import java.time.LocalDateTime
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_INVALID_IDENTIFICATION
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OPERATION_FAILED
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_REQUEST_FAILED
 import br.gov.caixa.loterias.core.presentation.formatting.legacyDiagnosticMessage
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
+import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
+import java.time.LocalDateTime
 
 data class PurchaseNoticeUiState(val message: String, val offerMoreBets: Boolean, val offerRegistration: Boolean = false)
 
@@ -19,8 +19,11 @@ internal fun purchaseNoticeUi(notice: PurchaseNotice, now: LocalDateTime): Purch
     val message = when (notice.reason) {
         PurchaseNoticeReason.MORE_BETS_REQUIRED, PurchaseNoticeReason.BUSINESS_RULE, PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION ->
             notice.message?.takeIf { it.isNotEmpty() } ?: PURCHASE_OPERATION_FAILED
+
         PurchaseNoticeReason.SERVER_MESSAGE -> notice.message ?: PURCHASE_REQUEST_FAILED
+
         PurchaseNoticeReason.SERVER_FAILURE -> PURCHASE_REQUEST_FAILED
+
         PurchaseNoticeReason.INVALID_IDENTIFICATION -> PURCHASE_INVALID_IDENTIFICATION
     }
     val moreBets = notice.reason == PurchaseNoticeReason.MORE_BETS_REQUIRED

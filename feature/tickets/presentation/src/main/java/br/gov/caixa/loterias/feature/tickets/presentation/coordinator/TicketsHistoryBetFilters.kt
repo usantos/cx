@@ -8,7 +8,7 @@ import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState
 
 internal class TicketsHistoryBetFilters(
     private val mutableState: ReduxStateStore<TicketsUiState, TicketsStateAction>,
-    private val applyBetFilters: () -> Unit
+    private val applyBetFilters: () -> Unit,
 ) {
     fun openBetFilters() = mutableState.dispatch(TicketsBetFilterAction.Opened)
     fun closeBetFilters() = mutableState.dispatch(TicketsBetFilterAction.Closed)

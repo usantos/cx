@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.feature.home
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.Lifecycle
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeDialogActions
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRouteDialogs
@@ -16,13 +18,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class HomeDialogPriorityUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val calls = mutableListOf<String>()
     private var paymentAllowed = false
     private val lifecycle = mutableStateOf(Lifecycle.State.RESUMED)
@@ -94,7 +99,7 @@ class HomeDialogPriorityUiTest {
             { calls.add("bet-error") },
             { calls.add("notification-link") }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 HomeRouteDialogs(state, lifecycle.value, { calls.add("open:$it") }, actions)
             }

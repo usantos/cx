@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
-import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -39,6 +38,7 @@ class RapidConfigurationViewModel(
         },
     private val localClock: java.time.Clock = java.time.Clock.systemDefaultZone(),
     initialPage: Int = 0,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<RapidConfigurationUiState, RapidConfigurationAction>(
         RapidConfigurationUiState(loading = autoLoad, page = initialPage.coerceIn(0, LAST_PAGE)),
@@ -70,7 +70,8 @@ class RapidConfigurationViewModel(
             saveConfiguration,
             loading::applyFailure,
             isSessionCurrent,
-            ::applyServiceFailure
+            ::applyServiceFailure,
+            canStartOperation
         )
 
     init {
@@ -111,7 +112,9 @@ class RapidConfigurationViewModel(
 
     fun dismissMessage() = mutableState.dispatch(RapidConfigurationAction.MessageDismissed)
 
-    fun save() = submission.save()
+    fun save() {
+        if (canStartOperation()) submission.save()
+    }
 
     private fun applyServiceFailure(failure: br.gov.caixa.loterias.core.domain.service.model.ServiceFailure) = mutableState.dispatch(
         RapidConfigurationAction.ServiceFailureReceived(

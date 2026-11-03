@@ -29,6 +29,7 @@ internal class AppSessionCoordinator(
     override val recheckAccountCompletion: () -> Unit,
     override val onAuthenticated: (String) -> Unit,
     override val onTryNow: () -> Unit,
+    override val purchaseRecovery: br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession? = null,
 ) : br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 
 @Composable
@@ -53,6 +54,14 @@ internal fun rememberAppSessionCoordinator(
     val isPrivateSessionCurrent = remember(identity) {
         val lease = identity
         { lease != null && sessionDependencies.account.authenticatedSessionIdentity.isCurrent(lease) }
+    }
+    val purchaseRecovery = remember(navigation.details, identity, privateEntryKey) {
+        br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession(
+            navigation.details,
+            identity?.ownerKey,
+            privateEntryKey,
+            isPrivateSessionCurrent
+        )
     }
     val logoutViewModel = viewModel(key = "session-logout") {
         br.gov.caixa.loterias.feature.account.presentation.viewmodel.LogoutViewModel(
@@ -99,6 +108,6 @@ internal fun rememberAppSessionCoordinator(
     }
     return AppSessionCoordinator(
         state, identity, privateEntryKey, isPrivateSessionCurrent,
-        logoutViewModel, onLogout, requestVisitorLogin, recheckAccountCompletion, onAuthenticated, onTryNow
+        logoutViewModel, onLogout, requestVisitorLogin, recheckAccountCompletion, onAuthenticated, onTryNow, purchaseRecovery
     )
 }

@@ -22,6 +22,7 @@ internal class NotificationsMutations(
     private val deleteNotification: DeleteNotificationUseCase,
     private val deleteAll: DeleteAllNotificationsUseCase,
     private val markAllRead: MarkAllNotificationsReadUseCase,
+    private val isEntryEnabled: () -> Boolean = { true },
 ) {
 
     fun confirmDialog() {
@@ -46,6 +47,7 @@ internal class NotificationsMutations(
     }
 
     private fun mutate(operation: suspend () -> AppResult<Unit>, success: NotificationsAction) = scope.launch(dispatchers.io) {
+        if (!isEntryEnabled()) return@launch
         when (val result = operation()) {
             is AppResult.Success -> mutableState.dispatch(success)
             is AppResult.Failure -> mutableState.dispatch(NotificationsAction.MutationFailed(result.error.notificationUserMessage()))

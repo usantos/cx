@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.ShareValidationMessages
 
-internal fun MarketplaceFilterUiState.withShareValidation(messages: ShareValidationMessages): MarketplaceFilterUiState {
+fun MarketplaceFilterUiState.withShareValidation(messages: ShareValidationMessages): MarketplaceFilterUiState {
     val minimum = minimumShares.toBigIntegerOrNull()
     val maximum = maximumShares.toBigIntegerOrNull()
     return copy(

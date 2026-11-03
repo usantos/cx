@@ -48,7 +48,8 @@ class ResponsibleGamingViewModel(
     private val assessment =
         ResponsibleGamingAssessment(mutableState, viewModelScope, dispatchers, getQuestions, submitAssessment, isSessionCurrent, ::emit)
     private val socialTransfers = ResponsibleGamingSocialTransfers(mutableState, viewModelScope, dispatchers, getSocialTransfers)
-    private val suspension = ResponsibleGamingSuspension(mutableState, viewModelScope, dispatchers, suspendAccount, serverTimeSource)
+    private val suspension =
+        ResponsibleGamingSuspension(mutableState, viewModelScope, dispatchers, suspendAccount, serverTimeSource, isSessionCurrent)
 
     init {
         if (autoLoad) loadRouteData()

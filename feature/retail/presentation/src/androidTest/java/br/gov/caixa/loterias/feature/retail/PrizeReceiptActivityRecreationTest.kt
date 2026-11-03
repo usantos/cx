@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
@@ -92,9 +93,11 @@ class PrizeReceiptActivityRecreationTest {
                 }
             }
             activity.setContent {
-                CompositionLocalProvider(LocalContext provides context, LocalActivityResultRegistryOwner provides registry) {
-                    val current = rememberPrizeReceiptManager(model)
-                    SideEffect { manager = current }
+                InstalledFeatureTestContent {
+                    CompositionLocalProvider(LocalContext provides context, LocalActivityResultRegistryOwner provides registry) {
+                        val current = rememberPrizeReceiptManager(model)
+                        SideEffect { manager = current }
+                    }
                 }
             }
         }

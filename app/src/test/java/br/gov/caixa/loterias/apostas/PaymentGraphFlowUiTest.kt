@@ -20,9 +20,14 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModulesConfiguration
+import br.gov.caixa.loterias.core.domain.configuration.repository.AppModulesConfigurationRepository
+import br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
@@ -31,15 +36,19 @@ import br.gov.caixa.loterias.feature.payment.navigation.paymentGraph
 import java.lang.reflect.Proxy
 import java.time.Clock
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 class PaymentGraphFlowUiTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
@@ -139,7 +148,7 @@ class PaymentGraphFlowUiTest {
 
     private fun show(route: String, restoreCard: Boolean = false) {
         val dependencies = dependencies(restoreCard)
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             val state = rememberAppSessionState()
             val session = proxy<SessionNavigationActions> { name, _ ->
@@ -147,6 +156,7 @@ class PaymentGraphFlowUiTest {
                     "getState" -> state
                     "getIdentity" -> null
                     "getPrivateEntryKey" -> "visitor"
+                    "getPurchaseRecovery" -> null
                     "isPrivateSessionCurrent", "getIsPrivateSessionCurrent" -> ({ true })
                     else -> error("Unexpected session action $name")
                 }
@@ -181,6 +191,11 @@ class PaymentGraphFlowUiTest {
             "getNetworkAvailability" -> NetworkAvailability { ConnectionAvailability.CONNECTED }
 
             "getMockBackendEnabled" -> false
+
+            "getAppModulesConfiguration" -> AppModulesConfigurationUseCase(object : AppModulesConfigurationRepository {
+                override val configuration = MutableStateFlow(AppModulesConfiguration())
+                override suspend fun refresh() = Unit
+            })
 
             "getPaymentMethods" -> GetPaymentMethodsUseCase {
                 reads++

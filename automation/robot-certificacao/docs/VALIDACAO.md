@@ -12,3 +12,26 @@
 As evidências e logs completos da execução de desenvolvimento ficam no checkout Android em `build/verification/robot-ids-20261029/`. Não são distribuídos como resultados de certificação. Headers e baselines protegidos foram comparados com os hashes anteriores, sem alterações.
 
 Os detalhes verificáveis estão em `validation.json`. O pre-commit completo (incluindo Ktlint global e JaCoCo) não foi reexecutado nesta entrega; os resultados acima identificam as verificações efetivamente realizadas.
+
+
+## Atualização do contrato após extração das UIs — 02/11/2026
+
+Foram preservados os 1.780 registros de IDs existentes e as 88 declarações ou
+expressões legadas do inventário recebido. Caminhos e linhas agora identificam
+os renderizadores físicos nos splits e os componentes compartilhados da base.
+O único ID adicionado foi `simlo.modules.0001`, totalizando 1.781 declarações
+estáticas e 1.780 valores distintos. O ID de ação compartilhada do Design System
+permanece inalterado.
+
+A descoberta passou a conferir também `core/presentation`. Três regressões
+falharam antes dessa adaptação; os 17 testes do gate Android de IDs passaram após
+a mudança. `scripts/check-automation-ids.py` passou com o inventário atualizado.
+No ambiente virtual externo já existente, todas as versões coincidiram com
+`requirements.lock.txt`; `Scripts/validar_entrega.py` passou com `pip check`,
+28 testes Python e três casos Robot em dry-run. O Python global sem Robot não
+foi usado como evidência de aprovação.
+
+Esta atualização valida o contrato estático e o pacote offline. Não comprova a
+instalação dos splits, a presença dos IDs na árvore nativa, a entrega Google Play
+ou execução no Samsung/farm. A validação integrada Android desta expansão tem
+registro separado e não substitui as evidências históricas acima.

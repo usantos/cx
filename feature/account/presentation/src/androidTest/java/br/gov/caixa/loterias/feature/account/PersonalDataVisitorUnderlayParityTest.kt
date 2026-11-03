@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.feature.account
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
@@ -21,9 +23,9 @@ class PersonalDataVisitorUnderlayParityTest {
             resolveZipCode = ResolveZipCodeUseCase { error("Unexpected lookup") },
             updatePersonalData = UpdatePersonalDataUseCase { _, _ -> error("Unexpected mutation") },
             deferInitialLoad = true,
-            isSessionCurrent = { false },
+            isSessionCurrent = { false }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { PersonalDataRoute(model, {}, { error("Visitor cannot save") }) }
         }
         compose.waitForIdle()

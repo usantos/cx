@@ -20,6 +20,7 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.notifications.presentation.route.NotificationsRoute
 import br.gov.caixa.loterias.feature.notifications.presentation.viewmodel.NotificationsViewModel
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestionsUseCase
@@ -47,7 +48,7 @@ class StateCollectionLifecycleUiTest {
     @Test fun notificationsStatePausesBelowStartedAndResumesWithLatestQuery() {
         lateinit var owner: Owner
         lateinit var model: NotificationsViewModel
-        compose.setContent {
+        compose.setFeatureContent {
             val lifecycleOwner = remember { Owner().also { owner = it } }
             val viewModel = remember {
                 NotificationsViewModel(
@@ -89,7 +90,7 @@ class StateCollectionLifecycleUiTest {
         lateinit var owner: Owner
         lateinit var model: ResponsibleGamingViewModel
         val radio = SemanticsMatcher.expectValue(SemanticsProperties.Role, Role.RadioButton)
-        compose.setContent {
+        compose.setFeatureContent {
             val lifecycleOwner = remember { Owner().also { owner = it } }
             val viewModel = remember {
                 ResponsibleGamingViewModel(

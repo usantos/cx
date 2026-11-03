@@ -43,6 +43,8 @@ private fun reduceBetDetailFavoriteState(state: BetDetailUiState, action: BetDet
 
     is BetDetailStateAction.FavoriteNameRejected -> state.copy(errorMessage = action.message)
 
+    BetDetailStateAction.FavoritePreparationCancelled -> state.copy(loading = false)
+
     BetDetailStateAction.FavoriteSavingStarted -> state.copy(loading = true, errorMessage = null)
 
     is BetDetailStateAction.FavoriteOverwriteRequired -> state.copy(
@@ -86,9 +88,13 @@ private fun reduceBetDetailRepeatState(state: BetDetailUiState, action: BetDetai
 
     is BetDetailStateAction.RepeatSelectionMissing -> state.copy(errorMessage = action.message)
 
+    BetDetailStateAction.RepeatPreparationCancelled -> state.copy(loading = false)
+
     BetDetailStateAction.RepeatLoading -> state.copy(loading = true, errorMessage = null)
 
-    is BetDetailStateAction.RepeatParametersFailed -> state.copy(loading = false, errorMessage = action.message)
+    is BetDetailStateAction.RepeatParametersFailed,
+    is BetDetailStateAction.RepeatAdditionFailed,
+    -> reduceBetDetailRepeatFailure(state, action)
 
     is BetDetailStateAction.RepeatContestSelected -> selectRepeatContest(state, action.index)
 
@@ -112,11 +118,15 @@ private fun reduceBetDetailRepeatState(state: BetDetailUiState, action: BetDetai
     )
 
     BetDetailStateAction.RepeatAddedToCart -> state.copy(loading = false, cartAdditionConfirmed = true)
-
-    is BetDetailStateAction.RepeatAdditionFailed -> state.copy(loading = false, errorMessage = action.message)
 }
 
 private fun selectRepeatContest(state: BetDetailUiState, index: Int): BetDetailUiState =
     if (index !in state.repeatContestOptions.indices) state else state.copy(selectedRepeatContestIndex = index)
 
 private const val FAVORITE_BET_NAME_LENGTH = 25
+
+private fun reduceBetDetailRepeatFailure(state: BetDetailUiState, action: BetDetailRepeatAction): BetDetailUiState = when (action) {
+    is BetDetailStateAction.RepeatParametersFailed -> state.copy(loading = false, errorMessage = action.message)
+    is BetDetailStateAction.RepeatAdditionFailed -> state.copy(loading = false, errorMessage = action.message)
+    else -> state
+}

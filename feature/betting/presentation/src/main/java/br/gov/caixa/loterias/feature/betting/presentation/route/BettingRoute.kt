@@ -3,10 +3,11 @@ package br.gov.caixa.loterias.feature.betting.presentation.route
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.feature.betting.presentation.screen.BettingScreen
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingFlowEffect
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingFlowViewModel
-import br.gov.caixa.loterias.feature.betting.presentation.screen.BettingScreen
 
 @Composable
 fun BettingRoute(viewModel: BettingFlowViewModel, onBack: () -> Unit, onComplete: () -> Unit) {
@@ -25,6 +26,6 @@ fun BettingRoute(viewModel: BettingFlowViewModel, onBack: () -> Unit, onComplete
         onBack = viewModel::back,
         onPrimary = viewModel::primaryAction,
         onSecondary = viewModel::secondaryAction,
-        onToggleDoNotShowAgain = viewModel::toggleDoNotShowAgain,
+        onToggleDoNotShowAgain = viewModel::toggleDoNotShowAgain
     )
 }

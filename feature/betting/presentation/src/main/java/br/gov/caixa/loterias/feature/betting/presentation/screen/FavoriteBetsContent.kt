@@ -1,33 +1,14 @@
 package br.gov.caixa.loterias.feature.betting.presentation.screen
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.R
-import br.gov.caixa.loterias.feature.betting.R as LocalizedR
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleContent
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.presentation.components.EmptyFavoriteBets
-import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteBetsList
-import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteListHeader
+import br.gov.caixa.loterias.feature.betting.presentation.delivery.BettingUiEntry
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsUiState
 
 @Composable
-internal fun FavoriteBetsContent(
+fun FavoriteBetsContent(
     state: FavoriteBetsUiState,
     onBack: () -> Unit,
     onTerms: () -> Unit,
@@ -38,39 +19,12 @@ internal fun FavoriteBetsContent(
     onDelete: (FavoriteBet) -> Unit,
     onLoadMore: () -> Unit = {},
 ) {
-    val uiStrings = androidx.compose.ui.platform.LocalResources.current
-    LoteriasCaixaDSScaffold(
-        title = uiStrings.getString(LocalizedR.string.ui_apostas_favoritas_f81885),
+    FeatureModuleContent(
+        module = AppModule.BETTING,
+        entryType = BettingUiEntry::class.java,
         onBack = onBack,
-        gradientTopBar = false,
-
-        topBarAction = {
-            Image(
-                painterResource(br.gov.caixa.loterias.core.designsystem.R.drawable.legacy_icon_duvida2),
-                uiStrings.getString(LocalizedR.string.ui_ajuda_fe0add),
-                Modifier.size(25.dp).uiId("bet.0277").clickable(onClick = onTerms)
-            )
-        },
-        modifier = Modifier.uiId("bet.0278")
-    ) { padding ->
-        when {
-            !privateDataEnabled -> Column(Modifier.fillMaxSize().padding(padding).background(LoteriasCaixaDSColorTokens.White)) {
-                FavoriteListHeader(state.selectedModalityName) {}
-            }
-
-            state.loading -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator(color = LoteriasCaixaDS.colors.brand)
-            }
-
-            state.favorites.isEmpty() -> EmptyFavoriteBets(
-                modifier = (Modifier.fillMaxSize().padding(padding)).uiId("bet.0279"),
-                modalities = state.modalities.map { it.id to it.name },
-                selectedModalityId = state.selectedModalityId,
-                onFilter = onFilter,
-                onCreate = onCreateFavorite
-            )
-
-            else -> FavoriteBetsList(state, padding, onFilter, onAdd, onDelete, onLoadMore)
-        }
+        preserveActive = false
+    ) { entry ->
+        entry.FavoriteBetsContent(state, onBack, onTerms, onCreateFavorite, privateDataEnabled, onFilter, onAdd, onDelete, onLoadMore)
     }
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.destination.PoolTutorialRoute
@@ -16,9 +17,12 @@ import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.authenticatedContinuation
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
 import br.gov.caixa.loterias.core.navigation.workflow.requiresVisitorLogin
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRoute
+import br.gov.caixa.loterias.feature.home.presentation.route.findActivity
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 
@@ -40,31 +44,40 @@ private fun HomeDestination(
     session: SessionNavigationActions,
     actions: AppNavigationActions,
 ) {
-    val externalUriHandler = androidx.compose.ui.platform.LocalUriHandler.current
-    val ownerKey = session.identity?.ownerKey
-    val preferencesViewModel = viewModel(key = "home-preferences-${ownerKey ?: "visitante"}") {
-        br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel(
-            appContainer.homePreferences,
-            appContainer.dispatchers,
-            ownerKey
-        )
+    val activity = androidx.compose.ui.platform.LocalContext.current.findActivity()
+    androidx.compose.runtime.key(session.privateEntryKey) {
+        FeatureModuleAdmission(
+            module = AppModule.HOME,
+            onBack = { if (!navController.popBackStack()) activity?.finish() },
+            access = FeatureEntryAccess.OPTIONAL
+        ) {
+            val externalUriHandler = androidx.compose.ui.platform.LocalUriHandler.current
+            val ownerKey = session.identity?.ownerKey
+            val preferencesViewModel = viewModel(key = "home-preferences-${ownerKey ?: "visitante"}") {
+                br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel(
+                    appContainer.homePreferences,
+                    appContainer.dispatchers,
+                    ownerKey
+                )
+            }
+            if (!homePreferencesReady(preferencesViewModel)) return@FeatureModuleAdmission
+            val homeViewModel = rememberHomeViewModel(appContainer)
+            HomeReturnEffects(appContainer, navController, session, homeViewModel)
+            val openTicketScanner = rememberHomeTicketScannerEntry { navController.navigate("tickets/read") }
+            val handlers =
+                HomeDestinationHandlers(
+                    appContainer,
+                    navController,
+                    navigation,
+                    session,
+                    actions,
+                    homeViewModel,
+                    externalUriHandler,
+                    openTicketScanner
+                )
+            HomeDestinationRoute(appContainer, navigation, session, homeViewModel, preferencesViewModel, handlers)
+        }
     }
-    if (!homePreferencesReady(preferencesViewModel)) return
-    val homeViewModel = rememberHomeViewModel(appContainer)
-    HomeReturnEffects(appContainer, navController, session, homeViewModel)
-    val openTicketScanner = rememberHomeTicketScannerEntry { navController.navigate("tickets/read") }
-    val handlers =
-        HomeDestinationHandlers(
-            appContainer,
-            navController,
-            navigation,
-            session,
-            actions,
-            homeViewModel,
-            externalUriHandler,
-            openTicketScanner
-        )
-    HomeDestinationRoute(appContainer, navigation, session, homeViewModel, preferencesViewModel, handlers)
 }
 
 @androidx.compose.runtime.Composable

@@ -2,59 +2,58 @@ package br.gov.caixa.loterias.feature.support
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
-import org.junit.Assert.assertEquals
-import org.junit.Rule
-import org.junit.Test
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.support.presentation.screen.SupportScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportMode
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportTab
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
-import br.gov.caixa.loterias.feature.support.presentation.screen.SupportScreen
+import org.junit.Assert.assertEquals
+import org.junit.Rule
+import org.junit.Test
 
 class SupportScreenCoordinationTest {
     @get:Rule val compose = createComposeRule()
 
-    @Test fun pendingLinkSurvivesRecompositionButResetsWhenTheAnswerChanges() {
-        val answer = "www.caixa.gov.br"
-        val state = mutableStateOf(SupportUiState(
-            selectedSectionId = 1,
-            selectedSectionTitle = "PERGUNTAS",
-            questions = listOf(SupportQuestion(1, "Portal", answer)),
-            expandedQuestionIds = setOf(1),
-        ))
-        compose.setContent {
-            LoteriasCaixaDSTheme { SupportScreen(state.value, { error("A link must not dispatch a support action") }) }
+    @Test fun mandatoryTermsRenderWithoutResolvingFaqContent() {
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                SupportScreen(
+                    state = SupportUiState(
+                        selectedTab = SupportTab.TERMS,
+                        acceptanceRequired = true,
+                        htmlContent = "<p>Termos disponíveis na base</p>"
+                    ),
+                    onAction = {},
+                    faqContent = { _, _ -> error("Terms must not resolve the optional FAQ split") }
+                )
+            }
         }
-        compose.onNodeWithText(answer).performTouchInput { click() }
-        compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertIsDisplayed()
-        compose.runOnIdle { state.value = state.value.copy(selectedSectionTitle = "PORTAIS") }
-        compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertIsDisplayed()
-        compose.onNodeWithText("Cancelar").performClick()
-        compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertDoesNotExist()
-
-        compose.onNodeWithText(answer).performTouchInput { click() }
-        compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertIsDisplayed()
-        compose.runOnIdle {
-            state.value = state.value.copy(questions = listOf(SupportQuestion(1, "Portal", "Resposta atualizada")))
-        }
-        compose.onNodeWithText("Você será direcionado para a WEB. Deseja continuar?").assertDoesNotExist()
-        compose.onNodeWithText("Resposta atualizada").assertIsDisplayed()
+        compose.onNodeWithTag("support_html").assertExists()
+        compose.onNodeWithText("Continuar").assertIsDisplayed().assertIsNotEnabled()
     }
 
     @Test fun termsAcceptanceAndTabsUseCurrentActionsAndKeepTheirGuards() {
-        val state = mutableStateOf(SupportUiState(
-            selectedTab = SupportTab.TERMS,
-            showTermsTabs = true,
-            acceptanceRequired = true,
-            htmlContent = "<p>Termos sintéticos</p>",
-        ))
+        val state = mutableStateOf(
+            SupportUiState(
+                selectedTab = SupportTab.TERMS,
+                showTermsTabs = true,
+                acceptanceRequired = true,
+                htmlContent = "<p>Termos sintéticos</p>"
+            )
+        )
         val revision = mutableIntStateOf(0)
         val actions = mutableListOf<Pair<Int, SupportAction>>()
-        compose.setContent {
+        compose.setFeatureContent {
             val currentRevision = revision.intValue
             LoteriasCaixaDSTheme {
                 SupportScreen(state.value, { action ->
@@ -64,7 +63,7 @@ class SupportScreenCoordinationTest {
                         is SupportAction.SelectTab -> state.value.copy(selectedTab = action.tab)
                         else -> state.value
                     }
-                })
+                }, faqContent = { _, _ -> })
             }
         }
         compose.onNodeWithText("Continuar").assertIsNotEnabled()
@@ -77,28 +76,33 @@ class SupportScreenCoordinationTest {
         compose.onNodeWithText("Termo de uso").performClick()
         compose.onNodeWithText("Continuar").assertIsEnabled()
         compose.runOnIdle {
-            assertEquals(listOf(
-                0 to SupportAction.ToggleTermsAcceptance,
-                1 to SupportAction.AcceptTerms,
-                1 to SupportAction.SelectTab(SupportTab.FAQ),
-                1 to SupportAction.SelectTab(SupportTab.TERMS),
-            ), actions)
+            assertEquals(
+                listOf(
+                    0 to SupportAction.ToggleTermsAcceptance,
+                    1 to SupportAction.AcceptTerms,
+                    1 to SupportAction.SelectTab(SupportTab.FAQ),
+                    1 to SupportAction.SelectTab(SupportTab.TERMS)
+                ),
+                actions
+            )
         }
     }
 
     @Test fun specialModesKeepGlobalLoadingMetadataAndBack() {
-        val state = mutableStateOf(SupportUiState(
-            mode = SupportMode.GAME_HELP,
-            gameHelpModalityId = 16,
-            gameHelpModalityName = "Lotomania",
-            gameHelpContestNumber = 123,
-            gameHelpDrawDate = "2026-10-18",
-            gameHelpClosingDateTime = "2026-10-18T23:30:00Z",
-            htmlContent = "<b>Regra sintética</b>",
-            isLoading = true,
-        ))
+        val state = mutableStateOf(
+            SupportUiState(
+                mode = SupportMode.GAME_HELP,
+                gameHelpModalityId = 16,
+                gameHelpModalityName = "Lotomania",
+                gameHelpContestNumber = 123,
+                gameHelpDrawDate = "2026-10-18",
+                gameHelpClosingDateTime = "2026-10-18T23:30:00Z",
+                htmlContent = "<b>Regra sintética</b>",
+                isLoading = true
+            )
+        )
         val actions = mutableListOf<SupportAction>()
-        compose.setContent { LoteriasCaixaDSTheme { SupportScreen(state.value, { actions += it }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { SupportScreen(state.value, { actions += it }, faqContent = { _, _ -> }) } }
         compose.onNodeWithText("Carregando…").assertIsDisplayed()
         compose.runOnIdle { state.value = state.value.copy(isLoading = false) }
         compose.onNodeWithTag("support_game_help").assertExists()

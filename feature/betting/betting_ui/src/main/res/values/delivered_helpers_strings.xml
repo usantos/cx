@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="animated_tutorial_next">Próximo</string>
+    <string name="animated_tutorial_previous">Anterior</string>
+    <string name="betting_recovery_contest_closed">O registro de apostas individuais para o concurso %1$s foi encerrado.</string>
+        <string name="betting_recovery_retry">Tentar novamente</string>
+    <string name="format_clover_description">"Trevo %1$d"</string>
+
+
+    <string name="format_step_description">"Etapa %1$d de %2$d"</string>
+    <string name="ui_1_s_d020a2">"%1$s"</string>
+
+
+        <string name="ui_5_fa676d" formatted="false">"5+"</string>
+
+
+
+
+
+
+    <string name="ui_ajuda_fe0add" formatted="false">"Ajuda"</string>
+    <string name="ui_ao_carrinho_de_apostas_ef1eb2" formatted="false">"\nao carrinho de apostas"</string>
+
+        <string name="ui_aposta_aleatoria_9dc3db" formatted="false">"Aposta aleatória"</string>
+
+
+
+        <string name="ui_aposta_favoritada_1a9222" formatted="false">"Aposta Favoritada"</string>
+
+
+        <string name="ui_carrinho_de_apostas_1_s_itens_e4b649">"Carrinho de apostas, %1$s itens"</string>
+    <string name="ui_coluna_1_s_numero_2_s_4e3a5f">"Coluna %1$s, número %2$s"</string>
+
+        <string name="ui_completar_jogo_fbd7bf" formatted="false">"Completar jogo"</string>
+    <string name="ui_completar_trevos_7c6818" formatted="false">"Completar trevos"</string>
+
+
+
+
+
+        <string name="ui_demonstracao_animada_1_s_cb7005">"Demonstração animada: %1$s"</string>
+        <string name="ui_detalhes_da_aposta_82fbc3" formatted="false">"Detalhes da aposta"</string>
+        <string name="ui_escolha_o_valor_maximo_em_reais_da_s_c1e5d7" formatted="false">"Escolha  o valor máximo em reais da sua aposta"</string>
+    <string name="ui_escolha_o_valor_minimo_em_reais_da_s_e2ba31" formatted="false">"Escolha  o valor mínimo em reais da sua aposta"</string>
+
+
+
+        <string name="ui_excluir_aposta_86e1ac" formatted="false">"Excluir aposta"</string>
+        <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+
+
+
+
+
+
+        <string name="ui_jogo_1_s_aa1e61">"Jogo %1$s"</string>
+
+
+
+    <string name="ui_maximo_e7013b" formatted="false">"máximo"</string>
+
+
+    <string name="ui_mes_aleatorio_a7ecfc" formatted="false">"Mês aleatório"</string>
+    <string name="ui_mes_de_sorte_1_s_42ca39">"Mês de sorte: %1$s"</string>
+
+    <string name="ui_meu_bolao_c690d7" formatted="false">" \nmeu bolão"</string>
+
+    <string name="ui_minimo_5aeed3" formatted="false">"mínimo"</string>
+
+    <string name="ui_modalidades_6b4baa" formatted="false">"Modalidades"</string>
+
+
+        <string name="ui_nao_exibir_novamente_f8abb0" formatted="false">"Não exibir novamente"</string>
+        <string name="ui_nao_foi_possivel_carregar_os_limites_08d889" formatted="false">"Não foi possível carregar os limites da aposta. Tente novamente."</string>
+
+
+
+
+
+
+
+
+
+
+        <string name="ui_pular_d2ad99" formatted="false">"Pular"</string>
+
+
+        <string name="ui_salvar_aef7cd" formatted="false">"Salvar"</string>
+
+
+
+
+
+
+
+
+        <string name="ui_sorteio_a49bf4" formatted="false">"Sorteio"</string>
+
+        <string name="ui_time_aleatorio_972644" formatted="false">"Time aleatório"</string>
+    <string name="ui_time_do_coracao_1_s_7e407c">"Time do coração: %1$s"</string>
+
+    <string name="ui_total_c9b3c3" formatted="false">"Total"</string>
+    <string name="ui_total_do_carrinho_b01305" formatted="false">"Total do carrinho"</string>
+    <string name="ui_trevos_aleatorios_56359f" formatted="false">"Trevos aleatórios"</string>
+    <string name="ui_valor_dessa_aposta_4e1785" formatted="false">"Valor dessa aposta"</string>
+    <string name="ui_valor_maximo_da_aposta_349559" formatted="false">"Valor máximo da aposta"</string>
+    <string name="ui_valor_minimo_da_aposta_bcf5d5" formatted="false">"Valor mínimo da aposta"</string>
+    <string name="ui_valor_selecionado_8db7ec" formatted="false">"Valor selecionado"</string>
+        <string name="ui_vamos_comecar_b9007b" formatted="false">"Vamos começar?"</string>
+
+    <string name="ui_veja_como_apostar_8b34ac" formatted="false">"Veja como Apostar"</string>
+
+
+
+
+
+    </resources>

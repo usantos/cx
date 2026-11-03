@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.account
 
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
@@ -8,16 +7,11 @@ import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.domain.model.PersonalDataUpdate
 import br.gov.caixa.loterias.feature.account.domain.model.ZipCodeLocation
-import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
-import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
-import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
-import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
 import br.gov.caixa.loterias.feature.account.presentation.screen.canUpdatePersonalData
 import br.gov.caixa.loterias.feature.account.presentation.screen.dailyLimitValidationMessage
 import br.gov.caixa.loterias.feature.account.presentation.screen.formatCpf
 import br.gov.caixa.loterias.feature.account.presentation.screen.formatZipCode
 import br.gov.caixa.loterias.feature.account.presentation.state.PersonalDataUiState
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.parseBrazilianCurrency
 import java.math.BigDecimal
 import kotlin.coroutines.resume
@@ -29,108 +23,10 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
-import org.junit.Rule
 import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class PersonalDataViewModelTest {
-    @get:Rule val dispatcherRule = MainDispatcherRule()
-
-    @Test fun `first resume reuses initial profile fetch and subsequent clean resume refreshes server data`() =
-        runTest(dispatcherRule.dispatcher) {
-            var calls = 0
-            val vm = viewModel(profileResult = {
-                calls++
-                AppResult.Success(profile().copy(name = "Pessoa $calls", authorizedDailyLimit = BigDecimal(DAILY_LIMIT_PER_FETCH * calls)))
-            })
-            vm.onResume()
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            assertEquals(1, calls)
-            vm.onResume()
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            assertEquals(2, calls)
-            assertEquals("Pessoa 2", vm.state.value.name)
-            assertEquals(BigDecimal("400"), vm.state.value.authorizedDailyLimit)
-        }
-
-    @Test fun `resume preserves each unsaved field and resolved zip location without refetching`() = runTest(dispatcherRule.dispatcher) {
-        val edits: List<(PersonalDataViewModel) -> Unit> = listOf(
-            { it.changeGender(Gender.FEMALE) },
-            { it.changeDailyLimit("R$ 120,50") },
-            { it.toggleNotifications() },
-            { it.changeZipCode("01001000") },
-            { it.changeZipCode("700") }
-        )
-        edits.forEach { edit ->
-            var calls = 0
-            val vm = viewModel(profileResult = {
-                calls++
-                AppResult.Success(profile())
-            }, resolve = {
-                AppResult.Success(ZipCodeLocation(MunicipalityId(1, 2, 3), "SP", "São Paulo"))
-            })
-            vm.onResume()
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            edit(vm)
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            val draft = vm.state.value
-            vm.onResume()
-            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            assertEquals(1, calls)
-            assertEquals(draft, vm.state.value)
-        }
-    }
-
-    @Test fun `reverting editable fields allows the next resume refresh`() = runTest(dispatcherRule.dispatcher) {
-        var calls = 0
-        val vm = viewModel(profileResult = {
-            calls++
-            AppResult.Success(profile())
-        })
-        vm.onResume()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.changeGender(Gender.FEMALE)
-        vm.changeGender(Gender.MALE)
-        vm.changeDailyLimit("R$ 150,00")
-        vm.changeDailyLimit("100,00")
-        vm.onResume()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(2, calls)
-    }
-
-    @Test fun `resumes cannot start a deferred profile load before its entry gate`() = runTest(dispatcherRule.dispatcher) {
-        var calls = 0
-        val vm = viewModel(deferInitialLoad = true, profileResult = {
-            calls++
-            AppResult.Success(profile())
-        })
-        vm.onResume()
-        vm.onResume()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(0, calls)
-        vm.load()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(1, calls)
-    }
-
-    @Test fun `edits made during resume refresh survive its late server response`() = runTest(dispatcherRule.dispatcher) {
-        val refreshed = CompletableDeferred<AppResult<AccountProfile>>()
-        var calls = 0
-        val vm = viewModel(profileResult = {
-            calls++
-            if (calls == 1) AppResult.Success(profile()) else refreshed.await()
-        })
-        vm.onResume()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.onResume()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.changeDailyLimit("R$ 120,50")
-        refreshed.complete(AppResult.Success(profile().copy(name = "Atualizado")))
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals("R$ 120,50", vm.state.value.dailyLimit)
-        assertEquals("Pessoa", vm.state.value.name)
-        assertFalse(vm.state.value.loading)
-    }
+class PersonalDataViewModelTest : PersonalDataViewModelFixture() {
 
     @Test
     fun `loads profile and edits all mutable personal fields`() = runTest(dispatcherRule.dispatcher) {
@@ -468,74 +364,4 @@ class PersonalDataViewModelTest {
     private suspend fun <T> CompletableDeferred<T>.awaitIgnoringCancellation(): T = suspendCoroutine { continuation ->
         invokeOnCompletion { continuation.resume(getCompleted()) }
     }
-
-    @Test fun `two submissions before IO starts reserve one operation and preserve success`() = runTest {
-        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
-        var calls = 0
-        val model = viewModel(ioDispatcher = io, update = { _, _ ->
-            calls++
-            if (calls == 1) AppResult.Success(Unit) else AppResult.Failure(AppError.Network)
-        })
-        io.scheduler.advanceUntilIdle()
-        model.submit()
-        model.submit()
-        io.scheduler.advanceUntilIdle()
-        assertEquals(1, calls)
-        assertTrue(model.state.value.saved)
-        assertEquals(null, model.state.value.errorMessage)
-        val terminal = model.state.value
-        io.scheduler.advanceUntilIdle()
-        assertEquals(terminal, model.state.value)
-    }
-
-    @Test fun `a queued profile refresh cannot release an unfinished personal data update`() = runTest {
-        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
-        val pending = CompletableDeferred<AppResult<Unit>>()
-        var updates = 0
-        val model = viewModel(ioDispatcher = io, update = { _, _ ->
-            updates++
-            pending.await()
-        })
-        io.scheduler.advanceUntilIdle()
-        model.onResume()
-        model.onResume()
-        model.submit()
-        io.scheduler.runCurrent()
-        model.submit()
-        io.scheduler.runCurrent()
-        pending.complete(AppResult.Success(Unit))
-        io.scheduler.advanceUntilIdle()
-        assertEquals(1, updates)
-        assertTrue(model.state.value.saved)
-        assertNull(model.state.value.errorMessage)
-    }
-
-    private fun viewModel(
-        ioDispatcher: kotlinx.coroutines.CoroutineDispatcher = dispatcherRule.dispatcher,
-        profileResult: suspend () -> AppResult<AccountProfile> = { AppResult.Success(profile()) },
-        resolve: suspend (String) -> AppResult<ZipCodeLocation> = { AppResult.Success(location()) },
-        update: suspend (PersonalDataUpdate, AccountProfile) -> AppResult<Unit> = { _, _ -> AppResult.Success(Unit) },
-        recalculate: suspend () -> AppResult<BigDecimal> = { AppResult.Success(BigDecimal("200")) },
-        deferInitialLoad: Boolean = false,
-        isSessionCurrent: () -> Boolean = { true },
-    ) = PersonalDataViewModel(
-        GetAccountProfileUseCase { profileResult() },
-        ResolveZipCodeUseCase { resolve(it) },
-        UpdatePersonalDataUseCase { value, original -> update(value, original) },
-        FixedCoroutineDispatchers(ioDispatcher),
-        RecalculateAuthorizedLimitUseCase { recalculate() },
-        deferInitialLoad,
-        isSessionCurrent
-    )
-
-    companion object {
-        private fun profile() = AccountProfile(
-            "12345678901", "Pessoa", "pessoa@caixa.gov.br", "70000000", Gender.MALE,
-            MunicipalityId(7, 1, 0), "DF", "Brasília",
-            BigDecimal("100"), BigDecimal("10"), BigDecimal("200"), true
-        )
-        private fun location() = ZipCodeLocation(MunicipalityId(7, 1, 0), "DF", "Brasília")
-    }
 }
-
-private const val DAILY_LIMIT_PER_FETCH = 200

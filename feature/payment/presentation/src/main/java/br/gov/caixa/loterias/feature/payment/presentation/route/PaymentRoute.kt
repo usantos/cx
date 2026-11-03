@@ -3,7 +3,9 @@ package br.gov.caixa.loterias.feature.payment.presentation.route
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession
 import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentFailureScreen
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PixGuidanceScreen
@@ -21,6 +23,7 @@ fun PaymentTerminalRoute(
     onBack: () -> Unit,
     onComplete: () -> Unit,
     onNavigate: (String) -> Unit = {},
+    purchaseRecovery: PurchaseRecoverySession? = null,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -33,7 +36,7 @@ fun PaymentTerminalRoute(
         }
     }
     when (state.spec.route) {
-        "payment/confirmation", "payment/success" -> ProcessingScreen(state.spec, onNavigate)
+        "payment/confirmation", "payment/success" -> ProcessingScreen(state.spec, onNavigate, purchaseRecovery)
         "payment/failure" -> PaymentFailureScreen(state.spec, onNavigate)
         "payment/pix-guidance" -> PixGuidanceScreen(state.spec, state, viewModel::back, viewModel::togglePixTerms, viewModel::submit)
         else -> error(uiStrings.getString(LocalizedR.string.ui_rota_terminal_de_pagamento_desconhec_7c872b, state.spec.route))

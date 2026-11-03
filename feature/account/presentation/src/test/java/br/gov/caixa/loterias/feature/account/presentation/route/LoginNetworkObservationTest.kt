@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.account.presentation.route
 
 import android.net.ConnectivityManager
-import androidx.activity.ComponentActivity
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.lifecycle.Lifecycle
@@ -10,25 +9,30 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 import org.robolectric.shadows.ShadowNetwork
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class LoginNetworkObservationTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun backgroundNetworkRestrictionDoesNotInterruptTheBrowserAuthorization() {
         val host = RouteLifecycle()
         var availability = ConnectionAvailability.CONNECTED
         var interruptions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalLifecycleOwner provides host) {
                 ObserveLoginConnection(NetworkAvailability { availability }, { true }, { interruptions++ })
             }
@@ -54,7 +58,7 @@ class LoginNetworkObservationTest {
         val host = RouteLifecycle()
         var availability = ConnectionAvailability.CONNECTED
         var interruptions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalLifecycleOwner provides host) {
                 ObserveLoginConnection(NetworkAvailability { availability }, { true }, { interruptions++ })
             }
@@ -72,7 +76,7 @@ class LoginNetworkObservationTest {
         val host = RouteLifecycle()
         var availability = ConnectionAvailability.CONNECTED
         var interruptions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalLifecycleOwner provides host) {
                 ObserveLoginConnection(NetworkAvailability { availability }, { true }, { interruptions++ })
             }

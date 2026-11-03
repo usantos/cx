@@ -2,12 +2,14 @@ package br.gov.caixa.loterias.feature.notifications
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
@@ -23,13 +25,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], qualifiers = "pt-rBR")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "pt-rBR")
 class CentralNotificationsRouteJvmTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val repository = InboxRepository()
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))
     private var currentIdentity: AuthenticatedSessionIdentity? = identity
@@ -153,7 +158,7 @@ class CentralNotificationsRouteJvmTest {
                 sessions,
                 FixedCoroutineDispatchers(Dispatchers.Main.immediate)
             )
-        compose.setContent { LoteriasCaixaDSTheme { CentralNotificationsRoute(model, { backs++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { CentralNotificationsRoute(model, { backs++ }) } }
     }
 
     private class InboxRepository : NotificationInboxRepository {

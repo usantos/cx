@@ -1,10 +1,11 @@
 package br.gov.caixa.loterias.apostas
 
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
@@ -52,7 +53,7 @@ class VisitorEmptyCartCheckoutUiTest {
     }
 
     private fun show(vm: CartViewModel, events: MutableList<String>) {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 CurrentCartRoute(
                     vm,

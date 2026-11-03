@@ -6,9 +6,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 
-internal val legacyPaymentTextStyle = br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCardTextStyle
+val legacyPaymentTextStyle = br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCardTextStyle
 
-internal fun legacyProcessingText(text: String) = buildAnnotatedString {
+fun legacyProcessingText(text: String) = buildAnnotatedString {
     val emphasis = when {
         "EFETIVADA" in text -> "EFETIVADA"
         "não garante" in text -> messageText("nao_garante_a1d33e")

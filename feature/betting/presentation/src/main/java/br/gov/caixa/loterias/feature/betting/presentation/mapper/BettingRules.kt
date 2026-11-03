@@ -1,6 +1,5 @@
 package br.gov.caixa.loterias.feature.betting.presentation.mapper
 
-import br.gov.caixa.loterias.feature.betting.presentation.state.LOTECA_ID
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
@@ -15,7 +14,7 @@ internal fun toggleSelectedNumber(selected: Set<Int>, number: Int, allowedNumber
 internal fun canSubmitNumericBet(selected: Set<Int>, minimumSelection: Int, maximumSelection: Int): Boolean =
     selected.size in minimumSelection..maximumSelection
 
-internal fun formatBetAmount(amount: BigDecimal?): String = NumberFormat
+fun formatBetAmount(amount: BigDecimal?): String = NumberFormat
     .getCurrencyInstance(Locale.forLanguageTag("pt-BR"))
     .format(amount ?: BigDecimal.ZERO)
     .replace('\u00A0', ' ')

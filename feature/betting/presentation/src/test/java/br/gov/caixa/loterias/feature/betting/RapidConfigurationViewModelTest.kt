@@ -18,11 +18,15 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfigura
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveRapidBetConfigurationUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidConfigurationViewModel
 import java.math.BigDecimal
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -363,23 +367,78 @@ class RapidConfigurationViewModelTest {
         }
     )
 
+    @Test fun `disabled rapid configuration preserves its draft without saving`() = runTest {
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled })
+        advanceUntilIdle()
+        val before = vm.state.value
+        enabled = false
+        vm.save()
+        advanceUntilIdle()
+        assertNull(saved)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `queued rapid configuration save preserves draft after off`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled }, io = queued)
+        runCurrent()
+        val before = vm.state.value
+        vm.save()
+        enabled = false
+        runCurrent()
+        assertNull(saved)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `rapid configuration already sent completes after off once`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        var saves = 0
+        val response = CompletableDeferred<ServiceResult<RapidBetConfiguration>>()
+        val vm = RapidConfigurationViewModel(
+            GetRapidBetConfigurationUseCase { configurationResult },
+            GetLotteryModalitiesUseCase { modalitiesResult },
+            SaveRapidBetConfigurationUseCase {
+                saves++
+                response.await()
+            },
+            FixedCoroutineDispatchers(queued),
+            canStartOperation = { enabled }
+        )
+        runCurrent()
+        vm.save()
+        runCurrent()
+        assertEquals(1, saves)
+        enabled = false
+        response.complete(ServiceResult.Success(configuration))
+        runCurrent()
+        vm.save()
+        runCurrent()
+        assertEquals(1, saves)
+        assertTrue(vm.state.value.saved)
+    }
+
     private fun viewModel(
         getFavorites: GetFavoriteBetsUseCase? = null,
         getParameters: GetBettingParametersUseCase? = null,
         verifyAccess: VerifyAccountAccessUseCase? = null,
-    ): RapidConfigurationViewModel {
-        val dispatcher = UnconfinedTestDispatcher()
-        return RapidConfigurationViewModel(
-            GetRapidBetConfigurationUseCase { configurationResult },
-            GetLotteryModalitiesUseCase { modalitiesResult },
-            SaveRapidBetConfigurationUseCase { value ->
-                saved = value
-                saveResult
-            },
-            FixedCoroutineDispatchers(dispatcher),
-            getFavorites,
-            getParameters,
-            verifyAccess
-        )
-    }
+        canStartOperation: () -> Boolean = { true },
+        io: CoroutineDispatcher = UnconfinedTestDispatcher(),
+    ): RapidConfigurationViewModel = RapidConfigurationViewModel(
+        GetRapidBetConfigurationUseCase { configurationResult },
+        GetLotteryModalitiesUseCase { modalitiesResult },
+        SaveRapidBetConfigurationUseCase { value ->
+            saved = value
+            saveResult
+        },
+        FixedCoroutineDispatchers(io),
+        getFavorites,
+        getParameters,
+        verifyAccess,
+        canStartOperation = canStartOperation
+    )
 }

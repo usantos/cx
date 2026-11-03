@@ -21,6 +21,7 @@ class RetailSearchViewModel(
     private val searchRetailers: SearchRetailersUseCase,
     private val setFavorite: SetRetailerFavoriteUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val isEntryEnabled: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<RetailSearchUiState, RetailSearchStateAction>(
         RetailSearchUiState(),
@@ -31,6 +32,10 @@ class RetailSearchViewModel(
 
     fun changeQuery(value: String) {
         val query = value.take(80)
+        if (!isEntryEnabled()) {
+            mutableState.dispatch(RetailSearchStateAction.QueryChanged(query))
+            return
+        }
         searchJob?.cancel()
         if (query.trim().length < 3) {
             mutableState.dispatch(RetailSearchStateAction.QueryChanged(query))
@@ -44,6 +49,7 @@ class RetailSearchViewModel(
     }
 
     fun searchNow() {
+        if (!isEntryEnabled()) return
         searchJob?.cancel()
         val query = mutableState.value.query
         if (query.trim().length < 3) {
@@ -54,6 +60,7 @@ class RetailSearchViewModel(
     }
 
     fun requestToggleFavorite(retailer: Retailer) {
+        if (!isEntryEnabled()) return
         mutableState.dispatch(RetailSearchStateAction.FavoriteRequested(retailer))
     }
 
@@ -62,9 +69,14 @@ class RetailSearchViewModel(
     }
 
     fun confirmToggleFavorite() {
+        if (!isEntryEnabled()) return
         val retailer = mutableState.value.favoriteCandidate ?: return
         mutableState.dispatch(RetailSearchStateAction.FavoriteStarted)
         viewModelScope.launch(dispatchers.io) {
+            if (!isEntryEnabled()) {
+                mutableState.dispatch(RetailSearchStateAction.FavoriteNotStarted(retailer))
+                return@launch
+            }
             when (setFavorite(retailer.id, !retailer.favorite)) {
                 is AppResult.Success -> mutableState.dispatch(RetailSearchStateAction.FavoriteSaved(retailer))
 
@@ -88,6 +100,7 @@ class RetailSearchViewModel(
     }
 
     private suspend fun search(query: String) {
+        if (!isEntryEnabled()) return
         mutableState.dispatch(RetailSearchStateAction.SearchStarted)
         when (val result = searchRetailers(query)) {
             is AppResult.Success -> mutableState.dispatch(RetailSearchStateAction.SearchReceived(query, result.value))

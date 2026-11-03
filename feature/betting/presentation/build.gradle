@@ -56,7 +56,6 @@ dependencies {
     implementation project(':core:domain')
     implementation libs.androidx.lifecycle.runtime.compose
     implementation libs.kotlinx.coroutines.core
-    implementation libs.lottie.compose
     implementation libs.coil.compose
     implementation libs.coil.gif
     testImplementation libs.kotlinx.coroutines.test

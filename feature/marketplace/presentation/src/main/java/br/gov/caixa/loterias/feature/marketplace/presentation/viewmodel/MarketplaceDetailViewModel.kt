@@ -31,6 +31,7 @@ class MarketplaceDetailViewModel(
     private val initialFavorite: Boolean? = null,
     private val purchaseEnabled: Boolean = true,
     private val getSpecialContests: br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private var loadJob: Job? = null
     private var loadGeneration = 0L
@@ -66,12 +67,17 @@ class MarketplaceDetailViewModel(
     }
 
     fun confirmFavorite() {
+        if (!canStartOperation()) return
         val current = mutableState.value
         val target = current.pendingFavorite ?: return
         val detail = current.detail ?: return
         val service = setRetailerFavorite ?: return
         mutableState.dispatch(MarketplaceDetailStateAction.FavoriteStarted)
         viewModelScope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(MarketplaceDetailStateAction.FavoriteWriteAborted)
+                return@launch
+            }
             when (service(detail.lotteryId, target)) {
                 is AppResult.Success -> mutableState.dispatch(MarketplaceDetailStateAction.FavoriteSaved(target))
 
@@ -109,11 +115,16 @@ class MarketplaceDetailViewModel(
     }
 
     fun addToCart() {
+        if (!canStartOperation()) return
         val state = mutableState.value
         val detail = state.detail ?: return
         if (state.isAddingToCart || state.selectedShares !in 1..detail.availableShares) return
         mutableState.dispatch(MarketplaceDetailStateAction.CartAdditionStarted)
         viewModelScope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(MarketplaceDetailStateAction.CartAdditionAborted)
+                return@launch
+            }
             val order = MarketplacePoolOrder(
                 origin = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrderOrigin.DETAIL,
                 code = detail.code,

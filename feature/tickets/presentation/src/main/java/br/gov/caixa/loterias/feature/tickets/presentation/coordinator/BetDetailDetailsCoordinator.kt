@@ -16,7 +16,7 @@ internal class BetDetailDetailsCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val recoverBet: RecoverConfirmedBetUseCase,
     private val loadConfirmedBet: br.gov.caixa.loterias.feature.tickets.domain.usecase.LoadConfirmedBetUseCase?,
-    private val getConfirmedBetResults: br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase?
+    private val getConfirmedBetResults: br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase?,
 ) {
     fun loadDetails() = scope.launch(dispatchers.io) {
         val bet = mutableState.value.bet

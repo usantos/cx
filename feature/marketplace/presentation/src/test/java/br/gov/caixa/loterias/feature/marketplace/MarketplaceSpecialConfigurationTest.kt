@@ -28,7 +28,9 @@ import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUs
 import java.math.BigDecimal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -64,21 +66,28 @@ class MarketplaceSpecialConfigurationTest {
         assertTrue(MarketplaceModule.marketplaceSpecialContests(repository)() is AppResult.Failure)
     }
 
-    @Test fun `list header metadata and temporary label use simulation identity instead of available contest`() = runTest(dispatcherRule.dispatcher) {
-        val model = model(GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000, 1234)) })
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals(MarketplaceSpecialContests(3000, 1234), model.state.value.specialContests)
-        assertNull(model.state.value.contestSpecialName)
-        assertEquals(9999, model.state.value.contestHeader?.contestNumber)
-        assertEquals("2026-12-31", model.state.value.contestHeader?.drawDate)
-        assertEquals(BigDecimal("123.45"), model.state.value.contestHeader?.estimatedPrize)
-        assertEquals(1, model.state.value.pools.size)
-    }
+    @Test fun `list header metadata and temporary label use simulation identity instead of available contest`() =
+        runTest(dispatcherRule.dispatcher) {
+            val model = model(GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000, 1234)) })
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertEquals(MarketplaceSpecialContests(3000, 1234), model.state.value.specialContests)
+            assertNull(model.state.value.contestSpecialName)
+            assertEquals(9999, model.state.value.contestHeader?.contestNumber)
+            assertEquals("2026-12-31", model.state.value.contestHeader?.drawDate)
+            assertEquals(BigDecimal("123.45"), model.state.value.contestHeader?.estimatedPrize)
+            assertEquals(1, model.state.value.pools.size)
+        }
 
-    @Test fun `loteca fathers day list header follows simulation contest despite available mismatch`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `loteca fathers day list header follows simulation contest despite available mismatch`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         val model = model(
             GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000, 1234)) },
-            modalityId = 19, modalityCode = "LOTECA", gameContest = 1234, availableContest = 9999)
+            modalityId = 19,
+            modalityCode = "LOTECA",
+            gameContest = 1234,
+            availableContest = 9999
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals("loteca dos pais", model.state.value.contestSpecialName)
         assertEquals(1234, model.state.value.contestHeader?.contestNumber)
@@ -87,7 +96,9 @@ class MarketplaceSpecialConfigurationTest {
     @Test fun `mega anniversary list header preserves native annual special title`() = runTest(dispatcherRule.dispatcher) {
         val model = model(
             GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000, 1234)) },
-            gameContest = 3000, availableContest = 3000)
+            gameContest = 3000,
+            availableContest = 3000
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNull("CX list header does not override Mega title for the anniversary", model.state.value.contestSpecialName)
         assertEquals("Mega da Virada", model.state.value.contestHeader?.modality?.specialName)
@@ -96,7 +107,8 @@ class MarketplaceSpecialConfigurationTest {
     @Test fun `missing simulation game keeps pool results and does not invent header metadata`() = runTest(dispatcherRule.dispatcher) {
         val model = model(
             GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000, 1234)) },
-            includeGame = false)
+            includeGame = false
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNull(model.state.value.contestHeader)
         assertEquals(1, model.state.value.pools.size)
@@ -132,21 +144,40 @@ class MarketplaceSpecialConfigurationTest {
         getFavoriteRetailers = GetFavoriteRetailersUseCase { AppResult.Success(emptyList()) },
         setRetailerFavorite = SetRetailerFavoriteUseCase { _, _ -> AppResult.Failure(AppError.Unexpected) },
         dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
-        getBettingParameters = GetBettingParametersUseCase { AppResult.Success(BettingParameters(
-            BigDecimal.ZERO, BigDecimal.ZERO, 0,
-            games = if (includeGame) listOf(LotteryGameParameters(
-                LotteryModality(modalityId, if (modalityId == 19) "Loteca" else "Mega-Sena", modalityCode,
-                    if (modalityId == 19) "Loteca Especial" else "Mega da Virada"),
-                gameContest, "2026-12-31", 60, 6, 20, 0, emptyList(), emptyList(),
-                contestType = "ESPECIAL", estimatedPrize = BigDecimal("123.45"))) else emptyList(),
-            availablePoolModalities = listOf(PoolModalityAvailability(modalityId, modalityCode, "ESPECIAL", contestNumber = availableContest)),
-        )) },
-        getSpecialContests = specials,
+        getBettingParameters = GetBettingParametersUseCase {
+            AppResult.Success(
+                BettingParameters(
+                    BigDecimal.ZERO,
+                    BigDecimal.ZERO,
+                    0,
+                    games = if (includeGame) {
+                        listOf(
+                            LotteryGameParameters(
+                                LotteryModality(
+                                    modalityId,
+                                    if (modalityId == 19) "Loteca" else "Mega-Sena",
+                                    modalityCode,
+                                    if (modalityId == 19) "Loteca Especial" else "Mega da Virada"
+                                ),
+                                gameContest, "2026-12-31", 60, 6, 20, 0, emptyList(), emptyList(),
+                                contestType = "ESPECIAL", estimatedPrize = BigDecimal("123.45")
+                            )
+                        )
+                    } else {
+                        emptyList()
+                    },
+                    availablePoolModalities = listOf(
+                        PoolModalityAvailability(modalityId, modalityCode, "ESPECIAL", contestNumber = availableContest)
+                    )
+                )
+            )
+        },
+        getSpecialContests = specials
     )
 
     private fun pool(contest: Int) = MarketplacePool(
         code = "P$contest", modality = "MEGA_SENA", contest = contest, lotteryName = "Centro", drawDate = "",
         sharePrice = "10.00", availableShares = 3, betQuantity = 2, numberQuantity = 6, favoriteLottery = false,
-        lotteryId = 1, cityAndState = "", totalShares = 10, contestType = 2,
+        lotteryId = 1, cityAndState = "", totalShares = 10, contestType = 2
     )
 }

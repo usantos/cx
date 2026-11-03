@@ -1,36 +1,43 @@
 package br.gov.caixa.loterias.feature.payment
 
-import androidx.compose.ui.test.*
-import org.junit.Assert.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.SavedStateHandle
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.payment.domain.model.DamValidation
+import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
+import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
-import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
-import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
-import java.math.BigDecimal
-import java.time.Clock
-import kotlinx.coroutines.Dispatchers
-import org.junit.Rule
-import org.junit.Test
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentDataRoute
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
 import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentViewModel
+import java.math.BigDecimal
+import java.time.Clock
+import kotlinx.coroutines.Dispatchers
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
 
 /** Rota/ViewModel reais apenas com casos de uso locais; nenhuma compra ou cartão salvo real é alterado. */
 class PaymentDataCoordinationUiTest {
@@ -139,7 +146,9 @@ class PaymentDataCoordinationUiTest {
         show(fixture, PaymentMode.PIX, savedState = SavedStateHandle(), onPurchases = { purchases++ })
         compose.onNodeWithText("Não foi possível acessar o pagamento. Verifique sua internet.").assertIsDisplayed()
         compose.onNodeWithText("Entendi").performClick()
-        compose.onNodeWithText("Não foi possível recuperar o código Pix. Confira suas compras antes de gerar outro código.").assertIsDisplayed()
+        compose.onNodeWithText(
+            "Não foi possível recuperar o código Pix. Confira suas compras antes de gerar outro código."
+        ).assertIsDisplayed()
         compose.onNodeWithText("Verificar Pagamento").assertDoesNotExist()
         compose.onNodeWithText("Minhas Compras").performClick()
         compose.runOnIdle { fixture.vm.load() }
@@ -157,7 +166,7 @@ class PaymentDataCoordinationUiTest {
         val original = first.model(PaymentMode.CARDS)
         val replacement = second.model(PaymentMode.CARDS)
         val current = mutableStateOf(original)
-        compose.setContent { Render(PaymentMode.CARDS, current.value) }
+        compose.setFeatureContent { Render(PaymentMode.CARDS, current.value) }
         compose.onNodeWithText("Cartões cadastrados").assertIsDisplayed()
         compose.runOnIdle { current.value = replacement }
         compose.onNodeWithContentDescription("Remover cartão").performClick()
@@ -167,7 +176,10 @@ class PaymentDataCoordinationUiTest {
             assertEquals(savedCard, replacement.state.value.deleteCandidate)
         }
         compose.onNodeWithText("Não").performClick()
-        compose.runOnIdle { assertTrue(first.deletions.isEmpty()); assertTrue(second.deletions.isEmpty()) }
+        compose.runOnIdle {
+            assertTrue(first.deletions.isEmpty())
+            assertTrue(second.deletions.isEmpty())
+        }
     }
 
     private fun show(
@@ -175,26 +187,37 @@ class PaymentDataCoordinationUiTest {
         mode: PaymentMode,
         autoLoad: Boolean = true,
         savedState: SavedStateHandle? = null,
-        onBack: () -> Unit = {}, onHelp: () -> Unit = {}, onPix: () -> Unit = {},
-        onAddCard: (Long) -> Unit = {}, onOpenCard: (SavedPaymentCard) -> Unit = {},
-        onPurchases: () -> Unit = {}, privateData: () -> Boolean = { true },
+        onBack: () -> Unit = {},
+        onHelp: () -> Unit = {},
+        onPix: () -> Unit = {},
+        onAddCard: (Long) -> Unit = {},
+        onOpenCard: (SavedPaymentCard) -> Unit = {},
+        onPurchases: () -> Unit = {},
+        privateData: () -> Boolean = { true },
     ) {
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { fixture.model(mode, autoLoad, savedState) }
             Render(mode, model, onBack, onHelp, onPix, onAddCard, onOpenCard, onPurchases, privateData())
         }
     }
 
     @Composable private fun Render(
-        mode: PaymentMode, model: PaymentViewModel,
-        onBack: () -> Unit = {}, onHelp: () -> Unit = {}, onPix: () -> Unit = {},
-        onAddCard: (Long) -> Unit = {}, onOpenCard: (SavedPaymentCard) -> Unit = {},
-        onPurchases: () -> Unit = {}, privateData: Boolean = true,
+        mode: PaymentMode,
+        model: PaymentViewModel,
+        onBack: () -> Unit = {},
+        onHelp: () -> Unit = {},
+        onPix: () -> Unit = {},
+        onAddCard: (Long) -> Unit = {},
+        onOpenCard: (SavedPaymentCard) -> Unit = {},
+        onPurchases: () -> Unit = {},
+        privateData: Boolean = true,
     ) {
         LoteriasCaixaDSTheme {
-            PaymentDataRoute(mode, model, onBack = onBack, onHelp = onHelp, onPix = onPix,
+            PaymentDataRoute(
+                mode, model, onBack = onBack, onHelp = onHelp, onPix = onPix,
                 onAddCard = onAddCard, onOpenCard = onOpenCard, onApproved = {}, onHome = {},
-                onPurchases = onPurchases, onRedirect = {}, onRegistration = {}, privateDataEnabled = privateData)
+                onPurchases = onPurchases, onRedirect = {}, onRegistration = {}, privateDataEnabled = privateData
+            )
         }
     }
 
@@ -210,21 +233,34 @@ class PaymentDataCoordinationUiTest {
 
         fun model(mode: PaymentMode, autoLoad: Boolean = true, handle: SavedStateHandle? = null) = PaymentViewModel(
             mode,
-            getMethods = GetPaymentMethodsUseCase { methodReads++; AppResult.Success(methods) },
-            getCards = GetSavedCardsUseCase { cardReads.add(it); AppResult.Success(saved[it].orEmpty()) },
+            getMethods = GetPaymentMethodsUseCase {
+                methodReads++
+                AppResult.Success(methods)
+            },
+            getCards = GetSavedCardsUseCase {
+                cardReads.add(it)
+                AppResult.Success(saved[it].orEmpty())
+            },
             deleteCard = DeleteSavedCardUseCase { id, method ->
                 deletions.add(id to method)
                 val remaining = saved[method].orEmpty().filterNot { it.deletionIdentifier == id }
                 saved[method] = remaining
                 AppResult.Success(remaining)
             },
-            generatePixCharge = GeneratePixChargeUseCase { check(mode == PaymentMode.PIX); generations++; AppResult.Failure(AppError.Network) },
+            generatePixCharge = GeneratePixChargeUseCase {
+                check(mode == PaymentMode.PIX)
+                generations++
+                AppResult.Failure(AppError.Network)
+            },
             getPurchaseProgress = GetPurchaseProgressUseCase { error("No status query expected in these fixtures") },
-            validateDam = ValidateDamUseCase { validations++; AppResult.Success(DamValidation(false, "")) },
+            validateDam = ValidateDamUseCase {
+                validations++
+                AppResult.Success(DamValidation(false, ""))
+            },
             getCurrentCart = GetCurrentCartUseCase { AppResult.Success(ShoppingCart(1, BigDecimal("12.50"), emptyList())) },
             recordRecentPurchase = RecordRecentPurchaseUseCase { error("No completion expected in these fixtures") },
             clock = Clock.systemUTC(), dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
-            ownerKey = if (handle != null) "a".repeat(64) else null, savedStateHandle = handle, autoLoad = autoLoad,
+            ownerKey = if (handle != null) "a".repeat(64) else null, savedStateHandle = handle, autoLoad = autoLoad
         ).also { vm = it }
     }
 

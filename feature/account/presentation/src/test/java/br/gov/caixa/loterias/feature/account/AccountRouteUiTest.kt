@@ -10,7 +10,7 @@ import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
@@ -19,6 +19,8 @@ import androidx.compose.ui.test.performSemanticsAction
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.presentation.route.AccountRoute
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountStatusViewModel
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -27,13 +29,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class AccountRouteUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun `confirmation routes show distinct destinations without opening browser`() {
         val registration = mutableStateOf(true)
@@ -42,7 +47,7 @@ class AccountRouteUiTest {
             StandardTestDispatcher(scheduler)
         )
         var completions = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 AccountRoute(
                     androidx.compose.runtime.remember(registration.value) {
@@ -82,14 +87,14 @@ class AccountRouteUiTest {
     }
 
     @Test
-    @Config(sdk = [35], qualifiers = "w411dp-h891dp-xhdpi")
+    @Config(sdk = [36], qualifiers = "w411dp-h891dp-xhdpi", application = android.app.Application::class)
     @org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
     fun `personal data confirmation centers legacy header and shows success content`() {
         val model = AccountStatusViewModel(
             "account/personal-data-confirmation",
             FixedCoroutineDispatchers(StandardTestDispatcher(TestCoroutineScheduler()))
         )
-        compose.setContent { LoteriasCaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { AccountRoute(model, {}, {}, "https://account.invalid") } }
         val title = compose.onNodeWithText("Loterias Caixa").fetchSemanticsNode().boundsInRoot
         val screen = compose.onRoot().fetchSemanticsNode().boundsInRoot
         assertEquals(screen.center.x, title.center.x, 1f)
@@ -101,14 +106,14 @@ class AccountRouteUiTest {
     }
 
     @Test
-    @Config(sdk = [35], qualifiers = "w360dp-h800dp-xhdpi")
+    @Config(sdk = [36], qualifiers = "w360dp-h800dp-xhdpi", application = android.app.Application::class)
     @org.robolectric.annotation.GraphicsMode(org.robolectric.annotation.GraphicsMode.Mode.NATIVE)
     fun `success message wraps fully with larger font on a narrow screen`() {
         val model = AccountStatusViewModel(
             "account/personal-data-confirmation",
             FixedCoroutineDispatchers(StandardTestDispatcher(TestCoroutineScheduler()))
         )
-        compose.setContent {
+        compose.setFeatureContent {
             val density = androidx.compose.ui.platform.LocalDensity.current
             CompositionLocalProvider(
                 androidx.compose.ui.platform.LocalDensity provides
@@ -145,7 +150,7 @@ class AccountRouteUiTest {
             }
         }
         val model = AccountStatusViewModel("account/change-login")
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalUriHandler provides handler) { LoteriasCaixaDSTheme { AccountRoute(model, { back++ }, {}, url) } }
         }
         compose.onNodeWithText("Não foi possível abrir a página segura da Conta CAIXA. Tente novamente.").assertExists()

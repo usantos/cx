@@ -5,7 +5,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.ui.geometry.Size
 
 /** Geometria aplicada a cada quadro GIF decodificado, seguindo a transformação de bitmap do Glide legado. */
-internal data class ShakeTutorialFrameTransform(
+data class ShakeTutorialFrameTransform(
     val outputWidth: Float,
     val outputHeight: Float,
     val sourceLeft: Float,

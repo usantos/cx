@@ -1,12 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.presentation.coordinator
 
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetSelectionStep
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingSelectionWarnings
 import br.gov.caixa.loterias.feature.betting.presentation.state.LOTECA_ID
-import br.gov.caixa.loterias.feature.betting.presentation.state.SUPER_SEVEN_ID
 
 internal class BettingSelectionQuantities(
     private val state: kotlinx.coroutines.flow.StateFlow<BettingGameUiState>,

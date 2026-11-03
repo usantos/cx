@@ -7,6 +7,7 @@ import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.recovery.BettingCheckpointSession
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddComboToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombosUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -15,11 +16,15 @@ import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogMo
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingCatalogViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -313,16 +318,104 @@ class BettingCatalogViewModelTest {
         assertEquals(terminal, model.state.value)
     }
 
-    private fun viewModel(mode: BettingCatalogMode, comboId: Int? = null) = BettingCatalogViewModel(
+    @Test fun `disabled combo catalog blocks a new addition`() = runTest {
+        var enabled = true
+        val vm = viewModel(BettingCatalogMode.COMBO_DETAIL, combo.id, canStartOperation = { enabled })
+        advanceUntilIdle()
+        enabled = false
+        vm.addSelectedCombo()
+        advanceUntilIdle()
+        assertNull(submitted)
+    }
+
+    @Test fun `queued combo addition after off preserves selection without remote mutation`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        val vm = viewModel(BettingCatalogMode.COMBO_DETAIL, combo.id, { enabled }, io = queued)
+        runCurrent()
+        val before = vm.state.value
+        vm.addSelectedCombo()
+        enabled = false
+        runCurrent()
+        assertNull(submitted)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `off while combo checkpoint is suspended preserves nonce without adding combo`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        val delegate = testCheckpointFactory().open()
+        val ready = CompletableDeferred<Unit>()
+        val nonces = mutableListOf<String>()
+        val checkpoint = object : BettingCheckpointSession by delegate {
+            override suspend fun beginOperation(id: String, kind: String) {
+                nonces += id
+                ready.await()
+                delegate.beginOperation(id, kind)
+            }
+        }
+        val vm = viewModel(BettingCatalogMode.COMBO_DETAIL, combo.id, { enabled }, io = queued, checkpoint = checkpoint)
+        runCurrent()
+        vm.addSelectedCombo()
+        runCurrent()
+        assertEquals(1, nonces.size)
+        enabled = false
+        ready.complete(Unit)
+        runCurrent()
+        assertNull(submitted)
+        assertEquals(nonces.single(), delegate.read()?.uncertainOperation?.id)
+    }
+
+    @Test fun `combo already sent completes after off without another mutation`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        var additions = 0
+        val response = CompletableDeferred<AppResult<ShoppingCart>>()
+        val vm = viewModel(
+            BettingCatalogMode.COMBO_DETAIL,
+            combo.id,
+            { enabled },
+            io = queued,
+            addition = AddComboToCartUseCase { _, _, _ ->
+                additions++
+                response.await()
+            }
+        )
+        runCurrent()
+        vm.addSelectedCombo()
+        runCurrent()
+        assertEquals(1, additions)
+        enabled = false
+        response.complete(addResult)
+        runCurrent()
+        vm.addSelectedCombo()
+        runCurrent()
+        assertEquals(1, additions)
+        assertTrue(vm.state.value.addedToCart)
+    }
+
+    private fun viewModel(
+        mode: BettingCatalogMode,
+        comboId: Int? = null,
+        canStartOperation: () -> Boolean = { true },
+        io: CoroutineDispatcher = dispatcher,
+        checkpoint: BettingCheckpointSession? = null,
+        addition: AddComboToCartUseCase? = null,
+    ) = BettingCatalogViewModel(
         mode = mode,
         comboId = comboId,
         getModalities = GetLotteryModalitiesUseCase { modalitiesResult },
         getParameters = GetBettingParametersUseCase { parametersResult },
         getCombos = GetBetCombosUseCase { combosResult },
-        addCombo = AddComboToCartUseCase { id, quantity, surprise ->
+        addCombo = addition ?: AddComboToCartUseCase { id, quantity, surprise ->
             submitted = Triple(id, quantity, surprise)
             addResult
         },
-        dispatchers = FixedCoroutineDispatchers(dispatcher)
+        dispatchers = FixedCoroutineDispatchers(io),
+        checkpointSession = checkpoint,
+        canStartOperation = canStartOperation
     )
 }

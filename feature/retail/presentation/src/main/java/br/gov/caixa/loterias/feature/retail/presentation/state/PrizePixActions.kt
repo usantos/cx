@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.retail.presentation.state
 
-internal data class PrizePixActions(
+data class PrizePixActions(
     val cancelPixAndExit: () -> Unit,
     val consultPix: () -> Unit,
     val confirmPix: () -> Unit,

@@ -17,6 +17,8 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
@@ -36,12 +38,13 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = Application::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class AppNavigationActionsTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
@@ -180,7 +183,7 @@ class AppNavigationActionsTest {
             ForegroundSessionBackgroundState(),
             Clock.fixed(Instant.EPOCH, ZoneOffset.UTC)
         )
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             navigation = rememberAppNavigationState(fixture.lease?.ownerKey)
             session = rememberAppSessionCoordinator(dependencies, nav, navigation, fixture.lease, {})

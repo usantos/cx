@@ -5,11 +5,11 @@ import android.view.View
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onRoot
@@ -17,11 +17,12 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.LocalSplashAnimation
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashAnimationHost
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.SplashScreen
-import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import com.airbnb.lottie.compose.LottieAnimatable
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
@@ -38,7 +39,7 @@ class SplashParityUiTest {
     @Test fun loadingRepeatsTheMovingFramesWithoutTheLongFrozenTail() {
         lateinit var animation: LottieAnimatable
         compose.mainClock.autoAdvance = false
-        compose.setContent {
+        compose.setFeatureContent {
             SplashAnimationHost {
                 animation = LocalSplashAnimation.current!!
                 SplashScreen()
@@ -61,7 +62,7 @@ class SplashParityUiTest {
     @Test fun splashArtworkRemainsVisibleBehindTheStatusBar() {
         lateinit var animation: LottieAnimatable
         compose.mainClock.autoAdvance = false
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSStatusBar {
                 SplashAnimationHost {
                     animation = LocalSplashAnimation.current!!
@@ -86,7 +87,7 @@ class SplashParityUiTest {
         lateinit var animation: LottieAnimatable
         lateinit var scope: CoroutineScope
         compose.mainClock.autoAdvance = false
-        compose.setContent {
+        compose.setFeatureContent {
             SplashAnimationHost {
                 scope = rememberCoroutineScope()
                 animation = LocalSplashAnimation.current!!
@@ -143,7 +144,7 @@ class SplashParityUiTest {
         lateinit var animation: LottieAnimatable
         lateinit var view: View
         compose.mainClock.autoAdvance = false
-        compose.setContent {
+        compose.setFeatureContent {
             SplashAnimationHost {
                 view = LocalView.current
                 animation = LocalSplashAnimation.current!!
@@ -174,7 +175,7 @@ class SplashParityUiTest {
     @Test fun splashKeepsStatusBarVisibleDuringAnimationAndOnExit() {
         val visible = mutableStateOf(true)
         lateinit var view: View
-        compose.setContent {
+        compose.setFeatureContent {
             view = LocalView.current
             if (visible.value) SplashScreen()
         }

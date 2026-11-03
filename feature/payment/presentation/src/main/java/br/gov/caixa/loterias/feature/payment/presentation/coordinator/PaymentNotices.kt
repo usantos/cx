@@ -1,11 +1,9 @@
 package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentState
 
 internal class PaymentNotices(private val mutableState: ReduxStateStore<PaymentUiState, PaymentAction>) {
 

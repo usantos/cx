@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class ResponsibleGamingNavigationDependenciesBindingModule {
     @Binds
-    abstract fun bindResponsibleGamingNavigationDependenciesDependencies(implementation: ResponsibleGamingNavigationDependenciesAdapter): ResponsibleGamingNavigationDependencies
+    abstract fun bindResponsibleGamingNavigationDependenciesDependencies(
+        implementation: ResponsibleGamingNavigationDependenciesAdapter,
+    ): ResponsibleGamingNavigationDependencies
 }

@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBetsUseCase
@@ -69,7 +70,7 @@ class RapidReopenedConfigurationUiTest {
                 else -> error("Unexpected dependency: $method")
             }
         }
-        compose.setContent {
+        compose.setFeatureContent {
             val nav = rememberNavController()
             val navigation = rememberAppNavigationState(null)
             val state = rememberAppSessionState()

@@ -18,6 +18,7 @@ import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
@@ -93,7 +94,7 @@ class AuthenticationReturnScreenTest {
                 error("Cancelled prompt must not verify account access")
             }
         )
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             CompositionLocalProvider(
                 LocalActivityResultRegistryOwner provides registryOwner
             ) {
@@ -149,7 +150,7 @@ class AuthenticationReturnScreenTest {
         val launches = AtomicInteger()
         val authentication = PreferenceAuthentication(enabled = false, available = false)
         val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Must not verify") })
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(vm, authentication, "test", {}, {}, {}, biometricEnrollment = { launches.incrementAndGet() })
             }
@@ -164,7 +165,7 @@ class AuthenticationReturnScreenTest {
 
     private fun preferenceRoute(authentication: PreferenceAuthentication): LoginViewModel {
         val vm = LoginViewModel(authentication, verifyAccess = VerifyPostLoginAccessUseCase { error("Preference must not log in") })
-        composeRule.setContent { LoteriasCaixaDSTheme(darkTheme = false) { LoginRoute(vm, authentication, "test", {}, {}, {}) } }
+        composeRule.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { LoginRoute(vm, authentication, "test", {}, {}, {}) } }
         return vm
     }
 
@@ -224,7 +225,7 @@ class AuthenticationReturnScreenTest {
                 PostLoginAccessResult.AccountCheckFailed(AppError.Network, ownedIdentity)
             }
         )
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", { error("Unverified access must not authenticate") }, {
                     assertEquals(false, activeCredential.get())
@@ -259,7 +260,7 @@ class AuthenticationReturnScreenTest {
                 error("Trial entry must not verify account")
             }
         )
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {}, { trialNavigation.incrementAndGet() }, {})
             }
@@ -278,7 +279,7 @@ class AuthenticationReturnScreenTest {
         var loginActions = 0
         var trialActions = 0
         composeRule.mainClock.autoAdvance = false
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginScreen(state.value, "test", { trialActions++ }, { loginActions++ }, {})
             }
@@ -308,7 +309,7 @@ class AuthenticationReturnScreenTest {
 
     @Test
     fun pendingBrowserDoesNotPretendTokenExchangeHasStarted() {
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginScreen(LoginUiState(authorizationPending = true), "test", {}, {}, {})
             }
@@ -320,7 +321,7 @@ class AuthenticationReturnScreenTest {
     @Test
     fun catalogUsesTheSameTokenLayoutAndLiteralLabel() {
         composeRule.mainClock.autoAdvance = false
-        composeRule.setContent { LoteriasCaixaDSTheme(darkTheme = false) { AccountTokenScreen() } }
+        composeRule.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { AccountTokenScreen() } }
         composeRule.mainClock.advanceTimeBy(900)
         composeRule.onNodeWithText("Carregando…").assertIsDisplayed()
         composeRule.onNodeWithText("Aguarde").assertDoesNotExist()
@@ -348,7 +349,7 @@ class AuthenticationReturnScreenTest {
                 PostLoginAccessResult.BlockedAccountCheckFailed
             }
         )
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {
                     navigation.incrementAndGet()
@@ -389,7 +390,7 @@ class AuthenticationReturnScreenTest {
                 )
             }
         )
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 LoginRoute(viewModel, authentication, "test", {
                     assertEquals("home", it)

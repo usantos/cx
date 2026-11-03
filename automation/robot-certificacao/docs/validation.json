@@ -23,5 +23,22 @@
   "apk": {
     "variant": "tqsDebug",
     "sha256": "6fc116b0a3865183e120c7b458d470194c75d7335bbc8e687412496d56e2c791"
+  },
+  "automationIdsUpdate": {
+    "date": "2026-11-02",
+    "existingDeclarationsPreserved": 1780,
+    "declaredIds": 1781,
+    "distinctIds": 1780,
+    "preservedLegacyDeclarations": 88,
+    "addedIds": [
+      "simlo.modules.0001"
+    ],
+    "sourceOwnership": "base presentation + registered dynamic feature renderers",
+    "idPolicyTests": 17,
+    "pythonTests": 28,
+    "robotDryRunCases": 3,
+    "lockVersionMismatches": 0,
+    "robotDeviceExecution": "NOT_EXECUTED",
+    "androidIntegratedGate": "SEPARATE_EVIDENCE"
   }
 }

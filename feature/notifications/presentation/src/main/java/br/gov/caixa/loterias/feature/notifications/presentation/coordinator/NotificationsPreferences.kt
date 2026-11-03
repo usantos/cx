@@ -19,9 +19,11 @@ internal class NotificationsPreferences(
     private val getPreferences: GetNotificationPreferencesUseCase,
     private val setPreference: SetNotificationPreferenceUseCase,
     private val operations: NotificationPreferenceOperations = NotificationPreferenceOperations(),
+    private val isEntryEnabled: () -> Boolean = { true },
 ) {
 
     fun togglePreference(category: NotificationCategory?, enabled: Boolean) = operations.enqueue(scope, dispatchers) {
+        if (!isEntryEnabled()) return@enqueue
         when (val result = setPreference(category, enabled)) {
             is AppResult.Success -> reloadPreferences()
             is AppResult.Failure -> mutableState.dispatch(NotificationsAction.PreferenceFailed(result.error.notificationUserMessage()))

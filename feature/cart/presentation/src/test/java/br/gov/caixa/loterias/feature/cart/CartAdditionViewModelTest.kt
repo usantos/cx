@@ -1,23 +1,23 @@
 package br.gov.caixa.loterias.feature.cart
 
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.label
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.runCurrent
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Rule
-import org.junit.Test
-import java.time.Instant
-import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.drawDateLabel
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.label
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAdditionKind
 import br.gov.caixa.loterias.feature.cart.presentation.state.CountdownTicker
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartAdditionViewModel
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.formatRemainingTime
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.reservationRemainingSeconds
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.drawDateLabel
+import java.math.BigDecimal
+import java.time.Instant
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Rule
+import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CartAdditionViewModelTest {
@@ -26,9 +26,11 @@ class CartAdditionViewModelTest {
     @Test
     fun `regular bet does not start reservation countdown`() = runTest(dispatcherRule.dispatcher) {
         var ticks = 0
-        val viewModel = CartAdditionViewModel(CartAdditionKind.BET,
+        val viewModel = CartAdditionViewModel(
+            CartAdditionKind.BET,
             serverTime = ServerTimeSource { error("An individual bet has no reservation") },
-            ticker = CountdownTicker { ticks++ })
+            ticker = CountdownTicker { ticks++ }
+        )
         viewModel.refreshReservation()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(0, ticks)
@@ -44,7 +46,10 @@ class CartAdditionViewModelTest {
             CartAdditionKind.POOL_SHARE,
             serverTime = ServerTimeSource { now },
             expiresAt = "2026-09-03T12:00:02Z",
-            ticker = CountdownTicker { ticks++; now = now.plusSeconds(1) },
+            ticker = CountdownTicker {
+                ticks++
+                now = now.plusSeconds(1)
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(2, ticks)
@@ -61,7 +66,7 @@ class CartAdditionViewModelTest {
             modality = "MEGA_SENA",
             contest = 2800,
             drawDate = "2026-09-10",
-            amount = BigDecimal("10.00"),
+            amount = BigDecimal("10.00")
         )
         assertEquals(0, viewModel.state.value.remainingSeconds)
         assertTrue(viewModel.state.value.expired)
@@ -99,9 +104,15 @@ class CartAdditionViewModelTest {
     @Test fun `delayed tick accounts for all elapsed seconds instead of decrementing once`() = runTest(dispatcherRule.dispatcher) {
         var now = Instant.parse("2026-09-03T12:00:00Z")
         var ticks = 0
-        val vm = CartAdditionViewModel(CartAdditionKind.POOL_SHARE,
-            serverTime = ServerTimeSource { now }, expiresAt = "2026-09-03T12:01:00Z",
-            ticker = CountdownTicker { ticks++; now = now.plusSeconds(120) })
+        val vm = CartAdditionViewModel(
+            CartAdditionKind.POOL_SHARE,
+            serverTime = ServerTimeSource { now },
+            expiresAt = "2026-09-03T12:01:00Z",
+            ticker = CountdownTicker {
+                ticks++
+                now = now.plusSeconds(120)
+            }
+        )
         assertEquals(60, vm.state.value.remainingSeconds)
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(1, ticks)
@@ -116,9 +127,11 @@ class CartAdditionViewModelTest {
     @Test fun `resume refresh expires a reservation before the pending next tick`() = runTest(dispatcherRule.dispatcher) {
         val origin = Instant.parse("2026-09-03T12:00:00Z")
         var elapsedElsewhere = 0L
-        val vm = CartAdditionViewModel(CartAdditionKind.POOL_SHARE,
+        val vm = CartAdditionViewModel(
+            CartAdditionKind.POOL_SHARE,
             serverTime = ServerTimeSource { origin.plusMillis(testScheduler.currentTime + elapsedElsewhere) },
-            expiresAt = "2026-09-03T12:15:00Z")
+            expiresAt = "2026-09-03T12:15:00Z"
+        )
         runCurrent()
         elapsedElsewhere = 30_000L
         vm.refreshReservation()

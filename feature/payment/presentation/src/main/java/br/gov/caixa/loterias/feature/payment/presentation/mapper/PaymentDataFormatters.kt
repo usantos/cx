@@ -16,7 +16,7 @@ internal fun paymentTopBarTitle(): AnnotatedString = buildAnnotatedString {
     withStyle(SpanStyle(fontWeight = FontWeight.Bold)) { append("pagamento") }
 }
 
-internal fun secondsUntil(value: String, now: Instant = Instant.now()): Long = runCatching {
+fun secondsUntil(value: String, now: Instant = Instant.now()): Long = runCatching {
     val instant = runCatching { OffsetDateTime.parse(value).toInstant() }.getOrElse {
         LocalDateTime.parse(value).atZone(ZoneId.of("America/Sao_Paulo")).toInstant()
     }

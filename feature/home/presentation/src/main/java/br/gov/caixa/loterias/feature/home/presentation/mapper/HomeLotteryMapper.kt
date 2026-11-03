@@ -6,11 +6,11 @@ import androidx.compose.ui.graphics.Color
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import java.math.BigDecimal
-import java.text.Normalizer
+import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
-import br.gov.caixa.loterias.feature.home.R
+import java.math.BigDecimal
+import java.text.Normalizer
 
 private data class HomeLotteryStyle(
     val color: Color,
@@ -224,7 +224,7 @@ fun shouldShowPoolButton(poolSalesEnabled: Boolean, parameters: BettingParameter
                 canonicalModality(available.modalityCode) == canonicalModality(lottery.resultCode)
         }
 
-internal fun canonicalModality(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFD)
+fun canonicalModality(value: String): String = Normalizer.normalize(value, Normalizer.Form.NFD)
     .replace(Regex("\\p{Mn}+"), "")
     .filter(Char::isLetterOrDigit)
     .uppercase()

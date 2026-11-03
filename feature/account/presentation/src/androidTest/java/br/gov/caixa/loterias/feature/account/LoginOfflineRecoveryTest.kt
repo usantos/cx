@@ -21,6 +21,7 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginRoute
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
@@ -159,7 +160,7 @@ class LoginOfflineRecoveryTest {
     }
 
     private fun show(f: Fixture, silent: Boolean = false, automatic: Boolean = true) {
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides f) {
                 LoteriasCaixaDSTheme {
                     LoginRoute(

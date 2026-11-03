@@ -19,6 +19,7 @@ import java.time.Clock
 import javax.inject.Inject
 
 class PaymentNavigationDependenciesAdapter @Inject constructor(
+    override val appModulesConfiguration: br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase,
     override val authenticatedSessionIdentity: AuthenticatedSessionIdentityProvider,
     override val currentCart: GetCurrentCartUseCase,
     override val generatePixCharge: GeneratePixChargeUseCase,

@@ -4,7 +4,6 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.CardPurchasePolling
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
@@ -15,7 +14,6 @@ import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurch
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardTrackedPurchase
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentCardState
 import java.math.BigDecimal
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay

@@ -2,44 +2,45 @@ package br.gov.caixa.loterias.feature.betting
 
 import android.graphics.Bitmap
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import android.widget.Space
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertWidthIsEqualTo
-import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onAllNodesWithTag
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
-import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import java.math.BigDecimal
 import java.io.File
+import java.math.BigDecimal
 import java.util.concurrent.atomic.AtomicInteger
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 class BettingGameRouteSmokeTest {
     @get:Rule val compose = createComposeRule()
@@ -52,20 +53,32 @@ class BettingGameRouteSmokeTest {
             contestNumber = 2900, drawDate = "10/09/2026", recurringOptions = listOf(2), maximumNumber = 50, minimumSelection = 6,
             maximumSelection = 6, minimumClovers = 2, maximumClovers = 6,
             maximumCloverNumber = 6, maximumSurprises = 3,
-            prices = listOf(BetPrice(6, 2, BigDecimal("18.00"))),
+            prices = listOf(BetPrice(6, 2, BigDecimal("18.00")))
         )
-        val model = BettingGameViewModel(9, GetBettingParametersUseCase {
-            AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
-        }, addBet)
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
-            BettingGameRoute(model, onBack = {}, onAdded = { notifications.incrementAndGet() })
-        } }
+        val model = BettingGameViewModel(
+            9,
+            GetBettingParametersUseCase {
+                AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
+            },
+            addBet
+        )
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                BettingGameRoute(model, onBack = {}, onAdded = { notifications.incrementAndGet() })
+            }
+        }
         compose.waitUntil(10_000) { !model.state.value.loading }
         compose.onNodeWithText("+milionária").assertIsDisplayed()
-        compose.runOnIdle { (1..6).forEach(model::toggleNumber); model.primaryAction() }
+        compose.runOnIdle {
+            (1..6).forEach(model::toggleNumber)
+            model.primaryAction()
+        }
         compose.onNodeWithTag("betting-clover-1").assertIsDisplayed()
         saveDeviceCapture("compose-task5-plus-clovers")
-        compose.runOnIdle { model.selectMode(BetEntryMode.SURPRISE); model.addToCart() }
+        compose.runOnIdle {
+            model.selectMode(BetEntryMode.SURPRISE)
+            model.addToCart()
+        }
         compose.waitUntil(10_000) { model.state.value.addedToCart }
         compose.onNodeWithText("Aposta adicionada ao carrinho com sucesso!").assertIsDisplayed()
         compose.runOnIdle {
@@ -75,7 +88,10 @@ class BettingGameRouteSmokeTest {
         }
         compose.onNodeWithText("Entendi").performClick()
         compose.onNodeWithText("+milionária").assertIsDisplayed()
-        compose.runOnIdle { model.selectMode(BetEntryMode.SURPRISE); model.addToCart() }
+        compose.runOnIdle {
+            model.selectMode(BetEntryMode.SURPRISE)
+            model.addToCart()
+        }
         compose.waitUntil(10_000) { addBet.calls.get() == 2 && model.state.value.addedToCart }
         compose.onNodeWithText("Aposta adicionada ao carrinho com sucesso!").assertIsDisplayed()
         compose.runOnIdle { assertEquals(2, notifications.get()) }
@@ -94,16 +110,16 @@ class BettingGameRouteSmokeTest {
             maximumSelection = 7,
             maximumSurprises = 3,
             recurringOptions = listOf(2, 4),
-            prices = listOf(BetPrice(6, 0, BigDecimal("5.00")), BetPrice(7, 0, BigDecimal("35.00"))),
+            prices = listOf(BetPrice(6, 0, BigDecimal("5.00")), BetPrice(7, 0, BigDecimal("35.00")))
         )
         val viewModel = BettingGameViewModel(
             modalityId = 2,
             getParameters = GetBettingParametersUseCase {
                 AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
             },
-            addBet = addBet,
+            addBet = addBet
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(viewModel, onBack = {}, onAdded = {}, shakeEnabled = false, onHelp = { onHelp.incrementAndGet() })
             }
@@ -145,16 +161,16 @@ class BettingGameRouteSmokeTest {
             maximumSurprises = 3,
             recurringOptions = emptyList(),
             prices = listOf(BetPrice(5, 0, BigDecimal("3.00"))),
-            contestType = "ESPECIAL",
+            contestType = "ESPECIAL"
         )
         val vm = BettingGameViewModel(
             modalityId = 3,
             getParameters = GetBettingParametersUseCase {
                 AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
             },
-            addBet = AddBetFake(),
+            addBet = AddBetFake()
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         saveDeviceCapture("compose-special-quina-entry")
         compose.onNodeWithText("quina de \nsão joão").assertIsDisplayed()
@@ -173,16 +189,16 @@ class BettingGameRouteSmokeTest {
             maximumSelection = 6,
             maximumSurprises = 3,
             recurringOptions = listOf(2, 4),
-            prices = listOf(BetPrice(6, 0, BigDecimal("5.00"))),
+            prices = listOf(BetPrice(6, 0, BigDecimal("5.00")))
         )
         val vm = BettingGameViewModel(
             modalityId = 2,
             getParameters = GetBettingParametersUseCase {
                 AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
             },
-            addBet = AddBetFake(),
+            addBet = AddBetFake()
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         val carets = compose.onAllNodesWithTag("betting-dropdown-icon", useUnmergedTree = true)
         assertEquals(2, carets.fetchSemanticsNodes().size)
@@ -192,7 +208,7 @@ class BettingGameRouteSmokeTest {
 
     @Test fun entrySelectorsAndFooterActionsKeepInstalledDimensions() {
         val vm = megaSenaViewModel()
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(timeoutMillis = 10_000) { vm.state.value.game != null }
         compose.onNodeWithTag("betting-button-6 números", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
         compose.onNodeWithTag("betting-button-Teimosinha", useUnmergedTree = true).assertWidthIsEqualTo(112.dp).assertHeightIsEqualTo(45.dp)
@@ -210,8 +226,10 @@ class BettingGameRouteSmokeTest {
             row.addView(random, LinearLayout.LayoutParams(0, pixels(52), 1f))
             row.addView(Space(context), LinearLayout.LayoutParams(pixels(8), 1))
             row.addView(View(context), LinearLayout.LayoutParams(pixels(130), pixels(52)))
-            row.measure(View.MeasureSpec.makeMeasureSpec(windowWidth - 2 * pixels(24), View.MeasureSpec.EXACTLY),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+            row.measure(
+                View.MeasureSpec.makeMeasureSpec(windowWidth - 2 * pixels(24), View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+            )
             nativeRandomWidth = random.measuredWidth
         }
         compose.onNodeWithTag("betting-button-Aposta aleatória", useUnmergedTree = true)
@@ -223,14 +241,14 @@ class BettingGameRouteSmokeTest {
     @Test fun emptyCartTapShowsLegacyStyleMessageAndDoesNotNavigate() {
         val onCart = AtomicInteger(0)
         val vm = megaSenaViewModel()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(
                     viewModel = vm,
                     onBack = {},
                     onAdded = {},
                     cartBetCount = 0,
-                    onCart = { onCart.incrementAndGet() },
+                    onCart = { onCart.incrementAndGet() }
                 )
             }
         }
@@ -244,9 +262,9 @@ class BettingGameRouteSmokeTest {
         val vm = BettingGameViewModel(
             modalityId = 8,
             getParameters = GetBettingParametersUseCase { AppResult.Failure(AppError.Network) },
-            addBet = AddBetFake(),
+            addBet = AddBetFake()
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(vm, onBack = {}, onAdded = {}, fallbackModalityId = 8)
             }
@@ -259,14 +277,14 @@ class BettingGameRouteSmokeTest {
     @Test fun cartWithExistingBetsNavigatesWithoutEmptyCartMessage() {
         val onCart = AtomicInteger(0)
         val vm = megaSenaViewModel()
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 BettingGameRoute(
                     viewModel = vm,
                     onBack = {},
                     onAdded = {},
                     cartBetCount = 1,
-                    onCart = { onCart.incrementAndGet() },
+                    onCart = { onCart.incrementAndGet() }
                 )
             }
         }
@@ -294,14 +312,14 @@ class BettingGameRouteSmokeTest {
             maximumSelection = 20,
             maximumSurprises = 3,
             recurringOptions = listOf(0, 2, 4),
-            prices = listOf(BetPrice(6, 0, BigDecimal("6.00"))),
+            prices = listOf(BetPrice(6, 0, BigDecimal("6.00")))
         )
         return BettingGameViewModel(
             modalityId = 2,
             getParameters = GetBettingParametersUseCase {
                 AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
             },
-            addBet = AddBetFake(),
+            addBet = AddBetFake()
         )
     }
 

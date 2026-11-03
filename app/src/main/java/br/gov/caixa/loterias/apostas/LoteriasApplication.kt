@@ -5,6 +5,11 @@ import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class LoteriasApplication : Application() {
+    override fun attachBaseContext(base: android.content.Context) {
+        super.attachBaseContext(base)
+        com.google.android.play.core.splitcompat.SplitCompat.install(this)
+    }
+
     @javax.inject.Inject lateinit var pushRuntime: br.gov.caixa.loterias.feature.notifications.di.PushRuntime
     override fun onCreate() {
         br.gov.caixa.loterias.core.security.topaz.isolateTopazMockComponents(this, BuildConfig.ENABLE_MOCK_BACKEND)

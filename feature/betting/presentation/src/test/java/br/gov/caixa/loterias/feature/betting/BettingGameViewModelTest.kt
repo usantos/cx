@@ -1508,7 +1508,20 @@ class BettingGameViewModelTest {
         assertNull(submitted)
     }
 
-    private fun viewModel(modalityId: Int? = 2): BettingGameViewModel {
+    @Test fun `disabled betting preserves selected numbers and blocks adding a new bet`() = runTest {
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled })
+        advanceUntilIdle()
+        (1..6).forEach(vm::toggleNumber)
+        val before = vm.state.value.selectedNumbers
+        enabled = false
+        vm.addToCart()
+        advanceUntilIdle()
+        assertNull(submitted)
+        assertEquals(before, vm.state.value.selectedNumbers)
+    }
+
+    private fun viewModel(modalityId: Int? = 2, canStartOperation: () -> Boolean = { true }): BettingGameViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return BettingGameViewModel(
             modalityId = modalityId,
@@ -1517,7 +1530,8 @@ class BettingGameViewModelTest {
                 submitted = draft
                 addResult
             },
-            dispatchers = FixedCoroutineDispatchers(dispatcher)
+            dispatchers = FixedCoroutineDispatchers(dispatcher),
+            canStartOperation = canStartOperation
         )
     }
 

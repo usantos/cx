@@ -8,7 +8,7 @@ class PaymentOperatingHoursTest {
     @Test fun `all operating times are displayed in hours and minutes`() {
         assertEquals(
             "As apostas realizadas entre 22:30 e 05:00 serão processadas após 05:00.",
-            paymentOperatingHours("As apostas realizadas entre 22:30:00 e 05:00:00 serão processadas após 05:00:00."),
+            paymentOperatingHours("As apostas realizadas entre 22:30:00 e 05:00:00 serão processadas após 05:00:00.")
         )
     }
 

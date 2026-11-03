@@ -10,6 +10,12 @@
 
 Dry-run não abre uma sessão Appium, não testa o APK, a rede nem comprova que os IDs aparecem na árvore nativa. Execuções físicas devem produzir evidências próprias, com hash/versão do APK, ambiente e versões de servidor/driver.
 
+A extração para os módulos de UI conserva os seletores existentes. O contrato
+estático inclui os caminhos dos splits declarados e `simlo.modules.0001` na
+apresentação compartilhada. Entrega, falha/tentativa, indisponibilidade e
+continuidade durante mudanças de configuração ainda exigem cenários próprios
+no dispositivo; atualizar o inventário não executa esses fluxos.
+
 ## Próximos grupos a implementar no repositório receptor
 
 | Funcionalidade | Cenários propostos | Dependências |

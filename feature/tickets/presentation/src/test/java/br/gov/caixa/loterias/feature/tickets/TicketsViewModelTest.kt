@@ -30,8 +30,6 @@ import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchasePaymentMe
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseStatusesUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchasesUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.SavePurchaseAsFavoriteUseCase
-import br.gov.caixa.loterias.feature.tickets.presentation.state.BetFilters
-import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseFilters
 import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.TicketsViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
@@ -672,6 +670,7 @@ class TicketsViewModelTest {
             betFilters = it
             betsResult
         },
+        canStartOperation: () -> Boolean = { true },
     ) = TicketsViewModel(
         getConfirmedBets = history,
         getPurchases = GetPurchasesUseCase {
@@ -693,6 +692,7 @@ class TicketsViewModelTest {
         validateFavoriteName = validateName,
         savePurchaseAsFavorite = saveFavorite,
         validateDam = dam,
-        isSessionCurrent = isSessionCurrent
+        isSessionCurrent = isSessionCurrent,
+        canStartOperation = canStartOperation
     )
 }

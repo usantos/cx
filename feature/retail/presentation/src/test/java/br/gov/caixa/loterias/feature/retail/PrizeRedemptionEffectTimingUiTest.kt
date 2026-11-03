@@ -2,7 +2,9 @@ package br.gov.caixa.loterias.feature.retail
 
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.presentation.route.PrizeRedemptionBetEntryEffect
@@ -15,15 +17,18 @@ import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 /** A aplicação da composição pode atualizar o estado antes de a coroutine do efeito começar. */
 @OptIn(ExperimentalCoroutinesApi::class)
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [EFFECT_TIMING_TEST_SDK])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [EFFECT_TIMING_TEST_SDK], application = android.app.Application::class)
 class PrizeRedemptionEffectTimingUiTest : PrizeRedemptionTestFixture() {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
 
     @Test fun `decision consumed while applying composition is not delivered again`() {
         val model = viewModel()
@@ -34,7 +39,7 @@ class PrizeRedemptionEffectTimingUiTest : PrizeRedemptionTestFixture() {
         val observedState = mutableStateOf(model.state.value)
         val delivered = mutableListOf<BetEntryDecision>()
 
-        compose.setContent {
+        compose.setFeatureContent {
             PrizeRedemptionBetEntryEffect(
                 viewModel = model,
                 state = observedState.value,
@@ -61,7 +66,7 @@ class PrizeRedemptionEffectTimingUiTest : PrizeRedemptionTestFixture() {
         val observedState = mutableStateOf(model.state.value)
         var initialSelectionApplied = false
 
-        compose.setContent {
+        compose.setFeatureContent {
             PrizeRedemptionInitialSelectionEffect(
                 viewModel = model,
                 state = observedState.value,
@@ -86,4 +91,4 @@ class PrizeRedemptionEffectTimingUiTest : PrizeRedemptionTestFixture() {
     }
 }
 
-private const val EFFECT_TIMING_TEST_SDK = 35
+private const val EFFECT_TIMING_TEST_SDK = 36

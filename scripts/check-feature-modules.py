@@ -63,15 +63,17 @@ def check_type_names(root: Path) -> list[str]:
 
 
 def check(root: Path, configured: dict | None = None) -> list[str]:
-    errors, graph = check_type_names(root), {}
+    errors, graph, models = check_type_names(root), {}, {}
     for folder in ('core', 'feature', 'app'):
         for build in sorted((root / folder).rglob('build.gradle*')):
             if 'build' in build.relative_to(root).parts:
                 continue
-            text = build.read_text()
+            # Preserva strings de coordenadas, mas comentários não concedem exceções de empacotamento.
+            text = re.sub(r"'[^'\\]*(?:\\.[^'\\]*)*'|\"[^\"\\]*(?:\\.[^\"\\]*)*\"|/\*[\s\S]*?\*/|//[^\n]*",
+                          lambda match: match[0] if match[0][0] in "'\"" else '', build.read_text())
             module = ':' + ':'.join(build.parent.relative_to(root).parts)
             graph[module] = set(re.findall(
-                r'(?m)^\s*(?:api|implementation|compileOnly)\s*\(?\s*project\s*\(\s*[\'"](:[^\'"]+)', text,
+                r'(?m)^\s*(?:api|implementation|compileOnly|runtimeOnly)\s*\(?\s*project\s*\(\s*[\'"](:[^\'"]+)', text,
             ))
             declared_dependencies = re.findall(
                 r"(?m)^\s*(api|implementation|compileOnly|runtimeOnly|testImplementation|androidTestImplementation)\s*\(?\s*project\s*\(\s*['\"](:[^'\"]+)", text,
@@ -82,20 +84,31 @@ def check(root: Path, configured: dict | None = None) -> list[str]:
                 if declaration in seen:
                     errors.append(f'{build.relative_to(root)}: duplicate dependency {configuration} {dependency}')
                 seen.add(declaration)
-            if ':app' in graph[module]:
-                errors.append(f'{module}: production dependency on application is forbidden')
+            models[module] = {
+                'application': bool(re.search(r"['\"]com\.android\.application['\"]", text)),
+                'dynamicFeature': bool(re.search(r"['\"]com\.android\.dynamic-feature['\"]", text)),
+                'dynamicFeatures': set(dependency for declaration in re.findall(
+                    r'dynamicFeatures\s*(?:\+?=)\s*\[([^]]*)\]', text)
+                    for dependency in re.findall(r"['\"](:[^'\"]+)['\"]", declaration)),
+            }
             if re.search(r'featureLayerRoots\s*\(|srcDirs\s*\([^\n]*(?:rootProject|\.\./)', text):
                 errors.append(f'{build.relative_to(root)}: compiles sources outside its own module')
     if configured is not None:
         graph = {name: set(value['dependencies']) for name, value in configured['projects'].items()}
+        models = configured['projects']
         for module, dependencies in graph.items():
-            if ':app' in dependencies:
-                errors.append(f'{module}: production dependency on application is forbidden')
             if module == ':core:domain' or (module.startswith(':feature:') and module.endswith((':domain', ':api'))):
                 for dependency in dependencies:
                     if dependency not in (':core:common', ':core:domain') and not (
                             dependency.startswith(':feature:') and dependency.endswith((':domain', ':api'))):
                         errors.append(f'{module}: Domain dependency on outer layer {dependency}')
+    applications = {name for name, model in models.items() if model.get('application')} | {':app'}
+    for module, dependencies in graph.items():
+        for base in dependencies & applications:
+            if not (models.get(module, {}).get('dynamicFeature') and
+                    models.get(base, {}).get('application') and
+                    module in models.get(base, {}).get('dynamicFeatures', [])):
+                errors.append(f'{module}: production dependency on application is forbidden: {base}')
     for cycle in cycles(graph):
         errors.append('Module dependency cycle: ' + ' -> '.join(cycle))
     for feature in sorted((root / 'feature').iterdir()) if (root / 'feature').exists() else []:

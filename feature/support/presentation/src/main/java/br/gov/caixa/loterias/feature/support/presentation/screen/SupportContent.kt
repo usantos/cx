@@ -43,7 +43,12 @@ import br.gov.caixa.loterias.feature.support.presentation.state.SupportTab
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 
 @Composable
-internal fun SupportContent(state: SupportUiState, onAction: (SupportAction) -> Unit, modifier: Modifier) {
+internal fun SupportContent(
+    state: SupportUiState,
+    onAction: (SupportAction) -> Unit,
+    faqContent: @Composable (SupportUiState, (SupportAction) -> Unit) -> Unit,
+    modifier: Modifier,
+) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     LoteriasCaixaDSScaffold(
         title = when {
@@ -83,14 +88,8 @@ internal fun SupportContent(state: SupportUiState, onAction: (SupportAction) -> 
                 SupportTabs(state.selectedTab, onAction)
             }
             when {
-                state.errorMessage != null -> Text(
-                    text = state.errorMessage,
-                    color = LoteriasCaixaDS.colors.error,
-                    modifier = (Modifier.padding(16.dp)).uiId("help.0025")
-                )
-
-                state.selectedTab == SupportTab.FAQ -> FaqContent(state, onAction)
-
+                state.selectedTab == SupportTab.FAQ -> faqContent(state, onAction)
+                state.errorMessage != null -> SupportContentError(state.errorMessage)
                 else -> HtmlContent(state.htmlContent)
             }
         }

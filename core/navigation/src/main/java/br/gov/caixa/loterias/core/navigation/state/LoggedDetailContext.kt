@@ -1,10 +1,5 @@
 package br.gov.caixa.loterias.core.navigation.state
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.DataInputStream
-import java.io.DataOutputStream
-import java.io.OutputStream
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,6 +12,11 @@ import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.OutputStream
 import java.math.BigDecimal
 
 /** Apenas contexto de navegação: a autenticação é restaurada pelo próprio provedor de sessão. */
@@ -41,9 +41,20 @@ class LoggedDetailContext(owner: String?) {
     var selectedMarketplaceRetailer by mutableStateOf<Retailer?>(null)
     var checkedTicketBets by mutableStateOf<List<ConfirmedBet>>(emptyList())
 
+    internal var purchaseRecovery by mutableStateOf<StoredPurchaseRecovery?>(null)
+    internal var pendingPurchaseRecovery: PendingPurchaseRecovery? = null
+        private set
+
+    internal fun deferPurchaseRecovery(recovery: PendingPurchaseRecovery) {
+        clear()
+        pendingPurchaseRecovery = recovery
+        restorationOutcome = DetailRestorationOutcome.Pending
+    }
+
     /** O logout remove os dados visíveis e também o retrato de restauração do processo ainda bloqueado. */
     fun clear() {
         pendingSnapshot = null
+        pendingPurchaseRecovery = null
         restorationOutcome = DetailRestorationOutcome.None
         owner = null
         clearFields()
@@ -61,6 +72,7 @@ class LoggedDetailContext(owner: String?) {
         betToEdit = null
         selectedMarketplaceRetailer = null
         checkedTicketBets = emptyList()
+        purchaseRecovery = null
     }
 
     fun defer(bytes: ByteArray) {
@@ -74,6 +86,9 @@ class LoggedDetailContext(owner: String?) {
         val nextOwner = authenticatedOwner?.takeIf { it.isNotBlank() }
         if (nextOwner == owner) return
         if (nextOwner == null) {
+            pendingPurchaseRecovery = owner?.let { previousOwner ->
+                purchaseRecovery?.let { PendingPurchaseRecovery(previousOwner, it.evidence) }
+            } ?: pendingPurchaseRecovery
             val snapshot = LoggedDetailContextCodec.save(this)
             clearFields()
             owner = null
@@ -98,6 +113,7 @@ class LoggedDetailContext(owner: String?) {
                 betToEdit = restored.betToEdit
                 selectedMarketplaceRetailer = restored.selectedMarketplaceRetailer
                 checkedTicketBets = restored.checkedTicketBets
+                purchaseRecovery = restored.purchaseRecovery
                 restorationOutcome = DetailRestorationOutcome.Restored
             } else {
                 restorationOutcome = DetailRestorationOutcome.Discarded
@@ -106,13 +122,20 @@ class LoggedDetailContext(owner: String?) {
             clearFields()
             restorationOutcome = DetailRestorationOutcome.Discarded
         }
+        val recovery = pendingPurchaseRecovery
+        pendingPurchaseRecovery = null
+        if (recovery != null) {
+            purchaseRecovery = recovery.takeIf { it.owner == nextOwner }?.let { StoredPurchaseRecovery(it.evidence, null) }
+            restorationOutcome = if (purchaseRecovery != null) DetailRestorationOutcome.Restored else DetailRestorationOutcome.Discarded
+        }
         owner = nextOwner
     }
 }
 
 /** Um único limite de tamanho protege o Bundle da Activity; contextos inválidos ou grandes demais são descartados. */
 object LoggedDetailContextCodec {
-    private const val VERSION = 3
+    private const val PURCHASE_RECOVERY_VERSION = 4
+    private const val VERSION = PURCHASE_RECOVERY_VERSION
     private const val MAX_BYTES = 96 * 1024
     private const val MAX_ITEMS = 512
 
@@ -153,6 +176,10 @@ object LoggedDetailContextCodec {
             out.filter(context.retailerMarketplaceFilter)
             out.writeBoolean(context.marketplaceFilterApplied)
             out.writeBoolean(context.retailerMarketplaceFilterApplied)
+            out.optional(context.purchaseRecovery) { recovery ->
+                writeBoolean(recovery.evidence is PurchaseRecoveryEvidence.Review)
+                optional(recovery.evidence.purchaseId) { writeLong(it) }
+            }
         }
         bytes.toByteArray()
     }.getOrNull()
@@ -180,6 +207,20 @@ object LoggedDetailContextCodec {
                 if (version >= 3) {
                     marketplaceFilterApplied = input.readBoolean()
                     retailerMarketplaceFilterApplied = input.readBoolean()
+                }
+                if (version >= PURCHASE_RECOVERY_VERSION) {
+                    purchaseRecovery = input.optional {
+                        val review = readBoolean()
+                        val id = optional { readLong() }
+                        val evidence = if (review) {
+                            PurchaseRecoveryEvidence.Review(
+                                id
+                            )
+                        } else {
+                            PurchaseRecoveryEvidence.Confirmed(requireNotNull(id))
+                        }
+                        StoredPurchaseRecovery(evidence, null)
+                    }
                 }
                 require(input.available() == 0)
             }

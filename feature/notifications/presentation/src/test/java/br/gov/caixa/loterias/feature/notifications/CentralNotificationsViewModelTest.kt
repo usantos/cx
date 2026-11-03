@@ -35,11 +35,17 @@ class CentralNotificationsViewModelTest {
         override fun isCurrent(identity: AuthenticatedSessionIdentity) = identity === current
     }
     private val repo = FakeInbox()
+    private var entryEnabled = true
 
     @Before fun before() = Dispatchers.setMain(dispatcher)
 
     @After fun after() = Dispatchers.resetMain()
-    private fun model() = CentralNotificationsViewModel(NotificationInboxActions(repo), sessions, FixedCoroutineDispatchers(dispatcher))
+    private fun model() = CentralNotificationsViewModel(
+        NotificationInboxActions(repo),
+        sessions,
+        FixedCoroutineDispatchers(dispatcher),
+        isEntryEnabled = { entryEnabled }
+    )
 
     @Test fun `anonymous never fetches private or synthetic messages`() = runTest(dispatcher) {
         current = null
@@ -130,6 +136,30 @@ class CentralNotificationsViewModelTest {
         vm.onResume()
         advanceUntilIdle()
         assertEquals(2, repo.loads)
+    }
+
+    @Test fun `disabled module does not load private inbox`() = runTest(dispatcher) {
+        entryEnabled = false
+        val vm = model()
+        vm.onResume()
+        vm.onResume()
+        vm.load()
+        advanceUntilIdle()
+        assertEquals(0, repo.loads)
+        assertTrue(vm.state.value.all.isEmpty())
+    }
+
+    @Test fun `disabled module cannot confirm an existing clear dialog or reload`() = runTest(dispatcher) {
+        val vm = model()
+        advanceUntilIdle()
+        vm.requestClear()
+        entryEnabled = false
+        vm.confirm()
+        vm.load()
+        advanceUntilIdle()
+        assertEquals(0, repo.clears)
+        assertEquals(1, repo.loads)
+        assertEquals(listOf(2L, 1L), vm.state.value.all.map { it.id })
     }
 
     private class FakeInbox : NotificationInboxRepository {

@@ -1,7 +1,10 @@
 package br.gov.caixa.loterias.apostas
 
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -13,6 +16,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.repository.ShakeSettingsRepository
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeDrawer
 import org.junit.Assert.assertEquals
@@ -28,11 +32,18 @@ class HomeDrawerUiTest {
     @Test
     fun campaignsDoNotInsertAnExtraHeaderInTheLegacyDrawer() {
         var campaign by mutableStateOf<CommemorativeCampaign?>(null)
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             MaterialTheme {
-                HomeDrawer(features = HomeFeatureConfiguration(), userName = null,
-                    environmentLabel = null, campaign = campaign,
-                    onOpen = {}, onLogout = {}, onClose = {}, onExternalFailure = {})
+                HomeDrawer(
+                    features = HomeFeatureConfiguration(),
+                    userName = null,
+                    environmentLabel = null,
+                    campaign = campaign,
+                    onOpen = {},
+                    onLogout = {},
+                    onClose = {},
+                    onExternalFailure = {}
+                )
             }
         }
         composeRule.onAllNodesWithText("Outubro Rosa").assertCountEquals(0)
@@ -50,19 +61,24 @@ class HomeDrawerUiTest {
         val settings = DrawerShakeSettings()
         lateinit var preferences: br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel
         composeRule.runOnUiThread {
-            preferences = homePreferencesFixture(object : br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository {
-                override suspend fun loadOrder(): String? = null
-                override suspend fun saveOrder(order: String) = Unit
-            }, settings)
+            preferences = homePreferencesFixture(
+                object : br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository {
+                    override suspend fun loadOrder(): String? = null
+                    override suspend fun saveOrder(order: String) = Unit
+                },
+                settings
+            )
         }
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             val preferenceState by preferences.state.collectAsState()
             MaterialTheme {
-                HomeDrawer(features = HomeFeatureConfiguration(), userName = null,
+                HomeDrawer(
+                    features = HomeFeatureConfiguration(), userName = null,
                     environmentLabel = null, preferenceState = preferenceState,
                     onToggleShake = { preferences.toggleShake(it) },
                     onConsumeShakeTooltip = { preferences.consumeShakeTooltip() },
-                    onOpen = {}, onLogout = {}, onClose = {}, onExternalFailure = {})
+                    onOpen = {}, onLogout = {}, onClose = {}, onExternalFailure = {}
+                )
             }
         }
         val info = composeRule.onNodeWithContentDescription("Informações sobre Aposta Shake")
@@ -84,13 +100,16 @@ class HomeDrawerUiTest {
     @Test
     fun drawerShowsLoginLogoAndCloseButtonClosesMenu() {
         var closeCount = 0
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             MaterialTheme {
                 HomeDrawer(
                     features = HomeFeatureConfiguration(),
                     userName = null,
                     environmentLabel = null,
-                    onOpen = {}, onLogout = {}, onClose = { closeCount++ }, onExternalFailure = {},
+                    onOpen = {},
+                    onLogout = {},
+                    onClose = { closeCount++ },
+                    onExternalFailure = {}
                 )
             }
         }
@@ -105,7 +124,7 @@ class HomeDrawerUiTest {
         val opened = mutableListOf<String>()
         var logoutCount = 0
         var externalFailureCount = 0
-        composeRule.setContent {
+        composeRule.setFeatureContent {
             MaterialTheme {
                 HomeDrawer(
                     features = HomeFeatureConfiguration(myBetsVisible = true, rapidBettingEnabled = true),
@@ -114,7 +133,7 @@ class HomeDrawerUiTest {
                     onOpen = opened::add,
                     onLogout = { logoutCount++ },
                     onClose = {},
-                    onExternalFailure = { externalFailureCount++ },
+                    onExternalFailure = { externalFailureCount++ }
                 )
             }
         }

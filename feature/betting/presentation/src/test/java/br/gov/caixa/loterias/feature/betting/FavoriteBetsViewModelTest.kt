@@ -8,6 +8,7 @@ import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.feature.betting.domain.recovery.BettingCheckpointSession
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -15,11 +16,15 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBetsUseCa
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBetsViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
@@ -315,34 +320,151 @@ class FavoriteBetsViewModelTest {
         assertNull(deleted)
     }
 
+    @Test fun `disabled favorite bets preserves deletion selection without sending it`() = runTest {
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled })
+        advanceUntilIdle()
+        vm.requestDelete(favorite)
+        val before = vm.state.value
+        enabled = false
+        vm.confirmDelete()
+        advanceUntilIdle()
+        assertNull(deleted)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `queued favorite deletion retains candidate after off`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled }, io = queued)
+        runCurrent()
+        vm.requestDelete(favorite)
+        val before = vm.state.value
+        vm.confirmDelete()
+        enabled = false
+        runCurrent()
+        assertNull(deleted)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `queued favorite cart addition retains options after off`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled }, io = queued)
+        runCurrent()
+        vm.requestAdd(favorite)
+        runCurrent()
+        val before = vm.state.value
+        vm.confirmAdd()
+        enabled = false
+        runCurrent()
+        assertNull(added)
+        assertEquals(before, vm.state.value)
+    }
+
+    @Test fun `off during favorite addition checkpoint retains nonce without sending`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        var additions = 0
+        val delegate = testCheckpointFactory().open()
+        val ready = CompletableDeferred<Unit>()
+        val nonces = mutableListOf<String>()
+        val checkpoint = object : BettingCheckpointSession by delegate {
+            override suspend fun beginOperation(id: String, kind: String) {
+                nonces += id
+                ready.await()
+                delegate.beginOperation(id, kind)
+            }
+        }
+        val vm = FavoriteBetsViewModel(
+            GetFavoriteBetsUseCase { favoriteResult },
+            GetBettingParametersUseCase { parameterResult },
+            DeleteFavoriteBetUseCase { AppResult.Success(Unit) },
+            AddFavoriteBetToCartUseCase { _, _ ->
+                additions++
+                addResult
+            },
+            FixedCoroutineDispatchers(queued),
+            checkpointSession = checkpoint,
+            canStartOperation = { enabled }
+        )
+        runCurrent()
+        vm.requestAdd(favorite)
+        runCurrent()
+        vm.confirmAdd()
+        runCurrent()
+        assertEquals(1, nonces.size)
+        enabled = false
+        ready.complete(Unit)
+        runCurrent()
+        assertEquals(0, additions)
+        assertEquals(nonces.single(), delegate.read()?.uncertainOperation?.id)
+        assertEquals(favorite, vm.state.value.addCandidate)
+    }
+
+    @Test fun `favorite cart addition already sent completes after off once`() = runTest {
+        val queued = StandardTestDispatcher(testScheduler)
+        Dispatchers.setMain(queued)
+        var enabled = true
+        var additions = 0
+        val response = CompletableDeferred<AppResult<ShoppingCart>>()
+        val vm = FavoriteBetsViewModel(
+            GetFavoriteBetsUseCase { favoriteResult },
+            GetBettingParametersUseCase { parameterResult },
+            DeleteFavoriteBetUseCase { AppResult.Success(Unit) },
+            AddFavoriteBetToCartUseCase { _, _ ->
+                additions++
+                response.await()
+            },
+            FixedCoroutineDispatchers(queued),
+            canStartOperation = { enabled }
+        )
+        runCurrent()
+        vm.requestAdd(favorite)
+        runCurrent()
+        vm.confirmAdd()
+        runCurrent()
+        assertEquals(1, additions)
+        enabled = false
+        response.complete(addResult)
+        runCurrent()
+        vm.confirmAdd()
+        runCurrent()
+        assertEquals(1, additions)
+        assertTrue(vm.state.value.addedToCart)
+    }
+
     private fun viewModel(
         autoLoad: Boolean = true,
         onRead: () -> Unit = {},
         isSessionCurrent: () -> Boolean = { true },
         parameters: suspend () -> AppResult<BettingParameters> = { parameterResult },
         favorites: suspend () -> AppResult<List<FavoriteBet>> = { favoriteResult },
-    ): FavoriteBetsViewModel {
-        val dispatcher = UnconfinedTestDispatcher()
-        return FavoriteBetsViewModel(
-            GetFavoriteBetsUseCase { modality ->
-                onRead()
-                filter = modality
-                favorites()
-            },
-            GetBettingParametersUseCase { parameters() },
-            DeleteFavoriteBetUseCase { id ->
-                deleted = id
-                deleteResult
-            },
-            AddFavoriteBetToCartUseCase { id, options ->
-                added = id to options
-                addResult
-            },
-            FixedCoroutineDispatchers(dispatcher),
-            autoLoad = autoLoad,
-            isSessionCurrent = isSessionCurrent
-        )
-    }
+        canStartOperation: () -> Boolean = { true },
+        io: CoroutineDispatcher = UnconfinedTestDispatcher(),
+    ): FavoriteBetsViewModel = FavoriteBetsViewModel(
+        GetFavoriteBetsUseCase { modality ->
+            onRead()
+            filter = modality
+            favorites()
+        },
+        GetBettingParametersUseCase { parameters() },
+        DeleteFavoriteBetUseCase { id ->
+            deleted = id
+            deleteResult
+        },
+        AddFavoriteBetToCartUseCase { id, options ->
+            added = id to options
+            addResult
+        },
+        FixedCoroutineDispatchers(io),
+        autoLoad = autoLoad,
+        isSessionCurrent = isSessionCurrent,
+        canStartOperation = canStartOperation
+    )
 
     private fun game(modality: LotteryModality, type: String, recurring: List<Int> = emptyList()) =
         LotteryGameParameters(modality, 1, "", 60, 6, 20, 15, recurring, emptyList(), contestType = type)

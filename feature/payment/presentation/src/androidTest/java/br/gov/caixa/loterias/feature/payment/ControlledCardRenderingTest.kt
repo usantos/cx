@@ -10,6 +10,7 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -65,7 +66,7 @@ class ControlledCardRenderingTest {
     }
 
     @Test fun capturePurchaseProcessingWithoutFinancialOperation() {
-        compose.setContent {
+        compose.setFeatureContent {
             val context = androidx.compose.ui.platform.LocalContext.current
             val model =
                 remember { PaymentTerminalViewModel(paymentScreens(context::getString).first { it.route == "payment/confirmation" }) }
@@ -78,7 +79,7 @@ class ControlledCardRenderingTest {
     }
 
     private fun show(americanExpress: Boolean = false) {
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember {
                 PaymentCardViewModel(
                     paymentMethodId = 1, savedCardId = "CONTROLLED-CARD",

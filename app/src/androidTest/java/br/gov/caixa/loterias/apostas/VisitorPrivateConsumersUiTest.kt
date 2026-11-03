@@ -1,11 +1,12 @@
 package br.gov.caixa.loterias.apostas
 
-import androidx.compose.runtime.*
-import androidx.compose.ui.test.*
-import org.junit.Assert.*
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -37,6 +38,7 @@ import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SuspendAcc
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.route.ResponsibleGamingRoute
 import br.gov.caixa.loterias.feature.responsiblegaming.presentation.viewmodel.ResponsibleGamingViewModel
 import java.util.concurrent.atomic.AtomicInteger
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
@@ -47,12 +49,16 @@ class VisitorPrivateConsumersUiTest {
     @Test fun visitorFavoritesRenderInitialIntroAndFilterWithoutPrivateReadOrEmptyClaim() {
         val reads = AtomicInteger()
         val vm = FavoriteBetsViewModel(
-            GetFavoriteBetsUseCase { reads.incrementAndGet(); AppResult.Success(emptyList()) },
+            GetFavoriteBetsUseCase {
+                reads.incrementAndGet()
+                AppResult.Success(emptyList())
+            },
             GetBettingParametersUseCase { error("Parameters must also be deferred") },
             DeleteFavoriteBetUseCase { error("Unexpected mutation") },
-            AddFavoriteBetToCartUseCase { _, _ -> error("Unexpected mutation") }, autoLoad = false,
+            AddFavoriteBetToCartUseCase { _, _ -> error("Unexpected mutation") },
+            autoLoad = false
         )
-        compose.setContent { LoteriasCaixaDSTheme { FavoriteBetsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { FavoriteBetsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
         compose.waitForIdle()
         compose.onNodeWithText("Aqui ficam seus números favoritos, prontos pra você jogar sempre que precisar.").assertExists()
         compose.onNodeWithText("Selecione a modalidade").assertExists()
@@ -63,14 +69,19 @@ class VisitorPrivateConsumersUiTest {
 
     @Test fun visitorFavoriteCartsRenderInitialIntroWithoutPrivateReadOrEmptyClaim() {
         val reads = AtomicInteger()
-        val vm = FavoriteCartsViewModel(null,
-            GetFavoriteCartsUseCase { reads.incrementAndGet(); AppResult.Success(emptyList()) },
+        val vm = FavoriteCartsViewModel(
+            null,
+            GetFavoriteCartsUseCase {
+                reads.incrementAndGet()
+                AppResult.Success(emptyList())
+            },
             GetFavoriteCartBetsUseCase { error("Unexpected detail read") },
             DeleteFavoriteCartUseCase { error("Unexpected mutation") },
             DeleteFavoriteCartBetUseCase { _, _ -> error("Unexpected mutation") },
-            AddFavoriteCartToCurrentUseCase { _, _ -> error("Unexpected mutation") }, autoLoad = false,
+            AddFavoriteCartToCurrentUseCase { _, _ -> error("Unexpected mutation") },
+            autoLoad = false
         )
-        compose.setContent { LoteriasCaixaDSTheme { FavoriteCartsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { FavoriteCartsRoute(vm, {}, {}, {}, privateDataEnabled = false) } }
         compose.waitForIdle()
         compose.onNodeWithText("Aqui estão todos os seus carrinhos favoritos.").assertExists()
         compose.onNodeWithText("Você pode excluir, detalhar e transformar no seu carrinho atual.").assertExists()
@@ -80,24 +91,29 @@ class VisitorPrivateConsumersUiTest {
 
     @Test fun visitorCardsRenderNativeRegisteredCardsHeadingWithoutPrivateReadOrEmptyClaim() {
         val reads = AtomicInteger()
-        val vm = PaymentViewModel(PaymentMode.CARDS,
+        val vm = PaymentViewModel(
+            PaymentMode.CARDS,
             getMethods = GetPaymentMethodsUseCase { error("Methods must be deferred") },
-            getCards = GetSavedCardsUseCase { reads.incrementAndGet(); AppResult.Success(emptyList()) },
+            getCards = GetSavedCardsUseCase {
+                reads.incrementAndGet()
+                AppResult.Success(emptyList())
+            },
             deleteCard = DeleteSavedCardUseCase { _, _ -> error("Unexpected mutation") },
             generatePixCharge = GeneratePixChargeUseCase { error("Unexpected mutation") },
             getPurchaseProgress = GetPurchaseProgressUseCase { error("Unexpected purchase read") },
             validateDam = ValidateDamUseCase { error("Unexpected validation") },
             getCurrentCart = GetCurrentCartUseCase { error("Unexpected private cart read") },
             recordRecentPurchase = RecordRecentPurchaseUseCase { error("Unexpected mutation") },
-            clock = java.time.Clock.systemUTC(), autoLoad = false,
+            clock = java.time.Clock.systemUTC(), autoLoad = false
         )
-        compose.setContent { LoteriasCaixaDSTheme {
-            PaymentDataRoute(
-                PaymentMode.CARDS, vm,
-                onBack = {}, onHelp = {}, onPix = {}, onAddCard = {}, onOpenCard = {}, onApproved = {},
-                onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {}, privateDataEnabled = false
-            )
-        }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                PaymentDataRoute(
+                    PaymentMode.CARDS, vm,
+                    onBack = {}, onHelp = {}, onPix = {}, onAddCard = {}, onOpenCard = {}, onApproved = {},
+                    onHome = {}, onPurchases = {}, onRedirect = {}, onRegistration = {}, privateDataEnabled = false
+                )
+            }
         }
         compose.waitForIdle()
         compose.onNodeWithText("Cartões cadastrados").assertExists()
@@ -118,7 +134,7 @@ class VisitorPrivateConsumersUiTest {
             SuspendAccountUseCase { error("Unexpected mutation") },
             autoLoad = false
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { ResponsibleGamingRoute("responsible/form", vm, {}, {}, {}, privateDataEnabled = false) }
         }
         compose.waitForIdle()

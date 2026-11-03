@@ -17,6 +17,7 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
@@ -30,9 +31,9 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingAc
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.feature.home.presentation.route.HomeRoute
 import br.gov.caixa.loterias.feature.home.navigation.HomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration
+import br.gov.caixa.loterias.feature.home.presentation.route.HomeRoute
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase
 import java.math.BigDecimal
@@ -126,7 +127,7 @@ class HomeExternalLinkTest {
                 br.gov.caixa.loterias.core.common.time.ServerTimeSource { java.time.Instant.EPOCH }
             )
         )
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(
                 LocalUriHandler provides handler,
                 LocalHomeRuntimeConfiguration provides HomeRuntimeConfiguration(

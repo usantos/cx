@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
@@ -25,7 +24,6 @@ import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentPre
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentRedirects
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.PaymentSavedCards
 import br.gov.caixa.loterias.feature.payment.presentation.coordinator.SavedPixRestoration
-import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentMode
@@ -51,6 +49,7 @@ class PaymentViewModel(
     private val savedStateHandle: SavedStateHandle? = null,
     autoLoad: Boolean = true,
     private val isSessionCurrent: () -> Boolean = { true },
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val pixRestoration = if (mode == PaymentMode.PIX) savedStateHandle?.let { SavedPixRestoration(it, ownerKey) } else null
     private val mutableState = reduxStateStore<PaymentUiState, PaymentAction>(
@@ -64,7 +63,7 @@ class PaymentViewModel(
     private val methods = PaymentMethodsLoading(mutableState, getMethods, getCards, getCurrentCart, ::applyFailure)
     private val cards = PaymentSavedCards(
         mutableState, viewModelScope, dispatchers, selectedPaymentMethodId,
-        getMethods, getCards, deleteCard, isSessionCurrent, ::applyFailure
+        getMethods, getCards, deleteCard, isSessionCurrent, canStartOperation, ::applyFailure
     )
     private val prePurchase = PaymentPrePurchase(mutableState, viewModelScope, dispatchers, validateDam, ::applyFailure)
     private val pix = PaymentPixOperations(
@@ -79,7 +78,7 @@ class PaymentViewModel(
     }
 
     fun load() = viewModelScope.launch(dispatchers.io) {
-        if (!isSessionCurrent()) return@launch
+        if (!isSessionCurrent() || !canStartOperation()) return@launch
         if (state.value.redirect != null || state.value.redirectPaused || state.value.registrationPending ||
             state.value.notice != null
         ) {
@@ -133,7 +132,9 @@ class PaymentViewModel(
 
     fun cancelAddCard() = mutableState.dispatch(PaymentAction.CardAdditionCancelled)
 
-    fun confirmDelete() = cards.confirmDelete()
+    fun confirmDelete() {
+        if (canStartOperation()) cards.confirmDelete()
+    }
 
     fun setPixScreenActive(active: Boolean) = pix.setScreenActive(active)
 

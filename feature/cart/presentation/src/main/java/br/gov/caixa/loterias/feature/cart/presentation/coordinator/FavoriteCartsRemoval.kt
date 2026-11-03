@@ -19,12 +19,14 @@ internal class FavoriteCartsRemoval(
     private val deleteFavoriteCart: DeleteFavoriteCartUseCase,
     private val deleteFavoriteCartBet: DeleteFavoriteCartBetUseCase,
     private val betsCache: MutableMap<Long, List<FavoriteCartBet>>,
-    private val loading: FavoriteCartsLoading
+    private val loading: FavoriteCartsLoading,
+    private val canStartOperation: () -> Boolean,
 ) {
 
     fun confirmCartRemoval() {
         val id = mutableState.value.pendingCartRemoval ?: return
         viewModelScope.launch(dispatchers.io) {
+            if (!canStartOperation()) return@launch
             mutableState.dispatch(FavoriteCartsAction.CartRemovalStarted)
             when (val result = deleteFavoriteCart(id)) {
                 is AppResult.Success -> {
@@ -41,6 +43,7 @@ internal class FavoriteCartsRemoval(
         val id = mutableState.value.pendingBetRemoval ?: return
         val favoriteId = cartId ?: return
         viewModelScope.launch(dispatchers.io) {
+            if (!canStartOperation()) return@launch
             mutableState.dispatch(FavoriteCartsAction.BetRemovalStarted)
             if (mutableState.value.bets.size <= 1) {
                 when (val result = deleteFavoriteCart(favoriteId)) {

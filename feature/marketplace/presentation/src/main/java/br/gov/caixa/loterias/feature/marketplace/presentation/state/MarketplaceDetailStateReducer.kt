@@ -6,6 +6,7 @@ internal sealed interface MarketplaceDetailFavoriteAction : MarketplaceDetailSta
 
 internal sealed interface MarketplaceDetailStateAction {
     data class FavoriteRequested(val favorite: Boolean) : MarketplaceDetailFavoriteAction
+    data object FavoriteWriteAborted : MarketplaceDetailFavoriteAction
     data object FavoriteStarted : MarketplaceDetailFavoriteAction
     data class FavoriteSaved(val favorite: Boolean) : MarketplaceDetailFavoriteAction
     data class FavoriteFailed(val message: String) : MarketplaceDetailFavoriteAction
@@ -13,6 +14,7 @@ internal sealed interface MarketplaceDetailStateAction {
     data object FavoriteErrorDismissed : MarketplaceDetailFavoriteAction
     data object SharesIncreased : MarketplaceDetailStateAction
     data object SharesDecreased : MarketplaceDetailStateAction
+    data object CartAdditionAborted : MarketplaceDetailStateAction
     data object CartAdditionStarted : MarketplaceDetailStateAction
     data class CartAdditionFailed(val message: String) : MarketplaceDetailStateAction
     data class CartReservationReceived(val confirmation: MarketplacePoolConfirmation) : MarketplaceDetailStateAction
@@ -31,6 +33,8 @@ internal fun reduceMarketplaceDetailState(state: MarketplaceDetailUiState, actio
         MarketplaceDetailStateAction.SharesIncreased -> reduceMarketplaceDetailStateSharesIncreased(state)
 
         MarketplaceDetailStateAction.SharesDecreased -> reduceMarketplaceDetailStateSharesDecreased(state)
+
+        MarketplaceDetailStateAction.CartAdditionAborted -> state.copy(isAddingToCart = false)
 
         MarketplaceDetailStateAction.CartAdditionStarted -> state.copy(isAddingToCart = true, addToCartError = null)
 
@@ -67,6 +71,7 @@ private fun reduceMarketplaceDetailFavoriteState(
     action: MarketplaceDetailFavoriteAction,
 ): MarketplaceDetailUiState = when (action) {
     is MarketplaceDetailStateAction.FavoriteRequested -> state.copy(pendingFavorite = action.favorite, favoriteError = null)
+    MarketplaceDetailStateAction.FavoriteWriteAborted -> state.copy(isUpdatingFavorite = false)
     MarketplaceDetailStateAction.FavoriteStarted -> state.copy(pendingFavorite = null, isUpdatingFavorite = true, favoriteError = null)
     is MarketplaceDetailStateAction.FavoriteSaved -> state.copy(favoriteLottery = action.favorite, isUpdatingFavorite = false)
     is MarketplaceDetailStateAction.FavoriteFailed -> state.copy(isUpdatingFavorite = false, favoriteError = action.message)

@@ -11,8 +11,11 @@ data class MarketplaceFilterEntry(
     val resultDestination: String,
 )
 
-fun marketplaceFilterEntry(filter: MarketplaceFilter, baseline: MarketplaceFilter,
-    appliedRetailer: Retailer?, scopedRetailer: Retailer?,
+fun marketplaceFilterEntry(
+    filter: MarketplaceFilter,
+    baseline: MarketplaceFilter,
+    appliedRetailer: Retailer?,
+    scopedRetailer: Retailer?,
 ): MarketplaceFilterEntry = MarketplaceFilterEntry(
     initialFilter = scopedRetailer?.let { filter.withLottery(it.id.toString()) } ?: filter,
     clearFilter = scopedRetailer?.let { baseline.withLottery(it.id.toString()) } ?: baseline,

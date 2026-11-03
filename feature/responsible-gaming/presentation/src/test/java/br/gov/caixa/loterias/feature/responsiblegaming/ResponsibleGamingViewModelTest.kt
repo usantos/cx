@@ -379,6 +379,47 @@ class ResponsibleGamingViewModelTest {
         assertNull(model.state.value.errorMessage)
     }
 
+    @Test fun `expired suspension lease cannot begin a queued account suspension`() = runTest {
+        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
+        var current = true
+        var calls = 0
+        val model = viewModel("responsible/suspension", ioDispatcher = io, isSessionCurrent = { current }, suspend = {
+            calls++
+            AppResult.Success(AccountSuspension(true, "24 horas"))
+        })
+        model.onAction(ResponsibleGamingAction.SelectSuspensionPeriod("24 horas"))
+        model.onAction(ResponsibleGamingAction.ToggleSuspensionAcknowledgement)
+        model.onAction(ResponsibleGamingAction.ConfirmSuspension)
+        model.onAction(ResponsibleGamingAction.SubmitSuspension)
+        current = false
+        io.scheduler.advanceUntilIdle()
+        assertEquals(0, calls)
+        assertNull(model.state.value.suspension)
+    }
+
+    @Test fun `a suspension response from a replaced lease cannot publish success`() = runTest {
+        val io = kotlinx.coroutines.test.StandardTestDispatcher(testScheduler)
+        var current = true
+        var calls = 0
+        val response = kotlinx.coroutines.CompletableDeferred<AppResult<AccountSuspension>>()
+        val model = viewModel("responsible/suspension", ioDispatcher = io, isSessionCurrent = { current }, suspend = {
+            calls++
+            response.await()
+        })
+        model.onAction(ResponsibleGamingAction.SelectSuspensionPeriod("24 horas"))
+        model.onAction(ResponsibleGamingAction.ToggleSuspensionAcknowledgement)
+        model.onAction(ResponsibleGamingAction.ConfirmSuspension)
+        model.onAction(ResponsibleGamingAction.SubmitSuspension)
+        io.scheduler.runCurrent()
+        assertEquals(1, calls)
+        current = false
+        val stale = model.state.value
+        response.complete(AppResult.Success(AccountSuspension(true, "24 horas")))
+        io.scheduler.advanceUntilIdle()
+        assertEquals(stale, model.state.value)
+        assertNull(model.state.value.suspension)
+    }
+
     private fun viewModel(
         route: String,
         ioDispatcher: kotlinx.coroutines.CoroutineDispatcher = dispatcherRule.dispatcher,

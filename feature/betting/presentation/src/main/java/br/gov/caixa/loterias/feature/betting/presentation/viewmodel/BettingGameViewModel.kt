@@ -69,6 +69,7 @@ class BettingGameViewModel(
         Instant.now()
     },
     private val getSpecialContests: GetBettingSpecialContestsUseCase? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private var acknowledgedCheckpoint: BettingCheckpoint? = null
     private var operationId: String? = null
@@ -242,7 +243,11 @@ class BettingGameViewModel(
 
     private fun healthyAction(action: () -> Unit) {
         val queue = commands
-        if (queue == null) synchronized(mutableState) { action() } else queue.action { if (!recoveryLocked) action() }
+        if (queue == null) {
+            synchronized(mutableState) { if (canStartOperation()) action() }
+        } else {
+            queue.action { if (!recoveryLocked && canStartOperation()) action() }
+        }
     }
 
     /** A navegação efetiva entra na fila após cada seleção e etapa confirmada. */

@@ -1,0 +1,66 @@
+apply plugin: 'com.android.dynamic-feature'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.feature.marketplace.ui'
+    compileSdk 36
+    defaultConfig {
+        minSdk 29
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    flavorDimensions 'environment'
+    productFlavors {
+        prd { dimension 'environment' }
+        tqs { dimension 'environment'; isDefault = true }
+        automacao { dimension 'environment' }
+    }
+    buildFeatures { compose = true }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+    testOptions.unitTests.all {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
+}
+jacoco { toolVersion = '0.8.13' }
+dependencies {
+    testImplementation libs.androidx.constraintlayout
+    androidTestImplementation libs.androidx.constraintlayout
+    testImplementation project(':feature:betting:domain')
+    androidTestImplementation project(':feature:betting:domain')
+    testImplementation project(':feature:retail:domain')
+    androidTestImplementation project(':feature:retail:domain')
+    androidTestImplementation project(':feature:marketplace:presentation')
+    implementation libs.androidx.compose.ui.tooling.preview
+    compileOnly project(':feature:betting:domain')
+    compileOnly project(':feature:retail:domain')
+    implementation project(':app')
+    compileOnly project(':feature:marketplace:presentation')
+    implementation project(':core:design-system')
+    implementation project(':core:domain')
+    implementation project(':core:presentation')
+    implementation project(':feature:marketplace:domain')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.compose.webview
+    implementation libs.kotlinx.coroutines.core
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    testImplementation project(':core:testing')
+    testImplementation project(':core:navigation')
+    testImplementation project(':feature:marketplace:presentation')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation project(':core:testing')
+    debugImplementation libs.androidx.compose.ui.test.manifest
+}

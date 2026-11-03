@@ -4,11 +4,9 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentState
 import kotlinx.coroutines.launch
 
 internal class PaymentPrePurchase(

@@ -22,9 +22,14 @@ import org.junit.Test
 class MarketplaceDetailNativeRecoveryTest {
     @get:Rule val dispatcherRule = MainDispatcherRule()
 
-    @Test fun `missing first millionaria clovers retries at most four GETs then presents final payload`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `missing first millionaria clovers retries at most four GETs then presents final payload`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         var calls = 0
-        val vm = model { calls++; AppResult.Success(detail()) }
+        val vm = model {
+            calls++
+            AppResult.Success(detail())
+        }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(4, calls)
         assertEquals(false, vm.state.value.detail?.bets?.first()?.cloversLoaded)
@@ -34,7 +39,10 @@ class MarketplaceDetailNativeRecoveryTest {
 
     @Test fun `recovery stops immediately once clovers are loaded`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
-        val vm = model { calls++; AppResult.Success(detail(loaded = calls >= 2)) }
+        val vm = model {
+            calls++
+            AppResult.Success(detail(loaded = calls >= 2))
+        }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(2, calls)
         assertEquals(true, vm.state.value.detail?.bets?.first()?.cloversLoaded)
@@ -42,7 +50,10 @@ class MarketplaceDetailNativeRecoveryTest {
 
     @Test fun `resume refresh does not reopen the native three retry budget`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
-        val vm = model { calls++; AppResult.Success(detail()) }
+        val vm = model {
+            calls++
+            AppResult.Success(detail())
+        }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.onResume()
         vm.onResume()
@@ -51,10 +62,17 @@ class MarketplaceDetailNativeRecoveryTest {
     }
 
     @Test fun `empty loaded clovers other modalities and missing later clovers do not retry`() = runTest(dispatcherRule.dispatcher) {
-        for (payload in listOf(detail(loaded = true), detail().copy(modality = "MEGA_SENA"),
-            detail(loaded = true).copy(bets = listOf(bet(true), bet(false))), detail().copy(bets = emptyList()))) {
+        for (payload in listOf(
+            detail(loaded = true),
+            detail().copy(modality = "MEGA_SENA"),
+            detail(loaded = true).copy(bets = listOf(bet(true), bet(false))),
+            detail().copy(bets = emptyList())
+        )) {
             var calls = 0
-            model { calls++; AppResult.Success(payload) }
+            model {
+                calls++
+                AppResult.Success(payload)
+            }
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertEquals(1, calls)
         }
@@ -62,7 +80,10 @@ class MarketplaceDetailNativeRecoveryTest {
 
     @Test fun `failure during clover recovery stops retrying and exposes load failure`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
-        val vm = model { calls++; if (calls == 1) AppResult.Success(detail()) else AppResult.Failure(AppError.Network) }
+        val vm = model {
+            calls++
+            if (calls == 1) AppResult.Success(detail()) else AppResult.Failure(AppError.Network)
+        }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(2, calls)
         assertNull(vm.state.value.detail)
@@ -72,7 +93,10 @@ class MarketplaceDetailNativeRecoveryTest {
     @Test fun `failed resume refresh keeps the last rendered detail and quantity like native`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
         val previous = detail(loaded = true)
-        val vm = model { calls++; if (calls == 1) AppResult.Success(previous) else AppResult.Failure(AppError.Network) }
+        val vm = model {
+            calls++
+            if (calls == 1) AppResult.Success(previous) else AppResult.Failure(AppError.Network)
+        }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.increaseShares()
         vm.onResume()
@@ -89,24 +113,41 @@ class MarketplaceDetailNativeRecoveryTest {
         val buying = model { AppResult.Success(soldOut) }
         val reading = model(purchaseEnabled = false) { AppResult.Success(soldOut) }
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals("Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão", buying.state.value.soldOutNotice)
+        assertEquals(
+            "Apostas sem quantidade minina necessaria, vamos voltar para a área principal do aposta bolão",
+            buying.state.value.soldOutNotice
+        )
         assertEquals(0, buying.state.value.selectedShares)
         assertNull(reading.state.value.soldOutNotice)
     }
 
-    @Test fun `temporary special name follows the detail contest identity with unavailable configuration fallback`() = runTest(dispatcherRule.dispatcher) {
-        val mega = detail(loaded = true).copy(modality = "MEGA_SENA", contest = 3000, contestType = 2)
-        val configured = model(specials = GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3000)) }) { AppResult.Success(mega) }
-        val otherContest = model(specials = GetMarketplaceSpecialContestsUseCase { AppResult.Success(MarketplaceSpecialContests(3001)) }) { AppResult.Success(mega) }
-        val unavailable = model(specials = GetMarketplaceSpecialContestsUseCase { AppResult.Failure(AppError.Network) }) { AppResult.Success(mega) }
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals("mega-sena\n30 anos", configured.state.value.specialName)
-        assertNull(otherContest.state.value.specialName)
-        assertNull(unavailable.state.value.specialName)
-        assertEquals(mega, unavailable.state.value.detail)
-    }
+    @Test fun `temporary special name follows the detail contest identity with unavailable configuration fallback`() =
+        runTest(dispatcherRule.dispatcher) {
+            val mega = detail(loaded = true).copy(modality = "MEGA_SENA", contest = 3000, contestType = 2)
+            val configured =
+                model(
+                    specials = GetMarketplaceSpecialContestsUseCase {
+                        AppResult.Success(MarketplaceSpecialContests(3000))
+                    }
+                ) { AppResult.Success(mega) }
+            val otherContest =
+                model(
+                    specials = GetMarketplaceSpecialContestsUseCase {
+                        AppResult.Success(MarketplaceSpecialContests(3001))
+                    }
+                ) { AppResult.Success(mega) }
+            val unavailable =
+                model(specials = GetMarketplaceSpecialContestsUseCase { AppResult.Failure(AppError.Network) }) { AppResult.Success(mega) }
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertEquals("mega-sena\n30 anos", configured.state.value.specialName)
+            assertNull(otherContest.state.value.specialName)
+            assertNull(unavailable.state.value.specialName)
+            assertEquals(mega, unavailable.state.value.detail)
+        }
 
-    private fun model(purchaseEnabled: Boolean = true, specials: GetMarketplaceSpecialContestsUseCase? = null,
+    private fun model(
+        purchaseEnabled: Boolean = true,
+        specials: GetMarketplaceSpecialContestsUseCase? = null,
         load: suspend () -> AppResult<MarketplacePoolDetail>,
     ) = MarketplaceDetailViewModel(
         "B1",

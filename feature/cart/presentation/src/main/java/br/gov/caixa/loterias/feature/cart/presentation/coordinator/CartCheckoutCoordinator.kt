@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.cart.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
@@ -14,13 +13,11 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUs
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequestUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartCheckoutAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartLocationAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
-import java.time.Clock
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -146,7 +146,20 @@ class RapidListViewModelTest {
         assertFalse(vm.state.value.readyForPayment)
     }
 
-    private fun viewModel(): RapidListViewModel {
+    @Test fun `disabled rapid list keeps generated cart and blocks new generation and removal`() = runTest {
+        var enabled = true
+        val vm = viewModel(canStartOperation = { enabled })
+        advanceUntilIdle()
+        enabled = false
+        vm.generate(4)
+        vm.remove(item)
+        advanceUntilIdle()
+        assertEquals(0, quantity)
+        assertNull(removed)
+        assertEquals(cart, vm.state.value.cart)
+    }
+
+    private fun viewModel(canStartOperation: () -> Boolean = { true }): RapidListViewModel {
         val dispatcher = UnconfinedTestDispatcher()
         return RapidListViewModel(
             GenerateRapidBetsUseCase { value ->
@@ -158,7 +171,8 @@ class RapidListViewModelTest {
                 removeResult
             },
             ValidateCartUseCase { validationResult },
-            FixedCoroutineDispatchers(dispatcher)
+            FixedCoroutineDispatchers(dispatcher),
+            canStartOperation = canStartOperation
         )
     }
 }

@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.cart.presentation.route
 
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.presentation.components.FavoriteConfirmDialog
 import br.gov.caixa.loterias.feature.cart.presentation.components.SpecialSelectionDialog
 import br.gov.caixa.loterias.feature.cart.presentation.screen.FavoriteCartsActions

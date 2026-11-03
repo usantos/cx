@@ -106,6 +106,8 @@ private fun reduceMarketplaceCartState(state: MarketplaceUiState, action: Market
         )
     }
 
+    is MarketplaceStateAction.CartAdditionAborted -> state.copy(addingPoolCodes = state.addingPoolCodes - action.poolCode)
+
     is MarketplaceStateAction.CartAdditionFailed -> state.copy(
         addingPoolCodes = state.addingPoolCodes - action.poolCode,
         actionError = action.message
@@ -139,6 +141,10 @@ private fun reduceMarketplaceRetailerState(state: MarketplaceUiState, action: Ma
             }
         )
 
+        is MarketplaceStateAction.RetailerRemovalAborted -> state.copy(
+            updatingFavoriteLotteryIds = state.updatingFavoriteLotteryIds - action.retailerId
+        )
+
         is MarketplaceStateAction.RetailerRemovalFailed -> state.copy(
             updatingFavoriteLotteryIds = state.updatingFavoriteLotteryIds - action.retailerId,
             actionError = action.message
@@ -166,6 +172,10 @@ private fun reduceMarketplacePoolState(state: MarketplaceUiState, action: Market
         pools = state.pools.map { item ->
             if (item.lotteryId == action.retailerId) item.copy(favoriteLottery = action.favorite) else item
         },
+        updatingFavoriteLotteryIds = state.updatingFavoriteLotteryIds - action.retailerId
+    )
+
+    is MarketplaceStateAction.PoolFavoriteWriteAborted -> state.copy(
         updatingFavoriteLotteryIds = state.updatingFavoriteLotteryIds - action.retailerId
     )
 

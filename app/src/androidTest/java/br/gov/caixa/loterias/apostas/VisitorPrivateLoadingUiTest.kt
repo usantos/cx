@@ -25,8 +25,9 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
 import br.gov.caixa.loterias.core.navigation.workflow.rememberPrivateEntryKey
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
@@ -66,7 +67,7 @@ class VisitorPrivateLoadingUiTest {
     private var model: TicketsViewModel? = null
 
     private fun show(route: String) {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 val entryKey = rememberPrivateEntryKey(owner)
@@ -146,22 +147,24 @@ class VisitorPrivateLoadingUiTest {
     @Test fun authenticatedHistoryRestorationReusesLoadedViewModelWithoutSecondPrivateQuery() {
         val restoration = StateRestorationTester(compose)
         restoration.setContent {
-            LoteriasCaixaDSTheme {
-                val entryKey = rememberPrivateEntryKey(first)
-                key(entryKey) {
-                    val vm = viewModel(key = "restored-history-$entryKey") {
-                        TicketsViewModel(
-                            GetConfirmedBetsUseCase {
-                                reads.add("bets:Owner A")
-                                AppResult.Success(emptyList())
-                            },
-                            GetPurchasesUseCase { error("Unexpected purchase read") },
-                            GetPurchaseBetsUseCase { error("Unexpected detail read") },
-                            CheckTicketUseCase { error("Unexpected ticket read") }
-                        )
+            InstalledFeatureTestContent {
+                LoteriasCaixaDSTheme {
+                    val entryKey = rememberPrivateEntryKey(first)
+                    key(entryKey) {
+                        val vm = viewModel(key = "restored-history-$entryKey") {
+                            TicketsViewModel(
+                                GetConfirmedBetsUseCase {
+                                    reads.add("bets:Owner A")
+                                    AppResult.Success(emptyList())
+                                },
+                                GetPurchasesUseCase { error("Unexpected purchase read") },
+                                GetPurchaseBetsUseCase { error("Unexpected detail read") },
+                                CheckTicketUseCase { error("Unexpected ticket read") }
+                            )
+                        }
+                        SideEffect { model = vm }
+                        ConfirmedBetsDataRoute(vm, {}, {}, privateDataEnabled = true)
                     }
-                    SideEffect { model = vm }
-                    ConfirmedBetsDataRoute(vm, {}, {}, privateDataEnabled = true)
                 }
             }
         }
@@ -196,28 +199,30 @@ class VisitorPrivateLoadingUiTest {
         var restoringLease: AuthenticatedSessionIdentity? = first
         val restoration = StateRestorationTester(compose)
         restoration.setContent {
-            LoteriasCaixaDSTheme {
-                val lease = restoringLease
-                val label = if (lease === first) "Lease A" else "Restored lease"
-                val entryKey = rememberPrivateEntryKey(lease)
-                // Altera a concessão atual somente após capturar o estado salvo e descartar a
-                // composição anterior, impedindo que as entradas de rememberSaveable tratem a alteração durante a execução.
-                DisposableEffect(Unit) { onDispose { restoringLease = replacement } }
-                key(entryKey) {
-                    val vm = viewModel(key = "lease-restored-history-$entryKey") {
-                        TicketsViewModel(
-                            GetConfirmedBetsUseCase {
-                                reads.add(label)
-                                AppResult.Success(listOf(ConfirmedBet(1, label, 2890, "01/09/2026", "Ativa", listOf(1, 2, 3))))
-                            },
-                            GetPurchasesUseCase { error("Unexpected purchase read") },
-                            GetPurchaseBetsUseCase { error("Unexpected detail read") },
-                            CheckTicketUseCase { error("Unexpected ticket read") },
-                            isSessionCurrent = { lease != null && restoringLease === lease }
-                        )
+            InstalledFeatureTestContent {
+                LoteriasCaixaDSTheme {
+                    val lease = restoringLease
+                    val label = if (lease === first) "Lease A" else "Restored lease"
+                    val entryKey = rememberPrivateEntryKey(lease)
+                    // Altera a concessão atual somente após capturar o estado salvo e descartar a
+                    // composição anterior, impedindo que as entradas de rememberSaveable tratem a alteração durante a execução.
+                    DisposableEffect(Unit) { onDispose { restoringLease = replacement } }
+                    key(entryKey) {
+                        val vm = viewModel(key = "lease-restored-history-$entryKey") {
+                            TicketsViewModel(
+                                GetConfirmedBetsUseCase {
+                                    reads.add(label)
+                                    AppResult.Success(listOf(ConfirmedBet(1, label, 2890, "01/09/2026", "Ativa", listOf(1, 2, 3))))
+                                },
+                                GetPurchasesUseCase { error("Unexpected purchase read") },
+                                GetPurchaseBetsUseCase { error("Unexpected detail read") },
+                                CheckTicketUseCase { error("Unexpected ticket read") },
+                                isSessionCurrent = { lease != null && restoringLease === lease }
+                            )
+                        }
+                        SideEffect { model = vm }
+                        ConfirmedBetsDataRoute(vm, {}, {}, privateDataEnabled = lease != null)
                     }
-                    SideEffect { model = vm }
-                    ConfirmedBetsDataRoute(vm, {}, {}, privateDataEnabled = lease != null)
                 }
             }
         }

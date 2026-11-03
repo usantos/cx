@@ -5,11 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.presentation.components.HomeDrawer
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -30,12 +31,17 @@ class DrawerNativeMenuParityTest {
         val label = view.findViewById<TextView>(native.resources.getIdentifier("titleItemGroupSideMenu", "id", pkg))
         label.text = "Minha área"
         label.typeface = native.resources.getFont(native.resources.getIdentifier("caixa_std_semi_bold", "font", pkg))
-        view.measure(View.MeasureSpec.makeMeasureSpec(width - (48 * density).toInt(), View.MeasureSpec.EXACTLY),
-            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+        view.measure(
+            View.MeasureSpec.makeMeasureSpec(width - (48 * density).toInt(), View.MeasureSpec.EXACTLY),
+            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        )
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        compose.setContent { LoteriasCaixaDSTheme {
-            HomeDrawer(features = HomeFeatureConfiguration(), userName = null, environmentLabel = null, onOpen = {}, onLogout = {}, onClose = {}, onExternalFailure = {})
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                HomeDrawer(features = HomeFeatureConfiguration(), userName = null, environmentLabel = null, onOpen = {
+                }, onLogout = {}, onClose = {}, onExternalFailure = {})
+            }
+        }
         val row = compose.onNodeWithText("Minha área").fetchSemanticsNode().boundsInRoot
         val text = compose.onNodeWithText("Minha área", useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
         assertEquals("Original row width inside the 24dp list padding", view.measuredWidth.toFloat(), row.width, 1f)

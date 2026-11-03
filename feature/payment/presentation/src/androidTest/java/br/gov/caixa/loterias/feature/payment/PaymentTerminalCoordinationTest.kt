@@ -14,6 +14,7 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentTerminalRoute
 import br.gov.caixa.loterias.feature.payment.presentation.screen.paymentScreens
 import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentTerminalViewModel
@@ -57,7 +58,7 @@ class PaymentTerminalCoordinationTest {
         lateinit var second: PaymentTerminalViewModel
         var complete = 0
         var back = 0
-        compose.setContent {
+        compose.setFeatureContent {
             first = remember { model(spec("payment/pix-guidance")) }
             second = remember { model(spec("payment/pix-guidance")) }
             LoteriasCaixaDSTheme { PaymentTerminalRoute(if (replace.value) second else first, { back++ }, { complete++ }) }
@@ -114,7 +115,7 @@ class PaymentTerminalCoordinationTest {
 
     @Test fun successUsesTheSameProcessingViewAndCanOmitItsSecondaryAction() {
         val destinations = mutableListOf<String>()
-        compose.setContent {
+        compose.setFeatureContent {
             val vm = remember { model(spec("payment/success").copy(secondaryAction = null)) }
             LoteriasCaixaDSTheme { PaymentTerminalRoute(vm, {}, {}, destinations::add) }
         }
@@ -128,7 +129,7 @@ class PaymentTerminalCoordinationTest {
         val replace = mutableStateOf(false)
         val first = mutableListOf<String>()
         val second = mutableListOf<String>()
-        compose.setContent {
+        compose.setFeatureContent {
             val vm = remember { model(spec("payment/confirmation")) }
             val onNavigate: (String) -> Unit = if (replace.value) {
                 { destination -> second.add(destination) }
@@ -153,7 +154,7 @@ class PaymentTerminalCoordinationTest {
         onNavigate: (String) -> Unit = {},
     ): PaymentTerminalViewModel {
         lateinit var vm: PaymentTerminalViewModel
-        compose.setContent {
+        compose.setFeatureContent {
             vm = remember { model(spec(route)) }
             LoteriasCaixaDSTheme { PaymentTerminalRoute(vm, onBack, onComplete, onNavigate) }
         }

@@ -4,21 +4,22 @@ import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
-import androidx.compose.ui.test.performSemanticsAction
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSRegularFontFamily
-import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
+import br.gov.caixa.loterias.feature.onboarding.presentation.route.OnboardingRoute
+import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import br.gov.caixa.loterias.feature.onboarding.presentation.route.OnboardingRoute
-import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.OnboardingViewModel
 
 @RunWith(AndroidJUnit4::class)
 class TutorialTypographyParityTest {
@@ -26,7 +27,7 @@ class TutorialTypographyParityTest {
 
     @Test fun introductionUsesThePackagedFuturaFacesAndLegacySizes() {
         val viewModel = OnboardingViewModel("onboarding/tutorial", CompleteIntroductionUseCase {})
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel, {}, {}, {}, {}, {}, {})
             }
@@ -47,7 +48,7 @@ class TutorialTypographyParityTest {
 
     @Test fun welcomePagesUseLegacyTypographyForEachTitleAndBody() {
         val viewModel = OnboardingViewModel("onboarding/introduction", CompleteIntroductionUseCase {})
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 OnboardingRoute(viewModel, {}, {}, {}, {}, {}, {})
             }

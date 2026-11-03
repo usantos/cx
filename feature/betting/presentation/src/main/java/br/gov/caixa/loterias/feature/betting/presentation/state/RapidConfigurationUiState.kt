@@ -1,12 +1,13 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
+import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import java.math.BigDecimal
 
 data class RapidConfigurationUiState(
     val loading: Boolean = true,
-    val serviceFailure: br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation = br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation(),
+    val serviceFailure: ServiceFailurePresentation = ServiceFailurePresentation(),
     val page: Int = 0,
     val minimumAmount: BigDecimal = BigDecimal.ZERO,
     val maximumAmount: BigDecimal = BigDecimal.ZERO,

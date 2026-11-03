@@ -25,6 +25,7 @@ sealed interface FavoriteCartsAction {
     data object ImportBetsLoaded : FavoriteCartsAction
     data class SpecialSelectionRequested(val id: Long, val regularName: String, val specialName: String) : FavoriteCartsAction
     data object ImportStarted : FavoriteCartsAction
+    data class ImportPreparationCancelled(val special: Boolean, val existing: Boolean) : FavoriteCartsAction
     data object Imported : FavoriteCartsAction
 }
 
@@ -114,6 +115,12 @@ private fun reduceFavoriteCartsImportState(state: FavoriteCartsUiState, action: 
         specialSelectionRequired = false,
         existingCartConfirmationRequired = false,
         errorMessage = null
+    )
+
+    is FavoriteCartsAction.ImportPreparationCancelled -> state.copy(
+        loading = false,
+        specialSelectionRequired = action.special,
+        existingCartConfirmationRequired = action.existing
     )
 
     FavoriteCartsAction.Imported -> state.copy(loading = false, pendingImportCartId = null, imported = true)

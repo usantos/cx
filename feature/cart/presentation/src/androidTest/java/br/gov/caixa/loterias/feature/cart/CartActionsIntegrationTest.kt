@@ -1,13 +1,22 @@
 package br.gov.caixa.loterias.feature.cart
 
 import androidx.compose.runtime.remember
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onLast
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTextInput
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
@@ -16,24 +25,26 @@ import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.CART_LOCATION_BLOCKED
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.CART_LOCATION_CONSENT
+import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
 import java.time.Instant
 import kotlinx.coroutines.Dispatchers
+import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import org.junit.Assert.assertEquals
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.CART_LOCATION_BLOCKED
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.CART_LOCATION_CONSENT
-import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
-import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 
 class CartActionsIntegrationTest {
     @get:Rule val compose = createComposeRule()
     private val calls = mutableListOf<String>()
-    private val individual = CartItem(1, CartItemKind.INDIVIDUAL_BET, "+Milionária", "", BigDecimal.TEN,
+    private val individual = CartItem(
+        1, CartItemKind.INDIVIDUAL_BET, "+Milionária", "", BigDecimal.TEN,
         modalityCode = "MAIS_MILIONARIA", contestNumber = 2800, numberQuantity = 6, recurringDraws = 2,
         selectedNumbers = listOf(listOf(1, 2, 3, 4, 5, 6)), selectedClovers = listOf(2, 4),
-        badges = setOf(CartItemBadge.RECURRING, CartItemBadge.MIRROR), complementaryLabel = "Complemento")
+        badges = setOf(CartItemBadge.RECURRING, CartItemBadge.MIRROR), complementaryLabel = "Complemento"
+    )
 
     @Test fun individualDetailsStayVisibleAndRemovalRequiresConfirmation() {
         show(listOf(individual))
@@ -105,10 +116,23 @@ class CartActionsIntegrationTest {
     }
 
     @Test fun comboAndPoolDetailsNavigateWithTheirActualIdentifiers() {
-        val combo = CartItem(8, CartItemKind.COMBO, "Combo", "Duas apostas", BigDecimal.TEN, comboBetCount = 2,
-            gameRows = listOf("Mega-Sena", "Quina"))
-        val pool = CartItem(9, CartItemKind.POOL_SHARE, "Bolão Mega", "", BigDecimal.TEN,
-            poolShare = CartPoolShare("ABC123", 2, 10, ""))
+        val combo = CartItem(
+            8,
+            CartItemKind.COMBO,
+            "Combo",
+            "Duas apostas",
+            BigDecimal.TEN,
+            comboBetCount = 2,
+            gameRows = listOf("Mega-Sena", "Quina")
+        )
+        val pool = CartItem(
+            9,
+            CartItemKind.POOL_SHARE,
+            "Bolão Mega",
+            "",
+            BigDecimal.TEN,
+            poolShare = CartPoolShare("ABC123", 2, 10, "")
+        )
         show(listOf(combo, pool))
         compose.onAllNodesWithText("mais detalhes").onFirst().performScrollTo().performClick()
         compose.onAllNodesWithText("mais detalhes").onLast().performScrollTo().performClick()
@@ -123,19 +147,27 @@ class CartActionsIntegrationTest {
     }
 
     @Test fun incompleteAccountIsSentToTheRequiredRegistrationStep() {
-        show(listOf(individual), account = CartPaymentAccountDecision.CompleteAccount(
-            br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.REGISTRATION))
+        show(
+            listOf(individual),
+            account = CartPaymentAccountDecision.CompleteAccount(
+                br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.REGISTRATION
+            )
+        )
         compose.onNodeWithText("Ir para pagamento").performClick()
         compose.runOnIdle { assertEquals(listOf("account"), calls) }
     }
 
-    private fun show(items: List<CartItem>, failFirst: Boolean = false, duplicateFavorite: Boolean = false, recentPurchase: Boolean = false,
-                     account: CartPaymentAccountDecision = CartPaymentAccountDecision.Allowed,
-                     location: CheckoutLocationStatus = CheckoutLocationStatus.IN_BRAZIL,
+    private fun show(
+        items: List<CartItem>,
+        failFirst: Boolean = false,
+        duplicateFavorite: Boolean = false,
+        recentPurchase: Boolean = false,
+        account: CartPaymentAccountDecision = CartPaymentAccountDecision.Allowed,
+        location: CheckoutLocationStatus = CheckoutLocationStatus.IN_BRAZIL,
     ) {
         var cart = ShoppingCart(1, BigDecimal.TEN, items)
         var first = true
-        compose.setContent {
+        compose.setFeatureContent {
             val vm = remember {
                 CartViewModel(
                     getCurrentCart = {

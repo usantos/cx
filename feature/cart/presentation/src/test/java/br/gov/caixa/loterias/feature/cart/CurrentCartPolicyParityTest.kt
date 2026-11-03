@@ -3,12 +3,14 @@ package br.gov.caixa.loterias.feature.cart
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import java.math.BigDecimal
-import org.junit.Assert.*
-import org.junit.Test
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.canClearCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.canFavoriteCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.currentCartModalityName
+import java.math.BigDecimal
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 /** CarrinhoActivity novo da CX usa os cartões exibidos, sem usar a contagem achatada legada. */
 class CurrentCartPolicyParityTest {

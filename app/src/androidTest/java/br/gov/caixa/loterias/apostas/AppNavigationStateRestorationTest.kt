@@ -9,7 +9,8 @@ import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
@@ -29,8 +30,10 @@ class AppNavigationStateRestorationTest {
         lateinit var navigation: AppNavigationState
         lateinit var session: AppSessionState
         restoration.setContent {
-            navigation = rememberAppNavigationState("owner")
-            session = rememberAppSessionState()
+            InstalledFeatureTestContent {
+                navigation = rememberAppNavigationState("owner")
+                session = rememberAppSessionState()
+            }
         }
         compose.runOnIdle {
             navigation.details.selectedPurchase = Purchase(17, "17/10/2026", "Paga", "Pix", BigDecimal.TEN)
@@ -66,7 +69,7 @@ class AppNavigationStateRestorationTest {
     @Test fun ownerChangeDiscardsPrivateDetailsAndResetsOwnerScopedRevision() {
         val owner = mutableStateOf("owner")
         lateinit var navigation: AppNavigationState
-        compose.setContent { navigation = rememberAppNavigationState(owner.value) }
+        compose.setFeatureContent { navigation = rememberAppNavigationState(owner.value) }
         compose.runOnIdle {
             navigation.marketplaceRevision = 7
             navigation.details.marketplaceFilter = MarketplaceFilter.forModality(2, 1)

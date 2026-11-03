@@ -3,7 +3,6 @@
 
 package br.gov.caixa.loterias.feature.onboarding
 
-import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -23,6 +22,8 @@ import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFil
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
@@ -39,16 +40,17 @@ import org.junit.Assert.assertSame
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class StartupDestinationJvmTest {
     @get:Rule
-    val compose = createAndroidComposeRule<ComponentActivity>()
+    val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val network = NetworkAvailability { ConnectionAvailability.CONNECTED }
 
     @Test
@@ -88,7 +90,7 @@ class StartupDestinationJvmTest {
         assertSame(complete, adapter.completeIntroduction)
         assertSame(dismiss, adapter.setBettingTutorialDismissed)
         assertSame(showIntro, adapter.shouldShowIntroduction)
-        compose.setContent { LoteriasCaixaDSTheme { adapter.StartupStatusDestination("onboarding/unavailable", { recovered++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { adapter.StartupStatusDestination("onboarding/unavailable", { recovered++ }) } }
         compose.onNodeWithText("UNAVAILABLE:false").assertIsDisplayed()
         compose.onNodeWithText("Retry validation").performClick()
         compose.onNodeWithText("UNAVAILABLE:true").assertIsDisplayed()
@@ -106,7 +108,7 @@ class StartupDestinationJvmTest {
     @Test
     fun updateScreenUsesProvidedBrandSlotsAndLaunchesItsOwnUpdateAction() {
         var updates = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 StartupStatusScreen(
                     StartupStatusKind.UPDATE_REQUIRED,
@@ -133,7 +135,7 @@ class StartupDestinationJvmTest {
         var retries = 0
         var backs = 0
         var dismissals = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 SimulationRecoveryPanel(loading.value, message.value, { retries++ }, { backs++ }, {
                     dismissals++

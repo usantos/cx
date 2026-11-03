@@ -8,12 +8,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.toPixelMap
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.top
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.home.presentation.components.*
-import br.gov.caixa.loterias.feature.home.presentation.state.*
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.home.presentation.components.CollapsedLotteryContent
+import br.gov.caixa.loterias.feature.home.presentation.components.HomeCarousel
+import br.gov.caixa.loterias.feature.home.presentation.components.HomeLegacyPagerCard
+import br.gov.caixa.loterias.feature.home.presentation.components.HomeTopBar
+import br.gov.caixa.loterias.feature.home.presentation.components.LotteryBanner
+import br.gov.caixa.loterias.feature.home.presentation.components.LotteryCard
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
@@ -32,7 +48,7 @@ class HomeParityUiTest {
     )
 
     private fun show(content: @Composable () -> Unit) {
-        compose.setContent { LoteriasCaixaDSTheme { Box(Modifier.size(280.dp, 600.dp).background(Color.Magenta)) { content() } } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { Box(Modifier.size(280.dp, 600.dp).background(Color.Magenta)) { content() } } }
     }
 
     @Test fun homeHeaderRetainsLegacyWhiteBackgroundAndCampaignControls() {
@@ -41,7 +57,7 @@ class HomeParityUiTest {
             readTicket = {}, responsibleGaming = {}, socialTransfers = {}, womenSupport = {}, toggleResult = {},
             pool = {}, bet = {}, openCart = {}
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 HomeTopBar(
                     0,
@@ -67,7 +83,7 @@ class HomeParityUiTest {
             readTicket = {}, responsibleGaming = {}, socialTransfers = {}, womenSupport = {}, toggleResult = {},
             pool = {}, bet = {}, openCart = {}
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 br.gov.caixa.loterias.feature.home.presentation.screen.HomeContent(
                     HomeUiState(loading = loading.value),
@@ -185,7 +201,7 @@ class HomeParityUiTest {
         compose.mainClock.autoAdvance = false
         val expanded = androidx.compose.runtime.mutableStateOf(false)
         var motion: br.gov.caixa.loterias.feature.home.presentation.route.HomePanelAnimations? = null
-        compose.setContent {
+        compose.setFeatureContent {
             motion = br.gov.caixa.loterias.feature.home.presentation.route.homePanelAnimations(expanded.value, false, 500.dp)
             androidx.compose.material3.Text("Animação")
         }
@@ -211,7 +227,7 @@ class HomeParityUiTest {
         compose.mainClock.autoAdvance = false
         val campaign = androidx.compose.runtime.mutableStateOf(false)
         var motion: br.gov.caixa.loterias.feature.home.presentation.route.HomePanelAnimations? = null
-        compose.setContent {
+        compose.setFeatureContent {
             motion =
                 br.gov.caixa.loterias.feature.home.presentation.route.homePanelAnimations(
                     false,
@@ -251,7 +267,7 @@ class HomeParityUiTest {
             readTicket = {}, responsibleGaming = {}, socialTransfers = {}, womenSupport = {}, toggleResult = {},
             pool = {}, bet = {}, openCart = {}
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 Box(Modifier.size(320.dp, 700.dp).background(Color.Magenta)) {
                     HomeCarousel(
@@ -335,7 +351,7 @@ class HomeParityUiTest {
             readTicket = {}, responsibleGaming = {}, socialTransfers = {}, womenSupport = {}, toggleResult = {},
             pool = {}, bet = {}, openCart = {}
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme(darkTheme = false) {
                 br.gov.caixa.loterias.feature.home.presentation.screen.HomeContent(
                     HomeUiState(

@@ -11,5 +11,4 @@ interface ResultsNavigationDependencies : br.gov.caixa.loterias.core.navigation.
     val latestResult: GetLatestResultUseCase
     val mockBackendEnabled: Boolean
     val resultByContest: GetResultByContestUseCase
-
 }

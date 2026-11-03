@@ -13,10 +13,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.navigation.destination.AppDestination
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.activeCartSummary
 import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
+import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.presentation.route.MarketplaceDetailRoute
 import br.gov.caixa.loterias.feature.marketplace.presentation.route.MarketplaceRoute
@@ -69,60 +72,63 @@ private fun NavGraphBuilder.marketplaceFilterGraph(
     navigation: AppNavigationState,
 ) {
     composable(AppDestination.MARKETPLACE_FILTER.route) {
-        val filterRetailer = navigation.details.selectedMarketplaceRetailer.takeIf {
-            navController.previousBackStackEntry?.destination?.route == "betting/pool-view"
-        }
-        val filterEntry = marketplaceFilterEntry(
-            if (filterRetailer != null) navigation.details.retailerMarketplaceFilter else navigation.details.marketplaceFilter,
-            if (filterRetailer != null) MarketplaceFilter.empty() else navigation.details.marketplaceClearFilter,
-            navigation.details.lastAppliedFilterRetailer,
-            filterRetailer
-        )
-        val filterViewModel = viewModel {
-            MarketplaceFilterViewModel(
-                appContainer.marketplaceFilterParameters,
-                appContainer.bettingParameters,
-                appContainer.searchRetailers,
-                appContainer.dispatchers,
-                initialFilter = filterEntry.initialFilter,
-                clearFilter = filterEntry.clearFilter,
-                lotteryEnabled = filterEntry.retailer == null,
-                initialRetailer = filterEntry.initialRetailer,
-                getSpecialContests = appContainer.getSpecialContests
+        FeatureModuleAdmission(AppModule.MARKETPLACE_FILTER, { navController.popBackStack() }) {
+            val filterRetailer = navigation.details.selectedMarketplaceRetailer.takeIf {
+                navController.previousBackStackEntry?.destination?.route == "betting/pool-view"
+            }
+            val filterEntry = marketplaceFilterEntry(
+                if (filterRetailer != null) navigation.details.retailerMarketplaceFilter else navigation.details.marketplaceFilter,
+                if (filterRetailer != null) MarketplaceFilter.empty() else navigation.details.marketplaceClearFilter,
+                navigation.details.lastAppliedFilterRetailer,
+                filterRetailer
+            )
+            val filterViewModel = viewModel {
+                MarketplaceFilterViewModel(
+                    appContainer.marketplaceFilterParameters,
+                    appContainer.bettingParameters,
+                    appContainer.searchRetailers,
+                    appContainer.dispatchers,
+                    initialFilter = filterEntry.initialFilter,
+                    clearFilter = filterEntry.clearFilter,
+                    lotteryEnabled = filterEntry.retailer == null,
+                    initialRetailer = filterEntry.initialRetailer,
+                    getSpecialContests = appContainer.getSpecialContests
+                )
+            }
+            val cartSummary = activeCartSummary(appContainer.currentCart)
+            MarketplaceFilterRoute(
+                viewModel = filterViewModel,
+                cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = cartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
+                onBack = navController::popBackStack,
+                onBackReset = { filter ->
+                    navigation.marketplaceRevision++
+                    if (filterEntry.retailer != null) {
+                        navigation.details.retailerMarketplaceFilter =
+                            MarketplaceFilter.empty().withLottery(filterEntry.retailer.id.toString())
+                        navigation.details.retailerMarketplaceFilterApplied = false
+                    } else {
+                        navigation.details.marketplaceFilter = filter
+                        navigation.details.marketplaceFilterApplied = false
+                        navigation.details.lastAppliedFilterRetailer = null
+                    }
+                },
+                onApply = { filter ->
+                    if (filterEntry.retailer != null) {
+                        navigation.details.retailerMarketplaceFilter = filter
+                        navigation.details.retailerMarketplaceFilterApplied = true
+                    } else {
+                        navigation.details.marketplaceFilter = filter
+                        navigation.details.marketplaceFilterApplied = true
+                        navigation.details.lastAppliedFilterRetailer = filterViewModel.state.value.selectedRetailer
+                    }
+                    navController.navigate(filterEntry.resultDestination) {
+                        popUpTo(filterEntry.resultDestination) { inclusive = true }
+                    }
+                }
             )
         }
-        val cartSummary = activeCartSummary(appContainer.currentCart)
-        MarketplaceFilterRoute(
-            viewModel = filterViewModel,
-            cartTotal = cartSummary?.total ?: java.math.BigDecimal.ZERO,
-            cartBetCount = cartSummary?.betCount ?: 0,
-            onCart = { navController.navigate("cart/current") },
-            onBack = navController::popBackStack,
-            onBackReset = { filter ->
-                navigation.marketplaceRevision++
-                if (filterEntry.retailer != null) {
-                    navigation.details.retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery(filterEntry.retailer.id.toString())
-                    navigation.details.retailerMarketplaceFilterApplied = false
-                } else {
-                    navigation.details.marketplaceFilter = filter
-                    navigation.details.marketplaceFilterApplied = false
-                    navigation.details.lastAppliedFilterRetailer = null
-                }
-            },
-            onApply = { filter ->
-                if (filterEntry.retailer != null) {
-                    navigation.details.retailerMarketplaceFilter = filter
-                    navigation.details.retailerMarketplaceFilterApplied = true
-                } else {
-                    navigation.details.marketplaceFilter = filter
-                    navigation.details.marketplaceFilterApplied = true
-                    navigation.details.lastAppliedFilterRetailer = filterViewModel.state.value.selectedRetailer
-                }
-                navController.navigate(filterEntry.resultDestination) {
-                    popUpTo(filterEntry.resultDestination) { inclusive = true }
-                }
-            }
-        )
     }
 }
 
@@ -134,57 +140,61 @@ private fun NavGraphBuilder.marketplaceListsGraph(
 ) {
     listOf("betting/pools", "betting/favorite-retailers").forEach { route ->
         composable(route) {
-            if (!marketplaceSessionReady(session, navController, route)) return@composable
-            val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
-            val marketplaceViewModel =
-                viewModel(
-                    key = "marketplace-$route-${session.privateEntryKey}-" +
-                        "${navigation.details.marketplaceFilter.hashCode()}-${navigation.details.marketplaceFilterApplied}"
-                ) {
-                    MarketplaceViewModel(
-                        appContainer.searchMarketplace,
-                        navigation.details.marketplaceFilter,
-                        appContainer.addMarketplacePoolToCart,
-                        appContainer.favoriteRetailers,
-                        appContainer.setRetailerFavorite,
-                        appContainer.dispatchers,
-                        getBettingParameters = appContainer.bettingParameters,
-                        getSpecialContests = appContainer.getSpecialContests,
-                        filteredSearch = navigation.details.marketplaceFilterApplied,
-                        initialTab = if (route == "betting/favorite-retailers") {
-                            br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab.FAVORITE_RETAILERS
-                        } else {
-                            br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab.POOLS
-                        }
-                    )
-                }
-            MarketplaceRoute(
-                viewModel = marketplaceViewModel,
-                refreshRevision = navigation.marketplaceRevision,
-                cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
-                cartBetCount = marketplaceCartSummary?.betCount ?: 0,
-                onCart = { navController.navigate("cart/current") },
-                onBack = navController::popBackStack,
-                onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
-                onRetailerSearch = { navController.navigate("retail/search") },
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onRetailerSelected = { retailer ->
-                    navigation.details.selectedMarketplaceRetailer = retailer
-                    navigation.details.retailerMarketplaceFilterApplied = false
-                    navigation.details.retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery(retailer.id.toString())
-                    navController.navigate("betting/pool-view")
-                },
-                onPoolSelected = { code ->
-                    val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
-                    navController.navigate(
-                        "betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}"
-                    )
-                },
-                onPoolReserved = { confirmation ->
-                    navigation.marketplaceRevision++
-                    navController.navigate(confirmation.poolAdditionRoute())
-                }
-            )
+            FeatureModuleAdmission(AppModule.MARKETPLACE, { navController.popBackStack() }) {
+                val canStartMarketplaceOperation = rememberFeatureWritePermission(AppModule.MARKETPLACE)
+                if (!marketplaceSessionReady(session, navController, route)) return@FeatureModuleAdmission
+                val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
+                val marketplaceViewModel =
+                    viewModel(
+                        key = "marketplace-$route-${session.privateEntryKey}-" +
+                            "${navigation.details.marketplaceFilter.hashCode()}-${navigation.details.marketplaceFilterApplied}"
+                    ) {
+                        MarketplaceViewModel(
+                            appContainer.searchMarketplace,
+                            navigation.details.marketplaceFilter,
+                            appContainer.addMarketplacePoolToCart,
+                            appContainer.favoriteRetailers,
+                            appContainer.setRetailerFavorite,
+                            appContainer.dispatchers,
+                            getBettingParameters = appContainer.bettingParameters,
+                            getSpecialContests = appContainer.getSpecialContests,
+                            filteredSearch = navigation.details.marketplaceFilterApplied,
+                            initialTab = if (route == "betting/favorite-retailers") {
+                                br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab.FAVORITE_RETAILERS
+                            } else {
+                                br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab.POOLS
+                            },
+                            canStartOperation = canStartMarketplaceOperation
+                        )
+                    }
+                MarketplaceRoute(
+                    viewModel = marketplaceViewModel,
+                    refreshRevision = navigation.marketplaceRevision,
+                    cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                    cartBetCount = marketplaceCartSummary?.betCount ?: 0,
+                    onCart = { navController.navigate("cart/current") },
+                    onBack = navController::popBackStack,
+                    onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
+                    onRetailerSearch = { navController.navigate("retail/search") },
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onRetailerSelected = { retailer ->
+                        navigation.details.selectedMarketplaceRetailer = retailer
+                        navigation.details.retailerMarketplaceFilterApplied = false
+                        navigation.details.retailerMarketplaceFilter = MarketplaceFilter.empty().withLottery(retailer.id.toString())
+                        navController.navigate("betting/pool-view")
+                    },
+                    onPoolSelected = { code ->
+                        val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
+                        navController.navigate(
+                            "betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}"
+                        )
+                    },
+                    onPoolReserved = { confirmation ->
+                        navigation.marketplaceRevision++
+                        navController.navigate(confirmation.poolAdditionRoute())
+                    }
+                )
+            }
         }
     }
 }
@@ -196,54 +206,58 @@ private fun NavGraphBuilder.marketplaceRetailerGraph(
     session: br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions,
 ) {
     composable("betting/pool-view") {
-        if (!marketplaceSessionReady(session, navController, "betting/pool-view")) return@composable
-        val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
-        val retailerFilter = navigation.details.selectedMarketplaceRetailer
-            ?.let { navigation.details.retailerMarketplaceFilter.withLottery(it.id.toString()) }
-            ?: navigation.details.retailerMarketplaceFilter
-        val marketplaceViewModel =
-            viewModel(
-                key = "marketplace-pool-view-${session.privateEntryKey}-${retailerFilter.hashCode()}-" +
-                    "${navigation.details.retailerMarketplaceFilterApplied}"
-            ) {
-                MarketplaceViewModel(
-                    appContainer.searchMarketplace,
-                    retailerFilter,
-                    appContainer.addMarketplacePoolToCart,
-                    appContainer.favoriteRetailers,
-                    appContainer.setRetailerFavorite,
-                    appContainer.dispatchers,
-                    getBettingParameters = appContainer.bettingParameters,
-                    getSpecialContests = appContainer.getSpecialContests,
-                    filteredSearch = navigation.details.retailerMarketplaceFilterApplied
-                )
-            }
-        MarketplaceRoute(
-            viewModel = marketplaceViewModel,
-            refreshRevision = navigation.marketplaceRevision,
-            cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
-            cartBetCount = marketplaceCartSummary?.betCount ?: 0,
-            onCart = { navController.navigate("cart/current") },
-            onBack = {
-                navigation.details.selectedMarketplaceRetailer = null
-                navController.popBackStack()
-            },
-            onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
-            onRetailerSearch = { navController.navigate("retail/search") },
-            onHelp = { navController.navigate("support/terms?tab=FAQ") },
-            onRetailerSelected = {},
-            onPoolSelected = { code ->
-                val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
-                navController.navigate(
-                    "betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}"
-                )
-            },
-            onPoolReserved = { confirmation ->
-                navigation.marketplaceRevision++
-                navController.navigate(confirmation.poolAdditionRoute())
-            },
-            retailerView = true
-        )
+        FeatureModuleAdmission(AppModule.MARKETPLACE, { navController.popBackStack() }) {
+            val canStartMarketplaceOperation = rememberFeatureWritePermission(AppModule.MARKETPLACE)
+            if (!marketplaceSessionReady(session, navController, "betting/pool-view")) return@FeatureModuleAdmission
+            val marketplaceCartSummary = activeResumingCartSummary(appContainer.currentCart)
+            val retailerFilter = navigation.details.selectedMarketplaceRetailer
+                ?.let { navigation.details.retailerMarketplaceFilter.withLottery(it.id.toString()) }
+                ?: navigation.details.retailerMarketplaceFilter
+            val marketplaceViewModel =
+                viewModel(
+                    key = "marketplace-pool-view-${session.privateEntryKey}-${retailerFilter.hashCode()}-" +
+                        "${navigation.details.retailerMarketplaceFilterApplied}"
+                ) {
+                    MarketplaceViewModel(
+                        appContainer.searchMarketplace,
+                        retailerFilter,
+                        appContainer.addMarketplacePoolToCart,
+                        appContainer.favoriteRetailers,
+                        appContainer.setRetailerFavorite,
+                        appContainer.dispatchers,
+                        getBettingParameters = appContainer.bettingParameters,
+                        getSpecialContests = appContainer.getSpecialContests,
+                        filteredSearch = navigation.details.retailerMarketplaceFilterApplied,
+                        canStartOperation = canStartMarketplaceOperation
+                    )
+                }
+            MarketplaceRoute(
+                viewModel = marketplaceViewModel,
+                refreshRevision = navigation.marketplaceRevision,
+                cartTotal = marketplaceCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = marketplaceCartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
+                onBack = {
+                    navigation.details.selectedMarketplaceRetailer = null
+                    navController.popBackStack()
+                },
+                onFilter = { navController.navigate(AppDestination.MARKETPLACE_FILTER.route) },
+                onRetailerSearch = { navController.navigate("retail/search") },
+                onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                onRetailerSelected = {},
+                onPoolSelected = { code ->
+                    val pool = marketplaceViewModel.state.value.pools.firstOrNull { it.code == code }
+                    navController.navigate(
+                        "betting/pool-detail/${Uri.encode(code)}?favoriteVisible=true&retailerFavorite=${pool?.favoriteLottery == true}"
+                    )
+                },
+                onPoolReserved = { confirmation ->
+                    navigation.marketplaceRevision++
+                    navController.navigate(confirmation.poolAdditionRoute())
+                },
+                retailerView = true
+            )
+        }
     }
 }
 
@@ -267,51 +281,55 @@ private fun NavGraphBuilder.marketplaceDetailGraph(
             }
         )
     ) { entry ->
-        val poolCode = requireNotNull(entry.arguments?.getString("poolCode"))
-        val detailReturnRoute = "betting/pool-detail/${Uri.encode(poolCode)}" +
-            if (entry.arguments?.getBoolean("favoriteVisible") == true) {
-                "?favoriteVisible=true&retailerFavorite=${entry.arguments?.getBoolean("retailerFavorite") == true}"
-            } else {
-                ""
-            }
-        if (!marketplaceSessionReady(session, navController, detailReturnRoute)) return@composable
-        val detailCartSummary = activeResumingCartSummary(appContainer.currentCart)
-        val detailViewModel = viewModel(key = "pool-detail-${session.privateEntryKey}-$poolCode") {
-            MarketplaceDetailViewModel(
-                poolCode,
-                appContainer.marketplaceDetail,
-                appContainer.addMarketplacePoolToCart,
-                appContainer.dispatchers,
-                setRetailerFavorite = appContainer.setRetailerFavorite,
-                getSpecialContests = appContainer.getSpecialContests,
-                initialFavorite = if (entry.arguments?.getBoolean("favoriteVisible") == true) {
-                    entry.arguments?.getBoolean("retailerFavorite") ?: false
+        FeatureModuleAdmission(AppModule.MARKETPLACE, { navController.popBackStack() }) {
+            val canStartMarketplaceOperation = rememberFeatureWritePermission(AppModule.MARKETPLACE)
+            val poolCode = requireNotNull(entry.arguments?.getString("poolCode"))
+            val detailReturnRoute = "betting/pool-detail/${Uri.encode(poolCode)}" +
+                if (entry.arguments?.getBoolean("favoriteVisible") == true) {
+                    "?favoriteVisible=true&retailerFavorite=${entry.arguments?.getBoolean("retailerFavorite") == true}"
                 } else {
-                    null
+                    ""
+                }
+            if (!marketplaceSessionReady(session, navController, detailReturnRoute)) return@FeatureModuleAdmission
+            val detailCartSummary = activeResumingCartSummary(appContainer.currentCart)
+            val detailViewModel = viewModel(key = "pool-detail-${session.privateEntryKey}-$poolCode") {
+                MarketplaceDetailViewModel(
+                    poolCode,
+                    appContainer.marketplaceDetail,
+                    appContainer.addMarketplacePoolToCart,
+                    appContainer.dispatchers,
+                    setRetailerFavorite = appContainer.setRetailerFavorite,
+                    getSpecialContests = appContainer.getSpecialContests,
+                    initialFavorite = if (entry.arguments?.getBoolean("favoriteVisible") == true) {
+                        entry.arguments?.getBoolean("retailerFavorite") ?: false
+                    } else {
+                        null
+                    },
+                    canStartOperation = canStartMarketplaceOperation
+                )
+            }
+            ObserveMarketplaceFavorite(detailViewModel, navigation)
+            MarketplaceDetailRoute(
+                viewModel = detailViewModel,
+                onSoldOut = {
+                    navigation.marketplaceRevision++
+                    if (!navController.popBackStack("betting/pools", inclusive = false)) {
+                        navController.navigate("betting/pools") {
+                            popUpTo(detailReturnRoute) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                },
+                cartTotal = detailCartSummary?.total ?: java.math.BigDecimal.ZERO,
+                cartBetCount = detailCartSummary?.betCount ?: 0,
+                onCart = { navController.navigate("cart/current") },
+                onBack = navController::popBackStack,
+                onPoolReserved = { confirmation ->
+                    navigation.marketplaceRevision++
+                    navController.navigate(confirmation.poolAdditionRoute())
                 }
             )
         }
-        ObserveMarketplaceFavorite(detailViewModel, navigation)
-        MarketplaceDetailRoute(
-            viewModel = detailViewModel,
-            onSoldOut = {
-                navigation.marketplaceRevision++
-                if (!navController.popBackStack("betting/pools", inclusive = false)) {
-                    navController.navigate("betting/pools") {
-                        popUpTo(detailReturnRoute) { inclusive = true }
-                        launchSingleTop = true
-                    }
-                }
-            },
-            cartTotal = detailCartSummary?.total ?: java.math.BigDecimal.ZERO,
-            cartBetCount = detailCartSummary?.betCount ?: 0,
-            onCart = { navController.navigate("cart/current") },
-            onBack = navController::popBackStack,
-            onPoolReserved = { confirmation ->
-                navigation.marketplaceRevision++
-                navController.navigate(confirmation.poolAdditionRoute())
-            }
-        )
     }
 }
 

@@ -2,12 +2,15 @@ package br.gov.caixa.loterias.feature.retail
 
 import br.gov.caixa.loterias.feature.retail.domain.port.RetailCountrySource
 import br.gov.caixa.loterias.feature.retail.domain.usecase.CheckRetailLocation
+import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateEffect
+import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateStatus
+import br.gov.caixa.loterias.feature.retail.presentation.viewmodel.LocationGateViewModel
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -16,20 +19,15 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
-import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateEffect
-import br.gov.caixa.loterias.feature.retail.presentation.state.LocationGateStatus
-import br.gov.caixa.loterias.feature.retail.presentation.viewmodel.LocationGateViewModel
-import br.gov.caixa.loterias.feature.retail.presentation.mapper.locationActionLabel
-import br.gov.caixa.loterias.feature.retail.presentation.mapper.locationMessage
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LocationGateViewModelTest {
     private val dispatcher = StandardTestDispatcher()
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
+
     @After fun tearDown() = Dispatchers.resetMain()
 
     @Test fun `reports permission and provider prerequisites and resets for retry`() {
@@ -106,9 +104,13 @@ class LocationGateViewModelTest {
     @Test fun `non cooperative lookup cannot overwrite revoked permission or authorize navigation`() = runTest(dispatcher) {
         for (countryCode in listOf("BR", "AR", null)) {
             lateinit var callback: kotlin.coroutines.Continuation<String?>
-            val viewModel = LocationGateViewModel(CheckRetailLocation(RetailCountrySource {
-                kotlin.coroutines.suspendCoroutine { callback = it }
-            }))
+            val viewModel = LocationGateViewModel(
+                CheckRetailLocation(
+                    RetailCountrySource {
+                        kotlin.coroutines.suspendCoroutine { callback = it }
+                    }
+                )
+            )
             val effects = mutableListOf<LocationGateEffect>()
             backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
                 viewModel.effects.collect { effects.add(it) }
@@ -126,12 +128,18 @@ class LocationGateViewModelTest {
     @Test fun `non cooperative older lookup cannot overwrite a replacement check`() = runTest(dispatcher) {
         lateinit var callback: kotlin.coroutines.Continuation<String?>
         var firstLookup = true
-        val viewModel = LocationGateViewModel(CheckRetailLocation(RetailCountrySource {
-            if (firstLookup) {
-                firstLookup = false
-                kotlin.coroutines.suspendCoroutine { callback = it }
-            } else "BR"
-        }))
+        val viewModel = LocationGateViewModel(
+            CheckRetailLocation(
+                RetailCountrySource {
+                    if (firstLookup) {
+                        firstLookup = false
+                        kotlin.coroutines.suspendCoroutine { callback = it }
+                    } else {
+                        "BR"
+                    }
+                }
+            )
+        )
         val effects = mutableListOf<LocationGateEffect>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.effects.collect { effects.add(it) }
@@ -150,12 +158,18 @@ class LocationGateViewModelTest {
     @Test fun `retry during pending lookup triggers a fresh check`() = runTest(dispatcher) {
         val pendingCountry = CompletableDeferred<String?>()
         var firstLookup = true
-        val viewModel = LocationGateViewModel(CheckRetailLocation(RetailCountrySource {
-            if (firstLookup) {
-                firstLookup = false
-                pendingCountry.await()
-            } else "BR"
-        }))
+        val viewModel = LocationGateViewModel(
+            CheckRetailLocation(
+                RetailCountrySource {
+                    if (firstLookup) {
+                        firstLookup = false
+                        pendingCountry.await()
+                    } else {
+                        "BR"
+                    }
+                }
+            )
+        )
         val effects = mutableListOf<LocationGateEffect>()
         backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
             viewModel.effects.collect { effects.add(it) }
@@ -167,20 +181,5 @@ class LocationGateViewModelTest {
         viewModel.retry()
         advanceUntilIdle()
         assertEquals(listOf(LocationGateEffect.Allowed), effects)
-    }
-
-    @Test fun `legacy messages and actions cover provider permission territory and failure`() {
-        assertEquals(
-            "Precisamos conferir se você está em território brasileiro.\nHabilite sua localização.",
-            locationMessage(LocationGateStatus.PERMISSION_REQUIRED),
-        )
-        assertEquals("Ir para configurações", locationActionLabel(LocationGateStatus.PROVIDER_DISABLED))
-        assertEquals(
-            "As apostas de Loterias só podem ser realizadas em território brasileiro.",
-            locationMessage(LocationGateStatus.OUTSIDE_BRAZIL),
-        )
-        assertNull(locationActionLabel(LocationGateStatus.OUTSIDE_BRAZIL))
-        assertEquals("Tentar novamente", locationActionLabel(LocationGateStatus.ERROR))
-        assertNull(locationActionLabel(LocationGateStatus.CHECKING))
     }
 }

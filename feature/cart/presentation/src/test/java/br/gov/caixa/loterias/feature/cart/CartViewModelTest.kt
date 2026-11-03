@@ -1,37 +1,53 @@
 package br.gov.caixa.loterias.feature.cart
 
+import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
+import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.common.time.ServerTimeSource
+import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
+import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE
+import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
+import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
+import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
+import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
+import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.SaveCurrentCartFavoriteUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
-import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
+import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequestUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.SaveCurrentCartFavoriteUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
+import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
+import br.gov.caixa.loterias.feature.cart.presentation.state.CartLocationAction
+import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.presentation.state.CartLocationAction
-import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class CartViewModelTest {
@@ -93,8 +109,11 @@ class CartViewModelTest {
     fun `successful confirmed clear empties a stale populated response without refetch`() = runTest(dispatcherRule.dispatcher) {
         var loads = 0
         val viewModel = viewModel(
-            load = { loads++; AppResult.Success(cart()) },
-            clear = { AppResult.Success(cart().copy(totalBetCount = 7)) },
+            load = {
+                loads++
+                AppResult.Success(cart())
+            },
+            clear = { AppResult.Success(cart().copy(totalBetCount = 7)) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.requestClear()
@@ -132,7 +151,7 @@ class CartViewModelTest {
             AppError.Network to "Não foi possível carregar o carrinho. Verifique sua internet.",
             AppError.Validation("") to "Não foi possível atualizar o carrinho.",
             AppError.Validation("Carrinho expirado") to "Carrinho expirado",
-            AppError.Unexpected to "Ocorreu um erro inesperado ao atualizar o carrinho.",
+            AppError.Unexpected to "Ocorreu um erro inesperado ao atualizar o carrinho."
         )
         cases.forEach { (error, message) ->
             var fail = true
@@ -154,7 +173,7 @@ class CartViewModelTest {
     @Test
     fun `keeps loaded cart when removing one item fails`() = runTest(dispatcherRule.dispatcher) {
         val viewModel = viewModel(
-            remove = { AppResult.Failure(AppError.Network) },
+            remove = { AppResult.Failure(AppError.Network) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -169,8 +188,11 @@ class CartViewModelTest {
     fun `failed confirmed clear empties displayed cart without refetch and preserves error notice`() = runTest(dispatcherRule.dispatcher) {
         var loadCalls = 0
         val viewModel = viewModel(
-            load = { loadCalls++; AppResult.Success(cart().copy(totalBetCount = 7)) },
-            clear = { AppResult.Failure(AppError.Validation("Não autorizado")) },
+            load = {
+                loadCalls++
+                AppResult.Success(cart().copy(totalBetCount = 7))
+            },
+            clear = { AppResult.Failure(AppError.Validation("Não autorizado")) }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         viewModel.requestClear()
@@ -193,12 +215,15 @@ class CartViewModelTest {
             dailyLimit = BigDecimal("500"),
             minimumCartAmount = BigDecimal("30"),
             maximumCartBets = 50,
-            games = validParameters().games,
+            games = validParameters().games
         )
         val viewModel = viewModel(
             authenticated = true,
             parameters = { AppResult.Success(parameters) },
-            saveFavorite = { name -> savedName = name; AppResult.Success(Unit) },
+            saveFavorite = { name ->
+                savedName = name
+                AppResult.Success(Unit)
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -239,9 +264,18 @@ class CartViewModelTest {
         val release = kotlinx.coroutines.CompletableDeferred<Unit>()
         val saved = mutableListOf<String>()
         var validations = 0
-        val model = viewModel(authenticated = true,
-            validateFavorite = { validations++; release.await(); AppResult.Success(Unit) },
-            saveFavorite = { saved += it; AppResult.Success(Unit) })
+        val model = viewModel(
+            authenticated = true,
+            validateFavorite = {
+                validations++
+                release.await()
+                AppResult.Success(Unit)
+            },
+            saveFavorite = {
+                saved += it
+                AppResult.Success(Unit)
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         model.requestFavorite()
         model.updateFavoriteName("Meu carrinho")
@@ -264,7 +298,7 @@ class CartViewModelTest {
         val viewModel = viewModel(
             authenticated = true,
             validateFavorite = { validation },
-            saveFavorite = { save },
+            saveFavorite = { save }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
 
@@ -279,7 +313,7 @@ class CartViewModelTest {
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(
             "Não foi possível carregar o carrinho. Verifique sua internet.",
-            viewModel.state.value.errorMessage,
+            viewModel.state.value.errorMessage
         )
 
         validation = AppResult.Failure(AppError.Validation("Já existe"))
@@ -296,34 +330,35 @@ class CartViewModelTest {
     }
 
     @Test
-    fun `payment delegates empty and populated cart acceptance to validation and consumes navigation`() = runTest(dispatcherRule.dispatcher) {
-        var emptyValidations = 0
-        val empty = viewModel(load = { AppResult.Success(emptyCart()) }, validateCart = {
-            emptyValidations++
-            AppResult.Failure(AppError.Validation("Carrinho vazio"))
-        })
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        empty.requestPayment()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertFalse(empty.state.value.paymentReady)
-        assertEquals(1, emptyValidations)
-        assertEquals("Carrinho vazio", empty.state.value.errorMessage)
+    fun `payment delegates empty and populated cart acceptance to validation and consumes navigation`() =
+        runTest(dispatcherRule.dispatcher) {
+            var emptyValidations = 0
+            val empty = viewModel(load = { AppResult.Success(emptyCart()) }, validateCart = {
+                emptyValidations++
+                AppResult.Failure(AppError.Validation("Carrinho vazio"))
+            })
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            empty.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertFalse(empty.state.value.paymentReady)
+            assertEquals(1, emptyValidations)
+            assertEquals("Carrinho vazio", empty.state.value.errorMessage)
 
-        var validation: AppResult<CartValidationResult> = AppResult.Success(CartValidationResult.Accepted)
-        val populated = viewModel(validateCart = { validation })
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        populated.requestPayment()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertTrue(populated.state.value.paymentReady)
-        populated.consumePaymentReady()
-        assertFalse(populated.state.value.paymentReady)
+            var validation: AppResult<CartValidationResult> = AppResult.Success(CartValidationResult.Accepted)
+            val populated = viewModel(validateCart = { validation })
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            populated.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertTrue(populated.state.value.paymentReady)
+            populated.consumePaymentReady()
+            assertFalse(populated.state.value.paymentReady)
 
-        validation = AppResult.Failure(AppError.Validation("Aposta expirada"))
-        populated.requestPayment()
-        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        assertEquals("Aposta expirada", populated.state.value.errorMessage)
-        assertFalse(populated.state.value.paymentReady)
-    }
+            validation = AppResult.Failure(AppError.Validation("Aposta expirada"))
+            populated.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            assertEquals("Aposta expirada", populated.state.value.errorMessage)
+            assertFalse(populated.state.value.paymentReady)
+        }
 
     @Test
     fun `unauthenticated or ineligible carts cannot be favorited`() = runTest(dispatcherRule.dispatcher) {
@@ -341,7 +376,10 @@ class CartViewModelTest {
     @Test fun `empty simulation parameters open recovery and retry preserves cart`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
         var result: AppResult<BettingParameters> = AppResult.Success(validParameters().copy(games = emptyList()))
-        val vm = viewModel(parameters = { calls++; result })
+        val vm = viewModel(parameters = {
+            calls++
+            result
+        })
         vm.retryParameters()
         vm.requestPayment()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -397,8 +435,13 @@ class CartViewModelTest {
     @Test fun `periodic refresh only fetches expired shares using injected server time`() = runTest(dispatcherRule.dispatcher) {
         var now = java.time.Instant.parse("2026-09-04T12:00:00Z")
         var calls = 0
-        val vm = viewModel(load = { calls++; AppResult.Success(poolCart("2026-09-04T12:01:00Z")) },
-            serverTime = br.gov.caixa.loterias.core.common.time.ServerTimeSource { now })
+        val vm = viewModel(
+            load = {
+                calls++
+                AppResult.Success(poolCart("2026-09-04T12:01:00Z"))
+            },
+            serverTime = ServerTimeSource { now }
+        )
         vm.load()
         vm.refreshExpiredReservations()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -415,13 +458,18 @@ class CartViewModelTest {
         assertEquals(now, vm.reservationNow())
     }
 
-    @Test fun `expired share is refreshed before validation and repeated payment clicks do not duplicate`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `expired share is refreshed before validation and repeated payment clicks do not duplicate`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         val calls = mutableListOf<String>()
         var refreshed = false
         val vm = viewModel(load = {
             calls += "cart"
             AppResult.Success(if (refreshed) cart().copy(expiredPoolShareRemoved = true) else poolCart("2026-09-04T11:00:00Z"))
-        }, validateCart = { calls += "validate"; AppResult.Success(CartValidationResult.Accepted) })
+        }, validateCart = {
+            calls += "validate"
+            AppResult.Success(CartValidationResult.Accepted)
+        })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         refreshed = true
         vm.requestPayment()
@@ -438,8 +486,16 @@ class CartViewModelTest {
     @Test fun `expired refresh that empties cart continues gates and displays server rejection`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
         var validations = 0
-        val vm = viewModel(load = { calls++; AppResult.Success(if (calls == 1) poolCart("2026-09-04T11:00:00Z") else emptyCart()) },
-            validateCart = { validations++; AppResult.Failure(AppError.Validation("Carrinho vazio")) })
+        val vm = viewModel(
+            load = {
+                calls++
+                AppResult.Success(if (calls == 1) poolCart("2026-09-04T11:00:00Z") else emptyCart())
+            },
+            validateCart = {
+                validations++
+                AppResult.Failure(AppError.Validation("Carrinho vazio"))
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.requestPayment()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -455,8 +511,16 @@ class CartViewModelTest {
         var calls = 0
         var validations = 0
         val original = poolCart("2026-09-04T11:00:00Z")
-        val vm = viewModel(load = { calls++; if (calls == 1) AppResult.Success(original) else AppResult.Failure(AppError.Network) },
-            validateCart = { validations++; AppResult.Failure(AppError.Validation("Reserva expirada")) })
+        val vm = viewModel(
+            load = {
+                calls++
+                if (calls == 1) AppResult.Success(original) else AppResult.Failure(AppError.Network)
+            },
+            validateCart = {
+                validations++
+                AppResult.Failure(AppError.Validation("Reserva expirada"))
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.requestPayment()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -467,14 +531,27 @@ class CartViewModelTest {
     }
 
     @Test fun `account requirement or suspension blocks validation and expired refresh`() = runTest(dispatcherRule.dispatcher) {
-        for (decision in listOf(CartPaymentAccountDecision.Suspended,
-            CartPaymentAccountDecision.CompleteAccount(br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.REGISTRATION))) {
+        for (decision in listOf(
+            CartPaymentAccountDecision.Suspended,
+            CartPaymentAccountDecision.CompleteAccount(PostLoginDestination.REGISTRATION)
+        )) {
             var loads = 0
             var checks = 0
             var validations = 0
-            val vm = viewModel(load = { loads++; AppResult.Success(poolCart("2026-09-04T11:00:00Z")) },
-                verifyAccount = { checks++; AppResult.Success(decision) },
-                validateCart = { validations++; AppResult.Success(CartValidationResult.Accepted) })
+            val vm = viewModel(
+                load = {
+                    loads++
+                    AppResult.Success(poolCart("2026-09-04T11:00:00Z"))
+                },
+                verifyAccount = {
+                    checks++
+                    AppResult.Success(decision)
+                },
+                validateCart = {
+                    validations++
+                    AppResult.Success(CartValidationResult.Accepted)
+                }
+            )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             vm.requestPayment()
             vm.requestPayment()
@@ -495,8 +572,13 @@ class CartViewModelTest {
     @Test fun `guest receives login confirmation without validating cart and can retry after login`() = runTest(dispatcherRule.dispatcher) {
         var decision: CartPaymentAccountDecision = CartPaymentAccountDecision.LoginRequired
         var validations = 0
-        val vm = viewModel(verifyAccount = { AppResult.Success(decision) },
-            validateCart = { validations++; AppResult.Success(CartValidationResult.Accepted) })
+        val vm = viewModel(
+            verifyAccount = { AppResult.Success(decision) },
+            validateCart = {
+                validations++
+                AppResult.Success(CartValidationResult.Accepted)
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.requestPayment()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -514,7 +596,10 @@ class CartViewModelTest {
     @Test fun `account verification failure preserves cart and permits a later retry`() = runTest(dispatcherRule.dispatcher) {
         var result: AppResult<CartPaymentAccountDecision> = AppResult.Failure(AppError.Validation("Sessão expirada"))
         var validations = 0
-        val vm = viewModel(verifyAccount = { result }, validateCart = { validations++; AppResult.Success(CartValidationResult.Accepted) })
+        val vm = viewModel(verifyAccount = { result }, validateCart = {
+            validations++
+            AppResult.Success(CartValidationResult.Accepted)
+        })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.requestPayment()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -536,7 +621,10 @@ class CartViewModelTest {
             assertEquals(cart().total, amount)
             checks++
             AppResult.Success(true)
-        }, validateCart = { validations++; AppResult.Success(CartValidationResult.Accepted) })
+        }, validateCart = {
+            validations++
+            AppResult.Success(CartValidationResult.Accepted)
+        })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.continueRecentPurchase()
         vm.requestPayment()
@@ -564,7 +652,10 @@ class CartViewModelTest {
         val vm = viewModel(
             recentPurchase = { history },
             verifyAccount = { AppResult.Success(CartPaymentAccountDecision.LoginRequired) },
-            validateCart = { validations++; AppResult.Success(CartValidationResult.Accepted) },
+            validateCart = {
+                validations++
+                AppResult.Success(CartValidationResult.Accepted)
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.requestPayment()
@@ -607,11 +698,26 @@ class CartViewModelTest {
     @Test fun `checkout evaluates location between reservation refresh and recent purchases`() = runTest(dispatcherRule.dispatcher) {
         val events = mutableListOf<String>()
         val vm = viewModel(
-            load = { events += "cart"; AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
-            verifyAccount = { events += "account"; AppResult.Success(CartPaymentAccountDecision.Allowed) },
-            location = { events += "location"; AppResult.Success(CheckoutLocationStatus.IN_BRAZIL) },
-            recentPurchase = { events += "history"; AppResult.Success(false) },
-            validateCart = { events += "validate"; AppResult.Success(CartValidationResult.Accepted) },
+            load = {
+                events += "cart"
+                AppResult.Success(poolCart("2026-09-04T11:59:00Z"))
+            },
+            verifyAccount = {
+                events += "account"
+                AppResult.Success(CartPaymentAccountDecision.Allowed)
+            },
+            location = {
+                events += "location"
+                AppResult.Success(CheckoutLocationStatus.IN_BRAZIL)
+            },
+            recentPurchase = {
+                events += "history"
+                AppResult.Success(false)
+            },
+            validateCart = {
+                events += "validate"
+                AppResult.Success(CartValidationResult.Accepted)
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         events.clear()
@@ -621,14 +727,19 @@ class CartViewModelTest {
         assertTrue(vm.state.value.paymentReady)
     }
 
-    @Test fun `outside country or unknown location preserves cart and never checks history or validates`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `outside country or unknown location preserves cart and never checks history or validates`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         for (result in listOf(
             AppResult.Success(CheckoutLocationStatus.OUTSIDE_BRAZIL),
             AppResult.Success(CheckoutLocationStatus.UNAVAILABLE),
-            AppResult.Failure(AppError.Network),
+            AppResult.Failure(AppError.Network)
         )) {
             var checks = 0
-            val vm = viewModel(location = { checks++; result }, recentPurchase = { error("History must wait") })
+            val vm = viewModel(location = {
+                checks++
+                result
+            }, recentPurchase = { error("History must wait") })
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             vm.requestPayment()
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -644,8 +755,34 @@ class CartViewModelTest {
         }
     }
 
+    @Test fun `retry de localizacao ignora callback fora do aviso e bloqueia repeticao enquanto consulta`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
+        var checks = 0
+        val vm = viewModel(location = {
+            checks++
+            AppResult.Success(CheckoutLocationStatus.UNAVAILABLE)
+        })
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.retryLocation()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, checks)
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.retryLocation()
+        vm.retryLocation()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(2, checks)
+        assertFalse(vm.state.value.paymentReady)
+        assertEquals(cart(), vm.state.value.cart)
+    }
+
     @Test fun `declining any location consent shows blocked alert without Android action`() = runTest(dispatcherRule.dispatcher) {
-        for (status in listOf(CheckoutLocationStatus.PERMISSION_REQUIRED, CheckoutLocationStatus.PERMISSION_SETTINGS_REQUIRED, CheckoutLocationStatus.PROVIDER_DISABLED)) {
+        for (status in listOf(
+            CheckoutLocationStatus.PERMISSION_REQUIRED,
+            CheckoutLocationStatus.PERMISSION_SETTINGS_REQUIRED,
+            CheckoutLocationStatus.PROVIDER_DISABLED
+        )) {
             val vm = viewModel(location = { AppResult.Success(status) })
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             vm.declineLocationConsent()
@@ -669,12 +806,19 @@ class CartViewModelTest {
     @Test fun `permission is launched once and granted result rechecks country before history`() = runTest(dispatcherRule.dispatcher) {
         var status = CheckoutLocationStatus.PERMISSION_REQUIRED
         var requests = 0
-        val vm = viewModel(location = { AppResult.Success(status) },
-            recordLocationRequest = { requests++; AppResult.Success(Unit) },
-            recentPurchase = { AppResult.Success(true) })
+        val vm = viewModel(
+            location = { AppResult.Success(status) },
+            recordLocationRequest = {
+                requests++
+                AppResult.Success(Unit)
+            },
+            recentPurchase = { AppResult.Success(true) }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.acceptLocationConsent(); vm.acceptLocationConsent()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.acceptLocationConsent()
+        vm.acceptLocationConsent()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(1, requests)
         assertFalse(vm.takeLocationAction(CartLocationAction.PROVIDER_SETTINGS))
@@ -698,15 +842,18 @@ class CartViewModelTest {
             var status = CheckoutLocationStatus.PERMISSION_REQUIRED
             val vm = viewModel(location = { AppResult.Success(status) })
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.acceptLocationConsent()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertTrue(vm.takeLocationAction(CartLocationAction.REQUEST_PERMISSION))
             vm.locationPermissionResult(false, permanent)
             if (permanent) {
                 assertEquals(CartLocationAction.PERMISSION_SETTINGS, vm.state.value.locationAction)
                 assertTrue(vm.takeLocationAction(CartLocationAction.PERMISSION_SETTINGS))
                 status = CheckoutLocationStatus.IN_BRAZIL
-                vm.locationSettingsReturned(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+                vm.locationSettingsReturned()
+                dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
                 assertTrue(vm.state.value.paymentReady)
             } else {
                 assertEquals(CheckoutLocationStatus.UNAVAILABLE, vm.state.value.locationPrompt)
@@ -718,16 +865,20 @@ class CartViewModelTest {
     @Test fun `settings consent never requests permissions automatically and launch failure blocks`() = runTest(dispatcherRule.dispatcher) {
         for ((status, action) in listOf(
             CheckoutLocationStatus.PROVIDER_DISABLED to CartLocationAction.PROVIDER_SETTINGS,
-            CheckoutLocationStatus.PERMISSION_SETTINGS_REQUIRED to CartLocationAction.PERMISSION_SETTINGS,
+            CheckoutLocationStatus.PERMISSION_SETTINGS_REQUIRED to CartLocationAction.PERMISSION_SETTINGS
         )) {
             val vm = viewModel(location = { AppResult.Success(status) }, recordLocationRequest = { error("No permission request") })
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.acceptLocationConsent()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertTrue(vm.takeLocationAction(action))
-            vm.locationSettingsReturned(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.locationSettingsReturned()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertEquals(status, vm.state.value.locationPrompt)
-            vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.acceptLocationConsent()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             vm.locationLaunchFailed()
             assertEquals(CheckoutLocationStatus.UNAVAILABLE, vm.state.value.locationPrompt)
             assertNull(vm.state.value.locationAction)
@@ -738,7 +889,8 @@ class CartViewModelTest {
     @Test fun `location errors and cancellation cannot leave checkout loading or authorize it`() = runTest(dispatcherRule.dispatcher) {
         val cancelled = viewModel(location = { throw kotlinx.coroutines.CancellationException("geocoder") })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        cancelled.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        cancelled.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(cancelled.state.value.loading)
         assertEquals(CheckoutLocationStatus.UNAVAILABLE, cancelled.state.value.locationPrompt)
         for (cancel in listOf(false, true)) {
@@ -747,8 +899,10 @@ class CartViewModelTest {
                 AppResult.Failure(AppError.Unexpected)
             })
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.acceptLocationConsent()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertEquals(CheckoutLocationStatus.UNAVAILABLE, vm.state.value.locationPrompt)
             assertFalse(vm.state.value.loading)
             assertNull(vm.state.value.locationAction)
@@ -759,35 +913,68 @@ class CartViewModelTest {
         var loaded = cart()
         var status = CheckoutLocationStatus.PROVIDER_DISABLED
         val calls = mutableListOf<String>()
-        val vm = viewModel(load = { AppResult.Success(loaded) }, location = { AppResult.Success(status) },
-            recentPurchase = { calls += "recent:$it"; AppResult.Success(false) },
-            validateCart = { calls += "validate"; AppResult.Failure(AppError.Validation("Carrinho vazio")) })
+        val vm = viewModel(
+            load = { AppResult.Success(loaded) },
+            location = { AppResult.Success(status) },
+            recentPurchase = {
+                calls += "recent:$it"
+                AppResult.Success(false)
+            },
+            validateCart = {
+                calls += "validate"
+                AppResult.Failure(AppError.Validation("Carrinho vazio"))
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.acceptLocationConsent()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(vm.takeLocationAction(CartLocationAction.PROVIDER_SETTINGS))
         loaded = emptyCart()
-        vm.load(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.load()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         status = CheckoutLocationStatus.IN_BRAZIL
-        vm.locationSettingsReturned(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.locationSettingsReturned()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.loading)
         assertFalse(vm.state.value.paymentReady)
         assertEquals(listOf("recent:0", "validate"), calls)
         assertEquals("Carrinho vazio", vm.state.value.errorMessage)
     }
 
-    @Test fun `empty minimum amount and maximum count do not bypass or replace legacy checkout gates`() = runTest(dispatcherRule.dispatcher) {
-        for (snapshot in listOf(emptyCart(), cart().copy(total = BigDecimal("10")),
-            cart().copy(total = BigDecimal("40"), totalBetCount = 51))) {
+    @Test fun `empty minimum amount and maximum count do not bypass or replace legacy checkout gates`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
+        for (snapshot in listOf(
+            emptyCart(),
+            cart().copy(total = BigDecimal("10")),
+            cart().copy(total = BigDecimal("40"), totalBetCount = 51)
+        )) {
             val calls = mutableListOf<String>()
-            val vm = viewModel(load = { AppResult.Success(snapshot) },
+            val vm = viewModel(
+                load = { AppResult.Success(snapshot) },
                 parameters = { AppResult.Success(validParameters().copy(minimumCartAmount = BigDecimal("30"), maximumCartBets = 50)) },
-                verifyAccount = { calls += "account"; AppResult.Success(CartPaymentAccountDecision.Allowed) },
-                location = { calls += "location"; AppResult.Success(CheckoutLocationStatus.IN_BRAZIL) },
-                recentPurchase = { calls += "recent:$it"; AppResult.Success(false) },
-                validateCart = { calls += "validate"; AppResult.Failure(AppError.Validation("Limite do serviço")) })
+                verifyAccount = {
+                    calls += "account"
+                    AppResult.Success(CartPaymentAccountDecision.Allowed)
+                },
+                location = {
+                    calls += "location"
+                    AppResult.Success(CheckoutLocationStatus.IN_BRAZIL)
+                },
+                recentPurchase = {
+                    calls += "recent:$it"
+                    AppResult.Success(false)
+                },
+                validateCart = {
+                    calls += "validate"
+                    AppResult.Failure(AppError.Validation("Limite do serviço"))
+                }
+            )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); vm.requestPayment()
+            vm.requestPayment()
+            vm.requestPayment()
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertEquals(listOf("account", "location", "recent:${snapshot.total}", "validate"), calls)
             assertEquals("Limite do serviço", vm.state.value.errorMessage)
@@ -798,12 +985,19 @@ class CartViewModelTest {
     }
 
     @Test fun `empty cart still respects account decision before asking for location`() = runTest(dispatcherRule.dispatcher) {
-        for (decision in listOf(CartPaymentAccountDecision.Suspended,
-            CartPaymentAccountDecision.CompleteAccount(br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.REGISTRATION))) {
-            val vm = viewModel(load = { AppResult.Success(emptyCart()) }, verifyAccount = { AppResult.Success(decision) },
-                location = { error("Account gate must come first") }, validateCart = { error("Account gate must come first") })
+        for (decision in listOf(
+            CartPaymentAccountDecision.Suspended,
+            CartPaymentAccountDecision.CompleteAccount(PostLoginDestination.REGISTRATION)
+        )) {
+            val vm = viewModel(
+                load = { AppResult.Success(emptyCart()) },
+                verifyAccount = { AppResult.Success(decision) },
+                location = { error("Account gate must come first") },
+                validateCart = { error("Account gate must come first") }
+            )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertEquals(decision, vm.state.value.paymentAccountDecision)
             assertFalse(vm.state.value.paymentReady)
         }
@@ -811,69 +1005,102 @@ class CartViewModelTest {
 
     @Test fun `empty cart asks for login only after location and recent purchase decisions`() = runTest(dispatcherRule.dispatcher) {
         val calls = mutableListOf<String>()
-        val vm = viewModel(load = { AppResult.Success(emptyCart()) },
-            verifyAccount = { calls += "account"; AppResult.Success(CartPaymentAccountDecision.LoginRequired) },
-            location = { calls += "location"; AppResult.Success(CheckoutLocationStatus.IN_BRAZIL) },
-            recentPurchase = { calls += "recent:$it"; AppResult.Success(true) },
-            validateCart = { error("Must authenticate before validation") })
+        val vm = viewModel(
+            load = { AppResult.Success(emptyCart()) },
+            verifyAccount = {
+                calls += "account"
+                AppResult.Success(CartPaymentAccountDecision.LoginRequired)
+            },
+            location = {
+                calls += "location"
+                AppResult.Success(CheckoutLocationStatus.IN_BRAZIL)
+            },
+            recentPurchase = {
+                calls += "recent:$it"
+                AppResult.Success(true)
+            },
+            validateCart = { error("Must authenticate before validation") }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(vm.state.value.recentPurchaseConfirmation)
         assertNull(vm.state.value.paymentAccountDecision)
-        vm.continueRecentPurchase(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.continueRecentPurchase()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(listOf("account", "location", "recent:0"), calls)
         assertEquals(CartPaymentAccountDecision.LoginRequired, vm.state.value.paymentAccountDecision)
         assertFalse(vm.state.value.paymentReady)
     }
 
-    @Test fun `missing snapshot does not start checkout while a successful validation is authoritative`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `missing snapshot does not start checkout while a successful validation is authoritative`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         val missing = viewModel(load = { AppResult.Failure(AppError.Network) }, verifyAccount = { error("No snapshot") })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        missing.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        missing.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertNull(missing.state.value.cart)
         assertFalse(missing.state.value.paymentReady)
-        val loaded = viewModel(load = { AppResult.Success(emptyCart()) }, validateCart = { AppResult.Success(CartValidationResult.Accepted) })
+        val loaded =
+            viewModel(load = { AppResult.Success(emptyCart()) }, validateCart = { AppResult.Success(CartValidationResult.Accepted) })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        loaded.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        loaded.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(loaded.state.value.paymentReady)
     }
 
     @Test fun `validation notice blocks duplicate calls and consent navigation is consumed once`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
-        var availability = br.gov.caixa.loterias.core.common.network.ConnectionAvailability.CONNECTED
+        var availability = ConnectionAvailability.CONNECTED
         val vm = viewModel(validateCart = {
             calls++
-            AppResult.Success(CartValidationResult.Rejected(br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.NoticeRequired(
-                br.gov.caixa.loterias.core.domain.service.model.ServiceNotice(br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason.LOGIN_REQUIRED))))
-        }, network = br.gov.caixa.loterias.core.common.network.NetworkAvailability { availability })
+            AppResult.Success(
+                CartValidationResult.Rejected(
+                    ServiceFailure.NoticeRequired(
+                        ServiceNotice(
+                            ServiceNoticeReason.LOGIN_REQUIRED
+                        )
+                    )
+                )
+            )
+        }, network = NetworkAvailability { availability })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         val notice = vm.state.value.validationFailure.notice!!
         assertFalse(vm.state.value.paymentReady)
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(1, calls)
-        vm.dismissValidationNotice(notice.copy()); vm.acceptValidationNotice(notice.copy())
+        vm.dismissValidationNotice(notice.copy())
+        vm.acceptValidationNotice(notice.copy())
         assertTrue(vm.state.value.validationFailure.notice === notice)
-        availability = br.gov.caixa.loterias.core.common.network.ConnectionAvailability.DISCONNECTED
+        availability = ConnectionAvailability.DISCONNECTED
         vm.acceptValidationNotice(notice)
-        assertEquals(br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE, vm.state.value.validationFailure.notice!!.message)
+        assertEquals(LEGACY_OFFLINE, vm.state.value.validationFailure.notice!!.message)
         assertNull(vm.state.value.validationFailure.redirect)
         vm.dismissValidationNotice(vm.state.value.validationFailure.notice!!)
-        availability = br.gov.caixa.loterias.core.common.network.ConnectionAvailability.CONNECTED
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        availability = ConnectionAvailability.CONNECTED
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         vm.acceptValidationNotice(vm.state.value.validationFailure.notice!!)
         val event = vm.state.value.validationFailure.redirect!!
-        assertFalse(vm.consumeValidationRedirect(br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent(event.destination)))
-        assertTrue(vm.consumeValidationRedirect(event)); assertFalse(vm.consumeValidationRedirect(event))
+        assertFalse(vm.consumeValidationRedirect(ServiceRedirectEvent(event.destination)))
+        assertTrue(vm.consumeValidationRedirect(event))
+        assertFalse(vm.consumeValidationRedirect(event))
         assertEquals(2, calls)
         assertFalse(vm.state.value.paymentReady)
     }
 
     @Test fun `ignored validation directive keeps cart without payment or invented warning`() = runTest(dispatcherRule.dispatcher) {
-        val vm = viewModel(validateCart = { AppResult.Success(CartValidationResult.Rejected(
-            br.gov.caixa.loterias.core.domain.service.model.ServiceFailure.Unchanged)) })
+        val vm =
+            viewModel(validateCart = {
+                AppResult.Success(CartValidationResult.Rejected(ServiceFailure.Unchanged))
+            })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.paymentReady)
         assertFalse(vm.state.value.validationFailure.pending)
         assertEquals(cart(), vm.state.value.cart)
@@ -884,16 +1111,31 @@ class CartViewModelTest {
         for (clear in listOf(false, true)) {
             val response = kotlinx.coroutines.CompletableDeferred<AppResult<ShoppingCart>>()
             var calls = 0
-            val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
-                remove = { calls++; response.await() }, clear = { calls++; response.await() })
+            val vm = viewModel(
+                load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+                remove = {
+                    calls++
+                    response.await()
+                },
+                clear = {
+                    calls++
+                    response.await()
+                }
+            )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            if (clear) { vm.requestClear(); vm.confirmClear() }
-            else { vm.requestRemoval(item()); vm.confirmRemoval() }
+            if (clear) {
+                vm.requestClear()
+                vm.confirmClear()
+            } else {
+                vm.requestRemoval(item())
+                vm.confirmRemoval()
+            }
             assertTrue(vm.state.value.loading)
             vm.refreshExpiredReservations()
             dispatcherRule.dispatcher.scheduler.runCurrent()
             assertEquals(1, calls)
-            response.complete(AppResult.Success(emptyCart())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            response.complete(AppResult.Success(emptyCart()))
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertFalse(vm.state.value.loading)
             assertEquals(if (clear) emptyCart().copy(totalBetCount = 0) else emptyCart(), vm.state.value.cart)
         }
@@ -905,58 +1147,92 @@ class CartViewModelTest {
         var clearCalls = 0
         var accountCalls = 0
         var loadCalls = 0
-        val vm = viewModel(load = { loadCalls++; AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
-            remove = { deleteCalls++; response.await() },
-            clear = { clearCalls++; AppResult.Success(emptyCart()) },
-            verifyAccount = { accountCalls++; AppResult.Success(CartPaymentAccountDecision.Allowed) })
+        val vm = viewModel(
+            load = {
+                loadCalls++
+                AppResult.Success(poolCart("2026-09-04T11:59:00Z"))
+            },
+            remove = {
+                deleteCalls++
+                response.await()
+            },
+            clear = {
+                clearCalls++
+                AppResult.Success(emptyCart())
+            },
+            verifyAccount = {
+                accountCalls++
+                AppResult.Success(CartPaymentAccountDecision.Allowed)
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestRemoval(item()); vm.requestClear()
+        vm.requestRemoval(item())
+        vm.requestClear()
         vm.refreshExpiredReservations()
         // Um clique no mesmo turno de despacho já deve estar bloqueado, antes do início do DELETE.
         assertTrue(vm.state.value.loading)
-        vm.requestPayment(); vm.confirmRemoval(); vm.confirmClear(); vm.load()
+        vm.requestPayment()
+        vm.confirmRemoval()
+        vm.confirmClear()
+        vm.load()
         dispatcherRule.dispatcher.scheduler.runCurrent()
         assertEquals(1, deleteCalls)
         assertEquals(0, clearCalls)
         assertEquals(0, accountCalls)
         assertEquals(1, loadCalls)
-        vm.requestRemoval(item()); vm.requestClear()
+        vm.requestRemoval(item())
+        vm.requestClear()
         assertNull(vm.state.value.pendingRemoval)
         assertFalse(vm.state.value.clearConfirmation)
         response.complete(AppResult.Failure(AppError.Network))
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertFalse(vm.state.value.loading)
-        vm.requestClear(); vm.confirmClear(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestClear()
+        vm.confirmClear()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(1, clearCalls)
     }
 
     @Test fun `unavailable parameters do not suppress the expiration callback`() = runTest(dispatcherRule.dispatcher) {
         var calls = 0
         var parameterCallbacks = 0
-        val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
-            parameters = { parameterCallbacks++; AppResult.Success(validParameters().copy(games = emptyList())) },
-            remove = { calls++; AppResult.Failure(AppError.Network) })
+        val vm = viewModel(
+            load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+            parameters = {
+                parameterCallbacks++
+                AppResult.Success(validParameters().copy(games = emptyList()))
+            },
+            remove = {
+                calls++
+                AppResult.Failure(AppError.Network)
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertTrue(vm.state.value.parametersUnavailable)
-        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(1, calls)
         assertEquals(2, parameterCallbacks)
     }
 
     @Test fun `late initial parameters cannot repopulate ended session`() = runTest(dispatcherRule.dispatcher) {
-        val owner = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(64))
-        val changes = kotlinx.coroutines.flow.MutableStateFlow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>(owner)
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val owner = AuthenticatedSessionIdentity("a".repeat(64))
+        val changes = kotlinx.coroutines.flow.MutableStateFlow<AuthenticatedSessionIdentity?>(
+            owner
+        )
+        val sessions = object : AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = changes.value
-            override fun isCurrent(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity) = changes.value === identity
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = changes.value === identity
         }
         val response = kotlinx.coroutines.CompletableDeferred<AppResult<BettingParameters>>()
         val vm = viewModel(sessions = sessions, changes = changes, parameters = {
             kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() }
         })
         dispatcherRule.dispatcher.scheduler.runCurrent()
-        changes.value = null; dispatcherRule.dispatcher.scheduler.runCurrent()
-        response.complete(AppResult.Success(validParameters())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        changes.value = null
+        dispatcherRule.dispatcher.scheduler.runCurrent()
+        response.complete(AppResult.Success(validParameters()))
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(BigDecimal.ZERO, vm.state.value.minimumCartAmount)
         assertNull(vm.state.value.cart)
     }
@@ -971,9 +1247,11 @@ class CartViewModelTest {
             AppResult.Failure(AppError.Network)
         })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.refreshExpiredReservations(); vm.refreshExpiredReservations()
+        vm.refreshExpiredReservations()
+        vm.refreshExpiredReservations()
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(listOf(12L, 13L), removed)
         assertNull(vm.state.value.pendingRemoval)
         assertEquals(snapshot, vm.state.value.cart)
@@ -983,58 +1261,85 @@ class CartViewModelTest {
         var snapshot = poolCart("2026-09-04T11:58:00Z")
         var calls = 0
         val vm = viewModel(load = { AppResult.Success(snapshot) }, remove = {
-            calls++; AppResult.Failure(AppError.Network)
+            calls++
+            AppResult.Failure(AppError.Network)
         })
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         snapshot = poolCart("2026-09-04T11:59:00Z")
-        vm.load(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.load()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(2, calls)
     }
 
     @Test fun `expiry binds original identity and drops late response after logout or login`() = runTest(dispatcherRule.dispatcher) {
-        for (replacement in listOf(null, br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("b".repeat(64)))) {
-            val owner = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(64))
-            val changes = kotlinx.coroutines.flow.MutableStateFlow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>(owner)
-            val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        for (replacement in listOf(null, AuthenticatedSessionIdentity("b".repeat(64)))) {
+            val owner = AuthenticatedSessionIdentity("a".repeat(64))
+            val changes = kotlinx.coroutines.flow.MutableStateFlow<AuthenticatedSessionIdentity?>(
+                owner
+            )
+            val sessions = object : AuthenticatedSessionIdentityProvider {
                 override fun captureIdentity() = changes.value
-                override fun isCurrent(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity) = changes.value === identity
+                override fun isCurrent(identity: AuthenticatedSessionIdentity) = changes.value === identity
             }
             val response = kotlinx.coroutines.CompletableDeferred<AppResult<ShoppingCart>>()
-            var captured: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity? = null
+            var captured: AuthenticatedSessionIdentity? = null
             var cancelled = false
-            val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
-                sessions = sessions, changes = changes, bound = br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase { _, identity ->
+            val vm = viewModel(
+                load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+                sessions = sessions,
+                changes = changes,
+                bound = RemoveExpiredPoolShareUseCase {
+                        _,
+                        identity,
+                    ->
                     captured = identity
-                    try { kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() } }
-                    finally { cancelled = !kotlin.coroutines.coroutineContext[kotlinx.coroutines.Job]!!.isActive }
-                })
+                    try {
+                        kotlinx.coroutines.withContext(kotlinx.coroutines.NonCancellable) { response.await() }
+                    } finally {
+                        cancelled = !kotlin.coroutines.coroutineContext[kotlinx.coroutines.Job]!!.isActive
+                    }
+                }
+            )
             dispatcherRule.dispatcher.scheduler.runCurrent()
-            vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.runCurrent()
+            vm.refreshExpiredReservations()
+            dispatcherRule.dispatcher.scheduler.runCurrent()
             assertTrue(captured === owner)
-            changes.value = replacement; dispatcherRule.dispatcher.scheduler.runCurrent()
-            response.complete(AppResult.Success(emptyCart())); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            changes.value = replacement
+            dispatcherRule.dispatcher.scheduler.runCurrent()
+            response.complete(AppResult.Success(emptyCart()))
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertTrue(cancelled)
             assertNull(vm.state.value.cart)
-            vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.refreshExpiredReservations()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertTrue(captured === owner)
         }
     }
 
     @Test fun `identity replaced before ticker prevents deletion`() = runTest(dispatcherRule.dispatcher) {
-        val owner = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(64))
-        var current: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity? = owner
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val owner = AuthenticatedSessionIdentity("a".repeat(64))
+        var current: AuthenticatedSessionIdentity? = owner
+        val sessions = object : AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = current
-            override fun isCurrent(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity) = current === identity
+            override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
         }
         var calls = 0
-        val vm = viewModel(load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) }, sessions = sessions,
-            bound = br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase { _, _ -> calls++; AppResult.Success(emptyCart()) })
+        val vm = viewModel(
+            load = { AppResult.Success(poolCart("2026-09-04T11:59:00Z")) },
+            sessions = sessions,
+            bound = RemoveExpiredPoolShareUseCase { _, _ ->
+                calls++
+                AppResult.Success(emptyCart())
+            }
+        )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        current = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(64))
-        vm.refreshExpiredReservations(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        current = AuthenticatedSessionIdentity("a".repeat(64))
+        vm.refreshExpiredReservations()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
         assertEquals(0, calls)
     }
 
@@ -1044,15 +1349,26 @@ class CartViewModelTest {
         var requests = 0
         var countryChecks = 0
         val vm = viewModel(
-            location = { countryChecks++; AppResult.Success(status) },
-            recordLocationRequest = { requests++; recorded.await(); AppResult.Success(Unit) },
+            location = {
+                countryChecks++
+                AppResult.Success(status)
+            },
+            recordLocationRequest = {
+                requests++
+                recorded.await()
+                AppResult.Success(Unit)
+            }
         )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-        vm.acceptLocationConsent(); dispatcherRule.dispatcher.scheduler.runCurrent()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.acceptLocationConsent()
+        dispatcherRule.dispatcher.scheduler.runCurrent()
         assertTrue(vm.state.value.loading)
         assertNull(vm.state.value.locationAction)
-        vm.acceptLocationConsent(); vm.requestPayment(); vm.locationSettingsReturned()
+        vm.acceptLocationConsent()
+        vm.requestPayment()
+        vm.locationSettingsReturned()
         dispatcherRule.dispatcher.scheduler.runCurrent()
         assertEquals(1, requests)
         assertEquals(1, countryChecks)
@@ -1069,7 +1385,9 @@ class CartViewModelTest {
         assertTrue(vm.state.value.paymentReady)
     }
 
-    @Test fun `downstream cancellation retains the location cleanup boundary and allows a new attempt`() = runTest(dispatcherRule.dispatcher) {
+    @Test fun `downstream cancellation retains the location cleanup boundary and allows a new attempt`() = runTest(
+        dispatcherRule.dispatcher
+    ) {
         for (cancelDuringHistory in listOf(true, false)) {
             val resume = kotlinx.coroutines.CompletableDeferred<Unit>()
             var cancelAttempt = true
@@ -1087,10 +1405,11 @@ class CartViewModelTest {
                 validateCart = {
                     if (cancelAttempt && !cancelDuringHistory) cancelAfterSuspension()
                     AppResult.Success(CartValidationResult.Accepted)
-                },
+                }
             )
             dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.runCurrent()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.runCurrent()
             assertTrue(vm.state.value.loading)
             assertFalse(vm.state.value.paymentReady)
             resume.complete(Unit)
@@ -1103,13 +1422,43 @@ class CartViewModelTest {
             assertEquals(cart(), vm.state.value.cart)
             cancelAttempt = false
             assertTrue(vm.dismissLocationBlock())
-            vm.requestPayment(); dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+            vm.requestPayment()
+            dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
             assertTrue(vm.state.value.paymentReady)
         }
     }
 
+    @Test
+    fun `disabled cart preserves selection and blocks removal and checkout from the base footer`() = runTest(dispatcherRule.dispatcher) {
+        var enabled = true
+        var removed = 0
+        var verified = 0
+        val vm = viewModel(
+            canStartOperation = { enabled },
+            remove = {
+                removed++
+                AppResult.Success(emptyCart())
+            },
+            verifyAccount = {
+                verified++
+                AppResult.Success(CartPaymentAccountDecision.Allowed)
+            }
+        )
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        vm.requestRemoval(item())
+        enabled = false
+        vm.confirmRemoval()
+        vm.requestPayment()
+        dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
+        assertEquals(0, removed)
+        assertEquals(0, verified)
+        assertEquals(item(), vm.state.value.pendingRemoval)
+        assertEquals(cart(), vm.state.value.cart)
+    }
+
     private fun viewModel(
         load: suspend () -> AppResult<ShoppingCart> = { AppResult.Success(cart()) },
+        canStartOperation: () -> Boolean = { true },
         remove: suspend (CartItem) -> AppResult<ShoppingCart> = { AppResult.Success(emptyCart()) },
         clear: suspend () -> AppResult<ShoppingCart> = { AppResult.Success(emptyCart()) },
         parameters: (suspend () -> AppResult<BettingParameters>)? = null,
@@ -1120,20 +1469,20 @@ class CartViewModelTest {
         recentPurchase: suspend (BigDecimal) -> AppResult<Boolean> = { AppResult.Success(false) },
         location: suspend () -> AppResult<CheckoutLocationStatus> = { AppResult.Success(CheckoutLocationStatus.IN_BRAZIL) },
         recordLocationRequest: suspend () -> AppResult<Unit> = { AppResult.Success(Unit) },
-        network: br.gov.caixa.loterias.core.common.network.NetworkAvailability = br.gov.caixa.loterias.core.common.network.NetworkAvailability {
-            br.gov.caixa.loterias.core.common.network.ConnectionAvailability.UNKNOWN
+        network: NetworkAvailability = NetworkAvailability {
+            ConnectionAvailability.UNKNOWN
         },
         verifyAccount: suspend () -> AppResult<CartPaymentAccountDecision> = { AppResult.Success(CartPaymentAccountDecision.Allowed) },
-        serverTime: br.gov.caixa.loterias.core.common.time.ServerTimeSource = br.gov.caixa.loterias.core.common.time.ServerTimeSource {
+        serverTime: ServerTimeSource = ServerTimeSource {
             java.time.Instant.parse("2026-09-04T12:00:00Z")
         },
-        sessions: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider? = null,
-        changes: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>? = null,
-        bound: br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase? = null,
+        sessions: AuthenticatedSessionIdentityProvider? = null,
+        changes: kotlinx.coroutines.flow.Flow<AuthenticatedSessionIdentity?>? = null,
+        bound: RemoveExpiredPoolShareUseCase? = null,
     ) = CartViewModel(
         checkCheckoutLocation = CheckCheckoutLocationUseCase { location() },
         recordLocationRequest = RecordCheckoutLocationRequestUseCase { recordLocationRequest() },
-        hasRecentPurchase = br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase { recentPurchase(it) },
+        hasRecentPurchase = HasRecentPurchaseUseCase { recentPurchase(it) },
         getCurrentCart = GetCurrentCartUseCase { load() },
         removeCartItem = RemoveCartItemUseCase { remove(it) },
         clearCart = ClearCartUseCase { clear() },
@@ -1149,20 +1498,29 @@ class CartViewModelTest {
         reservationSessions = sessions,
         reservationSessionChanges = changes,
         removeExpiredPoolShare = bound,
+        canStartOperation = canStartOperation
     )
 
     companion object {
-        private fun poolCart(expiresAt: String) = cart().copy(items = listOf(item().copy(
-            kind = CartItemKind.POOL_SHARE,
-            poolShare = br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare("B123", 1, 10, expiresAt),
-        )))
+        private fun poolCart(expiresAt: String) = cart().copy(
+            items = listOf(
+                item().copy(
+                    kind = CartItemKind.POOL_SHARE,
+                    poolShare = CartPoolShare("B123", 1, 10, expiresAt)
+                )
+            )
+        )
 
         private fun validParameters() = BettingParameters(
-            BigDecimal("500"), BigDecimal("30"), 50,
-            listOf(br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters(
-                br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
-                2900, "10/09/2026", 60, 6, 20, 15, emptyList(), emptyList(),
-            )),
+            BigDecimal("500"),
+            BigDecimal("30"),
+            50,
+            listOf(
+                LotteryGameParameters(
+                    LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
+                    2900, "10/09/2026", 60, 6, 20, 15, emptyList(), emptyList()
+                )
+            )
         )
 
         private fun item() = CartItem(
@@ -1170,13 +1528,13 @@ class CartViewModelTest {
             kind = CartItemKind.INDIVIDUAL_BET,
             title = "Mega Sena",
             description = "01  02  03",
-            amount = BigDecimal("20.00"),
+            amount = BigDecimal("20.00")
         )
 
         private fun cart() = ShoppingCart(
             id = 5,
             total = BigDecimal("20.00"),
-            items = listOf(item()),
+            items = listOf(item())
         )
 
         private fun emptyCart() = ShoppingCart(5, BigDecimal.ZERO, emptyList())

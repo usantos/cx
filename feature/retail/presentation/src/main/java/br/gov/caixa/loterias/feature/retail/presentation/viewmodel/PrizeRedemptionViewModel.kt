@@ -50,6 +50,7 @@ class PrizeRedemptionViewModel(
     private val localClock: Clock,
     private val networkAvailability: NetworkAvailability,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val isEntryEnabled: () -> Boolean = { true },
 ) : ViewModel() {
     private val betId = input.betId
     private val mutableState = reduxStateStore<PrizeRedemptionUiState, PrizeRedemptionStateAction>(
@@ -69,7 +70,7 @@ class PrizeRedemptionViewModel(
     private val timer = PrizeRedemptionTimer(mutableState, viewModelScope, dispatchers)
     private val submission = PrizeRedemptionSubmission(
         betId, mutableState, viewModelScope, dispatchers, redeemPrize, localClock,
-        networkAvailability, notices::interactionBlocked, ::fail
+        networkAvailability, { !isEntryEnabled() || notices.interactionBlocked() }, ::fail
     )
     private val lottery = PrizeLotteryChannel(
         betId,
@@ -78,21 +79,21 @@ class PrizeRedemptionViewModel(
         dispatchers,
         generateLotteryCode,
         timer,
-        ::interactionBlocked,
+        ::newOperationBlocked,
         ::fail
     )
     private val pix = PrizePixChannel(
         betId, mutableState, viewModelScope, dispatchers, consultPixKey, cancelPix,
-        submission::submit, ::returnToOptions, ::interactionBlocked, ::fail
+        submission::submit, ::returnToOptions, ::newOperationBlocked, ::fail
     )
-    private val mercadoPago = PrizeMercadoPagoChannel(mutableState, ::interactionBlocked, submission::submit)
+    private val mercadoPago = PrizeMercadoPagoChannel(mutableState, ::newOperationBlocked, submission::submit)
     private val receiptDownloads = PrizeRedemptionReceipts(
         betId, mutableState, viewModelScope, dispatchers, mutableReceipts,
         receiptUseCases.downloadBetReceipt, receiptUseCases.downloadPrizeReceipt, ::interactionBlocked, ::fail
     )
     private val coordinator = PrizeRedemptionCoordinator(
         betId, mutableState, viewModelScope, dispatchers, getDetails,
-        getBettingParameters, prepareBetEntry, ::interactionBlocked, ::fail
+        getBettingParameters, prepareBetEntry, ::newOperationBlocked, ::fail
     )
 
     init {
@@ -101,14 +102,16 @@ class PrizeRedemptionViewModel(
 
     fun load() = coordinator.load()
 
-    fun loadCurrentContest() = coordinator.loadCurrentContest()
+    fun loadCurrentContest() {
+        if (isEntryEnabled()) coordinator.loadCurrentContest()
+    }
 
     fun betNow() = coordinator.betNow()
 
     fun consumeBetEntryDecision() = mutableState.dispatch(PrizeRedemptionStateAction.BetEntryConsumed)
 
     fun select(channel: PrizeRedemptionChannel) {
-        if (state.value.loading || interactionBlocked() ||
+        if (state.value.loading || newOperationBlocked() ||
             state.value.details?.options?.none { it.channel == channel } != false
         ) {
             return
@@ -179,6 +182,8 @@ class PrizeRedemptionViewModel(
     fun consumeRegistrationNotice(expected: PrizeRegistrationNotice): String? = notices.consumeRegistrationNotice(expected)
 
     fun registrationFinished() = notices.registrationFinished()
+
+    private fun newOperationBlocked(): Boolean = !isEntryEnabled() || interactionBlocked()
 
     private fun interactionBlocked(): Boolean = submission.inProgress || notices.interactionBlocked()
 

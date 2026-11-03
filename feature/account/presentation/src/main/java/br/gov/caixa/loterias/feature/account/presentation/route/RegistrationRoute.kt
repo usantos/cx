@@ -8,19 +8,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAccountChoice
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAuthenticationLoadingDialog
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
 import br.gov.caixa.loterias.feature.account.R as LocalizedR
-import br.gov.caixa.loterias.feature.account.domain.model.Gender
+import br.gov.caixa.loterias.feature.account.presentation.screen.RegistrationActions
+import br.gov.caixa.loterias.feature.account.presentation.screen.RegistrationScreen
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.RegistrationViewModel
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.canRegister
 
-import br.gov.caixa.loterias.feature.account.presentation.screen.RegistrationActions
-import br.gov.caixa.loterias.feature.account.presentation.screen.RegistrationScreen
-
 @Composable
-fun RegistrationRoute(viewModel: RegistrationViewModel, onBack: () -> Unit, onComplete: () -> Unit, onTerms: () -> Unit) {
+fun RegistrationRoute(
+    viewModel: RegistrationViewModel,
+    onBack: () -> Unit,
+    onComplete: () -> Unit,
+    onTerms: () -> Unit,
+    completionRequired: Boolean = false,
+) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     val state by viewModel.state.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
@@ -40,7 +44,8 @@ fun RegistrationRoute(viewModel: RegistrationViewModel, onBack: () -> Unit, onCo
         ),
         onBack,
         onTerms,
-        onZipCodeRedirect = { showZipCodeRedirect = true }
+        onZipCodeRedirect = { showZipCodeRedirect = true },
+        access = if (completionRequired) FeatureEntryAccess.REQUIRED else FeatureEntryAccess.OPTIONAL
     )
     if (state.loading) LoteriasCaixaDSAuthenticationLoadingDialog()
     if (showZipCodeRedirect) {
@@ -52,11 +57,6 @@ fun RegistrationRoute(viewModel: RegistrationViewModel, onBack: () -> Unit, onCo
             onDismiss = { showZipCodeRedirect = false }
         )
     }
-}
-
-@Composable
-internal fun LegacyAccountGenderControl(selected: Gender, onSelected: (Gender) -> Unit) {
-    LoteriasCaixaDSAccountChoice(selected, listOf("Masculino" to Gender.MALE, "Feminino" to Gender.FEMALE), onSelected)
 }
 
 @Composable

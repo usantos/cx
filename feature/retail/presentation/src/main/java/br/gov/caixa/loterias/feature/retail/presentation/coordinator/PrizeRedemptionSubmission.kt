@@ -40,6 +40,10 @@ internal class PrizeRedemptionSubmission(
         mutableState.dispatch(PrizeRedemptionStateAction.SubmissionStarted)
         scope.launch(dispatchers.io) {
             try {
+                if (interactionBlocked()) {
+                    mutableState.dispatch(PrizeRedemptionStateAction.SubmissionUnchanged)
+                    return@launch
+                }
                 complete(channel, value)
             } finally {
                 claimed.set(false)

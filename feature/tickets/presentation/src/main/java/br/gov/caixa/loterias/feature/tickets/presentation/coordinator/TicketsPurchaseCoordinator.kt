@@ -27,6 +27,7 @@ internal class TicketsPurchaseCoordinator(
     private val validateDam: ValidateDamUseCase?,
     private val capturePixDeadline: (Purchase, String) -> Unit,
     private val fail: (String) -> Unit,
+    private val canStartOperation: () -> Boolean,
 ) {
     fun loadPurchase(purchase: Purchase) {
         if (mutableState.value.selectedPurchase?.id != purchase.id) {
@@ -101,9 +102,15 @@ internal class TicketsPurchaseCoordinator(
         }
         val validation = validateFavoriteName
         if (validation == null) return saveFavorite(overwrite = true)
-        mutableState.dispatch(TicketsStateAction.PurchaseFavoriteValidationStarted)
         scope.launch(dispatchers.io) {
-            when (validation(current.favoriteName)) {
+            if (!canStartOperation()) return@launch
+            mutableState.dispatch(TicketsStateAction.PurchaseFavoriteValidationStarted)
+            val result = validation(current.favoriteName)
+            if (!canStartOperation()) {
+                mutableState.dispatch(TicketsStateAction.PurchaseFavoritePreparationCancelled)
+                return@launch
+            }
+            when (result) {
                 is AppResult.Success -> saveFavorite(overwrite = true)
                 is AppResult.Failure -> mutableState.dispatch(TicketsStateAction.PurchaseFavoriteOverwriteRequired)
             }
@@ -111,7 +118,6 @@ internal class TicketsPurchaseCoordinator(
     }
 
     fun confirmFavoriteOverwrite() {
-        mutableState.dispatch(TicketsStateAction.PurchaseFavoriteOverwriteConfirmed)
         saveFavorite(overwrite = true)
     }
 
@@ -145,15 +151,20 @@ internal class TicketsPurchaseCoordinator(
     }
 
     private fun saveFavorite(overwrite: Boolean) {
-        if (!overwrite) return
+        if (!overwrite || !canStartOperation()) return
         val useCase = savePurchaseAsFavorite
         val current = mutableState.value
         if (useCase == null) {
             mutableState.dispatch(TicketsStateAction.LocalPurchaseFavoriteSaved)
             return
         }
-        mutableState.dispatch(TicketsStateAction.PurchaseFavoriteSaveStarted)
         scope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(TicketsStateAction.PurchaseFavoritePreparationCancelled)
+                return@launch
+            }
+            mutableState.dispatch(TicketsStateAction.PurchaseFavoriteOverwriteConfirmed)
+            mutableState.dispatch(TicketsStateAction.PurchaseFavoriteSaveStarted)
             when (
                 val result = useCase(
                     current.selectedPurchase?.id ?: 0,

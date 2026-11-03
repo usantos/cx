@@ -26,6 +26,8 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.StartupState
@@ -36,12 +38,13 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class StartupCompositionJvmTest {
     @get:Rule
@@ -52,7 +55,7 @@ class StartupCompositionJvmTest {
     fun startupGateKeepsFailureVisibleDuringRetryAndReleasesReadyContentOnlyAfterRecovery() {
         val state = mutableStateOf(StartupState.WAITING_QUEUE)
         var retries = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 StartupGateContent(state.value, {
                     retries++
@@ -82,7 +85,7 @@ class StartupCompositionJvmTest {
                 if (++calls == 1) AppResult.Failure(AppError.Network) else retry.await()
             }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { FilaBraInitialization(dependencies) { Text("Security prepared") } }
         }
         compose.onNodeWithText("Security prepared").assertDoesNotExist()
@@ -117,7 +120,7 @@ class StartupCompositionJvmTest {
             inactive(), inactive(), inactive(), inactive(), inactive(), inactive(), inactive()
         )
         val session = AppSessionDependencies(inactive(), ForegroundSessionBackgroundState(), Clock.systemUTC())
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) }
         }
         compose.onNodeWithText("Atualizar").assertIsDisplayed()
@@ -130,7 +133,7 @@ class StartupCompositionJvmTest {
     @Test
     fun startupGateCanStartFromAnExplicitUpdateRequirementWithoutRetryingBusinessServices() {
         var retries = 0
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 StartupGateContent(StartupState.WAITING_QUEUE, {
                     retries++
@@ -164,7 +167,7 @@ class StartupCompositionJvmTest {
             inactive(), inactive(), inactive(), inactive(), inactive(), inactive(), inactive()
         )
         val session = AppSessionDependencies(inactive(), ForegroundSessionBackgroundState(), Clock.systemUTC())
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme { MockBackendAppGate(dependencies, features, session, minimumSplashElapsed = false, {}) }
         }
         compose.onNodeWithContentDescription("Logo Loterias CAIXA").assertExists()

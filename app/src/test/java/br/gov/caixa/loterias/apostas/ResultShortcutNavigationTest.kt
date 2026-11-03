@@ -8,21 +8,26 @@ import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.apostas.navigation.shortcuts.navigateToResultShortcut
 import br.gov.caixa.loterias.apostas.runtime.shortcuts.ResultShortcutDestination
 import br.gov.caixa.loterias.apostas.runtime.shortcuts.ResultShortcutRequest
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 class ResultShortcutNavigationTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
 
     private fun graph() {
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             NavHost(nav, startDestination = "account/login") {
                 composable("account/login") {}

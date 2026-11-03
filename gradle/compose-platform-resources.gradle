@@ -25,6 +25,53 @@ ext.verifyComposePlatformResources = { File resourceRoot = rootDir ->
         }
     }
     allowedPlatformXml.add(debugManifest)
+    // Lista exata da entrega híbrida aprovada; não permite componentes em splits de UI.
+    def approvedSplits = [
+            [path: 'feature/support/faq/src/main/AndroidManifest.xml', title: 'support_faq_module_title', delivery: 'dist:on-demand'],
+            [path: 'feature/account/account_ui/src/main/AndroidManifest.xml', title: 'module_account_ui_title', delivery: 'dist:install-time'],
+            [path: 'feature/home/home_ui/src/main/AndroidManifest.xml', title: 'module_home_ui_title', delivery: 'dist:install-time'],
+            [path: 'feature/onboarding/onboarding_ui/src/main/AndroidManifest.xml', title: 'module_onboarding_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/betting/betting_ui/src/main/AndroidManifest.xml', title: 'module_betting_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/cart/cart_ui/src/main/AndroidManifest.xml', title: 'module_cart_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/payment/payment_ui/src/main/AndroidManifest.xml', title: 'module_payment_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/tickets/tickets_ui/src/main/AndroidManifest.xml', title: 'module_tickets_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/marketplace/marketplace_ui/src/main/AndroidManifest.xml', title: 'module_marketplace_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/marketplace-filter/marketplace_filter_ui/src/main/AndroidManifest.xml', title: 'module_marketplace_filter_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/results/results_ui/src/main/AndroidManifest.xml', title: 'module_results_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/notifications/notifications_ui/src/main/AndroidManifest.xml', title: 'module_notifications_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/responsible-gaming/responsible_gaming_ui/src/main/AndroidManifest.xml', title: 'module_responsible_gaming_ui_title', delivery: 'dist:install-time'],
+            [path: 'feature/retail/retail_ui/src/main/AndroidManifest.xml', title: 'module_retail_ui_title', delivery: 'dist:on-demand'],
+            [path: 'feature/support/support_ui/src/main/AndroidManifest.xml', title: 'module_support_ui_title', delivery: 'dist:on-demand']
+    ]
+    approvedSplits.each { spec ->
+    def faqManifest = resourceFile(spec.path)
+    if (!faqManifest.isFile()) throw new GradleException('Manifest FAQ obrigatório ausente.')
+    def faq = new groovy.xml.XmlSlurper(false, false).parse(faqManifest)
+    def module = faq.'dist:module'
+    def validFaq = faq.name() == 'manifest' && faq.attributes() == [
+            'xmlns:android': 'http://schemas.android.com/apk/res/android',
+            'xmlns:dist': 'http://schemas.android.com/apk/distribution',
+    ] && faq.text().trim().isEmpty() && faq.children().size() == 1 && module.size() == 1 &&
+            module[0].attributes() == ['dist:instant': 'false', 'dist:title': '@string/' + spec.title] &&
+            module[0].children().size() == 2 && module.'dist:delivery'.size() == 1 && module.'dist:fusing'.size() == 1 &&
+            module.'dist:delivery'[0].attributes().isEmpty() && module.'dist:delivery'[0].children().size() == 1 &&
+            module.'dist:delivery'."${spec.delivery}".size() == 1 &&
+            module.'dist:delivery'."${spec.delivery}"[0].attributes().isEmpty() &&
+            module.'dist:delivery'."${spec.delivery}"[0].children().isEmpty() &&
+            module.'dist:fusing'[0].attributes() == ['dist:include': 'true'] &&
+            module.'dist:fusing'[0].children().isEmpty()
+    if (!validFaq) throw new GradleException('Manifest FAQ deve conter somente entrega sob demanda, título e fusing aprovados, sem componentes ou permissões.')
+    allowedPlatformXml.add(faqManifest)
+    }
+    def faqTitleKeep = resourceFile('app/src/main/res/raw/dynamic_features_keep.xml')
+    if (!faqTitleKeep.isFile()) throw new GradleException('Keep do título FAQ obrigatório ausente.')
+    def keep = new groovy.xml.XmlSlurper(false, false).parse(faqTitleKeep)
+    if (keep.name() != 'resources' || !keep.children().isEmpty() || !keep.text().trim().isEmpty() ||
+            keep.attributes() != ['xmlns:tools': 'http://schemas.android.com/tools',
+                                  'tools:keep': approvedSplits.collect { '@string/' + it.title }.sort().join(',')]) {
+        throw new GradleException('Keep do título FAQ deve preservar somente a string aprovada, sem recursos ou atributos adicionais.')
+    }
+    allowedPlatformXml.add(faqTitleKeep)
     // Artes vetoriais extraídas para o DS após o inventário legado; nomes explícitos e sem Views.
     def comboVectorNames = [
             'legacy_combo_trevo_loteca_detalhe_combo', 'legacy_combo_trevo_dupla_sena_detalhe_combo',
@@ -120,27 +167,34 @@ ext.verifyComposePlatformResources = { File resourceRoot = rootDir ->
                 [icon: 'outubro_rosa', start: '10-01', end: '10-31'],
                 [icon: 'novembro_azul', start: '11-01', end: '11-30'],
         ]
-        def validDefaults = defaults.name() == 'defaultsMap' && defaults.children().size() == 2 &&
-                defaults.entry.size() == 2 &&
+        def validDefaults = defaults.name() == 'defaultsMap' && defaults.children().size() == 3 &&
+                defaults.entry.size() == 3 &&
                 defaults.entry.every { entry ->
                     entry.children().size() == 2 && entry.key.size() == 1 && entry.value.size() == 1 &&
                             entry.key[0].children().isEmpty() && entry.value[0].children().isEmpty()
                 } && defaults.depthFirst().every {
                     it.name() in ['defaultsMap', 'entry', 'key', 'value'] && it.attributes().isEmpty()
-                } && defaults.entry.collect { it.key.text() }.toSet() == ['force_update', 'app_launcher_icon'].toSet()
+                } && defaults.entry.collect { it.key.text() }.toSet() == ['force_update', 'app_launcher_icon', 'app_modules'].toSet()
         if (validDefaults) {
             def entries = defaults.entry.collectEntries { [(it.key.text()): it.value.text()] }
             try {
                 validDefaults = entries.force_update == 'false' &&
                         new groovy.json.JsonSlurper().parseText(entries.app_launcher_icon) == [
                                 default_icon: 'default', timezone: 'America/Sao_Paulo', campaigns: expectedCampaigns,
+                        ] && new groovy.json.JsonSlurper().parseText(entries.app_modules) == [
+                                schema_version: 1, modules: approvedSplits.collectEntries { spec ->
+                                    def key = spec.title == 'support_faq_module_title' ? 'support_faq' :
+                                            spec.title == 'module_support_ui_title' ? 'support_help' :
+                                            spec.title.replaceFirst('^module_', '').replaceFirst('_ui_title$', '')
+                                    [(key): [enabled: key != 'support_faq']]
+                                },
                         ]
             } catch (groovy.json.JsonException ignored) {
                 validDefaults = false
             }
         }
         if (!validDefaults) {
-            throw new GradleException('Remote Config defaults devem conter somente force_update=false e o calendário anual dos quatro presets, com fallback padrão.')
+            throw new GradleException('Remote Config defaults devem conter somente force_update=false, o calendário anual dos quatro presets e app_modules schema 1 com support_faq desabilitado.')
         }
         allowedPlatformXml.add(remoteDefaults)
     }
@@ -171,7 +225,31 @@ tasks.register('verifyComposePlatformResourcePolicy') {
             def aliases = 'core/design-system/src/main/res/values/drawable_aliases.xml'
             def volantes = 'core/design-system/src/main/res/drawable-mdpi/ic_volantes.xml'
             def defaults = 'app/src/main/res/xml/remote_config_defaults.xml'
+            def faqManifest = 'feature/support/faq/src/main/AndroidManifest.xml'
+            def unknownManifest = new File(fixtureRoot, 'feature/unknown/faq/src/main/AndroidManifest.xml')
+            unknownManifest.parentFile.mkdirs()
+            unknownManifest.bytes = new File(fixtureRoot, faqManifest).bytes
+            assert !verifyComposePlatformResources(fixtureRoot).contains(unknownManifest.canonicalFile):
+                    'Manifest de módulo desconhecido entrou na lista de plataforma'
+            results.add([fixture: 'unknown-dynamic-manifest-not-allowlisted', expectedRejection: true, passed: true])
+            unknownManifest.delete()
+            def faqTitleKeep = 'app/src/main/res/raw/dynamic_features_keep.xml'
             def fixtures = [
+                    [name: 'faq-title-keep-foreign', path: faqTitleKeep, error: 'Keep do título FAQ', change: { it.replace('@string/support_faq_module_title', '@string/other') }],
+                    [name: 'faq-title-keep-wildcard', path: faqTitleKeep, error: 'Keep do título FAQ', change: { it.replace('@string/support_faq_module_title', '@string/*') }],
+                    [name: 'faq-title-keep-extra-attribute', path: faqTitleKeep, error: 'Keep do título FAQ', change: { it.replace('<resources ', '<resources tools:discard="@string/other" ') }],
+                    [name: 'faq-title-keep-extra-child', path: faqTitleKeep, error: 'Keep do título FAQ', change: { it.replace('/>', '><TextView /></resources>') }],
+                    [name: 'faq-title-keep-text', path: faqTitleKeep, error: 'Keep do título FAQ', change: { it.replace('/>', '>foreign</resources>') }],
+                    [name: 'faq-extra-component', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('</manifest>', '<application><activity android:name=".Forbidden" /></application></manifest>') }],
+                    [name: 'faq-extra-permission', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('</manifest>', '<uses-permission android:name="android.permission.CAMERA" /></manifest>') }],
+                    [name: 'faq-install-time', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('dist:on-demand', 'dist:install-time') }],
+                    [name: 'faq-foreign-title', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('@string/support_faq_module_title', '@string/other') }],
+                    [name: 'faq-instant', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('dist:instant="false"', 'dist:instant="true"') }],
+                    [name: 'faq-no-fusing', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('dist:include="true"', 'dist:include="false"') }],
+                    [name: 'faq-extra-delivery', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('<dist:on-demand />', '<dist:on-demand /><dist:install-time />') }],
+                    [name: 'faq-extra-root-attribute', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('<manifest ', '<manifest package="foreign" ') }],
+                    [name: 'faq-extra-module-attribute', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('dist:instant="false"', 'dist:instant="false" dist:removable="true"') }],
+                    [name: 'faq-text', path: faqManifest, error: 'Manifest FAQ', change: { it.replace('</manifest>', 'foreign</manifest>') }],
                     [name: 'debug-permission', path: debug, error: 'Manifest debug', change: { it.replace('</manifest>', '<uses-permission android:name="android.permission.CAMERA" /></manifest>') }],
                     [name: 'debug-root-attribute', path: debug, error: 'Manifest debug', change: { it.replace('<manifest ', '<manifest package="other" ') }],
                     [name: 'debug-extra-namespace', path: debug, error: 'Manifest debug', change: { it.replace('<manifest ', '<manifest xmlns:other="https://invalid.example" ') }],
@@ -196,6 +274,9 @@ tasks.register('verifyComposePlatformResourcePolicy') {
                     [name: 'aliases-layout', path: aliases, error: 'Aliases devem preservar', change: { it.replace('</resources>', '<TextView /></resources>') }],
                     [name: 'aliases-reference', path: aliases, error: 'Aliases devem preservar', change: { it.replace('@drawable/loterias_caixa_ds_home_clover', '@drawable/foreign') }],
                     [name: 'volantes-layout', path: volantes, error: 'Recurso ic_volantes', change: { it.replace('</layer-list>', '<TextView /></layer-list>') }],
+                    [name: 'defaults-enabled-faq', path: defaults, error: 'Remote Config defaults', change: { it.replaceAll(/"enabled"\s*:\s*false/, '"enabled":true') }],
+                    [name: 'defaults-unknown-module', path: defaults, error: 'Remote Config defaults', change: { it.replace('"support_faq"', '"unknown_module"') }],
+                    [name: 'defaults-module-schema', path: defaults, error: 'Remote Config defaults', change: { it.replaceAll(/"schema_version"\s*:\s*1/, '"schema_version":2') }],
                     [name: 'defaults-force-update', path: defaults, error: 'Remote Config defaults', change: { it.replace('<value>false</value>', '<value>true</value>') }],
                     [name: 'defaults-extra-key', path: defaults, error: 'Remote Config defaults', change: { it.replace('</defaultsMap>', '<entry><key>other</key><value>false</value></entry></defaultsMap>') }],
                     [name: 'defaults-duplicate-key', path: defaults, error: 'Remote Config defaults', change: { it.replace('<key>app_launcher_icon</key>', '<key>force_update</key>') }],

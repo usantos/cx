@@ -27,6 +27,11 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : androidx.activity.ComponentActivity() {
+    override fun attachBaseContext(newBase: android.content.Context) {
+        super.attachBaseContext(newBase)
+        com.google.android.play.core.splitcompat.SplitCompat.installActivity(this)
+    }
+
     private val resultShortcuts = ResultShortcutRequests {
         reportResultLauncherShortcutUsage(this, it)
     }
@@ -56,6 +61,8 @@ class MainActivity : androidx.activity.ComponentActivity() {
     } else {
         super.registerReceiver(receiver, filter, flags)
     }
+
+    @Inject lateinit var moduleUiDependencies: br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleUiDependencies
 
     @Inject lateinit var initialization: AppInitializationDependencies
 
@@ -100,17 +107,19 @@ class MainActivity : androidx.activity.ComponentActivity() {
         if (visualTestRoute != null) visualSessionFixture.installIfRequested(intent.getBooleanExtra("visual_test_authenticated", false))
         val restartForegroundStartup = { restartForegroundSession(this) }
         setContent {
-            CompositionLocalProvider(LocalResultShortcutRequests provides resultShortcuts) {
-                br.gov.caixa.loterias.apostas.composition.AppContent(
-                    initialization,
-                    featureDependencies,
-                    session,
-                    campaign,
-                    environment,
-                    this,
-                    visualTestRoute,
-                    restartForegroundStartup
-                )
+            br.gov.caixa.loterias.core.presentation.delivery.FeatureModulesProvider(moduleUiDependencies) {
+                CompositionLocalProvider(LocalResultShortcutRequests provides resultShortcuts) {
+                    br.gov.caixa.loterias.apostas.composition.AppContent(
+                        initialization,
+                        featureDependencies,
+                        session,
+                        campaign,
+                        environment,
+                        this,
+                        visualTestRoute,
+                        restartForegroundStartup
+                    )
+                }
             }
         }
     }

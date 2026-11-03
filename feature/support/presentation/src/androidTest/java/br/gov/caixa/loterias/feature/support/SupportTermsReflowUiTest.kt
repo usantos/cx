@@ -12,6 +12,7 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.lifecycle.ActivityLifecycleMonitorRegistry
 import androidx.test.runner.lifecycle.Stage
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.support.presentation.screen.ReadOnlyTermsScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 import org.junit.Assert.assertEquals
@@ -25,7 +26,7 @@ class SupportTermsReflowUiTest {
     private val url = "https://www.loteriasonline.caixa.gov.br/silce-web/consulta/resultados/modalidades"
 
     @Test fun longTermsLinkReflowsAtDoubleFontWithoutChangingItsDestination() {
-        compose.setContent {
+        compose.setFeatureContent {
             val density = LocalDensity.current
             CompositionLocalProvider(LocalDensity provides Density(density.density, 2f)) {
                 LoteriasCaixaDSTheme {

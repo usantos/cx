@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.presentation.route
 
-import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 internal class BettingSportsCallbacks(viewModel: BettingGameViewModel) {

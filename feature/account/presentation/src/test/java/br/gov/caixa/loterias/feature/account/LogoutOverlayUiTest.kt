@@ -2,7 +2,6 @@ package br.gov.caixa.loterias.feature.account
 
 import android.app.Activity
 import android.content.Intent
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.LocalActivityResultRegistryOwner
 import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.ActivityResultRegistryOwner
@@ -18,6 +17,8 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
 import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
@@ -38,14 +39,17 @@ import org.junit.Assert.fail
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 /** Apenas o transporte do navegador é sintético; a orquestração do logout e o consumo do callback são reais. */
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class LogoutOverlayUiTest {
-    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))
     private var serverFails = false
     private var cleanupFails = false
@@ -114,7 +118,7 @@ class LogoutOverlayUiTest {
             },
             FixedCoroutineDispatchers(Dispatchers.Main.immediate)
         )
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
                 LoteriasCaixaDSTheme { LogoutOverlay(model, gateway) }
             }

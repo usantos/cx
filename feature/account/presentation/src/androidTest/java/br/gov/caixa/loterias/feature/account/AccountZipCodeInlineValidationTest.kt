@@ -1,28 +1,35 @@
 package br.gov.caixa.loterias.feature.account
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.bottom
 import androidx.compose.ui.test.junit4.v2.createComposeRule
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.top
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
+import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
-import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
+import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
+import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
+import br.gov.caixa.loterias.feature.account.presentation.route.RegistrationRoute
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.RegistrationViewModel
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
-import br.gov.caixa.loterias.feature.account.presentation.route.RegistrationRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.RegistrationViewModel
 
 /** Apenas validação de consulta sintética. Mutações de conta falham imediatamente se chamadas por acidente. */
 class AccountZipCodeInlineValidationTest {
@@ -30,15 +37,23 @@ class AccountZipCodeInlineValidationTest {
 
     @Test fun personalLookupValidationIsBesideCepWithoutGenericDialogAndClearsOnEdit() {
         val model = PersonalDataViewModel(
-            GetAccountProfileUseCase { AppResult.Success(AccountProfile("00000000000", "Pessoa de Teste",
-                "teste@example.invalid", "00000000", Gender.MALE, MunicipalityId(1, 1, 1), "DF",
-                "Município de Teste", BigDecimal("100"), BigDecimal("10"), BigDecimal("200"), false)) },
+            GetAccountProfileUseCase {
+                AppResult.Success(
+                    AccountProfile(
+                        "00000000000", "Pessoa de Teste",
+                        "teste@example.invalid", "00000000", Gender.MALE, MunicipalityId(1, 1, 1), "DF",
+                        "Município de Teste", BigDecimal("100"), BigDecimal("10"), BigDecimal("200"), false
+                    )
+                )
+            },
             ResolveZipCodeUseCase { AppResult.Failure(AppError.Validation(MESSAGE)) },
-            UpdatePersonalDataUseCase { _, _ -> error("No account update allowed") },
+            UpdatePersonalDataUseCase { _, _ -> error("No account update allowed") }
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
-            PersonalDataRoute(model, {}, { error("No save completion allowed") })
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                PersonalDataRoute(model, {}, { error("No save completion allowed") })
+            }
+        }
         compose.waitUntil { !model.state.value.loading }
         compose.runOnIdle { model.changeZipCode("00000001") }
         compose.waitUntil { !model.state.value.loading }
@@ -57,11 +72,13 @@ class AccountZipCodeInlineValidationTest {
         val model = RegistrationViewModel(
             CurrentUserIdentityProvider { AuthenticatedUser("Pessoa de Teste", "00000000000", "teste@example.invalid", "19900101") },
             ResolveZipCodeUseCase { AppResult.Failure(AppError.Validation(MESSAGE)) },
-            RegisterAccountUseCase { error("No registration allowed") },
+            RegisterAccountUseCase { error("No registration allowed") }
         )
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) {
-            RegistrationRoute(model, {}, { error("No registration completion allowed") }, {})
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme(darkTheme = false) {
+                RegistrationRoute(model, {}, { error("No registration completion allowed") }, {})
+            }
+        }
         compose.runOnIdle { model.changeZipCode("00000001") }
         compose.waitUntil { !model.state.value.loading }
         assertInlineWarningBeforeUf()
@@ -79,5 +96,7 @@ class AccountZipCodeInlineValidationTest {
         assertTrue("CEP validation must precede UF, not the bottom of the form", warning.bottom <= ufTop)
     }
 
-    private companion object { const val MESSAGE = "CEP inválido para teste." }
+    private companion object {
+        const val MESSAGE = "CEP inválido para teste."
+    }
 }

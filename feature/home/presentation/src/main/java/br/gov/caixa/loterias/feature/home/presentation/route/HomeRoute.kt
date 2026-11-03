@@ -50,6 +50,8 @@ fun HomeRoute(
     val openWomenSupport = womenSupportOpener(womenSupportFailure)
     val preferenceState = preferencesViewModel?.state?.collectAsStateWithLifecycle()?.value
     val homeState by viewModel.state.collectAsStateWithLifecycle()
+    if (homeModuleUnavailable(homeState, viewModel, networkAvailability) { activity?.finish() }) return
+
     val homeCampaign = homeState.features.campaigns.active(CampaignArea.HOME)
     val octoberRoseExpandedState = rememberSaveable(homeCampaign) { mutableStateOf(false) }
     var octoberRoseExpanded by octoberRoseExpandedState
@@ -191,4 +193,27 @@ private fun homeRecoveryGate(
         return true
     }
     return false
+}
+
+@Composable
+private fun homeModuleUnavailable(
+    homeState: br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState,
+    viewModel: HomeViewModel,
+    networkAvailability: br.gov.caixa.loterias.core.common.network.NetworkAvailability,
+    onExit: () -> Unit,
+): Boolean {
+    if (br.gov.caixa.loterias.core.presentation.delivery.featureModuleEnabled(
+            br.gov.caixa.loterias.core.domain.configuration.model.AppModule.HOME
+        )
+    ) {
+        return false
+    }
+    if (!homeRecoveryGate(homeState, viewModel, networkAvailability)) {
+        br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleContent(
+            module = br.gov.caixa.loterias.core.domain.configuration.model.AppModule.HOME,
+            entryType = br.gov.caixa.loterias.feature.home.presentation.delivery.HomeUiEntry::class.java,
+            onBack = onExit
+        ) { }
+    }
+    return true
 }

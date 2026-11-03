@@ -2,20 +2,27 @@ package br.gov.caixa.loterias.feature.payment
 
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
-import java.time.LocalDateTime
-import org.junit.Assert.*
-import org.junit.Test
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_INVALID_IDENTIFICATION
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_OPERATION_FAILED
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_REQUEST_FAILED
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.purchaseNoticeUi
+import java.time.LocalDateTime
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 class PurchaseNoticeRulesTest {
     @Test fun `registration offers Sim Nao without diagnostics or more bets`() {
         for (message in listOf(null, "", "Deseja iniciar seu cadastro?")) {
-            assertEquals(PurchaseNoticeUiState(message?.takeIf { it.isNotEmpty() } ?: PURCHASE_OPERATION_FAILED, false, true),
-                purchaseNoticeUi(PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION, message, "018003"), LocalDateTime.of(2026, 9, 7, 12, 0)))
+            assertEquals(
+                PurchaseNoticeUiState(message?.takeIf { it.isNotEmpty() } ?: PURCHASE_OPERATION_FAILED, false, true),
+                purchaseNoticeUi(
+                    PurchaseNotice(PurchaseNoticeReason.MERCADO_PAGO_REGISTRATION, message, "018003"),
+                    LocalDateTime.of(2026, 9, 7, 12, 0)
+                )
+            )
         }
     }
     private val now = LocalDateTime.of(2026, 9, 7, 12, 3, 4)
@@ -35,7 +42,7 @@ class PurchaseNoticeRulesTest {
                 assertEquals(
                     (message?.takeIf { it.isNotEmpty() } ?: PURCHASE_OPERATION_FAILED) + "\n\n" +
                         (code?.let { "$it\n" } ?: "") + "07/09/2026 12:03:04",
-                    result.message,
+                    result.message
                 )
                 assertFalse(result.offerMoreBets)
             }
@@ -59,7 +66,7 @@ class PurchaseNoticeRulesTest {
     @Test fun `Mercado Pago identification error has no diagnostic suffix or additional action`() {
         assertEquals(
             PurchaseNoticeUiState(PURCHASE_INVALID_IDENTIFICATION, false),
-            purchaseNoticeUi(PurchaseNotice(PurchaseNoticeReason.INVALID_IDENTIFICATION, "Ignored", "2067"), now),
+            purchaseNoticeUi(PurchaseNotice(PurchaseNoticeReason.INVALID_IDENTIFICATION, "Ignored", "2067"), now)
         )
     }
 }

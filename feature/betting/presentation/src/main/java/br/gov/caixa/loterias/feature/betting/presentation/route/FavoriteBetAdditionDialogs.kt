@@ -14,11 +14,11 @@ internal fun FavoriteBetAdditionDialogs(state: FavoriteBetsUiState, viewModel: F
     state.addCandidate?.let {
         AddFavoriteOptionsDialog(
             state = state,
-            onCancel = viewModel::cancelAdd,
-            onConfirm = viewModel::confirmAdd,
-            onContestTypeChange = viewModel::setContestType,
-            onRecurringDrawsChange = viewModel::setRecurringDraws,
-            onToggleMirror = viewModel::toggleMirror
+            onCancel = { viewModel.cancelAdd() },
+            onConfirm = { viewModel.confirmAdd() },
+            onContestTypeChange = { value -> viewModel.setContestType(value) },
+            onRecurringDrawsChange = { value -> viewModel.setRecurringDraws(value) },
+            onToggleMirror = { viewModel.toggleMirror() }
         )
     }
     if (state.addedToCart) {
@@ -26,7 +26,7 @@ internal fun FavoriteBetAdditionDialogs(state: FavoriteBetsUiState, viewModel: F
             uiStrings.getString(LocalizedR.string.ui_apostas_favoritas_f81885),
             uiStrings.getString(LocalizedR.string.ui_aposta_favorita_inserida_com_sucesso_eb5056),
             stringResource(LocalizedR.string.ui_entendi_9f9373),
-            viewModel::consumeAdded
+            { viewModel.consumeAdded() }
         )
     }
     state.errorMessage?.let {

@@ -131,7 +131,7 @@ def run(name, task, expected_error=None):
 
 
 def check_campaign_labels(results):
-    labels = ROOT / "feature/home/presentation/src/main/res/values/home_special_contests.xml"
+    labels = ROOT / "feature/home/home_ui/src/main/res/values/home_special_contests.xml"
     original = labels.read_bytes()
     xml = original.decode()
     fixtures = {

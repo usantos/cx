@@ -39,7 +39,7 @@ internal sealed interface MarketplaceFilterStateAction {
     data class ValidationFailed(val message: String?) : MarketplaceFilterInputsAction
 }
 
-internal data class ShareValidationMessages(
+data class ShareValidationMessages(
     val minimumTooSmall: String,
     val minimumTooLarge: String,
     val maximumTooSmall: String,

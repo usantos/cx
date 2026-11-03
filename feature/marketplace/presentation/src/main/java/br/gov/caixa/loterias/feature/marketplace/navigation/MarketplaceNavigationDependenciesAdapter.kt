@@ -24,6 +24,4 @@ class MarketplaceNavigationDependenciesAdapter @Inject constructor(
     override val searchRetailers: SearchRetailersUseCase,
     override val setRetailerFavorite: SetRetailerFavoriteUseCase,
     override val getSpecialContests: br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase,
-) : MarketplaceNavigationDependencies {
-
-}
+) : MarketplaceNavigationDependencies

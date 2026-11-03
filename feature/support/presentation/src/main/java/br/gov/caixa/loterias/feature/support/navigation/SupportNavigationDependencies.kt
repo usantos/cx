@@ -15,4 +15,5 @@ interface SupportNavigationDependencies {
     val supportQuestions: GetSupportQuestionsUseCase
     val supportSections: GetSupportSectionsUseCase
     val terms: GetTermsUseCase
+    val optionalModule: SupportModuleNavigationDependencies
 }

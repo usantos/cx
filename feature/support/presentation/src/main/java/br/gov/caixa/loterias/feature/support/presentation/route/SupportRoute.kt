@@ -8,10 +8,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.feature.support.presentation.screen.SupportScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportAction
+import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
 import br.gov.caixa.loterias.feature.support.presentation.viewmodel.SupportViewModel
 
 @Composable
-fun SupportRoute(viewModel: SupportViewModel, onBack: () -> Unit, onAcceptTerms: () -> Unit) {
+fun SupportRoute(
+    viewModel: SupportViewModel,
+    onBack: () -> Unit,
+    onAcceptTerms: () -> Unit,
+    faqContent: @Composable (SupportUiState, (SupportAction) -> Unit) -> Unit,
+) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
     BackHandler(enabled = state.selectedSectionId != null) {
         viewModel.onAction(SupportAction.CloseSection)
@@ -30,6 +36,7 @@ fun SupportRoute(viewModel: SupportViewModel, onBack: () -> Unit, onAcceptTerms:
                 viewModel.onAction(action)
             }
         },
+        faqContent = faqContent,
         modifier = Modifier.uiId("help.0003")
     )
 }

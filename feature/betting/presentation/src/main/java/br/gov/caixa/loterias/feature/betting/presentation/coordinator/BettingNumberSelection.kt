@@ -1,16 +1,11 @@
 package br.gov.caixa.loterias.feature.betting.presentation.coordinator
 
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.betting.presentation.mapper.toggleSelectedNumber
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.withShake
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
-import br.gov.caixa.loterias.feature.betting.presentation.state.BetSelectionStep
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingSelectionWarnings
 import br.gov.caixa.loterias.feature.betting.presentation.state.LOTECA_ID
-import br.gov.caixa.loterias.feature.betting.presentation.state.MAIS_MILIONARIA_ID
 
 internal class BettingNumberSelection(
     private val state: kotlinx.coroutines.flow.StateFlow<BettingGameUiState>,

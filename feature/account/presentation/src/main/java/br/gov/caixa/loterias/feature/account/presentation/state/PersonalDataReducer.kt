@@ -8,16 +8,19 @@ import java.math.BigDecimal
 
 private const val DAILY_LIMIT_INPUT_LENGTH = 18
 
+sealed interface PersonalDataSubmissionAction : PersonalDataAction
+
 sealed interface PersonalDataAction {
     data class ZipCodeChanged(val zipCode: String, val version: Long) : PersonalDataAction
     data class ZipCodeResolved(val zipCode: String, val version: Long, val location: ZipCodeLocation) : PersonalDataAction
     data class ZipCodeFailed(val zipCode: String, val version: Long, val error: String?, val validationError: String?) : PersonalDataAction
     data class GenderChanged(val gender: Gender) : PersonalDataAction
     data object NotificationsToggled : PersonalDataAction
-    data object SubmitStarted : PersonalDataAction
+    data object SubmitCancelled : PersonalDataSubmissionAction
+    data object SubmitStarted : PersonalDataSubmissionAction
     data object CompletionConsumed : PersonalDataAction
-    data object Submitted : PersonalDataAction
-    data class SubmitFailed(val message: String) : PersonalDataAction
+    data object Submitted : PersonalDataSubmissionAction
+    data class SubmitFailed(val message: String) : PersonalDataSubmissionAction
     data object ProfileLoadStarted : PersonalDataAction
     data class DraftPreserved(val loading: Boolean) : PersonalDataAction
     data class LoadFailed(val message: String) : PersonalDataAction
@@ -30,11 +33,7 @@ sealed interface PersonalDataAction {
 }
 
 fun reducePersonalDataState(state: PersonalDataUiState, action: PersonalDataAction): PersonalDataUiState = when (action) {
-    PersonalDataAction.SubmitStarted -> state.copy(saving = true, errorMessage = null)
-
-    PersonalDataAction.Submitted -> state.copy(saving = false, saved = true, completionConsumed = false)
-
-    is PersonalDataAction.SubmitFailed -> state.copy(saving = false, errorMessage = action.message)
+    is PersonalDataSubmissionAction -> reducePersonalDataSubmission(state, action)
 
     PersonalDataAction.ProfileLoadStarted -> state.copy(loading = true, errorMessage = null, saved = false)
 
@@ -64,6 +63,14 @@ fun reducePersonalDataState(state: PersonalDataUiState, action: PersonalDataActi
 
     else -> reducePersonalDataDraft(state, action)
 }
+
+private fun reducePersonalDataSubmission(state: PersonalDataUiState, action: PersonalDataSubmissionAction): PersonalDataUiState =
+    when (action) {
+        PersonalDataAction.SubmitStarted -> state.copy(saving = true, errorMessage = null)
+        PersonalDataAction.SubmitCancelled -> state.copy(saving = false)
+        PersonalDataAction.Submitted -> state.copy(saving = false, saved = true, completionConsumed = false)
+        is PersonalDataAction.SubmitFailed -> state.copy(saving = false, errorMessage = action.message)
+    }
 
 private fun reducePersonalDataDraft(state: PersonalDataUiState, action: PersonalDataAction): PersonalDataUiState = when (action) {
     PersonalDataAction.CompletionConsumed -> state.copy(completionConsumed = true)

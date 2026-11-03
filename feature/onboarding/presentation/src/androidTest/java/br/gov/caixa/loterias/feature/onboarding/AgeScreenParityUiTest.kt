@@ -5,19 +5,31 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.semantics.SemanticsActions
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.top
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.onboarding.domain.usecase.*
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
+import br.gov.caixa.loterias.feature.onboarding.domain.usecase.ShouldShowIntroductionUseCase
 import br.gov.caixa.loterias.feature.onboarding.navigation.OnboardingNavigationDependencies
 import br.gov.caixa.loterias.feature.onboarding.navigation.onboardingGraph
 import br.gov.caixa.loterias.feature.onboarding.presentation.components.AgeScreen
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -35,9 +47,10 @@ class AgeScreenParityUiTest {
             override val completeIntroduction = CompleteIntroductionUseCase { completions++ }
             override val setBettingTutorialDismissed = SetBettingTutorialDismissedUseCase { _, _ -> }
             override val shouldShowIntroduction = ShouldShowIntroductionUseCase { true }
+
             @Composable override fun StartupStatusDestination(route: String, onRecovered: () -> Unit) {}
         }
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 nav = rememberNavController()
                 NavHost(nav, startDestination = "onboarding/introduction") { onboardingGraph(dependencies, nav) }
@@ -60,17 +73,20 @@ class AgeScreenParityUiTest {
     }
 
     @Test fun agePhraseIsBoldAndButtonUsesSemiBold() {
-        compose.setContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
         val layout = textLayout(message)
         val spans = layout.layoutInput.text.spanStyles
-        assertTrue("Age must use the legacy bold face", spans.any {
-            it.start == message.indexOf("18 anos.") && it.end == message.length && it.item.fontWeight == FontWeight.Bold
-        })
+        assertTrue(
+            "Age must use the legacy bold face",
+            spans.any {
+                it.start == message.indexOf("18 anos.") && it.end == message.length && it.item.fontWeight == FontWeight.Bold
+            }
+        )
         assertEquals(FontWeight.SemiBold, textLayout("Entendi").layoutInput.style.fontWeight)
     }
 
     @Test fun spacingFollowsLegacyGuidelineAndMargins() {
-        compose.setContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { AgeScreen({}, {}) } }
         val icon = compose.onNodeWithContentDescription("Apostar é para maiores de 18 anos").getUnclippedBoundsInRoot()
         val text = compose.onNodeWithText(message).getUnclippedBoundsInRoot()
         val learnMore = compose.onNodeWithText(link).getUnclippedBoundsInRoot()
@@ -83,15 +99,20 @@ class AgeScreenParityUiTest {
 
     @Test fun responsibleGamingOpensCaixaWebsiteAndKeepsAgeDestination() {
         val urls = mutableListOf<String>()
-        val handler = object : UriHandler { override fun openUri(uri: String) { urls += uri } }
+        val handler = object : UriHandler {
+            override fun openUri(uri: String) {
+                urls += uri
+            }
+        }
         lateinit var nav: androidx.navigation.NavHostController
         val dependencies = object : OnboardingNavigationDependencies {
             override val completeIntroduction = CompleteIntroductionUseCase {}
             override val setBettingTutorialDismissed = SetBettingTutorialDismissedUseCase { _, _ -> }
             override val shouldShowIntroduction = ShouldShowIntroductionUseCase { true }
+
             @Composable override fun StartupStatusDestination(route: String, onRecovered: () -> Unit) {}
         }
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 CompositionLocalProvider(LocalUriHandler provides handler) {
                     nav = rememberNavController()

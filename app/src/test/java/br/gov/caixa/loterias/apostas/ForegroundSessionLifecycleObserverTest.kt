@@ -1,13 +1,14 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionBackgroundState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionBackgroundState
 import br.gov.caixa.loterias.core.auth.foreground.ForegroundSessionLifecycleObserver
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import java.util.Base64
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class ForegroundSessionLifecycleObserverTest {
@@ -18,10 +19,16 @@ class ForegroundSessionLifecycleObserverTest {
     private var route: String? = "account/personal-data"
     private var logins = 0
     private var accept: (() -> Unit)? = null
-    private val observer = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-        { logins++ }, { check ->
+    private val observer = ForegroundSessionLifecycleObserver(
+        store,
+        { route },
+        { 100 },
+        { logins++ },
+        { check ->
             accept = { if (store.clearForegroundSession(check)) logins++ }
-        }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        },
+        routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+    )
 
     @Test fun expiredReturnWaitsForAcknowledgmentThenClearsWithoutRemoteLogout() {
         val expired = jwt(99)
@@ -62,8 +69,18 @@ class ForegroundSessionLifecycleObserverTest {
         }
         route = "home"
         store.clear()
-        val visitorObserver = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-            { logins++ }, { error("Missing visitor session must redirect without an expiry notice") }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        val visitorObserver = ForegroundSessionLifecycleObserver(
+            store,
+            { route },
+            { 100 },
+            {
+                logins++
+            },
+            {
+                error("Missing visitor session must redirect without an expiry notice")
+            },
+            routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+        )
         visitorObserver.onStop(owner)
         visitorObserver.onResume(owner)
         assertNull(accept)
@@ -145,9 +162,17 @@ class ForegroundSessionLifecycleObserverTest {
     @Test fun onlyExplicitHistoricalDetailOriginEnablesTheOldBaseController() {
         store.replace(jwt(99))
         route = "tickets/bet-detail"
-        val historicalObserver = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-            { logins++ }, { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
-            historicalBetDetail = { true }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        val historicalObserver = ForegroundSessionLifecycleObserver(
+            store,
+            { route },
+            { 100 },
+            { logins++ },
+            { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
+            historicalBetDetail = {
+                true
+            },
+            routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+        )
         historicalObserver.onStop(owner)
         historicalObserver.onResume(owner)
         assertNotNull(accept)
@@ -157,9 +182,15 @@ class ForegroundSessionLifecycleObserverTest {
         store.replace(jwt(99))
         route = "tickets/my-bets"
         val processState = ForegroundSessionBackgroundState()
-        fun createObserver() = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-            { logins++ }, { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
-            backgroundState = processState, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        fun createObserver() = ForegroundSessionLifecycleObserver(
+            store,
+            { route },
+            { 100 },
+            { logins++ },
+            { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
+            backgroundState = processState,
+            routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+        )
         val oldObserver = createObserver()
         oldObserver.onResume(owner)
         oldObserver.onStop(owner)
@@ -175,9 +206,17 @@ class ForegroundSessionLifecycleObserverTest {
         store.replace(jwt(99))
         route = "retail/prize/{betId}"
         var channelHost = false
-        val prizeObserver = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-            { logins++ }, { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
-            prizeChannelHost = { channelHost }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        val prizeObserver = ForegroundSessionLifecycleObserver(
+            store,
+            { route },
+            { 100 },
+            { logins++ },
+            { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
+            prizeChannelHost = {
+                channelHost
+            },
+            routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+        )
         prizeObserver.onResume(owner)
         prizeObserver.onStop(owner)
         prizeObserver.onResume(owner)
@@ -195,9 +234,17 @@ class ForegroundSessionLifecycleObserverTest {
 
     @Test fun mixedPrizeChannelResumeChecksExpiredSessionWithoutRedirectingVisitors() {
         route = "retail/prize/{betId}"
-        val prizeObserver = ForegroundSessionLifecycleObserver(store, { route }, { 100 },
-            { logins++ }, { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
-            prizeChannelHost = { true }, routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible)
+        val prizeObserver = ForegroundSessionLifecycleObserver(
+            store,
+            { route },
+            { 100 },
+            { logins++ },
+            { check -> accept = { if (store.clearForegroundSession(check)) logins++ } },
+            prizeChannelHost = {
+                true
+            },
+            routeEligible = br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy::eligible
+        )
         store.replace(jwt(99))
         prizeObserver.onStop(owner)
         prizeObserver.onResume(owner)

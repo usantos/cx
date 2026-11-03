@@ -1,9 +1,5 @@
 package br.gov.caixa.loterias.feature.betting.presentation.route
 
-import androidx.compose.ui.res.stringResource
-
-import br.gov.caixa.loterias.feature.betting.R as LocalizedR
-
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,12 +7,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
-import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationActions
-import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationContent
+import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.components.RAPID_PAGE_COUNT
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidPagerSynchronization
+import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationActions
+import br.gov.caixa.loterias.feature.betting.presentation.screen.RapidConfigurationContent
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidConfigurationViewModel
 
 @Composable

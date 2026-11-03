@@ -12,6 +12,7 @@ internal sealed interface BettingCatalogAction {
     data object QuantityDecreased : BettingCatalogAction
     data object SurpriseToggled : BettingCatalogAction
     data object CartAdditionStarted : BettingCatalogAction
+    data object CartAdditionPreparationCancelled : BettingCatalogAction
     data class RecoveryRequired(val message: String) : BettingCatalogAction
     data object CartAdditionConsumed : BettingCatalogAction
     data object AddedToCart : BettingCatalogAction
@@ -25,6 +26,7 @@ internal fun reduceBettingCatalogState(state: BettingCatalogUiState, action: Bet
     BettingCatalogAction.QuantityIncreased -> reduceBettingCatalogQuantityIncreased(state)
     BettingCatalogAction.QuantityDecreased -> reduceBettingCatalogQuantityDecreased(state)
     BettingCatalogAction.SurpriseToggled -> reduceBettingCatalogSurpriseToggled(state)
+    BettingCatalogAction.CartAdditionPreparationCancelled -> state.copy(loading = false)
     BettingCatalogAction.CartAdditionStarted -> reduceBettingCatalogCartAdditionStarted(state)
     is BettingCatalogAction.RecoveryRequired -> reduceBettingCatalogRecoveryRequired(state, action)
     BettingCatalogAction.CartAdditionConsumed -> state.copy(addedToCart = false)

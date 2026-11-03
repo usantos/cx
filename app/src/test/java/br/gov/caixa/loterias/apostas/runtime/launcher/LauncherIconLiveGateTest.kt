@@ -17,6 +17,8 @@ import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.apostas.BuildConfig
 import br.gov.caixa.loterias.apostas.HomeDrawerTestActivity
 import br.gov.caixa.loterias.apostas.composition.startup.LauncherIconGate
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.onboarding.domain.model.LauncherIconPreset
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.remoteconfig.ConfigUpdate
@@ -26,13 +28,14 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
 @Config(
-    sdk = [35],
+    sdk = [36],
     application = Application::class,
     shadows = [CalendarIntegrationRemoteShadow::class, CalendarIntegrationAppShadow::class]
 )
@@ -57,7 +60,7 @@ class LauncherIconLiveGateTest {
             .setProjectId(BuildConfig.FIREBASE_PROJECT_ID)
             .setGcmSenderId(BuildConfig.FIREBASE_SENDER_ID)
             .build()
-        compose.setContent {
+        compose.setFeatureContent {
             LauncherIconGate(compose.activity, options) {
                 var draft by remember { mutableStateOf("Aposta inicial") }
                 DisposableEffect(Unit) {

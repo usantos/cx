@@ -15,6 +15,12 @@ class IncrementalPrecommitTest(unittest.TestCase):
         self.assertTrue(RUNNER.incremental_candidate(["core/design-system/src/main/icon/Removed.kt"], roots))
         self.assertTrue(RUNNER.incremental_candidate(["sample/designsystem/README.md"], roots))
 
+    def test_dynamic_feature_sources_and_build_are_owned_modules(self):
+        roots = ["app", "feature/support/presentation", "feature/support/faq"]
+        self.assertTrue(RUNNER.incremental_candidate([
+            "feature/support/faq/src/main/kotlin/Faq.kt", "feature/support/faq/build.gradle"
+        ], roots))
+
     def test_shared_unknown_and_empty_changes_require_full_gate(self):
         for path in ["settings.gradle", "gradle/libs.versions.toml", "scripts/tool.py", "config/detekt/detekt.yml", ".github/workflows/build.yml", "docs/README.md", "app-other/src/A.kt"]:
             with self.subTest(path=path):

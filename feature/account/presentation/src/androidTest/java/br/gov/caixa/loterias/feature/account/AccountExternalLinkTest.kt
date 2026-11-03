@@ -5,15 +5,18 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.account.presentation.route.AccountRoute
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountStatusViewModel
 import kotlinx.coroutines.CancellationException
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.route.AccountRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountStatusViewModel
 
 /** Exercita a rota real, substituindo apenas a fronteira do navegador externo. */
 class AccountExternalLinkTest {
@@ -58,7 +61,10 @@ class AccountExternalLinkTest {
         show(handler, onBack = { back.value })
         compose.onNodeWithText(FAILURE).assertIsDisplayed()
         compose.onNodeWithText(SUCCESS).assertDoesNotExist()
-        compose.runOnIdle { back.value = {}; handler.failure = null }
+        compose.runOnIdle {
+            back.value = {}
+            handler.failure = null
+        }
         compose.waitForIdle()
         compose.runOnIdle { assertEquals(listOf(URL), handler.urls) }
         compose.onNodeWithText("Tentar novamente").performClick()
@@ -69,7 +75,7 @@ class AccountExternalLinkTest {
 
     private fun show(handler: UriHandler, onBack: () -> (() -> Unit) = { {} }) {
         val model = AccountStatusViewModel("account/change-login")
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalUriHandler provides handler) {
                 LoteriasCaixaDSTheme(darkTheme = false) {
                     AccountRoute(model, onBack(), { error("No account completion expected") }, URL)

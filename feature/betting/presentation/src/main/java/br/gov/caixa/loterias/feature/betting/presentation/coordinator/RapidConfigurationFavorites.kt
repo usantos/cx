@@ -1,16 +1,11 @@
 package br.gov.caixa.loterias.feature.betting.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBetsUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationUiState
-import br.gov.caixa.loterias.feature.betting.presentation.state.reduceRapidConfigurationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

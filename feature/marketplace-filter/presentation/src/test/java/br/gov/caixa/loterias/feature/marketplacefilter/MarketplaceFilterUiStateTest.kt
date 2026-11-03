@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.initialMarketplaceFilterState
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.initialMarketplaceFilterState
 
 class MarketplaceFilterUiStateTest {
     @Test

@@ -31,7 +31,7 @@ import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 
 @Composable
-internal fun FavoriteModalityGrid(modalities: List<Pair<Int?, String>>, selected: Int?, onSelect: (Int?) -> Unit) {
+fun FavoriteModalityGrid(modalities: List<Pair<Int?, String>>, selected: Int?, onSelect: (Int?) -> Unit) {
     modalities.chunked(2).forEach { row ->
         Row(Modifier.fillMaxWidth()) {
             row.forEach { (id, name) ->
@@ -72,5 +72,5 @@ internal fun FavoriteModalityGrid(modalities: List<Pair<Int?, String>>, selected
     }
 }
 
-internal val favoriteLegacyTextStyle =
+val favoriteLegacyTextStyle =
     TextStyle(fontFamily = LoteriasCaixaDSFontFamily, platformStyle = PlatformTextStyle(includeFontPadding = true))

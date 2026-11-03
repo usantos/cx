@@ -24,6 +24,7 @@ internal sealed interface MarketplaceStateAction {
         val message: String = messageText("nao_foram_encontrados_boloes_dis_ecef7d"),
     ) : MarketplaceLoadingAction
     data class SharesChanged(val poolCode: String, val delta: Int) : MarketplacePoolAction
+    data class CartAdditionAborted(val poolCode: String) : MarketplaceCartAction
     data class CartAdditionClaimed(val poolCode: String) : MarketplaceCartAction
     data class CartReservationReceived(
         val reservation: br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare?,
@@ -41,6 +42,7 @@ internal sealed interface MarketplaceStateAction {
     data object RetailerRemovalCancelled : MarketplaceRetailerAction
     data object RetailerRemovalClaimed : MarketplaceRetailerAction
     data class RetailerRemoved(val retailerId: Long) : MarketplaceRetailerAction
+    data class RetailerRemovalAborted(val retailerId: Long) : MarketplaceRetailerAction
     data class RetailerRemovalFailed(val retailerId: Long, val message: String = messageText("nao_foi_possivel_concluir_esta_o_3c7db3")) :
         MarketplaceRetailerAction
     data class FavoriteRetailersLoading(val openAfterLoad: Boolean) : MarketplaceRetailerAction
@@ -55,6 +57,7 @@ internal sealed interface MarketplaceStateAction {
     data object PoolFavoriteCancelled : MarketplacePoolAction
     data object PoolFavoriteClaimed : MarketplacePoolAction
     data class PoolFavoriteSaved(val retailerId: Long, val favorite: Boolean) : MarketplacePoolAction
+    data class PoolFavoriteWriteAborted(val retailerId: Long) : MarketplacePoolAction
     data class PoolFavoriteFailed(val retailerId: Long, val message: String = messageText("nao_foi_possivel_concluir_esta_o_3c7db3")) :
         MarketplacePoolAction
     data class TabSelected(val tab: MarketplaceTab) : MarketplacePoolAction

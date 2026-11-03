@@ -8,6 +8,7 @@ internal sealed interface RetailSearchStateAction {
     data class FavoriteRequested(val retailer: Retailer) : RetailSearchStateAction
     data object FavoriteCancelled : RetailSearchStateAction
     data object FavoriteStarted : RetailSearchStateAction
+    data class FavoriteNotStarted(val retailer: Retailer) : RetailSearchStateAction
     data class FavoriteSaved(val retailer: Retailer) : RetailSearchStateAction
     data class FavoriteFailed(val message: String) : RetailSearchStateAction
     data object ErrorDismissed : RetailSearchStateAction
@@ -26,6 +27,8 @@ internal fun reduceRetailSearchState(state: RetailSearchUiState, action: RetailS
     RetailSearchStateAction.FavoriteCancelled -> state.copy(favoriteCandidate = null)
 
     RetailSearchStateAction.FavoriteStarted -> state.copy(loading = true, favoriteCandidate = null, errorMessage = null)
+
+    is RetailSearchStateAction.FavoriteNotStarted -> state.copy(loading = false, favoriteCandidate = action.retailer)
 
     is RetailSearchStateAction.FavoriteSaved -> state.copy(
         retailers = state.retailers.map { if (it.id == action.retailer.id) it.copy(favorite = !action.retailer.favorite) else it },

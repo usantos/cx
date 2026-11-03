@@ -10,7 +10,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetU
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
-import br.gov.caixa.loterias.feature.betting.presentation.state.SUPER_SEVEN_ID
 import br.gov.caixa.loterias.feature.betting.presentation.state.bettingFavoriteSelectionChanged
 import br.gov.caixa.loterias.feature.betting.presentation.state.toFavoriteDraft
 import kotlinx.coroutines.launch

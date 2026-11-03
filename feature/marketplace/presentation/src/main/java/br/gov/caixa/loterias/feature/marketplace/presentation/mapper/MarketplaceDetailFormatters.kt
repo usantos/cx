@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.marketplace.presentation.mapper
 import br.gov.caixa.loterias.feature.marketplace.presentation.formatting.localizedMessage as messageText
 import java.math.BigDecimal
 
-internal fun marketplaceDetailModalityLabel(value: String): String = when (value.uppercase(java.util.Locale.ROOT).replace(" ", "_")) {
+fun marketplaceDetailModalityLabel(value: String): String = when (value.uppercase(java.util.Locale.ROOT).replace(" ", "_")) {
     "MEGA_SENA", "MEGA-SENA" -> "mega-sena"
     "LOTOFACIL", "LOTOFÁCIL" -> messageText("lotofacil_dbb2e4")
     "DUPLA_SENA" -> "dupla sena"
@@ -18,11 +18,10 @@ private fun marketplaceDetailDecimal(value: String): BigDecimal {
     return (if (',' in plain) plain.replace(".", "").replace(',', '.') else plain).toBigDecimalOrNull() ?: BigDecimal.ZERO
 }
 
-internal fun marketplaceDetailMoney(value: String): String =
-    java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR"))
-        .format(marketplaceDetailDecimal(value)).replace('\u00a0', ' ')
+fun marketplaceDetailMoney(value: String): String = java.text.NumberFormat.getCurrencyInstance(java.util.Locale.forLanguageTag("pt-BR"))
+    .format(marketplaceDetailDecimal(value)).replace('\u00a0', ' ')
 
-internal fun marketplaceDetailPrizeInWords(value: String): String? {
+fun marketplaceDetailPrizeInWords(value: String): String? {
     val amount = marketplaceDetailDecimal(value)
     val (divisor, singular, plural) = when {
         amount >= BigDecimal("1000000000") -> Triple(BigDecimal("1000000000"), messageText("bilhao_d89fd6"), messageText("bilhoes_656f67"))

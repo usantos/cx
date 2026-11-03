@@ -1,14 +1,14 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceFilterState
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceFilterState
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 
 class MarketplaceFilterMapperTest {
     @Test fun `zero values mean no money constraint as in the CX apply callback`() {
@@ -38,7 +38,7 @@ class MarketplaceFilterMapperTest {
             selectedBetQuantity = 5,
             selectedNumberQuantity = 6,
             wantedNumbers = listOf(7, 8),
-            unwantedNumbers = listOf(9, 10),
+            unwantedNumbers = listOf(9, 10)
         ).toDomain()
 
         assertEquals("Mega-Sena", filter.modality)
@@ -60,7 +60,7 @@ class MarketplaceFilterMapperTest {
         val filter = MarketplaceFilterUiState(
             lottery = "texto sem seleção",
             minimumShares = "",
-            maximumShares = "invalid",
+            maximumShares = "invalid"
         ).toDomain()
 
         assertNull(filter.minimumShares)

@@ -16,6 +16,7 @@ internal class MarketplaceCartCoordinator(
     private val scope: CoroutineScope,
     private val dispatchers: CoroutineDispatchers,
     private val addMarketplacePoolToCart: AddMarketplacePoolToCartUseCase,
+    private val canStartOperation: () -> Boolean = { true },
 ) {
     fun addToCart(poolCode: String) {
         val state = synchronized(mutableState) {
@@ -28,6 +29,10 @@ internal class MarketplaceCartCoordinator(
         val shares = state.selectedShares[poolCode] ?: 1
         if (shares !in 1..pool.availableShares) return
         scope.launch(dispatchers.io) {
+            if (!canStartOperation()) {
+                mutableState.dispatch(MarketplaceStateAction.CartAdditionAborted(poolCode))
+                return@launch
+            }
             val order = MarketplacePoolOrder(
                 code = pool.code,
                 modality = pool.modality,

@@ -18,7 +18,7 @@ internal class BetDetailReceiptCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val mutableReceipts: SingleConsumerEventQueue<BetReceipt>,
     private val downloadBetReceipt: DownloadBetReceiptUseCase,
-    private val downloadPrizeReceipt: br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadPrizeReceiptUseCase?
+    private val downloadPrizeReceipt: br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadPrizeReceiptUseCase?,
 ) {
     fun downloadReceipt() = scope.launch(dispatchers.io) {
         val betId = mutableState.value.bet.id

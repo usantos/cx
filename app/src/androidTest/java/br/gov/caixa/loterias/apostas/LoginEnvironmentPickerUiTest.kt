@@ -1,14 +1,23 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertHeightIsAtLeast
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.feature.account.presentation.route.LoginEnvironmentPicker
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
+import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.feature.account.presentation.route.LoginEnvironmentPicker
 import br.gov.caixa.loterias.feature.account.presentation.screen.LoginScreen
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 import kotlinx.coroutines.awaitCancellation
@@ -22,9 +31,10 @@ class LoginEnvironmentPickerUiTest {
 
     @Test fun environmentTouchTargetDoesNotOverlapBiometricSwitch() {
         var biometricChanged = false
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
-                LoginScreen(LoginUiState(), "test", {}, {}, { biometricChanged = it }, environmentSelectorVisible = true, environmentSelector = { enabled ->
+                LoginScreen(LoginUiState(), "test", {
+                }, {}, { biometricChanged = it }, environmentSelectorVisible = true, environmentSelector = { enabled ->
                     LoginEnvironmentPicker(TestEnvironment.EXTERNO_ESTEIRA, enabled, { true }, {})
                 })
             }
@@ -41,33 +51,38 @@ class LoginEnvironmentPickerUiTest {
         compose.onNodeWithTag("environment-picker").performClick()
         compose.onNodeWithText("PILOTO").assertIsDisplayed()
     }
+
     @Test fun restoredCommittedChoiceDoesNotLeaveSelectorDisabled() {
         val active = mutableStateOf(TestEnvironment.EXTERNO_ESTEIRA)
         val restoration = StateRestorationTester(compose)
         var changes = 0
         var restoreCommittedSelection = false
         restoration.setContent {
-            DisposableEffect(Unit) {
-                onDispose {
-                    if (restoreCommittedSelection) active.value = TestEnvironment.PILOTO
+            InstalledFeatureTestContent {
+                DisposableEffect(Unit) {
+                    onDispose {
+                        if (restoreCommittedSelection) active.value = TestEnvironment.PILOTO
+                    }
                 }
-            }
-            LoteriasCaixaDSTheme {
-                LoginEnvironmentPicker(active.value, true, { requested ->
-                    changes++
-                    // A gravação persistente ocorreu, mas o processo terminou antes de salvar o indicador de conclusão.
-                    if (requested == active.value) false else awaitCancellation()
-                }, {})
+                LoteriasCaixaDSTheme {
+                    LoginEnvironmentPicker(active.value, true, { requested ->
+                        changes++
+                        // A gravação persistente ocorreu, mas o processo terminou antes de salvar o indicador de conclusão.
+                        if (requested == active.value) false else awaitCancellation()
+                    }, {})
+                }
             }
         }
         compose.onNodeWithTag("environment-picker").performClick()
         compose.onNodeWithText("PILOTO").performClick()
-        compose.runOnIdle { restoreCommittedSelection = true; assertEquals(1, changes) }
+        compose.runOnIdle {
+            restoreCommittedSelection = true
+            assertEquals(1, changes)
+        }
         restoration.emulateSavedInstanceStateRestore()
         compose.onNodeWithTag("environment-picker").assertIsEnabled().performClick()
         compose.onNodeWithText("INTERNO").assertIsDisplayed()
         compose.onNodeWithText("Mudança de Ambiente").assertDoesNotExist()
         compose.runOnIdle { assertEquals("Do not reapply an already active environment", 1, changes) }
     }
-
 }

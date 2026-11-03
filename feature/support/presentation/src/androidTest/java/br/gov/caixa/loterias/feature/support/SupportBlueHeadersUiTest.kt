@@ -1,23 +1,24 @@
 package br.gov.caixa.loterias.feature.support
 
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.toPixelMap
-import androidx.compose.runtime.mutableStateOf
-import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSTopBar
-import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSSupportTopBar
 import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onRoot
-import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceStyle
+import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSSupportTopBar
+import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSTopBar
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.support.presentation.screen.SupportScreen
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportTab
 import br.gov.caixa.loterias.feature.support.presentation.state.SupportUiState
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 
@@ -26,9 +27,11 @@ class SupportBlueHeadersUiTest {
 
     @Test fun supportSectionHeaderMatchesStandardArrowTypographyAndSpacing() {
         val support = mutableStateOf(false)
-        compose.setContent { LoteriasCaixaDSTheme {
-            if (support.value) LoteriasCaixaDSSupportTopBar("Jogos", {}) else LoteriasCaixaDSTopBar("Jogos", {})
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                if (support.value) LoteriasCaixaDSSupportTopBar("Jogos", {}) else LoteriasCaixaDSTopBar("Jogos", {})
+            }
+        }
         val standard = compose.onRoot().captureToImage().asAndroidBitmap()
         compose.runOnIdle { support.value = true }
         val section = compose.onRoot().captureToImage().asAndroidBitmap()
@@ -36,7 +39,7 @@ class SupportBlueHeadersUiTest {
     }
 
     @Test fun defaultApplicationHeaderIsSolidBlueAtBothEnds() {
-        compose.setContent { LoteriasCaixaDSTheme { LoteriasCaixaDSScaffold("Cabeçalho", {}) {} } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { LoteriasCaixaDSScaffold("Cabeçalho", {}) {} } }
         val title = compose.onNodeWithText("Cabeçalho").fetchSemanticsNode().boundsInRoot
         val image = compose.onRoot().captureToImage().toPixelMap()
         assertEquals(LoteriasCaixaDSColorTokens.Blue700, image[2, title.center.y.toInt()])
@@ -44,9 +47,11 @@ class SupportBlueHeadersUiTest {
     }
 
     @Test fun termsAndFaqUseTheSameSelectedAndInactiveBluePaletteAsMarketplace() {
-        compose.setContent { LoteriasCaixaDSTheme {
-            SupportScreen(SupportUiState(showTermsTabs = true, selectedTab = SupportTab.FAQ), {})
-        } }
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                SupportScreen(SupportUiState(showTermsTabs = true, selectedTab = SupportTab.FAQ), {}, faqContent = { _, _ -> })
+            }
+        }
         val selected = compose.onNodeWithText("Dúvidas").fetchSemanticsNode().boundsInRoot
         val inactive = compose.onNodeWithText("Termo de uso").fetchSemanticsNode().boundsInRoot
         val image = compose.onRoot().captureToImage().toPixelMap()

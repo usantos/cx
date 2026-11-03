@@ -1236,6 +1236,7 @@ class RemoteRepositoriesTest {
         }
         override suspend fun socialTransfers() = social
         override suspend fun currentUserProfile() = profile
+        override suspend fun currentBoundUserProfile(session: br.gov.caixa.loterias.core.network.api.AccountVerificationSession) = profile
         override suspend fun municipalities(stateId: Long) = municipalities
         override suspend fun neighborhoodsByZipCode(zipCode: String) = neighborhoods
         override suspend fun updatePersonalData(
@@ -1297,6 +1298,11 @@ class RemoteRepositoriesTest {
             importedFavoriteCart = cartId to request.specialSelection
             return cart
         }
+        override suspend fun suspendBoundAccount(
+            request: SuspendAccountRequestDto,
+            session: br.gov.caixa.loterias.core.network.api.AccountVerificationSession,
+        ) = suspendAccount(request)
+
         override suspend fun suspendAccount(request: SuspendAccountRequestDto): ApiEnvelope<AccountSuspensionDto> {
             suspensionRequest = request
             return suspension

@@ -1,0 +1,17 @@
+<resources>
+    <string name="module_account_ui_title">Conta</string>
+    <string name="module_home_ui_title">Início</string>
+    <string name="module_onboarding_ui_title">Introdução</string>
+    <string name="module_betting_ui_title">Apostas</string>
+    <string name="module_marketplace_ui_title">Bolões</string>
+    <string name="module_marketplace_filter_ui_title">Filtros de bolões</string>
+    <string name="module_cart_ui_title">Carrinho</string>
+    <string name="module_payment_ui_title">Pagamento</string>
+    <string name="module_tickets_ui_title">Minhas apostas</string>
+    <string name="module_results_ui_title">Resultados</string>
+    <string name="module_notifications_ui_title">Notificações</string>
+    <string name="module_responsible_gaming_ui_title">Jogo responsável</string>
+    <string name="module_retail_ui_title">Lotéricas</string>
+    <string name="module_support_ui_title">Ajuda</string>
+    <string name="support_faq_module_title">Dúvidas</string>
+</resources>

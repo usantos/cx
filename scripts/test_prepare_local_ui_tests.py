@@ -40,6 +40,80 @@ class LocalUiAdapterTest(unittest.TestCase):
         self.assertNotIn('@RunWith(AndroidJUnit4', generated)
         self.assertIn('Mode.NATIVE', generated)
 
+    def test_base_presentation_that_renders_splits_uses_real_universal_resources(self):
+        self.module = 'feature/example/presentation'
+        body = 'class ExampleTest {\n @Test fun split() = assertEquals(7, resourceId())\n}\n'
+        path = self.source('package sample\n' + body)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.library'\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('Config(sdk = [36]', generated)
+        self.assertIn('DynamicFeatureRobolectricTestRunner::class', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(path.read_text(), 'package sample\n' + body)
+
+    def test_dynamic_feature_uses_sdk36_and_native_resources_without_altering_assertions(self):
+        body = 'class ExampleTest {\n @Test fun split() = assertEquals(7, resourceId())\n}\n'
+        path = self.source('package sample\n' + body)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.dynamic-feature'\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('Config(sdk = [36]', generated)
+        self.assertIn('DynamicFeatureRobolectricTestRunner::class', generated)
+        self.assertIn('ResourcesMode(org.robolectric.annotation.ResourcesMode.Mode.NATIVE)', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(path.read_text(), 'package sample\n' + body)
+
+    def test_dynamic_compose_rule_uses_real_base_host_and_preserves_test_methods(self):
+        body = (' @Test fun check() {\n'
+                ' val nested = createComposeRule()\n'
+                ' assertEquals("createComposeRule()", actual())\n }\n}\n')
+        original = ('package sample\nimport androidx.compose.ui.test.junit4.v2.createComposeRule\n'
+                    'class ExampleTest {\n @get:Rule val compose = createComposeRule()\n' + body)
+        path = self.source(original)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.dynamic-feature'\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule', generated)
+        self.assertIn('val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(original, path.read_text())
+
+    def test_dynamic_android_rule_replaces_only_component_activity_host(self):
+        body = ' @Test fun check() { assertEquals(7, actual()) }\n}\n'
+        original = ('package sample\nimport androidx.compose.ui.test.junit4.createAndroidComposeRule\n'
+                    'class ExampleTest {\n @get:Rule val compose = createAndroidComposeRule<androidx.activity.ComponentActivity>()\n' + body)
+        path = self.source(original)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.dynamic-feature'\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(original, path.read_text())
+
+    def test_dynamic_parameterized_suite_preserves_each_case_with_native_runner(self):
+        body = ('class ExampleTest(val id: Long) {\n'
+                ' @Parameterized.Parameters(name = "{0}") fun values() = listOf(1L, 2L)\n'
+                ' @Test fun check() { assertEquals(id, actual()) }\n}\n')
+        original = 'package sample\n@RunWith(Parameterized::class)\n' + body
+        path = self.source(original)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.dynamic-feature'\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('DynamicFeatureParameterizedRobolectricTestRunner::class', generated)
+        self.assertIn('ResourcesMode.Mode.NATIVE)', generated)
+        self.assertTrue(generated.endswith(body))
+        self.assertEqual(path.read_text(), original)
+
+    def test_library_remains_on_sdk35_without_native_resources(self):
+        path = self.source('package sample\nclass ExampleTest {}\n')
+        (self.root / self.module / 'build.gradle').write_text(
+            "apply plugin: 'com.android.library'\n// com.android.dynamic-feature\n")
+        self.run_adapter([str(path.relative_to(self.root))])
+        generated = (self.destination / 'sample/ExampleTest.kt').read_text()
+        self.assertIn('Config(sdk = [35]', generated)
+        self.assertNotIn('ResourcesMode', generated)
+
     def test_local_capture_import_changes_without_altering_assertions_or_device(self):
         body = 'class ExampleTest {\n @Test fun pixels() = assertEquals(1, node.captureToImage().width)\n}\n'
         original = 'package sample\nimport androidx.compose.ui.test.captureToImage\n' + body

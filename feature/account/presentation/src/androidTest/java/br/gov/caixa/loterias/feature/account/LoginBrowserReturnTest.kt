@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginAuthorization
 import br.gov.caixa.loterias.feature.account.presentation.route.rememberLoginAuthorization
@@ -64,7 +65,7 @@ class LoginBrowserReturnTest {
         val model = LoginViewModel(auth, verifyAccess = VerifyPostLoginAccessUseCase { error("No account request") })
         lateinit var controller: LoginAuthorization
         try {
-            compose.setContent {
+            compose.setFeatureContent {
                 LoteriasCaixaDSTheme {
                     controller = rememberLoginAuthorization(
                         model,

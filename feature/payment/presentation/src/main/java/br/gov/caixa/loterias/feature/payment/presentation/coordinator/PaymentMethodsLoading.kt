@@ -3,7 +3,6 @@ package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
@@ -11,7 +10,6 @@ import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUse
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentState
 
 internal class PaymentMethodsLoading(
     private val mutableState: ReduxStateStore<PaymentUiState, PaymentAction>,

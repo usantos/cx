@@ -88,3 +88,5 @@ tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
 tasks.named('check').configure {
     dependsOn tasks.named('jacocoDebugCoverageVerification')
 }
+
+dependencies { implementation libs.play.feature.delivery }

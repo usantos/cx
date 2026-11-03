@@ -25,7 +25,6 @@ import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.core.network.provider.PaymentApiProvider
 import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
 import br.gov.caixa.loterias.core.network.routing.CloudBackendRouting
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import com.google.gson.Gson
 import java.io.IOException
 import kotlinx.coroutines.CancellationException

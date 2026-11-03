@@ -55,7 +55,10 @@ tasks.register('verifyFeatureModules') {
                 configuration.allDependencies.withType(org.gradle.api.artifacts.ProjectDependency).collect { it.path }
             }.unique().sort()
             graph[p.path] = [dependencies: dependencies,
-                             android: p.plugins.hasPlugin('com.android.library') || p.plugins.hasPlugin('com.android.application')]
+                             android: p.plugins.hasPlugin('com.android.library') || p.plugins.hasPlugin('com.android.application') || p.plugins.hasPlugin('com.android.dynamic-feature'),
+                             application: p.plugins.hasPlugin('com.android.application'),
+                             dynamicFeature: p.plugins.hasPlugin('com.android.dynamic-feature'),
+                             dynamicFeatures: p.plugins.hasPlugin('com.android.application') ? p.android.dynamicFeatures.toList().sort() : []]
         }
         def graphFile = layout.buildDirectory.file('reports/architecture/feature-modules.json').get().asFile
         graphFile.parentFile.mkdirs()

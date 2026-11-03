@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.marketplace
 
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceListRetailerName
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
+import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplacePoolModalityLabel
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceDrawDate
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceFavoriteRetailerName
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceListRetailerName
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplacePrizeWords
+import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceRetailerName
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceDrawDate
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplacePrizeWords
-import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceRetailerName
-import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplacePoolModalityLabel
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 
 class MarketplacePresentationTest {
     @Test fun `retailer card labels use modality descriptions instead of backend enums`() {

@@ -16,14 +16,17 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
-import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
 import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
+import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
+import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
+import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.io.File
 import java.math.BigDecimal
@@ -32,8 +35,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.presentation.route.BettingGameRoute
-import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingGameViewModel
 
 /** Busca, foco e seleção são exercitados pela semântica Compose; os serviços permanecem locais. */
 class BettingTimemaniaSearchTest {
@@ -48,19 +49,26 @@ class BettingTimemaniaSearchTest {
             contestNumber = 2900, drawDate = "06/10/2026", maximumNumber = 80,
             minimumSelection = 10, maximumSelection = 10, maximumSurprises = 3,
             recurringOptions = listOf(0, 2), prices = listOf(BetPrice(10, 0, BigDecimal("5.00"))),
-            teams = listOf(alfa, beta),
+            teams = listOf(alfa, beta)
         )
-        val vm = BettingGameViewModel(20, GetBettingParametersUseCase {
-            AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
-        }, object : AddBetToCartUseCase {
-            override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> {
-                sends.incrementAndGet()
-                return AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList()))
+        val vm = BettingGameViewModel(
+            20,
+            GetBettingParametersUseCase {
+                AppResult.Success(BettingParameters(BigDecimal("500"), BigDecimal("30"), 50, listOf(game)))
+            },
+            object : AddBetToCartUseCase {
+                override suspend fun invoke(draft: BetDraft): AppResult<ShoppingCart> {
+                    sends.incrementAndGet()
+                    return AppResult.Success(ShoppingCart(1, BigDecimal.ZERO, emptyList()))
+                }
             }
-        })
-        compose.setContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
+        )
+        compose.setFeatureContent { LoteriasCaixaDSTheme(darkTheme = false) { BettingGameRoute(vm, {}, {}) } }
         compose.waitUntil(10_000) { vm.state.value.game != null }
-        compose.runOnIdle { (1..10).forEach(vm::toggleNumber); vm.primaryAction() }
+        compose.runOnIdle {
+            (1..10).forEach(vm::toggleNumber)
+            vm.primaryAction()
+        }
         compose.waitForIdle()
 
         val search = compose.onNodeWithContentDescription("Nome do time")
@@ -103,7 +111,7 @@ class BettingTimemaniaSearchTest {
         android.os.SystemClock.sleep(100)
         val folder = File(
             requireNotNull(InstrumentationRegistry.getInstrumentation().targetContext.externalCacheDir),
-            "simlo-parity",
+            "simlo-parity"
         ).apply { mkdirs() }
         val name = "betting-20-search-$state"
         val bitmap = compose.onRoot().captureToImage().asAndroidBitmap()
@@ -114,7 +122,7 @@ class BettingTimemaniaSearchTest {
         File(folder, "$name.txt").writeText(
             "fixture=true\nnetworkSends=${sends.get()}\nmodalityId=20\nstate=$state\n" +
                 "query=${vm.state.value.teamQuery}\nselectedTeam=${vm.state.value.selectedTeam?.number}\n" +
-                "focusVerified=true\ninteraction=compose-semantics\n",
+                "focusVerified=true\ninteraction=compose-semantics\n"
         )
         assertTrue(File(folder, "$name.png").length() > 0)
         assertTrue(File(folder, "$name.txt").length() > 0)

@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -25,6 +25,8 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
 import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
@@ -49,16 +51,17 @@ import org.junit.Assert.assertFalse
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class, qualifiers = "w411dp-h891dp-xhdpi")
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class ConfirmedBetResultRouteJvmTest {
     @get:Rule
-    val compose = createComposeRule()
+    val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private val bet =
         ConfirmedBet(1, "Mega-Sena", 2000, "22/10/2026", "Premiada", listOf(1, 9), prize = BigDecimal("50"), clovers = listOf(1, 2))
     private val result = DrawResult(
@@ -79,7 +82,7 @@ class ConfirmedBetResultRouteJvmTest {
         var backs = 0
         var complete = 0
         var redeem = 0
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { model(bet) { ServiceResult.Success(listOf(result)) } }
             LoteriasCaixaDSTheme {
                 ConfirmedBetResultRoute(bet, model, { backs++ }, { complete++ }, onRedeemPrize = { redeem++ })
@@ -121,7 +124,7 @@ class ConfirmedBetResultRouteJvmTest {
     fun loadingThenUnavailableAndNetworkErrorKeepTheirRetryAndRecovery() {
         val pending = CompletableDeferred<ServiceResult<List<DrawResult>>>()
         var calls = 0
-        compose.setContent {
+        compose.setFeatureContent {
             val model =
                 remember {
                     model(bet) {
@@ -154,7 +157,7 @@ class ConfirmedBetResultRouteJvmTest {
             )
         lateinit var viewModel: ConfirmedBetResultsViewModel
         val redirects = mutableListOf<ServiceRedirect>()
-        compose.setContent {
+        compose.setFeatureContent {
             viewModel = remember { model(bet) { current.value } }
             LoteriasCaixaDSTheme { ConfirmedBetResultRoute(bet, viewModel, {}, {}, redirects::add) }
         }
@@ -187,7 +190,7 @@ class ConfirmedBetResultRouteJvmTest {
             favoriteTeamReward = null,
             luckyMonthReward = null
         )
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { model(selected) { ServiceResult.Success(listOf(drawn)) } }
             LoteriasCaixaDSTheme {
                 LoteriasCaixaDSCampaignTheme(LoteriasCaixaDSCampaign.OCTOBER_ROSE, LoteriasCaixaDSCampaign.OCTOBER_ROSE) {
@@ -212,7 +215,7 @@ class ConfirmedBetResultRouteJvmTest {
             secondDrawNumbers = emptyList(),
             clovers = emptyList()
         )
-        compose.setContent {
+        compose.setFeatureContent {
             val current = selected.value
             val model = remember(current) { model(current) { ServiceResult.Success(listOf(drawn)) } }
             LoteriasCaixaDSTheme { ConfirmedBetResultRoute(current, model, {}, {}) }
@@ -227,7 +230,7 @@ class ConfirmedBetResultRouteJvmTest {
     @Test
     fun megaCampaignRecolorsConfirmedResultWithoutChangingItsContent() {
         val campaign = mutableStateOf(LoteriasCaixaDSCampaign.DEFAULT)
-        compose.setContent {
+        compose.setFeatureContent {
             val model = remember { model(bet) { ServiceResult.Success(listOf(result)) } }
             LoteriasCaixaDSTheme {
                 LoteriasCaixaDSCampaignTheme(campaign.value, campaign.value) { ConfirmedBetResultRoute(bet, model, {}, {}) }

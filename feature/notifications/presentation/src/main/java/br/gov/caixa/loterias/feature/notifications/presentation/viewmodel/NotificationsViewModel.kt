@@ -36,6 +36,7 @@ class NotificationsViewModel(
     private val getPreferences: GetNotificationPreferencesUseCase,
     private val setPreference: SetNotificationPreferenceUseCase,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
+    private val isEntryEnabled: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<NotificationsUiState, NotificationsAction>(
         NotificationsUiState(),
@@ -50,12 +51,37 @@ class NotificationsViewModel(
 
     private val preferenceOperations = NotificationPreferenceOperations()
     private val loading =
-        NotificationsLoading(mutableState, viewModelScope, dispatchers, getNotifications, getPreferences, preferenceOperations)
+        NotificationsLoading(
+            mutableState,
+            viewModelScope,
+            dispatchers,
+            getNotifications,
+            getPreferences,
+            preferenceOperations,
+            isEntryEnabled
+        )
     private val mutations =
-        NotificationsMutations(mutableState, viewModelScope, dispatchers, markRead, deleteNotification, deleteAll, markAllRead)
+        NotificationsMutations(
+            mutableState,
+            viewModelScope,
+            dispatchers,
+            markRead,
+            deleteNotification,
+            deleteAll,
+            markAllRead,
+            isEntryEnabled
+        )
     private val projection = NotificationsProjection(mutableState, mutations)
     private val preferences =
-        NotificationsPreferences(mutableState, viewModelScope, dispatchers, getPreferences, setPreference, preferenceOperations)
+        NotificationsPreferences(
+            mutableState,
+            viewModelScope,
+            dispatchers,
+            getPreferences,
+            setPreference,
+            preferenceOperations,
+            isEntryEnabled
+        )
     private val actions = NotificationsActions(mutableState, viewModelScope, mutableEffects)
 
     init {

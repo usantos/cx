@@ -1,12 +1,25 @@
 package br.gov.caixa.loterias.feature.account
 
-import androidx.compose.ui.test.*
 import android.view.View
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toPixelMap
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsFocused
+import androidx.compose.ui.test.bottom
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasSetTextAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.height
 import androidx.compose.ui.test.junit4.v2.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.test.top
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -14,21 +27,22 @@ import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
-import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
+import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
+import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
 import java.math.BigDecimal
 import kotlin.math.abs
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.route.PersonalDataRoute
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.PersonalDataViewModel
 
 /** Contrato de leiaute do APK instalado. Identidade sintética e limites escalares; sem gravações na conta. */
 class PersonalDataImeAndLimitButtonParityTest {
@@ -53,8 +67,10 @@ class PersonalDataImeAndLimitButtonParityTest {
             contentView.getLocationOnScreen(location)
             keyboardTop = screenHeight - imeBottom()
         }
-        assertTrue("Installed DadosPessoais hides Atualizar behind IME; footer must not float above it",
-            footer.isEmpty() || footer.all { it.boundsInRoot.top + location[1] >= keyboardTop })
+        assertTrue(
+            "Installed DadosPessoais hides Atualizar behind IME; footer must not float above it",
+            footer.isEmpty() || footer.all { it.boundsInRoot.top + location[1] >= keyboardTop }
+        )
     }
 
     @Test fun requestLimitControlUsesInstalledGreyFill() {
@@ -64,8 +80,10 @@ class PersonalDataImeAndLimitButtonParityTest {
         val pixels = button.captureToImage().toPixelMap()
         // Interior vazio acima do rótulo: captura oficial RGB 214/215/215, longe do contorno e do texto.
         val sample = pixels[pixels.width / 2, (8 * contentView.resources.displayMetrics.density).toInt()]
-        assertTrue("Installed request-limit button has grey fill, not white outlined-button interior: $sample",
-            abs(sample.red * 255 - 214) <= 3 && abs(sample.green * 255 - 215) <= 3 && abs(sample.blue * 255 - 215) <= 3)
+        assertTrue(
+            "Installed request-limit button has grey fill, not white outlined-button interior: $sample",
+            abs(sample.red * 255 - 214) <= 3 && abs(sample.green * 255 - 215) <= 3 && abs(sample.blue * 255 - 215) <= 3
+        )
     }
 
     @Test fun requestLimitLabelFitsOneLineWithInstalledHorizontalPadding() {
@@ -84,15 +102,20 @@ class PersonalDataImeAndLimitButtonParityTest {
 
     private fun showPersonalData() {
         val model = PersonalDataViewModel(
-            getProfile = GetAccountProfileUseCase { AppResult.Success(AccountProfile(
-                "00000000000", "Pessoa de Teste", "teste@example.invalid", "00000000", Gender.MALE,
-                MunicipalityId(1, 1, 1), "DF", "Município de Teste", BigDecimal("1050"),
-                BigDecimal("2"), BigDecimal("9300"), false)) },
+            getProfile = GetAccountProfileUseCase {
+                AppResult.Success(
+                    AccountProfile(
+                        "00000000000", "Pessoa de Teste", "teste@example.invalid", "00000000", Gender.MALE,
+                        MunicipalityId(1, 1, 1), "DF", "Município de Teste", BigDecimal("1050"),
+                        BigDecimal("2"), BigDecimal("9300"), false
+                    )
+                )
+            },
             resolveZipCode = ResolveZipCodeUseCase { AppResult.Failure(AppError.Network) },
             updatePersonalData = UpdatePersonalDataUseCase { _, _ -> error("No account writes allowed") },
-            recalculateAuthorizedLimit = RecalculateAuthorizedLimitUseCase { error("No recalculation request allowed") },
+            recalculateAuthorizedLimit = RecalculateAuthorizedLimitUseCase { error("No recalculation request allowed") }
         )
-        compose.setContent {
+        compose.setFeatureContent {
             val view = LocalView.current
             SideEffect { contentView = view }
             LoteriasCaixaDSTheme(darkTheme = false) { PersonalDataRoute(model, {}, { error("No save completion allowed") }) }

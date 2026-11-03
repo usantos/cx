@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_confirmar">"Confirmar"</string>
+    <string name="ui_aplicar_3a0489" formatted="false">"Aplicar"</string>
+    <string name="ui_atencao_b0f8a4" formatted="false">"Atenção"</string>
+
+    <string name="ui_entendi_9f9373" formatted="false">"Entendi"</string>
+
+
+    <string name="ui_fechar_0f2bd8" formatted="false">"Fechar"</string>
+    <string name="ui_filtrar_06b52c" formatted="false">"Filtrar"</string>
+
+
+
+    <string name="ui_lotericas_8c948f" formatted="false">"Lotéricas"</string>
+
+    <string name="ui_nome_ou_codigo_47d071" formatted="false">"Nome ou código"</string>
+
+
+
+
+
+
+
+    <string name="ui_quantidade_de_palpites_ef7895" formatted="false">"Quantidade de Palpites"</string>
+        <string name="ui_todas_as_modalidades_d0b87a" formatted="false">"Todas as\nmodalidades"</string>
+
+
+</resources>

@@ -13,6 +13,8 @@ import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.navigation.AccountNavigationDependencies
 import br.gov.caixa.loterias.feature.account.navigation.accountGraph
 import br.gov.caixa.loterias.feature.betting.navigation.BettingNavigationDependencies
@@ -45,18 +47,21 @@ import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
 /** Registrar o grafo não pode ler credenciais nem chamar um backend; os callbacks são adiados. */
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35], application = android.app.Application::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(sdk = [36], application = android.app.Application::class)
 class FeatureGraphRegistrationTest {
     @get:Rule val compose = createAndroidComposeRule<HomeDrawerTestActivity>()
 
     @Test fun everyFeatureRegistersUniqueDestinationsWithoutReadingSessionOrRepositories() {
         lateinit var graph: NavGraph
-        compose.setContent {
+        compose.setFeatureContent {
             val nav = rememberNavController()
             val state = rememberAppNavigationState(null)
             graph = registerFeatures(nav, state)

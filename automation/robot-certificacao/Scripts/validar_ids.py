@@ -7,6 +7,26 @@ import re
 import sys
 ROOT=Path(__file__).resolve().parents[1]
 
+def fontes_android(android_root):
+    """Fontes manuais de apresentação, incluindo módulos dinâmicos declarados no Gradle."""
+    roots = {android_root / 'core/design-system', android_root / 'core/presentation', android_root / 'app'}
+    roots.update(path.parent for path in (android_root / 'feature').glob('*/presentation/src'))
+    for settings in [android_root / 'settings.gradle', android_root / 'settings.gradle.kts']:
+        if not settings.is_file():
+            continue
+        text = re.sub(r'/\*[\s\S]*?\*/|//[^\n]*', '', settings.read_text(encoding='utf-8'))
+        for include in re.finditer(r'(?m)^\s*include\s*(?:\(([^)]*)\)|([^\n]+))', text):
+            for name in re.findall(r"['\"](:[a-zA-Z0-9_:-]+)['\"]", include[1] or include[2]):
+                module = android_root.joinpath(*name.strip(':').split(':'))
+                for filename in ['build.gradle', 'build.gradle.kts']:
+                    build = module / filename
+                    if not build.is_file():
+                        continue
+                    plugin = re.sub(r'/\*[\s\S]*?\*/|//[^\n]*', '', build.read_text(encoding='utf-8'))
+                    if re.search(r"['\"]com\.android\.dynamic-feature['\"]", plugin):
+                        roots.add(module)
+    return sorted({source for module in roots for source in (module / 'src/main').rglob('*.kt')})
+
 def validar(pacote=ROOT, android_root=None):
     errors=[]
     try:
@@ -42,16 +62,15 @@ def validar(pacote=ROOT, android_root=None):
     if android_root:
         # Detecta IDs novos que não entraram no pacote entregue à certificação.
         declared=Counter()
-        for base in ['feature','core/design-system','app']:
-            for source in (android_root/base).glob('*/presentation/src/main/**/*.kt' if base=='feature' else 'src/main/**/*.kt'):
-                text=source.read_text(encoding='utf-8')
-                if source.name != 'AutomationIdentity.kt':
-                    for call in re.finditer(r'\.(automationId|uiId)\s*\(',text):
-                        pattern=r'\s*"(simlo\.[a-z0-9_.-]+)"' if call[1]=='automationId' else r'\s*"([a-z][a-z0-9_-]*\.\d{4,5})"'
-                        if not re.match(pattern,text[call.end():]):
-                            errors.append(str(source.relative_to(android_root))+': ID novo deve usar literal estável do catálogo, sem dados de usuário.')
-                declared.update(re.findall(r'\.automationId\s*\(\s*"(simlo\.[a-z0-9_.-]+)"\s*\)',text))
-                declared.update('simlo.'+key for key in re.findall(r'\.uiId\s*\(\s*"([a-z][a-z0-9_-]*\.\d{4,5})"\s*\)',text))
+        for source in fontes_android(android_root):
+            text=source.read_text(encoding='utf-8')
+            if source.name != 'AutomationIdentity.kt':
+                for call in re.finditer(r'\.(automationId|uiId)\s*\(',text):
+                    pattern=r'\s*"(simlo\.[a-z0-9_.-]+)"' if call[1]=='automationId' else r'\s*"([a-z][a-z0-9_-]*\.\d{4,5})"'
+                    if not re.match(pattern,text[call.end():]):
+                        errors.append(str(source.relative_to(android_root))+': ID novo deve usar literal estável do catálogo, sem dados de usuário.')
+            declared.update(re.findall(r'\.automationId\s*\(\s*"(simlo\.[a-z0-9_.-]+)"\s*\)',text))
+            declared.update('simlo.'+key for key in re.findall(r'\.uiId\s*\(\s*"([a-z][a-z0-9_-]*\.\d{4,5})"\s*\)',text))
         for missing in sorted(set(declared)-ids):errors.append(f'{missing}: ID novo não incluído no inventário da certificação.')
         for name,count in counts.items():
             if declared[name]!=count:

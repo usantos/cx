@@ -1,8 +1,6 @@
 package br.gov.caixa.loterias.apostas
 
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Formatting
-import br.gov.caixa.loterias.feature.home.presentation.mapper.date
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -15,6 +13,7 @@ class HomeV2FormattingTest {
         assertEquals("R$ 1 milhão", HomeV2Formatting.prize(BigDecimal("1000000")))
         assertEquals("Prêmio a confirmar", HomeV2Formatting.prize(null))
     }
+
     @Test fun datesKeepMinutesAndDoNotInventTimeForDateOnly() {
         assertEquals("sex. • 21h30", HomeV2Formatting.date("09/10/2026 21:30:00"))
         assertEquals("09/10", HomeV2Formatting.date("09/10/2026"))

@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.payment
 
 import androidx.compose.ui.text.font.FontWeight
+import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.paymentTopBarTitle
+import br.gov.caixa.loterias.feature.payment.presentation.mapper.secondsUntil
 import java.math.BigDecimal
 import java.time.Instant
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.paymentTopBarTitle
-import br.gov.caixa.loterias.feature.payment.presentation.mapper.secondsUntil
 
 class PaymentDataFormattersTest {
     private val now = Instant.parse("2026-10-18T15:00:00Z")

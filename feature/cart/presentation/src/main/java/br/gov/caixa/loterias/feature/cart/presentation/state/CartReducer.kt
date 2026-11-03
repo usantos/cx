@@ -13,6 +13,7 @@ import java.math.BigDecimal
 sealed interface CartAction
 
 sealed interface CartContentsAction : CartAction {
+    data object PreparationStarted : CartContentsAction
     data object LoadStarted : CartContentsAction
     data object LoadFinished : CartContentsAction
     data class RemovalRequested(val item: CartItem) : CartContentsAction
@@ -27,10 +28,12 @@ sealed interface CartContentsAction : CartAction {
 }
 
 sealed interface CartFavoriteAction : CartAction {
+    data object PreparationStarted : CartFavoriteAction
     data object Requested : CartFavoriteAction
     data class NameChanged(val name: String) : CartFavoriteAction
     data class NameRejected(val message: String) : CartFavoriteAction
     data object ValidationStarted : CartFavoriteAction
+    data class PreparationCancelled(val overwrite: Boolean = false) : CartFavoriteAction
     data object OverwriteRequested : CartFavoriteAction
     data class ValidationFailed(val message: String) : CartFavoriteAction
     data object OverwriteStarted : CartFavoriteAction
@@ -91,15 +94,13 @@ fun reduceCartState(state: CartUiState, action: CartAction): CartUiState = when 
 }
 
 private fun reduceCartContentsState(state: CartUiState, action: CartContentsAction): CartUiState = when (action) {
+    CartContentsAction.PreparationStarted -> state.copy(loading = true)
+
     CartContentsAction.LoadStarted -> state.copy(loading = true, errorMessage = null)
 
     CartContentsAction.LoadFinished -> state.copy(loading = false)
 
-    is CartContentsAction.RemovalRequested -> if (state.loading) {
-        state
-    } else {
-        state.copy(pendingRemoval = action.item, clearConfirmation = false)
-    }
+    is CartContentsAction.RemovalRequested -> state.requestRemoval(action.item)
 
     CartContentsAction.ClearRequested -> if (state.loading) state else state.copy(clearConfirmation = true, pendingRemoval = null)
 
@@ -137,11 +138,9 @@ private fun reduceCartContentsState(state: CartUiState, action: CartContentsActi
 private const val FAVORITE_NAME_LENGTH = 30
 
 private fun reduceCartFavoriteState(state: CartUiState, action: CartFavoriteAction): CartUiState = when (action) {
-    CartFavoriteAction.Requested -> if (!state.loading && canFavoriteCart(state.cart, state.authenticated)) {
-        state.copy(favoriteNameDialog = true, favoriteName = "", errorMessage = null)
-    } else {
-        state
-    }
+    CartFavoriteAction.PreparationStarted -> state.copy(loading = true)
+
+    CartFavoriteAction.Requested -> state.requestFavorite()
 
     is CartFavoriteAction.NameChanged -> if (state.loading) {
         state
@@ -155,6 +154,8 @@ private fun reduceCartFavoriteState(state: CartUiState, action: CartFavoriteActi
     is CartFavoriteAction.NameRejected -> state.copy(errorMessage = action.message)
 
     CartFavoriteAction.ValidationStarted -> state.copy(loading = true, errorMessage = null)
+
+    is CartFavoriteAction.PreparationCancelled -> state.cancelFavoritePreparation(action.overwrite)
 
     CartFavoriteAction.OverwriteRequested -> state.copy(loading = false, favoriteNameDialog = false, favoriteOverwriteConfirmation = true)
 
@@ -279,4 +280,21 @@ private fun reduceCartCheckoutNoticeState(state: CartUiState, action: CartChecko
     CartCheckoutAction.AccountDecisionConsumed -> state.copy(paymentAccountDecision = null)
 
     else -> state
+}
+
+private fun CartUiState.cancelFavoritePreparation(overwrite: Boolean) = copy(
+    loading = expirationRemovalInFlight,
+    favoriteOverwriteConfirmation = overwrite || favoriteOverwriteConfirmation
+)
+
+private fun CartUiState.requestRemoval(item: CartItem) = if (loading) {
+    this
+} else {
+    copy(pendingRemoval = item, clearConfirmation = false)
+}
+
+private fun CartUiState.requestFavorite() = if (!loading && canFavoriteCart(cart, authenticated)) {
+    copy(favoriteNameDialog = true, favoriteName = "", errorMessage = null)
+} else {
+    this
 }

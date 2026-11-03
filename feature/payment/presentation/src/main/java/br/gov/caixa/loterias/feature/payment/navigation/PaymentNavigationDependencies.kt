@@ -12,6 +12,7 @@ import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
 /** Dependências deste grafo de destinos, fornecidas pela raiz de composição do aplicativo. */
 interface PaymentNavigationDependencies : br.gov.caixa.loterias.feature.payment.navigation.MercadoPagoRegistrationDependencies {
     val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+    val appModulesConfiguration: br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
     val currentCart: GetCurrentCartUseCase
     val deleteSavedCard: DeleteSavedCardUseCase
     val generatePixCharge: GeneratePixChargeUseCase

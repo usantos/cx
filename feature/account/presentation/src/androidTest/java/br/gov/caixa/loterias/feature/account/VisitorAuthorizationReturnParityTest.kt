@@ -33,6 +33,7 @@ import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
@@ -134,7 +135,7 @@ class VisitorAuthorizationReturnParityTest {
             override val onAuthenticated: (String) -> Unit = { error("Cancelled SSO cannot authenticate") }
             override val onTryNow: () -> Unit = {}
         }
-        compose.setContent {
+        compose.setFeatureContent {
             CompositionLocalProvider(LocalActivityResultRegistryOwner provides registry) {
                 LoteriasCaixaDSTheme {
                     nav = rememberNavController()

@@ -23,6 +23,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMe
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingMutationBarrier
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessage
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessages
+import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingWriteNotAdmitted
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.reduceFavoriteBetsState
@@ -43,6 +44,7 @@ class FavoriteBetsViewModel(
     private val isSessionCurrent: () -> Boolean = { true },
     private val recoveryMessages: BettingRecoveryMessages = BettingRecoveryMessages.Identifiers,
     private val checkpointSession: BettingCheckpointSession? = null,
+    private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {
     private val mutableState = reduxStateStore<FavoriteBetsUiState, FavoriteBetsAction>(
         FavoriteBetsUiState(loading = autoLoad),
@@ -51,7 +53,7 @@ class FavoriteBetsViewModel(
         addCloseable(it)
     }
     val state = mutableState.state
-    private val mutation = BettingMutationBarrier(checkpointSession)
+    private val mutation = BettingMutationBarrier(checkpointSession, canStartOperation)
     private var favoritesRequest = 0L
     private var nextOffset = 0
     private var pendingAdd: Pair<FavoriteBet, ShoppingCart?>? = null
@@ -119,11 +121,17 @@ class FavoriteBetsViewModel(
     fun cancelDelete() = mutableState.dispatch(FavoriteBetsAction.DeletionCancelled)
 
     fun confirmDelete() {
+        if (!canStartOperation()) return
         if (!isSessionCurrent() || state.value.loading) return
         val favorite = state.value.deleteCandidate ?: return
-        mutableState.dispatch(FavoriteBetsAction.DeletionStarted)
+        mutableState.dispatch(FavoriteBetsAction.LoadingStarted)
         viewModelScope.launch(dispatchers.io) {
             if (!isSessionCurrent()) return@launch
+            if (!canStartOperation()) {
+                mutableState.dispatch(FavoriteBetsAction.LoadingFinished)
+                return@launch
+            }
+            mutableState.dispatch(FavoriteBetsAction.DeletionStarted)
             val result = deleteFavorite(favorite.id)
             if (!isSessionCurrent()) return@launch
             when (result) {
@@ -143,6 +151,7 @@ class FavoriteBetsViewModel(
     }
 
     fun requestAdd(favorite: FavoriteBet) {
+        if (!canStartOperation()) return
         val current = state.value
         if (!isSessionCurrent() || current.loading || current.addedToCart || current.addCandidate != null || pendingAdd != null) return
         mutableState.dispatch(FavoriteBetsAction.LoadingStarted)
@@ -197,6 +206,7 @@ class FavoriteBetsViewModel(
     }
 
     fun confirmDailyLimit() {
+        if (!canStartOperation()) return
         if (!state.value.dailyLimitConfirmation || !isSessionCurrent()) return
         mutableState.dispatch(FavoriteBetsAction.DailyLimitConfirmationCancelled)
         checkDuplicate()
@@ -213,6 +223,7 @@ class FavoriteBetsViewModel(
     }
 
     fun confirmDuplicate() {
+        if (!canStartOperation()) return
         if (!state.value.duplicateConfirmation || !isSessionCurrent()) return
         mutableState.dispatch(FavoriteBetsAction.DuplicateConfirmationCancelled)
         configureAdd()
@@ -241,6 +252,7 @@ class FavoriteBetsViewModel(
     fun toggleMirror() = mutableState.dispatch(FavoriteBetsAction.MirrorToggled)
 
     fun confirmAdd() {
+        if (!canStartOperation()) return
         if (!isSessionCurrent() || state.value.loading) return
         val current = state.value
         val favorite = current.addCandidate ?: return
@@ -248,11 +260,22 @@ class FavoriteBetsViewModel(
     }
 
     private fun submit(favorite: FavoriteBet, options: FavoriteBetCartOptions) {
-        mutableState.dispatch(FavoriteBetsAction.AdditionStarted)
+        mutableState.dispatch(FavoriteBetsAction.LoadingStarted)
         viewModelScope.launch(dispatchers.io) {
             if (!isSessionCurrent()) return@launch
             val result = try {
-                mutation.run("ADD_FAVORITE", { it: AppResult<*> -> it is AppResult.Success }) { addFavoriteToCart(favorite.id, options) }
+                mutation.run("ADD_FAVORITE", { it: AppResult<*> -> it is AppResult.Success }) {
+                    mutableState.dispatch(FavoriteBetsAction.AdditionStarted)
+                    addFavoriteToCart(favorite.id, options)
+                }
+            } catch (denied: BettingWriteNotAdmitted) {
+                mutableState.dispatch(FavoriteBetsAction.LoadingFinished)
+                if (denied.checkpointed) {
+                    mutableState.dispatch(
+                        FavoriteBetsAction.RecoveryRequired(recoveryMessages.text(BettingRecoveryMessage.RECONCILE_REQUIRED))
+                    )
+                }
+                return@launch
             } catch (cancelled: CancellationException) {
                 throw cancelled
             } catch (_: Exception) {

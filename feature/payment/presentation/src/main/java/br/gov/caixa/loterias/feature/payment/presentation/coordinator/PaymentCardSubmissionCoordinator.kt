@@ -4,7 +4,6 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.CardPaymentRequest
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
@@ -16,7 +15,6 @@ import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardActio
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurchaseContext
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardUiState
-import br.gov.caixa.loterias.feature.payment.presentation.state.reducePaymentCardState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -26,8 +24,7 @@ internal class PaymentCardSubmissionCoordinator(
     private val dispatchers: CoroutineDispatchers,
     private val purchase: PaymentCardPurchaseContext,
     private val paymentMethodId: Long,
-    private val getCurrentCart: GetCurrentCartUseCase,
-    private val submitCardPayment: SubmitCardPaymentUseCase,
+    private val services: PaymentCardSubmissionServices,
     private val monitoring: PaymentCardMonitoringCoordinator,
     private val notices: PaymentCardNoticeCoordinator,
     private val redirects: PaymentCardRedirectCoordinator,
@@ -45,7 +42,10 @@ internal class PaymentCardSubmissionCoordinator(
             val current = mutableState.value
             mutableState.dispatch(PaymentCardAction.ProcessingStarted)
             scope.launch(dispatchers.io) {
-                val amount = when (val cart = getCurrentCart()) {
+                if (!continuePreparation()) return@launch
+                val cart = services.getCurrentCart()
+                if (!continuePreparation()) return@launch
+                val amount = when (cart) {
                     is AppResult.Failure -> {
                         fail(cart.error)
                         return@launch
@@ -66,7 +66,8 @@ internal class PaymentCardSubmissionCoordinator(
                         save = current.save
                     )
                 )
-                when (val result = submitCardPayment(CardPaymentRequest(paymentMethodId, selection, current.cvv))) {
+                if (!continuePreparation()) return@launch
+                when (val result = services.submitCardPayment(CardPaymentRequest(paymentMethodId, selection, current.cvv))) {
                     is AppResult.Failure -> fail(result.error)
 
                     is AppResult.Success -> when (val outcome = result.value) {
@@ -79,4 +80,17 @@ internal class PaymentCardSubmissionCoordinator(
             }
         }
     }
+
+    /** Antes do envio, a revogação devolve a confirmação com o rascunho intacto. */
+    private fun continuePreparation(): Boolean {
+        if (services.canStartOperation()) return true
+        mutableState.dispatch(PaymentCardAction.ConfirmationStarted)
+        return false
+    }
 }
+
+internal class PaymentCardSubmissionServices(
+    val getCurrentCart: GetCurrentCartUseCase,
+    val submitCardPayment: SubmitCardPaymentUseCase,
+    val canStartOperation: () -> Boolean,
+)

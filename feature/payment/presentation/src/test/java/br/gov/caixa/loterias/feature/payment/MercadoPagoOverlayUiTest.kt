@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.payment
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
@@ -12,6 +12,8 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistration
 import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationResult
@@ -25,13 +27,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@Config(application = android.app.Application::class, sdk = [36])
 class MercadoPagoOverlayUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private var finishes = 0
     private var calls = 0
     private val redirects = mutableListOf<ServiceRedirect>()
@@ -110,7 +115,7 @@ class MercadoPagoOverlayUiTest {
                 response.await()
             }
         )
-        compose.setContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
         compose.runOnIdle { model.start("fixture@example.com") }
         compose.onNodeWithText("Carregando…").assertExists()
         compose.runOnIdle { response.complete(AppResult.Failure(AppError.Network)) }
@@ -126,7 +131,7 @@ class MercadoPagoOverlayUiTest {
                 result
             }
         )
-        compose.setContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
+        compose.setFeatureContent { LoteriasCaixaDSTheme { MercadoPagoRegistrationOverlay(model, true, redirects::add, { finishes++ }) } }
         compose.runOnIdle { model.start("fixture@example.com") }
         compose.waitForIdle()
         return model

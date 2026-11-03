@@ -3,16 +3,24 @@ package br.gov.caixa.loterias.apostas
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.semantics.getOrNull
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.SemanticsMatcher
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performTouchInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.presentation.mapper.HomeV2Modality
-import br.gov.caixa.loterias.feature.home.presentation.mapper.name
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeV2Presentation
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
+import br.gov.caixa.loterias.feature.home.ui.R as HomeUiR
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -29,7 +37,7 @@ class HomeV2CoordinationUiTest {
         val preferences = Preferences()
         val actions = mutableStateOf<HomeV2Presentation.Actions>(Actions("old", calls))
         val lottery = mutableStateOf(lottery("megasena", 4321))
-        compose.setContent {
+        compose.setFeatureContent {
             HomeV2TestContent(listOf(lottery.value), false, emptyMap(), preferences, actions.value)
         }
         compose.onNodeWithText("Aposte").performClick()
@@ -49,7 +57,7 @@ class HomeV2CoordinationUiTest {
     @Test fun longPressExpandsAndOnlyCompletedDragPersistsOrder() {
         val preferences = Preferences()
         val actions = Actions("home", mutableListOf())
-        compose.setContent { HomeV2TestContent(lotteries(), false, emptyMap(), preferences, actions) }
+        compose.setFeatureContent { HomeV2TestContent(lotteries(), false, emptyMap(), preferences, actions) }
         card("Mega-Sena").performScrollTo()
         val from = card("Mega-Sena").fetchSemanticsNode().boundsInRoot.center
         val to = card("+Milionária").fetchSemanticsNode().boundsInRoot.center
@@ -70,7 +78,10 @@ class HomeV2CoordinationUiTest {
             up()
         }
         compose.runOnIdle {
-            assertEquals(listOf("MAIS_MILIONARIA,MEGA_SENA,LOTECA,DIA_DE_SORTE,DUPLA_SENA,LOTOMANIA,QUINA,TIMEMANIA,LOTOFACIL,SUPER_7"), preferences.saved)
+            assertEquals(
+                listOf("MAIS_MILIONARIA,MEGA_SENA,LOTECA,DIA_DE_SORTE,DUPLA_SENA,LOTOMANIA,QUINA,TIMEMANIA,LOTOFACIL,SUPER_7"),
+                preferences.saved
+            )
         }
         val first = card("+Milionária").fetchSemanticsNode().boundsInRoot
         val second = card("Mega-Sena").fetchSemanticsNode().boundsInRoot
@@ -83,7 +94,7 @@ class HomeV2CoordinationUiTest {
         val preferences = Preferences("QUINA,MEGA_SENA")
         val loading = mutableStateOf(true)
         val actions = Actions("home", calls)
-        compose.setContent { HomeV2TestContent(lotteries(), loading.value, emptyMap(), preferences, actions) }
+        compose.setFeatureContent { HomeV2TestContent(lotteries(), loading.value, emptyMap(), preferences, actions) }
         compose.onNodeWithContentDescription("Carregando a home").assertExists()
         compose.onNodeWithText("Carrinho").performClick()
         compose.runOnIdle { loading.value = false }
@@ -101,9 +112,11 @@ class HomeV2CoordinationUiTest {
         }
     }
 
-    private fun card(name: String) = compose.onNode(SemanticsMatcher("Apostar em $name") {
-        it.config.getOrNull(SemanticsActions.OnClick)?.label == "Apostar em $name"
-    })
+    private fun card(name: String) = compose.onNode(
+        SemanticsMatcher("Apostar em $name") {
+            it.config.getOrNull(SemanticsActions.OnClick)?.label == "Apostar em $name"
+        }
+    )
 
     private class Preferences(private var order: String? = null) : HomeLayoutRepository {
         var loads = 0
@@ -163,8 +176,8 @@ class HomeV2CoordinationUiTest {
         BigDecimal("100000000"), BigDecimal("6"), "2026-10-15T21:00:00", "", true,
         HomeLotteryKind.LOTTERY, LoteriasCaixaDSColorTokens.MegaSenaLight,
         LoteriasCaixaDSColorTokens.MegaSenaDark, LoteriasCaixaDSColorTokens.White,
-        br.gov.caixa.loterias.feature.home.R.drawable.trevo_megasena_fundo_branco,
-        br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario,
-        br.gov.caixa.loterias.feature.home.R.drawable.ic_calendario
+        HomeUiR.drawable.trevo_megasena_fundo_branco,
+        HomeUiR.drawable.ic_calendario,
+        HomeUiR.drawable.ic_calendario
     )
 }

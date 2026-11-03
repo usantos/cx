@@ -5,13 +5,10 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveRapidBetConfigurationUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidConfigurationUiState
-import br.gov.caixa.loterias.feature.betting.presentation.state.reduceRapidConfigurationState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -23,6 +20,7 @@ internal class RapidConfigurationSubmission(
     private val applyFailure: (AppError) -> Unit,
     private val isSessionCurrent: () -> Boolean = { true },
     private val applyServiceFailure: (ServiceFailure) -> Unit = {},
+    private val canStartOperation: () -> Boolean,
 ) {
 
     fun save() {
@@ -43,7 +41,7 @@ internal class RapidConfigurationSubmission(
             favoriteBetIds = current.favoriteBetIds
         )
         scope.launch(dispatchers.io) {
-            if (!isSessionCurrent()) return@launch
+            if (!isSessionCurrent() || !canStartOperation()) return@launch
             mutableState.dispatch(RapidConfigurationAction.SavingStarted)
             val result = saveConfiguration(configuration)
             if (!isSessionCurrent()) return@launch

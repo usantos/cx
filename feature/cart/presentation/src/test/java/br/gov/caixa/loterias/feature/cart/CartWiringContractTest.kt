@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
-import br.gov.caixa.loterias.feature.cart.domain.model.CartTransferPreparation
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationAccess
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
@@ -45,8 +44,12 @@ import br.gov.caixa.loterias.feature.cart.domain.repository.FavoriteCartReposito
 import br.gov.caixa.loterias.feature.cart.domain.repository.FavoriteCartUsageRepository
 import br.gov.caixa.loterias.feature.cart.domain.repository.RecentPurchaseRepository
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase
+import br.gov.caixa.loterias.feature.cart.navigation.CartContentDependencies
+import br.gov.caixa.loterias.feature.cart.navigation.CartFavoriteDependencies
 import br.gov.caixa.loterias.feature.cart.navigation.CartNavigationDependenciesAdapter
+import br.gov.caixa.loterias.feature.cart.navigation.CartPresentationDependencies
 import br.gov.caixa.loterias.feature.cart.navigation.CartRecoveryStatusPresentation
+import br.gov.caixa.loterias.feature.cart.navigation.CartSessionDependencies
 import java.math.BigDecimal
 import java.time.Clock
 import java.time.Instant
@@ -303,62 +306,78 @@ internal class CartWiringFixture {
         }
         val user = CurrentUserIdentityProvider { AuthenticatedUser("Synthetic User", "synthetic-cpf", "fixture@example.test", "") }
         return CartNavigationDependenciesAdapter(
-            addFavoriteCartToCurrent = CartModule.addFavoriteCartToCurrent(
-                favorites
+            contents = CartContentDependencies(
+                currentCart = CartModule.currentCart(repository),
+                removeCartItem = CartModule.removeCartItem(repository),
+                clearCart = CartModule.clearCart(
+                    repository,
+                    usage
+                ),
+                removeExpiredPoolShare = expired,
+                bettingParameters = GetBettingParametersUseCase {
+                    AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 100, emptyList()))
+                },
+                validateCart = CartModule.validateCart(
+                    repository
+                ),
+                verifyCartPaymentAccount = CartModule.verifyCartPaymentAccount(
+                    user,
+                    VerifyAccountAccessUseCase {
+                        AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN))
+                    }
+                ),
+                hasRecentPurchase = CartModule.hasRecentPurchase(object : RecentPurchaseRepository {
+                    override suspend fun latestPurchaseAt(amount: BigDecimal): Instant? = null
+                    override suspend fun record(amount: BigDecimal, purchasedAt: Instant) = error("No history write requested")
+                }),
+                checkCheckoutLocation = CartModule.checkCheckoutLocation(
+                    location
+                ),
+                recordCheckoutLocationRequest = CartModule.recordCheckoutLocationRequest(
+                    location
+                )
             ),
-            authenticatedSessionContent = store, authenticatedSessionIdentity = store,
-            bettingParameters = GetBettingParametersUseCase {
-                AppResult.Success(BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 100, emptyList()))
-            },
-            checkCheckoutLocation = CartModule.checkCheckoutLocation(
-                location
+            favorites = CartFavoriteDependencies(
+                addFavoriteCartToCurrent = CartModule.addFavoriteCartToCurrent(
+                    favorites
+                ),
+                deleteFavoriteCart = CartModule.deleteFavoriteCart(
+                    favorites
+                ),
+                deleteFavoriteCartBet = CartModule.deleteFavoriteCartBet(favorites),
+                favoriteCartBets = CartModule.favoriteCartBets(favorites),
+                favoriteCarts = CartModule.favoriteCarts(favorites),
+                markFavoriteCartAdded = CartModule.markFavoriteCartAdded(usage),
+                saveCurrentCartFavorite = CartModule.saveCurrentCartFavorite(repository),
+                validateFavoriteCartName = CartModule.validateFavoriteCartName(repository),
+                wasFavoriteCartAdded = CartModule.wasFavoriteCartAdded(
+                    usage
+                )
             ),
-            clearCart = CartModule.clearCart(
-                repository,
-                usage
+            sessions = CartSessionDependencies(
+                authenticatedSessionContent = store,
+                authenticatedSessionIdentity = store,
+                currentUserIdentity = user,
+                legacyCartTransfer = CartModule.legacyCartTransfer(
+                    context,
+                    cartTestConfiguration()
+                ),
+                visitorCart = CartModule.visitorCart(
+                    context,
+                    cartTestConfiguration()
+                ),
+                sessionTokenStore = store
             ),
-            currentCart = CartModule.currentCart(repository), currentUserIdentity = user,
-            deleteFavoriteCart = CartModule.deleteFavoriteCart(
-                favorites
-            ),
-            deleteFavoriteCartBet = CartModule.deleteFavoriteCartBet(favorites), dispatchers = dispatchers,
-            favoriteCartBets = CartModule.favoriteCartBets(favorites), favoriteCarts = CartModule.favoriteCarts(favorites),
-            hasRecentPurchase = CartModule.hasRecentPurchase(object : RecentPurchaseRepository {
-                override suspend fun latestPurchaseAt(amount: BigDecimal): Instant? = null
-                override suspend fun record(amount: BigDecimal, purchasedAt: Instant) = error("No history write requested")
-            }),
-            legacyCartTransfer = CartModule.legacyCartTransfer(
-                context,
-                cartTestConfiguration()
-            ),
-            localClock = Clock.fixed(now, ZoneOffset.UTC), markFavoriteCartAdded = CartModule.markFavoriteCartAdded(usage),
-            networkAvailability = network,
-            recordCheckoutLocationRequest = CartModule.recordCheckoutLocationRequest(
-                location
-            ),
-            removeCartItem = CartModule.removeCartItem(repository), removeExpiredPoolShare = expired,
-            saveCurrentCartFavorite = CartModule.saveCurrentCartFavorite(repository),
-            serverClock = ServerTimeSource {
-                now
-            },
-            validateCart = CartModule.validateCart(
-                repository
-            ),
-            validateFavoriteCartName = CartModule.validateFavoriteCartName(repository),
-            verifyCartPaymentAccount = CartModule.verifyCartPaymentAccount(
-                user,
-                VerifyAccountAccessUseCase {
-                    AppResult.Success(AccountAccess(PostLoginDestination.HOME, false, BigDecimal.TEN))
-                }
-            ),
-            visitorCart = CartModule.visitorCart(
-                context,
-                cartTestConfiguration()
-            ),
-            wasFavoriteCartAdded = CartModule.wasFavoriteCartAdded(
-                usage
-            ),
-            sessionTokenStore = store, startupStatusPresentation = presentation
+            presentation = CartPresentationDependencies(
+                appModulesConfiguration = enabledCartModules(),
+                dispatchers = dispatchers,
+                localClock = Clock.fixed(now, ZoneOffset.UTC),
+                networkAvailability = network,
+                serverClock = ServerTimeSource {
+                    now
+                },
+                startupStatusPresentation = presentation
+            )
         )
     }
 }
@@ -385,3 +404,12 @@ private fun assertSecureUnavailable(failure: Throwable?) {
             .any { it is SecureStorageException.KeyUnavailable }
     )
 }
+
+private fun enabledCartModules() = br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase(
+    object : br.gov.caixa.loterias.core.domain.configuration.repository.AppModulesConfigurationRepository {
+        override val configuration = kotlinx.coroutines.flow.MutableStateFlow(
+            br.gov.caixa.loterias.core.domain.configuration.model.AppModulesConfiguration()
+        )
+        override suspend fun refresh() = Unit
+    }
+)

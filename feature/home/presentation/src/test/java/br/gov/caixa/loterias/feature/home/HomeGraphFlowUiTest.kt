@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -32,6 +32,8 @@ import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
+import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
@@ -75,13 +77,16 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import org.robolectric.annotation.ResourcesMode
 
-@RunWith(RobolectricTestRunner::class)
-@Config(sdk = [35])
+@RunWith(DynamicFeatureRobolectricTestRunner::class)
+@ResourcesMode(ResourcesMode.Mode.NATIVE)
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
+@Config(sdk = [36], application = android.app.Application::class)
 class HomeGraphFlowUiTest {
-    @get:Rule val compose = createComposeRule()
+    @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
     private lateinit var nav: NavHostController
     private val requests = mutableListOf<String>()
     private val entries = mutableListOf<BetEntryDecision>()
@@ -148,7 +153,7 @@ class HomeGraphFlowUiTest {
         }
         val now = ServerTimeSource { Instant.parse("2026-10-22T15:00:00Z") }
         val dependencies = homeDependencies(sessions, now, logged, tutorialCompleted, parametersReady)
-        compose.setContent {
+        compose.setFeatureContent {
             nav = rememberNavController()
             val navigation = rememberAppNavigationState(identity?.ownerKey)
             val state = rememberAppSessionState()
@@ -266,6 +271,8 @@ class HomeGraphFlowUiTest {
                 "toString" -> "SessionNavigationActions fixture"
                 "getState" -> state
                 "getIdentity" -> identity
+                "getPrivateEntryKey" -> identity?.ownerKey ?: "visitor-fixture"
+                "isPrivateSessionCurrent" -> ({ identity != null })
                 "getOnLogout" -> onLogout
                 "getRequestVisitorLogin" -> requestVisitorLogin
                 else -> error("Unexpected session callback ${method.name}")

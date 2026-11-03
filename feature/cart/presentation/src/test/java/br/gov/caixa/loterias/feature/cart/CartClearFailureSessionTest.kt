@@ -46,7 +46,7 @@ class CartClearFailureSessionTest {
                 response.await()
                 AppResult.Failure(AppError.Network)
             },
-            { currentSession }, { false }, {}, { "Network failure" }
+            { currentSession }, { false }, {}, { "Network failure" }, canStartOperation = { true }
         )
         contents.requestClear()
         contents.confirmClear()
@@ -73,7 +73,7 @@ class CartClearFailureSessionTest {
                 requestJob = kotlin.coroutines.coroutineContext[Job]
                 throw CancellationException("Session ended")
             },
-            { true }, { false }, {}, { "Unexpected failure" }
+            { true }, { false }, {}, { "Unexpected failure" }, canStartOperation = { true }
         )
         contents.requestClear()
         contents.confirmClear()

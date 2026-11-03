@@ -1,11 +1,5 @@
 package br.gov.caixa.loterias.feature.betting.presentation.route
 
-import br.gov.caixa.loterias.feature.betting.R as LocalizedR
-
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-
-import br.gov.caixa.loterias.feature.betting.presentation.mapper.shakeComplete
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -13,16 +7,20 @@ import android.hardware.SensorManager
 import android.os.SystemClock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.feature.betting.R as LocalizedR
+import br.gov.caixa.loterias.feature.betting.presentation.mapper.shakeComplete
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.LOTOGOL_ID

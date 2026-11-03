@@ -8,11 +8,14 @@ import java.time.ZoneId
 
 /** Capturado ao receber os detalhes e então compartilhado pela renderização e pelas consultas de pagamento. */
 internal data class PurchasePixDeadline(val purchaseId: Long, val expiresAt: String, val elapsedDeadlineMillis: Long) {
-    fun remainingSeconds(elapsedMillis: Long): Long =
-        ((elapsedDeadlineMillis - elapsedMillis).coerceAtLeast(0) / 1_000)
+    fun remainingSeconds(elapsedMillis: Long): Long = ((elapsedDeadlineMillis - elapsedMillis).coerceAtLeast(0) / 1_000)
 
     companion object {
-        fun capture(purchaseId: Long, expiresAt: String, serverDateTime: String, elapsedMillis: Long,
+        fun capture(
+            purchaseId: Long,
+            expiresAt: String,
+            serverDateTime: String,
+            elapsedMillis: Long,
             deviceInstant: Instant,
         ): PurchasePixDeadline {
             val expiration = parse(expiresAt)

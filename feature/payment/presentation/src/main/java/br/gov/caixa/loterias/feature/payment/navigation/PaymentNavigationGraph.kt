@@ -9,9 +9,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.workflow.nextDestination
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
+import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.feature.payment.R
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentCardFlowRoute
 import br.gov.caixa.loterias.feature.payment.presentation.route.PaymentDataRoute
@@ -29,18 +32,19 @@ fun NavGraphBuilder.paymentGraph(
     appContainer: PaymentNavigationDependencies,
     navController: NavHostController,
     session: SessionNavigationActions,
-    actions: AppNavigationActions
+    actions: AppNavigationActions,
 ) {
-    paymentMethodsGraph(appContainer, navController, actions)
+    paymentMethodsGraph(appContainer, navController, session, actions)
     savedPaymentCardsGraph(appContainer, navController, session, actions)
-    paymentCardFlowGraph(appContainer, navController, actions)
-    compatiblePaymentCardGraph(appContainer, navController, actions)
-    paymentTerminalGraph(navController)
+    paymentCardFlowGraph(appContainer, navController, session, actions)
+    compatiblePaymentCardGraph(appContainer, navController, session, actions)
+    paymentTerminalGraph(navController, session)
 }
 
 private fun NavGraphBuilder.paymentMethodsGraph(
     appContainer: PaymentNavigationDependencies,
     navController: NavHostController,
+    session: SessionNavigationActions,
     actions: AppNavigationActions,
 ) {
     listOf(
@@ -49,53 +53,60 @@ private fun NavGraphBuilder.paymentMethodsGraph(
         "payment/pix-expired" to PaymentMode.PIX
     ).forEach { (route, mode) ->
         composable(route) {
-            if (route == "payment/pix-expired" && !appContainer.mockBackendEnabled) {
-                LaunchedEffect(route) {
-                    navController.navigate("tickets/purchases") {
-                        popUpTo(route) { inclusive = true }
-                    }
+            FeatureModuleAdmission(
+                AppModule.PAYMENT,
+                { navController.popBackStack() },
+                access = if (mode ==
+                    PaymentMode.PIX
+                ) {
+                    recoveryAccess(session.purchaseRecovery)
+                } else {
+                    FeatureEntryAccess.OPTIONAL
                 }
-                return@composable
-            }
-            val paymentViewModel = viewModel(key = "payment-data-$route") {
-                PaymentViewModel(
-                    clock = appContainer.localClock,
-                    recordRecentPurchase = appContainer.recordRecentPurchase,
+            ) {
+                if (route == "payment/pix-expired" && !appContainer.mockBackendEnabled) {
+                    LaunchedEffect(route) {
+                        navController.navigate("tickets/purchases") {
+                            popUpTo(route) { inclusive = true }
+                        }
+                    }
+                    return@FeatureModuleAdmission
+                }
+                val paymentViewModel = viewModel(key = "payment-data-$route-${session.privateEntryKey}") {
+                    createPaymentDataViewModel(appContainer, mode, session, createSavedStateHandle())
+                }
+                ObservePixRecovery(paymentViewModel, session.purchaseRecovery)
+                val registrationViewModel = paymentRegistrationViewModel(appContainer)
+                PaymentDataRoute(
+                    onRegistration = { registrationViewModel.start() },
+                    onRedirect = actions.onPaymentRedirect,
                     mode = mode,
-                    getMethods = appContainer.paymentMethods,
-                    getCards = appContainer.savedCards,
-                    deleteCard = appContainer.deleteSavedCard,
-                    generatePixCharge = appContainer.generatePixCharge,
-                    getPurchaseProgress = appContainer.purchaseProgress,
-                    validateDam = appContainer.validateDam,
-                    getCurrentCart = appContainer.currentCart,
-                    dispatchers = appContainer.dispatchers,
-                    ownerKey = appContainer.authenticatedSessionIdentity.captureIdentity()?.ownerKey,
-                    savedStateHandle = createSavedStateHandle()
+                    viewModel = paymentViewModel,
+                    visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
+                    onBack = navController::popBackStack,
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onPix = { navController.navigate("payment/pix-guidance") },
+                    onAddCard = { methodId -> navController.navigate("payment/card-flow/$methodId") },
+                    onOpenCard = { card ->
+                        navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}")
+                    },
+                    onApproved = {
+                        paymentViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("payment/success")
+                    },
+                    onHome = actions.onPaymentMoreBets,
+                    onPurchases = {
+                        paymentViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("tickets/purchases")
+                    }
+                )
+                PaymentRegistrationHost(
+                    registrationViewModel,
+                    paymentViewModel::registrationFinished,
+                    actions.onPrizeRedirect,
+                    simulateBrowser = appContainer.mockBackendEnabled
                 )
             }
-            val registrationViewModel = paymentRegistrationViewModel(appContainer)
-            PaymentDataRoute(
-                onRegistration = { registrationViewModel.start() },
-                onRedirect = actions.onPaymentRedirect,
-                mode = mode,
-                viewModel = paymentViewModel,
-                visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
-                onBack = navController::popBackStack,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onPix = { navController.navigate("payment/pix-guidance") },
-                onAddCard = { methodId -> navController.navigate("payment/card-flow/$methodId") },
-                onOpenCard = { card -> navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}") },
-                onApproved = { navController.navigate("payment/success") },
-                onHome = actions.onPaymentMoreBets,
-                onPurchases = { navController.navigate("tickets/purchases") }
-            )
-            PaymentRegistrationHost(
-                registrationViewModel,
-                paymentViewModel::registrationFinished,
-                actions.onPrizeRedirect,
-                simulateBrowser = appContainer.mockBackendEnabled
-            )
         }
     }
 }
@@ -115,49 +126,61 @@ private fun NavGraphBuilder.savedPaymentCardsGraph(
             }
         )
     ) { entry ->
-        androidx.compose.runtime.key(session.privateEntryKey) {
-            val methodId = requireNotNull(entry.arguments).getLong("methodId").takeIf { it > 0 }
-            val paymentViewModel = viewModel(key = "payment-cards-${methodId ?: 0}-${session.privateEntryKey}") {
-                PaymentViewModel(
-                    clock = appContainer.localClock,
-                    recordRecentPurchase = appContainer.recordRecentPurchase,
+        FeatureModuleAdmission(AppModule.PAYMENT, { navController.popBackStack() }) {
+            androidx.compose.runtime.key(session.privateEntryKey) {
+                val methodId = requireNotNull(entry.arguments).getLong("methodId").takeIf { it > 0 }
+                val paymentViewModel = viewModel(key = "payment-cards-${methodId ?: 0}-${session.privateEntryKey}") {
+                    PaymentViewModel(
+                        canStartOperation = { appContainer.appModulesConfiguration.isEnabled(AppModule.PAYMENT) },
+                        clock = appContainer.localClock,
+                        recordRecentPurchase = appContainer.recordRecentPurchase,
+                        mode = PaymentMode.CARDS,
+                        selectedPaymentMethodId = methodId,
+                        getMethods = appContainer.paymentMethods,
+                        getCards = appContainer.savedCards,
+                        deleteCard = appContainer.deleteSavedCard,
+                        generatePixCharge = appContainer.generatePixCharge,
+                        getPurchaseProgress = appContainer.purchaseProgress,
+                        validateDam = appContainer.validateDam,
+                        getCurrentCart = appContainer.currentCart,
+                        dispatchers = appContainer.dispatchers,
+                        autoLoad = session.identity != null,
+                        isSessionCurrent = session.isPrivateSessionCurrent
+                    )
+                }
+                ObservePixRecovery(paymentViewModel, session.purchaseRecovery)
+                val registrationViewModel = paymentRegistrationViewModel(appContainer)
+                PaymentDataRoute(
+                    privateDataEnabled = session.identity != null,
+                    onRegistration = { registrationViewModel.start() },
+                    onRedirect = actions.onPaymentRedirect,
                     mode = PaymentMode.CARDS,
-                    selectedPaymentMethodId = methodId,
-                    getMethods = appContainer.paymentMethods,
-                    getCards = appContainer.savedCards,
-                    deleteCard = appContainer.deleteSavedCard,
-                    generatePixCharge = appContainer.generatePixCharge,
-                    getPurchaseProgress = appContainer.purchaseProgress,
-                    validateDam = appContainer.validateDam,
-                    getCurrentCart = appContainer.currentCart,
-                    dispatchers = appContainer.dispatchers,
-                    autoLoad = session.identity != null,
-                    isSessionCurrent = session.isPrivateSessionCurrent
+                    viewModel = paymentViewModel,
+                    visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
+                    onBack = navController::popBackStack,
+                    onHelp = { navController.navigate("support/terms?tab=FAQ") },
+                    onPix = { navController.navigate("payment/pix-guidance") },
+                    onAddCard = { selected -> navController.navigate("payment/card-flow/$selected") },
+                    onOpenCard = { card ->
+                        navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}")
+                    },
+                    onApproved = {
+                        paymentViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("payment/success")
+                    },
+                    onHome = actions.onPaymentMoreBets,
+                    onPurchases = {
+                        paymentViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("tickets/purchases")
+                    }
+                )
+                PaymentRegistrationHost(
+                    registrationViewModel,
+                    paymentViewModel::registrationFinished,
+                    actions.onPrizeRedirect,
+                    simulateBrowser = appContainer.mockBackendEnabled
                 )
             }
-            val registrationViewModel = paymentRegistrationViewModel(appContainer)
-            PaymentDataRoute(
-                privateDataEnabled = session.identity != null,
-                onRegistration = { registrationViewModel.start() },
-                onRedirect = actions.onPaymentRedirect,
-                mode = PaymentMode.CARDS,
-                viewModel = paymentViewModel,
-                visualAssets = PaymentVisualAssets(recargaPayLogoResourceId = R.drawable.recargapay),
-                onBack = navController::popBackStack,
-                onHelp = { navController.navigate("support/terms?tab=FAQ") },
-                onPix = { navController.navigate("payment/pix-guidance") },
-                onAddCard = { selected -> navController.navigate("payment/card-flow/$selected") },
-                onOpenCard = { card -> navController.navigate("payment/card-flow/${card.paymentMethodId}?cardId=${Uri.encode(card.id)}") },
-                onApproved = { navController.navigate("payment/success") },
-                onHome = actions.onPaymentMoreBets,
-                onPurchases = { navController.navigate("tickets/purchases") }
-            )
-            PaymentRegistrationHost(
-                registrationViewModel,
-                paymentViewModel::registrationFinished,
-                actions.onPrizeRedirect,
-                simulateBrowser = appContainer.mockBackendEnabled
-            )
         }
     }
 }
@@ -165,6 +188,7 @@ private fun NavGraphBuilder.savedPaymentCardsGraph(
 private fun NavGraphBuilder.paymentCardFlowGraph(
     appContainer: PaymentNavigationDependencies,
     navController: NavHostController,
+    session: SessionNavigationActions,
     actions: AppNavigationActions,
 ) {
     composable(
@@ -177,71 +201,24 @@ private fun NavGraphBuilder.paymentCardFlowGraph(
             }
         )
     ) { entry ->
-        val methodId = requireNotNull(entry.arguments).getLong("methodId")
-        val cardId = requireNotNull(entry.arguments).getString("cardId").orEmpty().ifBlank { null }
-        val cardViewModel = viewModel(key = "payment-card-$methodId-${cardId.orEmpty()}") {
-            PaymentCardViewModel(
-                clock = appContainer.localClock,
-                recordRecentPurchase = appContainer.recordRecentPurchase,
-                getCurrentCart = appContainer.currentCart,
-                paymentMethodId = methodId,
-                savedCardId = cardId,
-                getCards = appContainer.savedCards,
-                submitCardPayment = appContainer.submitCardPayment,
-                getPurchaseProgress = appContainer.purchaseProgress,
-                dispatchers = appContainer.dispatchers
-            )
-        }
-        val registrationViewModel = paymentRegistrationViewModel(appContainer)
-        PaymentCardFlowRoute(
-            onRegistration = { registrationViewModel.start() },
-            onMoreBets = actions.onPaymentMoreBets,
-            onRedirect = actions.onPaymentRedirect,
-            viewModel = cardViewModel,
-            onBack = navController::popBackStack,
-            onSuccess = { navController.navigate("payment/success") },
-            onReviewPurchases = {
-                navController.navigate("tickets/purchases") {
-                    popUpTo(entry.destination.id) { inclusive = true }
-                    launchSingleTop = true
-                }
-            }
-        )
-        PaymentRegistrationHost(
-            registrationViewModel,
-            cardViewModel::registrationFinished,
-            actions.onPrizeRedirect,
-            simulateBrowser = appContainer.mockBackendEnabled
-        )
-    }
-}
-
-private fun NavGraphBuilder.compatiblePaymentCardGraph(
-    appContainer: PaymentNavigationDependencies,
-    navController: NavHostController,
-    actions: AppNavigationActions,
-) {
-    mapOf(
-        "payment/add-card" to PaymentCardStage.FORM,
-        "payment/card-preview" to PaymentCardStage.PREVIEW,
-        "payment/cvv" to PaymentCardStage.CVV,
-        "payment/confirm-card" to PaymentCardStage.CONFIRM
-    ).forEach { (route, initialStage) ->
-        composable(route) { entry ->
-            val cardViewModel = viewModel(key = "payment-card-compat-$route") {
+        FeatureModuleAdmission(AppModule.PAYMENT, { navController.popBackStack() }) {
+            val methodId = requireNotNull(entry.arguments).getLong("methodId")
+            val cardId = requireNotNull(entry.arguments).getString("cardId").orEmpty().ifBlank { null }
+            val cardViewModel = viewModel(key = "payment-card-$methodId-${cardId.orEmpty()}-${session.privateEntryKey}") {
                 PaymentCardViewModel(
+                    canStartOperation = { appContainer.appModulesConfiguration.isEnabled(AppModule.PAYMENT) },
                     clock = appContainer.localClock,
                     recordRecentPurchase = appContainer.recordRecentPurchase,
                     getCurrentCart = appContainer.currentCart,
-                    paymentMethodId = 1L,
-                    savedCardId = null,
-                    initialStage = initialStage,
+                    paymentMethodId = methodId,
+                    savedCardId = cardId,
                     getCards = appContainer.savedCards,
                     submitCardPayment = appContainer.submitCardPayment,
                     getPurchaseProgress = appContainer.purchaseProgress,
                     dispatchers = appContainer.dispatchers
                 )
             }
+            ObserveCardRecovery(cardViewModel, session.purchaseRecovery)
             val registrationViewModel = paymentRegistrationViewModel(appContainer)
             PaymentCardFlowRoute(
                 onRegistration = { registrationViewModel.start() },
@@ -249,8 +226,12 @@ private fun NavGraphBuilder.compatiblePaymentCardGraph(
                 onRedirect = actions.onPaymentRedirect,
                 viewModel = cardViewModel,
                 onBack = navController::popBackStack,
-                onSuccess = { navController.navigate("payment/success") },
+                onSuccess = {
+                    cardViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                    navController.navigate("payment/success")
+                },
                 onReviewPurchases = {
+                    cardViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
                     navController.navigate("tickets/purchases") {
                         popUpTo(entry.destination.id) { inclusive = true }
                         launchSingleTop = true
@@ -267,7 +248,67 @@ private fun NavGraphBuilder.compatiblePaymentCardGraph(
     }
 }
 
-private fun NavGraphBuilder.paymentTerminalGraph(navController: NavHostController) {
+private fun NavGraphBuilder.compatiblePaymentCardGraph(
+    appContainer: PaymentNavigationDependencies,
+    navController: NavHostController,
+    session: SessionNavigationActions,
+    actions: AppNavigationActions,
+) {
+    mapOf(
+        "payment/add-card" to PaymentCardStage.FORM,
+        "payment/card-preview" to PaymentCardStage.PREVIEW,
+        "payment/cvv" to PaymentCardStage.CVV,
+        "payment/confirm-card" to PaymentCardStage.CONFIRM
+    ).forEach { (route, initialStage) ->
+        composable(route) { entry ->
+            FeatureModuleAdmission(AppModule.PAYMENT, { navController.popBackStack() }) {
+                val cardViewModel = viewModel(key = "payment-card-compat-$route-${session.privateEntryKey}") {
+                    PaymentCardViewModel(
+                        canStartOperation = { appContainer.appModulesConfiguration.isEnabled(AppModule.PAYMENT) },
+                        clock = appContainer.localClock,
+                        recordRecentPurchase = appContainer.recordRecentPurchase,
+                        getCurrentCart = appContainer.currentCart,
+                        paymentMethodId = 1L,
+                        savedCardId = null,
+                        initialStage = initialStage,
+                        getCards = appContainer.savedCards,
+                        submitCardPayment = appContainer.submitCardPayment,
+                        getPurchaseProgress = appContainer.purchaseProgress,
+                        dispatchers = appContainer.dispatchers
+                    )
+                }
+                ObserveCardRecovery(cardViewModel, session.purchaseRecovery)
+                val registrationViewModel = paymentRegistrationViewModel(appContainer)
+                PaymentCardFlowRoute(
+                    onRegistration = { registrationViewModel.start() },
+                    onMoreBets = actions.onPaymentMoreBets,
+                    onRedirect = actions.onPaymentRedirect,
+                    viewModel = cardViewModel,
+                    onBack = navController::popBackStack,
+                    onSuccess = {
+                        cardViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("payment/success")
+                    },
+                    onReviewPurchases = {
+                        cardViewModel.recoveryEvidence()?.let { session.purchaseRecovery?.grant(it) }
+                        navController.navigate("tickets/purchases") {
+                            popUpTo(entry.destination.id) { inclusive = true }
+                            launchSingleTop = true
+                        }
+                    }
+                )
+                PaymentRegistrationHost(
+                    registrationViewModel,
+                    cardViewModel::registrationFinished,
+                    actions.onPrizeRedirect,
+                    simulateBrowser = appContainer.mockBackendEnabled
+                )
+            }
+        }
+    }
+}
+
+private fun NavGraphBuilder.paymentTerminalGraph(navController: NavHostController, session: SessionNavigationActions) {
     listOf(
         "payment/pix-guidance",
         "payment/confirmation",
@@ -275,23 +316,62 @@ private fun NavGraphBuilder.paymentTerminalGraph(navController: NavHostControlle
         "payment/success"
     ).forEach { route ->
         composable(route) {
-            val spec = paymentScreens(androidx.compose.ui.platform.LocalResources.current::getString).first { it.route == route }
-            val paymentViewModel = viewModel(key = "payment-terminal-$route") {
-                PaymentTerminalViewModel(spec)
-            }
-            PaymentTerminalRoute(
-                viewModel = paymentViewModel,
-                onBack = navController::popBackStack,
-                onComplete = {
-                    val destination = nextDestination(route)
-                    if (destination == null) {
-                        navController.popBackStack()
-                    } else {
+            FeatureModuleAdmission(
+                AppModule.PAYMENT,
+                { navController.popBackStack() },
+                access = if (route == "payment/success" ||
+                    route == "payment/confirmation"
+                ) {
+                    recoveryAccess(session.purchaseRecovery)
+                } else {
+                    FeatureEntryAccess.OPTIONAL
+                }
+            ) {
+                val spec = paymentScreens(androidx.compose.ui.platform.LocalResources.current::getString).first { it.route == route }
+                val paymentViewModel = viewModel(key = "payment-terminal-$route") {
+                    PaymentTerminalViewModel(spec)
+                }
+                PaymentTerminalRoute(
+                    viewModel = paymentViewModel,
+                    onBack = navController::popBackStack,
+                    onComplete = {
+                        val destination = nextDestination(route)
+                        if (destination == null) {
+                            navController.popBackStack()
+                        } else {
+                            navController.navigate(destination)
+                        }
+                    },
+                    onNavigate = { destination ->
+                        if (destination == "home") session.purchaseRecovery?.finish()
                         navController.navigate(destination)
-                    }
-                },
-                onNavigate = navController::navigate
-            )
+                    },
+                    purchaseRecovery = session.purchaseRecovery
+                )
+            }
         }
     }
 }
+
+private fun createPaymentDataViewModel(
+    appContainer: PaymentNavigationDependencies,
+    mode: PaymentMode,
+    session: SessionNavigationActions,
+    savedStateHandle: androidx.lifecycle.SavedStateHandle,
+): PaymentViewModel = PaymentViewModel(
+    canStartOperation = { appContainer.appModulesConfiguration.isEnabled(AppModule.PAYMENT) },
+    clock = appContainer.localClock,
+    recordRecentPurchase = appContainer.recordRecentPurchase,
+    mode = mode,
+    getMethods = appContainer.paymentMethods,
+    getCards = appContainer.savedCards,
+    deleteCard = appContainer.deleteSavedCard,
+    generatePixCharge = appContainer.generatePixCharge,
+    getPurchaseProgress = appContainer.purchaseProgress,
+    validateDam = appContainer.validateDam,
+    getCurrentCart = appContainer.currentCart,
+    dispatchers = appContainer.dispatchers,
+    ownerKey = session.identity?.ownerKey,
+    isSessionCurrent = session.isPrivateSessionCurrent,
+    savedStateHandle = savedStateHandle
+)

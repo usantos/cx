@@ -3,9 +3,10 @@ package br.gov.caixa.loterias.apostas
 import br.gov.caixa.loterias.apostas.navigation.session.ForegroundSessionRoutePolicy
 import br.gov.caixa.loterias.core.navigation.destination.BettingSimulationRoute
 import br.gov.caixa.loterias.core.navigation.destination.PoolTutorialRoute
-import br.gov.caixa.loterias.feature.home.presentation.mapper.prize
 import br.gov.caixa.loterias.feature.retail.navigation.legacyPrizeForegroundHost
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class ForegroundSessionRoutePolicyTest {

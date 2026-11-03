@@ -117,15 +117,15 @@ pelos registros de dívida do Detekt, sem regenerar baselines.
 
 Política Lint: erros e warnings falham, verificações de release permanecem ativas,
 testes não são excluídos e cada módulo Android é analisado uma vez no gate. O app
-usa PRD Debug e as bibliotecas Debug. O gate não substitui `releaseCheck`; o Lint
-vital dos builds release permanece configurado. Ver [política Lint](quality/android-lint.md).
+e os Dynamic Features usam PRD Debug; as bibliotecas usam Debug. O gate não
+substitui `releaseCheck`; o Lint vital dos builds release permanece configurado. Ver [política Lint](quality/android-lint.md).
 
 ## Cobertura global
 
-A descoberta atual seleciona os **68 módulos compiláveis** do checkout, inclusive
-módulos sem testes e o sample de Design System; agrupadores Gradle não entram
-nessa contagem. O app usa PRD Debug, bibliotecas Android Debug, módulos JVM main. Não são
-combinadas as cópias ASM e pré-ASM das mesmas classes. Fontes Kotlin e Java de
+A descoberta seleciona todos os módulos compiláveis do checkout, inclusive
+Dynamic Features, módulos sem testes e o sample de Design System; agrupadores
+Gradle não entram nessa seleção. O app e os Dynamic Features usam PRD Debug,
+bibliotecas Android Debug e módulos JVM main. Não são combinadas as cópias ASM e pré-ASM das mesmas classes. Fontes Kotlin e Java de
 produção entram no denominador. Um módulo com fontes e sem classes compiladas
 causa falha; interfaces sem linhas executáveis aparecem como N/A.
 
@@ -465,3 +465,42 @@ Após receber essas alterações no Windows, execute **File > Sync Project with 
 no Narwhal 3 e mantenha o Gradle JDK em 21. Não é necessário atualizar o AGP nem
 substituir chamadas válidas da biblioteca padrão. A verificação headless de
 metadados/compilação não equivale a ter operado a IDE Windows remotamente.
+
+## Testes das interfaces com entrega híbrida — 02/11/2026
+
+As suítes da base continuam exercitando as implementações reais extraídas. O script
+`dynamic-feature-test-classpath.gradle` fornece artefatos exclusivos de testes com
+classes dos splits e o hospedeiro vazio da base. Essas relações não adicionam
+renderizadores ao classpath de produção da base. Seu registro ocorre antes da
+seleção do grafo de tarefas, inclusive com configuration-on-demand.
+
+Cada variante Debug compartilha um único APK universal de recursos gerado por
+bundletool a partir do AAB real. O runner nativo SDK 36 lê esse contêiner, sem
+reescrever IDs nem fabricar recursos. Testes de biblioteca que não renderizam
+splits continuam independentes desse mecanismo. A suíte parametrizada conserva
+cada massa e executa cada instância isoladamente no mesmo contêiner real.
+
+`InstalledFeatureTestContent` representa somente a condição de instalação pronta
+nas suítes de interface; o resolvedor carrega as classes concretas dos splits.
+O instalador é validado separadamente com contratos do SDK, incluindo pedidos
+concorrentes e eventos cruzados. Essa fixture não comprova Google Play nem
+instalação física, que exigem evidência própria de bundletool/dispositivo.
+
+As tabelas `R` usadas por essas integrações pertencem ao mesmo AAB/variante do
+contêiner. O classpath de testes prioriza as tabelas geradas da base e dos splits;
+não troca constantes ou IDs em fontes. Oráculos XML exclusivos de `androidTest`
+são compilados pelo AGP em seu próprio APK de recursos e acessados por
+`NativeFixtureContext`, sem distribuir esses desenhos no aplicativo de produção.
+Fixtures de teclado configuram o modo de entrada e o foco inicial por APIs
+públicas do Compose; as teclas e asserções dos cenários permanecem explícitas.
+
+Na migração de recursos, problemas reapresentados pelo novo owner são corrigidos
+na origem. Vetores longos são compactados com equivalência dos segmentos e,
+quando necessário, uma escala de coordenadas com transformação inversa; não se
+reduz a precisão do desenho. Intrinsics excessivos só são ajustados quando o
+layout já determina os bounds. Bitmaps de densidade implícita passam a `mdpi`
+com os mesmos bytes; densidades faltantes derivam dos assets existentes.
+Os vetores e geometrias nativos continuam sujeitos às suítes de renderização.
+A declaração `tools:locale="pt-rBR"` usa um qualificador de recursos válido, conforme
+a [referência Android](https://developer.android.com/studio/write/tool-attributes#toolslocale), e identifica os textos portugueses para o Lint;
+não desativa regras nem altera o conteúdo.

@@ -17,5 +17,5 @@ data class MercadoPagoRegistrationUiState(
     val errorMessage: String? = null,
     val notice: ServiceNoticeUiState? = null,
     val redirect: ServiceRedirect? = null,
-    val repeatConsent: MercadoPagoRegistrationConsent? = null
+    val repeatConsent: MercadoPagoRegistrationConsent? = null,
 )

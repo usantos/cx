@@ -10,7 +10,7 @@ import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 
 internal val allNumberQuantityOptions = (5..26).toList()
 
-internal val allModalities get() = MarketplaceFilterModalityUi(
+val allModalities get() = MarketplaceFilterModalityUi(
     id = null,
     name = messageText("todas_as_modalidades_d0b87a"),
     contestType = null,
@@ -108,9 +108,9 @@ private fun LotteryGameParameters.toFilterModality(available: PoolModalityAvaila
     )
 }
 
-internal fun wantedNumberOptions(modality: MarketplaceFilterModalityUi?): List<Int> = (1..(modality?.maximumNumber ?: 80)).toList()
+fun wantedNumberOptions(modality: MarketplaceFilterModalityUi?): List<Int> = (1..(modality?.maximumNumber ?: 80)).toList()
 
-internal fun retailerDisplayLabel(retailer: Retailer): String {
+fun retailerDisplayLabel(retailer: Retailer): String {
     val digits = retailer.code.filter(Char::isDigit)
     val code = when {
         digits.length >= 9 -> digits.substring(3, 9)

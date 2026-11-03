@@ -11,5 +11,7 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class PaymentNavigationDependenciesBindingModule {
     @Binds
-    abstract fun bindPaymentNavigationDependenciesDependencies(implementation: PaymentNavigationDependenciesAdapter): PaymentNavigationDependencies
+    abstract fun bindPaymentNavigationDependenciesDependencies(
+        implementation: PaymentNavigationDependenciesAdapter,
+    ): PaymentNavigationDependencies
 }

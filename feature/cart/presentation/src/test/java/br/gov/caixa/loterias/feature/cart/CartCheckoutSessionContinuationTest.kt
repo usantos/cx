@@ -46,9 +46,13 @@ class CartCheckoutSessionContinuationTest {
                 override fun captureIdentity() = changes.value
                 override fun isCurrent(identity: AuthenticatedSessionIdentity) = changes.value === identity
             }
-            val snapshot = ShoppingCart(5, BigDecimal("20.00"), listOf(
-                CartItem(12, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "01 02 03", BigDecimal("20.00")),
-            ))
+            val snapshot = ShoppingCart(
+                5,
+                BigDecimal("20.00"),
+                listOf(
+                    CartItem(12, CartItemKind.INDIVIDUAL_BET, "Mega-Sena", "01 02 03", BigDecimal("20.00"))
+                )
+            )
             val validation = CompletableDeferred<Unit>()
             var validationStarted = false
             val vm = CartViewModel(
@@ -68,7 +72,7 @@ class CartCheckoutSessionContinuationTest {
                 recordLocationRequest = RecordCheckoutLocationRequestUseCase { AppResult.Success(Unit) },
                 dispatchers = FixedCoroutineDispatchers(dispatcherRule.dispatcher),
                 reservationSessions = sessions,
-                reservationSessionChanges = changes,
+                reservationSessionChanges = changes
             )
             dispatcherRule.dispatcher.scheduler.runCurrent()
             vm.requestPayment()

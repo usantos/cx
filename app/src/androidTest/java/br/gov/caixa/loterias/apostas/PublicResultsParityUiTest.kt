@@ -22,6 +22,7 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSelectionReward
@@ -178,7 +179,7 @@ class PublicResultsParityUiTest {
     )
 
     private fun show(result: DrawResult, modality: String) {
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 ResultsScreen(
                     ResultsUiState(modality = modality, result = result, latestContest = 3069),
@@ -197,7 +198,7 @@ class PublicResultsParityUiTest {
             listOf(DrawPayout("0001", 0, "0"), DrawPayout("0002", 150, "26095.23")),
             nextFinalZeroContest = UpcomingDrawContest(3070, "14 out 2026", "137920959.97")
         )
-        compose.setContent {
+        compose.setFeatureContent {
             LoteriasCaixaDSTheme {
                 ResultsScreen(
                     ResultsUiState(modality = "megasena", result = result, latestContest = 3069),
