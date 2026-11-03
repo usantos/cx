@@ -96,6 +96,12 @@ Ver [auditoria da Home v2 e pendências de paridade](docs/HOME_V2_CX_PARITY_2026
 
 ## Verificação
 
+Para executar os testes locais de todos os módulos em TQS, PRD e Automação, sem
+emulador ou aparelho: `./gradlew allEnvironmentTestReport --continue --console=plain`.
+No Windows: `.\gradlew.bat allEnvironmentTestReport --continue --console=plain`.
+No Android Studio, use **SIMLO Testes JVM — todos os ambientes**.
+Veja os [testes locais e seus limites](docs/TEST_COVERAGE.md).
+
 ```bash
 ./gradlew modernCheck
 ```

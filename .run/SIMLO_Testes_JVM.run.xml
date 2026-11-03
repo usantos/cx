@@ -1,0 +1,14 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SIMLO Testes JVM — todos os ambientes" type="GradleRunConfiguration" factoryName="Gradle">
+    <ExternalSystemSettings>
+      <option name="executionName" />
+      <option name="externalProjectPath" value="$PROJECT_DIR$" />
+      <option name="externalSystemIdString" value="GRADLE" />
+      <option name="scriptParameters" value="--continue --console=plain" />
+      <option name="taskDescriptions"><list /></option>
+      <option name="taskNames"><list><option value="allEnvironmentTestReport" /></list></option>
+      <option name="vmOptions" />
+    </ExternalSystemSettings>
+    <method v="2" />
+  </configuration>
+</component>

@@ -11,6 +11,7 @@ Consulte [QUALITY_GATE](../../docs/QUALITY_GATE.md) e [hooks-and-ci](../../docs/
 - Não confundir mocks/fixtures de ferramentas com resultados reais do aplicativo. Testes devem exercitar contrato e regressão; não tornar asserts permissivos nem substituir falhas por SKIP.
 - Mudanças nos verificadores exigem casos positivos e negativos isolados. Não executar mutações de teste contra fontes do checkout quando existir mecanismo de fixture.
 - Execute uma invocação Gradle por vez. Não atualizar toolchain/dependências fora do escopo. Consulte versões no Version Catalog.
+- Testes locais, além do pre-commit, devem executar na JVM sem emulador/ADB em TQS, PRD e Automação. Use `allEnvironmentTestReport` ou a configuração compartilhada `SIMLO Testes JVM — todos os ambientes`; não criar/iniciar AVD para essa execução. Cenários instrumentados de hardware/sistema permanecem separados e usam aparelho físico, sem substituí-los por SKIP ou afirmar que foram executados pela suíte local.
 - Segredos do CI vêm das configurações autorizadas; não publicar valores em logs/artefatos. Workflow não configura proteção de branch sozinho; hooks locais podem ser desabilitados pelo usuário.
 - Ao reportar, diferencie PASSED, FAILED e NOT RUN. Aprovação de um módulo não equivale ao pre-commit completo. Documente limitações existentes sem mascará-las.
 

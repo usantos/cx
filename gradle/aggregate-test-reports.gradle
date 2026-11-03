@@ -117,6 +117,40 @@ def unitTests = tasks.register('allUnitTests') {
     dependsOn suites
 }
 
+// Exercita cada ambiente na JVM; bibliotecas sem flavor executam uma única vez.
+// A cobertura canônica acima continua usando PRD, sem duplicar linhas ou contadores.
+def environmentSuites = modules.collectMany { module ->
+    if (module.owner.path != ':app' && !module.owner.plugins.hasPlugin('com.android.dynamic-feature')) {
+        return [module.suite]
+    }
+    ['Prd', 'Tqs', 'Automacao'].collect { environment ->
+        def name = "test${environment}DebugUnitTest"
+        def suite = module.owner.tasks.findByName(name)
+        if (!(suite instanceof Test)) {
+            throw new GradleException("Suíte JVM obrigatória ausente: ${module.owner.path}:${name}")
+        }
+        suite
+    }
+}.unique()
+def environmentTests = tasks.register('allEnvironmentUnitTests') {
+    group = 'verification'
+    description = 'Executa testes JVM/Robolectric de todos os módulos em PRD, TQS e Automação, sem dispositivo.'
+    dependsOn unitTests, environmentSuites
+}
+environmentSuites.each { suite ->
+    suite.outputs.upToDateWhen { !gradle.taskGraph.hasTask(environmentTests.get()) }
+    suite.outputs.doNotCacheIf('Execução explícita dos testes dos três ambientes exige resultados novos') {
+        gradle.taskGraph.hasTask(environmentTests.get())
+    }
+}
+tasks.register('allEnvironmentTestReport', TestReport) {
+    group = 'verification'
+    description = 'Relatório consolidado dos testes locais dos três ambientes.'
+    dependsOn environmentTests
+    destinationDirectory = layout.buildDirectory.dir('reports/tests/environments')
+    testResults.from(environmentSuites)
+}
+
 def moduleReports = modules.collect { module ->
     def reportName = 'jacocoModule' + module.owner.path.split(':').findAll { it }.collect { it.capitalize() }.join('') + 'Report'
     tasks.register(reportName, JacocoReport) {

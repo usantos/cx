@@ -26,7 +26,7 @@ subprojects { owner ->
         }
         owner.afterEvaluate {
             // Suítes compartilhadas de asserções são compiladas como testes unitários apenas nos módulos habilitados.
-            def modulePath = rootProject.relativePath(owner.projectDir)
+            def modulePath = rootProject.relativePath(owner.projectDir).replace('\\', '/')
             def manifest = rootProject.file('config/testing/local-ui-suites.txt')
             def selected = manifest.readLines().any { it.trim().replaceFirst('^helper:', '').startsWith(modulePath + '/src/androidTest/') }
             if (owner.android.buildFeatures.compose) {

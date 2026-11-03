@@ -1,5 +1,53 @@
 # Testes e cobertura JaCoCo
 
+## Todos os ambientes sem emulador
+
+No Windows, com JDK 21, execute na raiz:
+
+```powershell
+.\gradlew.bat allEnvironmentTestReport --continue --console=plain
+```
+
+No macOS/Linux: `./gradlew allEnvironmentTestReport --continue --console=plain`.
+No Android Studio, selecione **SIMLO Testes JVM — todos os ambientes** e clique em
+Run. É uma configuração Gradle compartilhada, sem seleção de aparelho. Não use a
+configuração Android Instrumented Tests para executar a suíte local.
+
+`allEnvironmentUnitTests` executa os testes de todos os módulos: PRD Debug, TQS
+Debug e Automação Debug no app e nos módulos dinâmicos; Debug nas bibliotecas
+Android; `test` nas bibliotecas JVM. Cada biblioteca sem flavor executa uma vez.
+A execução é nova, não reutiliza resultados de testes do cache, não instala APK,
+não inicia ADB e não exige telefone ou emulador. Robolectric executa Android/Compose
+na JVM. A preparação dos recursos dos splits usa AAB/bundletool localmente.
+O relatório conjunto fica em `build/reports/tests/environments/index.html`.
+Uma falha continua sendo falha; `--continue` permite avaliar suítes independentes.
+
+Para um módulo/ambiente: `:app:testTqsDebugUnitTest`,
+`:app:testPrdDebugUnitTest` ou `:app:testAutomacaoDebugUnitTest`.
+`allUnitTests` mantém a seleção canônica PRD para cobertura, sem triplicar os
+contadores JaCoCo. O pre-commit e os testes locais são independentes de emulador.
+
+Os runners e auxiliares Android de `br.gov.caixa.loterias.core.testing` são
+registrados como fontes de teste por `gradle/local-ui-tests.gradle` e
+`gradle/dynamic-feature-test-classpath.gradle`, para todos os flavors. Eles não
+pertencem ao JAR JVM principal de `:core:testing`. Os caminhos de seleção das
+suítes são normalizados para aceitar separadores Windows e Unix. Após atualizar
+o projeto, sincronize o Gradle antes de usar a configuração compartilhada.
+
+Os cenários de sistema descritos abaixo (hardware, Chromium, instalação real de
+splits e comparação com APK legado instalado) continuam instrumentados e podem
+ser executados em aparelho físico. Não fazem parte da suíte JVM e não foram
+excluídos, convertidos em SKIP ou considerados aprovados por esta configuração.
+
+Validação em 03/11/2026, no macOS: **5.775 testes locais em 1.234 suítes**,
+sem falhas, erros ou ignorados, mais **237 testes de ferramentas** aprovados.
+São 950 testes por flavor e 2.925 compartilhados. Após ajustar o host para usar
+APK de recursos/application ID da própria variante, os 412 testes do app TQS e
+os 412 de Automação passaram novamente, assim como `quickQualityCheck`.
+As regressões de caminhos Windows foram reproduzidas por fixtures locais;
+a execução nativa em Windows ainda não foi realizada nesta máquina.
+Headers, baselines, exclusões e limiares JaCoCo permaneceram preservados.
+
 Execute na raiz do projeto com o JDK do Android Studio:
 
 ```sh
@@ -25,7 +73,7 @@ Com `--continue`, o Gradle executa suítes independentes após uma falha. Os rel
 
 ## Execução local de interfaces
 
-`gradle/local-ui-tests.gradle` configura Robolectric 4.17 com recursos Android e gráficos nativos no SDK 35. As bibliotecas Compose recebem o runner de testes de interface no classpath unitário. O app continua usando a variante PRD Debug, com backend real configurado no build; os testes fornecem repositórios e gateways locais controlados e não realizam apostas, pagamentos ou reservas.
+`gradle/local-ui-tests.gradle` configura Robolectric 4.17 com recursos Android e gráficos nativos: SDK 35 nas bibliotecas comuns e SDK 36 nos módulos que carregam os recursos reais do app/splits. As bibliotecas Compose recebem o runner de testes de interface no classpath unitário. A seleção canônica usa PRD Debug; a tarefa dos três ambientes também executa TQS Debug e Automação Debug. Os testes fornecem repositórios e gateways locais controlados e não realizam apostas, pagamentos ou reservas.
 
 `config/testing/local-ui-suites.txt` lista explicitamente os testes de dispositivo que também podem executar localmente. `scripts/prepare-local-ui-tests.py` gera cópias apenas em `build/`, adaptando runner/configuração e preservando os corpos e asserções. Testes parametrizados mantêm todos os parâmetros; entradas `helper:` copiam seus auxiliares. Recursos de `src/androidTest/res` pertencem somente ao source set de teste local.
 

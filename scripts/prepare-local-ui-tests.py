@@ -11,6 +11,8 @@ import shutil
 
 
 def prepare(root, module, manifest, destination):
+    # O manifesto usa caminhos Git com '/', inclusive quando o Gradle executa no Windows.
+    module = module.replace('\\', '/')
     sources = []
     # O parser Java de recursos não suporta o pacote 0x80 dos splits; o parser nativo do SDK 36 preserva os recursos reais.
     native_resources = module == "app" or (module.startswith("feature/") and module.endswith("/presentation"))
@@ -22,7 +24,7 @@ def prepare(root, module, manifest, destination):
     sdk = 36 if native_resources else 35
     prefix = f'{module}/src/androidTest/'
     for line in manifest.read_text().splitlines():
-        entry = line.strip()
+        entry = line.strip().replace('\\', '/')
         helper = entry.startswith('helper:')
         if helper:
             entry = entry.removeprefix('helper:')

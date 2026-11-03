@@ -26,7 +26,6 @@
         canBeResolved = false
     }
     base.artifacts.add(hostElements.name, host)
-    def resourceApk = base.layout.buildDirectory.file('generated/dynamic-feature-test-resources/prdDebug/universal.apk')
     subprojects.findAll { owner ->
         owner == base || owner in splits || owner.path.startsWith(':feature:') && owner.path.endsWith(':presentation')
     }.each { owner ->
@@ -76,10 +75,14 @@
         }
         if (!(owner in splits)) {
             owner.tasks.withType(Test).configureEach {
-                dependsOn base.tasks.named('preparePrdDebugDynamicFeatureTestResources')
+                // O host testa os recursos do próprio ambiente; bibliotecas sem flavor usam PRD.
+                def variant = owner == base && name.endsWith('DebugUnitTest') ?
+                        name.substring(4, name.length() - 'UnitTest'.length()).uncapitalize() : 'prdDebug'
+                def resourceApk = base.layout.buildDirectory.file("generated/dynamic-feature-test-resources/${variant}/universal.apk")
+                dependsOn base.tasks.named("prepare${variant.capitalize()}DynamicFeatureTestResources")
                 inputs.file(resourceApk).withPropertyName('dynamicFeatureResourceApk').withPathSensitivity(PathSensitivity.RELATIVE)
                 systemProperty 'simlo.dynamicFeature.resourceApk', resourceApk.get().asFile.absolutePath
-                systemProperty 'simlo.dynamicFeature.baseApplicationId', base.android.applicationVariants.find { it.name == 'prdDebug' }.applicationId
+                systemProperty 'simlo.dynamicFeature.baseApplicationId', base.android.applicationVariants.find { it.name == variant }.applicationId
             }
         }
         owner.dependencies.add('androidTestImplementation', owner.dependencies.platform(libs.androidx.compose.bom))

@@ -40,6 +40,29 @@ class LocalUiAdapterTest(unittest.TestCase):
         self.assertNotIn('@RunWith(AndroidJUnit4', generated)
         self.assertIn('Mode.NATIVE', generated)
 
+    def test_windows_module_path_preserves_selected_suite_and_native_runner(self):
+        self.module = 'feature/example/presentation'
+        body = 'class ExampleTest {\n @Test fun check() { assertEquals(7, actual()) }\n}\n'
+        path = self.source('package sample\n' + body)
+        (self.root / self.module / 'build.gradle').write_text("apply plugin: 'com.android.library'\n")
+        entry = path.relative_to(self.root).as_posix()
+        self.module = self.module.replace('/', '\\')
+        self.run_adapter([entry])
+        output = self.destination / 'sample/ExampleTest.kt'
+        self.assertTrue(output.is_file(), 'O caminho Windows deve selecionar a mesma suíte do manifesto')
+        generated = output.read_text()
+        self.assertIn('DynamicFeatureRobolectricTestRunner::class', generated)
+        self.assertIn('Config(sdk = [36]', generated)
+        self.assertTrue(generated.endswith(body))
+
+    def test_windows_manifest_entry_selects_suite_without_changing_assertions(self):
+        body = 'class ExampleTest {\n @Test fun check() = assertEquals(7, actual())\n}\n'
+        path = self.source('package sample\n' + body)
+        self.run_adapter([path.relative_to(self.root).as_posix().replace('/', '\\')])
+        output = self.destination / 'sample/ExampleTest.kt'
+        self.assertTrue(output.is_file())
+        self.assertTrue(output.read_text().endswith(body))
+
     def test_base_presentation_that_renders_splits_uses_real_universal_resources(self):
         self.module = 'feature/example/presentation'
         body = 'class ExampleTest {\n @Test fun split() = assertEquals(7, resourceId())\n}\n'
