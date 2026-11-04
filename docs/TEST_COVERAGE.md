@@ -1,5 +1,35 @@
 # Testes e cobertura JaCoCo
 
+## Python no Windows
+
+As tarefas Gradle, inclusive `prepareLocalUiTests`, detectam um Python **3.10+**
+instalado. No Windows tentam `python`, `py -3` e `python3`; no macOS/Linux,
+`python3`, `python` e `py -3`. Validam a versão e usam o caminho real do
+interpretador, com UTF-8, sem exigir um comando chamado `python3`.
+A seleção é compartilhada pelos geradores, validadores de arquitetura, testes
+das ferramentas, verificações dos SDKs e cobertura. Não é necessário instalar
+pacotes Python adicionais para preparar as suítes locais.
+
+Se o Python estiver fora do PATH do Android Studio, configure **somente na
+máquina**, em `%USERPROFILE%\.gradle\gradle.properties`, por exemplo:
+
+```properties
+pythonExecutable=C:/Users/seu.usuario/AppData/Local/Programs/Python/Python313/python.exe
+```
+
+Use o caminho existente da sua instalação, sem aspas nem argumentos no arquivo
+de propriedades. Caminhos com espaços são aceitos. A variável de ambiente
+`PYTHON_EXECUTABLE` também é aceita; `pythonExecutable` tem prioridade.
+Um caminho explícito inválido bloqueia a tarefa com uma mensagem de orientação,
+sem recorrer silenciosamente a outro Python. Após instalar o Python ou alterar
+o PATH, reinicie o Android Studio para que ele receba o novo ambiente.
+
+Para conferir o gerador diretamente:
+
+```powershell
+.\gradlew.bat :app:prepareLocalUiTests --console=plain
+```
+
 ## Todos os ambientes sem emulador
 
 **Run All Tests — projeto completo (JVM)** executa todos os testes locais de

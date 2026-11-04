@@ -13,7 +13,11 @@ python3 scripts/validate-pre-commit.py
 
 O instalador preserva hooks preexistentes e `core.hooksPath`, inclusive global. Uma instalação idêntica não é reescrita; arquivos ausentes impedem a instalação. Não configura um gerenciador de hooks nem substitui hooks de terceiros. O runner versionado é carregado da raiz do checkout atual, inclusive em worktrees.
 
-São necessários Python 3, somente JDK 21 para Gradle/AGP, compiladores e testes (bytecode JVM 21) e o SDK/configuração local do projeto. No macOS, um `JAVA_HOME` em Java 21 permanece respeitado. Se estiver ausente, inválido ou apontar para outro Java (inclusive 17 herdado de um terminal antigo), o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app` somente quando o arquivo `release` confirma Java 21. Essa seleção afeta apenas o subprocesso do gate; a exigência de JDK 21 permanece ativa. Sem JBR 21 disponível, o runner mantém o ambiente e a verificação do Gradle continua bloqueando um JDK incompatível. No CI, a instalação JDK 21 do setup-java é encaminhada ao Gradle.
+São necessários Python 3.10+, somente JDK 21 para Gradle/AGP, compiladores e testes (bytecode JVM 21) e o SDK/configuração local do projeto. No macOS, um `JAVA_HOME` em Java 21 permanece respeitado. Se estiver ausente, inválido ou apontar para outro Java (inclusive 17 herdado de um terminal antigo), o runner usa o JBR do Android Studio instalado em `/Applications/Android Studio.app` somente quando o arquivo `release` confirma Java 21. Essa seleção afeta apenas o subprocesso do gate; a exigência de JDK 21 permanece ativa. Sem JBR 21 disponível, o runner mantém o ambiente e a verificação do Gradle continua bloqueando um JDK incompatível. No CI, a instalação JDK 21 do setup-java é encaminhada ao Gradle.
+
+Nas tarefas Gradle, o Python é selecionado automaticamente entre os comandos disponíveis,
+incluindo `python` e `py -3` no Windows. O nome `python3` não é obrigatório.
+Para instalação fora do PATH do Studio, veja [Python no Windows](../TEST_COVERAGE.md#python-no-windows).
 
 ## Conteúdo validado
 

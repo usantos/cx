@@ -110,17 +110,18 @@ gradle.taskGraph.whenReady { graph ->
 tasks.register('verifyToolingPolicyTests', Exec) {
     group = 'verification'
     description = 'Runs the Python architecture, coverage, local UI and Remote Config policy tests.'
-    commandLine 'python3', '-m', 'unittest', 'discover', '-s', 'scripts', '-p', 'test_*.py', '-v'
+    dependsOn 'verifyPythonRuntimeSelection'
+    doFirst { commandLine(rootProject.pythonCommand() + ['-m', 'unittest', 'discover', '-s', 'scripts', '-p', 'test_*.py', '-v']) }
 }
 tasks.register('verifyGitHooksPolicy', Exec) {
     group = 'verification'
     description = 'Proves commit blocking and installation in disposable Git repositories.'
-    commandLine 'python3', rootProject.file('scripts/test-git-hooks.py')
+    doFirst { commandLine(rootProject.pythonCommand() + [rootProject.file('scripts/test-git-hooks.py')]) }
 }
 tasks.register('verifyAutomationIds', Exec) {
     group = 'verification'
     description = 'Confere IDs Compose e o contrato de localizadores entregue à certificação Robot.'
-    commandLine 'python3', rootProject.file('scripts/check-automation-ids.py')
+    doFirst { commandLine(rootProject.pythonCommand() + [rootProject.file('scripts/check-automation-ids.py')]) }
 }
 
 tasks.register('preCommitCheck') {

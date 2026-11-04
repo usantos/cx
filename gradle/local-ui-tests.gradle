@@ -57,9 +57,11 @@ subprojects { owner ->
                 inputs.file(rootProject.file('scripts/prepare-local-ui-tests.py'))
                 inputs.dir(owner.file('src/androidTest'))
                 outputs.dir(output)
-                commandLine 'python3', rootProject.file('scripts/prepare-local-ui-tests.py'),
+                doFirst {
+                    commandLine(rootProject.pythonCommand() + [rootProject.file('scripts/prepare-local-ui-tests.py'),
                         '--root', rootDir, '--module', modulePath,
-                        '--manifest', manifest, '--output', output.get().asFile
+                        '--manifest', manifest, '--output', output.get().asFile])
+                }
             }
             owner.android.sourceSets.test.java.srcDir(output.get().asFile)
             owner.android.sourceSets.test.kotlin.srcDir(output.get().asFile)

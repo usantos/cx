@@ -1,0 +1,70 @@
+// Uma seleção para todas as tarefas Python, resolvida somente quando uma delas executa.
+ext.selectPythonRuntime = { boolean windows, String configured, Closure probe ->
+    def candidates = configured ? [[configured]] :
+            (windows ? [['python'], ['py', '-3'], ['python3']] : [['python3'], ['python'], ['py', '-3']])
+    for (candidate in candidates) {
+        def executable = probe(candidate)
+        if (executable) return [executable].asImmutable()
+    }
+    throw new GradleException('Python 3.10+ não encontrado. Instale Python no PATH do Android Studio ' +
+            'ou configure pythonExecutable com o caminho completo do executável (sem argumentos). ' +
+            'Também é aceita a variável PYTHON_EXECUTABLE. Reinicie o Studio após alterar o PATH.')
+}
+def selected = null
+def lock = new Object()
+ext.pythonCommand = {
+    synchronized (lock) {
+        if (selected == null) {
+            def configured = providers.gradleProperty('pythonExecutable')
+                    .orElse(providers.environmentVariable('PYTHON_EXECUTABLE')).getOrElse('').trim()
+            def probe = { candidate ->
+                try {
+                    def output = providers.exec {
+                        commandLine candidate + ['-c', 'import sys; assert sys.version_info[0] == 3 and sys.version_info[:2] >= (3, 10); print("SIMLO_PYTHON:" + sys.executable)']
+                        environment 'PYTHONIOENCODING', 'utf-8'
+                        ignoreExitValue = true
+                    }
+                    if (output.result.get().exitValue != 0) return null
+                    def text = new String(output.standardOutput.asBytes.get(), java.nio.charset.StandardCharsets.UTF_8).trim()
+                    text.startsWith('SIMLO_PYTHON:') ? text.substring('SIMLO_PYTHON:'.length()) : null
+                } catch (org.gradle.process.internal.ExecException unavailable) {
+                    // Comando ausente, alias da Store ou instalação inválida: tenta o próximo candidato.
+                    null
+                }
+            }
+            selected = selectPythonRuntime(System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows'), configured, probe) + ['-X', 'utf8']
+            logger.lifecycle("Python dos testes e gates: ${selected[0]}")
+        }
+        selected
+    }
+}
+
+tasks.register('verifyPythonRuntimeSelection') {
+    group = 'verification'
+    description = 'Confere a seleção portátil do Python em fixtures isoladas, sem exigir comandos Windows no host.'
+    doLast {
+        def fixtures = [
+                [true, '', ['python': 'C:/Program Files/Python/python.exe'], ['C:/Program Files/Python/python.exe']],
+                [true, '', ['py -3': 'C:/Python/python.exe'], ['C:/Python/python.exe']],
+                [true, '', ['python3': 'C:/Python/python3.exe'], ['C:/Python/python3.exe']],
+                [false, '', ['python3': '/usr/bin/python3', 'python': '/usr/bin/python'], ['/usr/bin/python3']],
+                [false, '', ['python': '/opt/python'], ['/opt/python']],
+                [true, 'C:/Python com espaços/python.exe', ['C:/Python com espaços/python.exe': 'C:/Python com espaços/python.exe'], ['C:/Python com espaços/python.exe']],
+        ]
+        fixtures.each { windows, configured, available, expected ->
+            def actual = selectPythonRuntime(windows, configured, { available[it.join(' ')] })
+            if (actual != expected) throw new GradleException("Seleção Python incorreta: ${actual}")
+        }
+        // Um override inválido nunca deve usar silenciosamente outra instalação.
+        [[true, 'ausente', ['python': '/outro/python']], [true, '', [:]], [false, '', [:]]].each { windows, configured, available ->
+            def rejected = false
+            try {
+                selectPythonRuntime(windows, configured, { available[it.join(' ')] })
+            } catch (GradleException expected) {
+                rejected = expected.message.contains('Python 3.10+')
+            }
+            if (!rejected) throw new GradleException('Seleção Python inválida aceita')
+        }
+        logger.lifecycle('✓ Python: 9 fixtures aprovadas (Windows/Unix, launcher, espaços e falhas explícitas).')
+    }
+}

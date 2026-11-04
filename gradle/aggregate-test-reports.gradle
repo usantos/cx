@@ -218,7 +218,7 @@ tasks.register('verifyCoverage', Exec) {
     description = 'Enforces actual weighted production LINE coverage >95% after validated unit tests.'
     dependsOn coverage, moduleReports
     doFirst {
-        def arguments = ['python3', rootProject.file('scripts/verify-jacoco-coverage.py').absolutePath,
+        def arguments = rootProject.pythonCommand() + [rootProject.file('scripts/verify-jacoco-coverage.py').absolutePath,
                          '--aggregate', coverage.get().reports.xml.outputLocation.get().asFile.absolutePath,
                          '--summary', layout.buildDirectory.file('reports/jacoco/aggregate/summary.json').get().asFile.absolutePath]
         modules.eachWithIndex { module, index ->

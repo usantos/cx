@@ -26,7 +26,9 @@ def verifyFilaTls = tasks.register('verifyFilaBraTls', Exec) {
     group = 'verification'
     dependsOn hardenFila
     environment 'JAVA_HOME', System.getProperty('java.home')
-    commandLine 'python3', rootProject.file('scripts/test-filabra-tls.py').absolutePath,
-            '--aar', filaOutput.get().asFile.absolutePath
+    doFirst {
+        commandLine(rootProject.pythonCommand() + [rootProject.file('scripts/test-filabra-tls.py').absolutePath,
+                '--aar', filaOutput.get().asFile.absolutePath])
+    }
 }
 tasks.named('check').configure { dependsOn verifyFilaTls }

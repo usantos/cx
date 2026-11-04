@@ -23,6 +23,7 @@ buildscript {
 
 
 apply from: rootProject.file('gradle/jvm-toolchains.gradle')
+apply from: rootProject.file('gradle/python-runtime.gradle')
 apply from: rootProject.file('gradle/vendor-artifact-transforms.gradle')
 apply from: rootProject.file('gradle/android-processors.gradle')
 apply from: rootProject.file('gradle/incremental-precommit.gradle')
