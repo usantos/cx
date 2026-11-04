@@ -319,6 +319,11 @@ gradle-app.setting
 .idea
 .idea/*
 
+# Política compartilhada de execução dos testes; demais preferências são locais.
+!.idea/
+.idea/*
+!.idea/runConfigurations.xml
+
 # Python caches produced by migration verification scripts
 __pycache__/
 *.py[cod]

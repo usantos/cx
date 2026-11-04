@@ -151,6 +151,16 @@ tasks.register('allEnvironmentTestReport', TestReport) {
     testResults.from(environmentSuites)
 }
 
+// A opção global aparece em cada módulo no painel Gradle do Studio, inclusive nos
+// agrupadores sem testes próprios. Todas apontam para a mesma suíte, sem ciclos ou duplicação.
+allprojects { owner ->
+    owner.tasks.register('runAllTests') {
+        group = 'verification'
+        description = 'Run All Tests: executa todos os módulos e camadas em PRD, TQS e Automação na JVM, sem dispositivo.'
+        dependsOn rootProject.tasks.named('allEnvironmentTestReport')
+    }
+}
+
 def moduleReports = modules.collect { module ->
     def reportName = 'jacocoModule' + module.owner.path.split(':').findAll { it }.collect { it.capitalize() }.join('') + 'Report'
     tasks.register(reportName, JacocoReport) {

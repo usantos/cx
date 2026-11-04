@@ -38,6 +38,26 @@ def problems = { String xml, String projectName ->
     }
     errors
 }
+// O menu de módulo pode oferecer "All Tests" instrumentado e "Tests in ..." JVM.
+// A política compartilhada mantém os produtores Gradle e remove a escolha automática do dispositivo.
+def localTestProblems = { String runXml, String producersXml ->
+    def errors = []
+    def parser = new groovy.xml.XmlSlurper(false, false)
+    def config = parser.parseText(runXml).configuration
+    def tasks = config.ExternalSystemSettings.option.find { it.@name.text() == 'taskNames' }.list.option.collect { it.@value.text() }
+    if (config.size() != 1 || config.@type.text() != 'GradleRunConfiguration' || tasks != ['runAllTests']) {
+        errors += 'Suíte compartilhada deve executar todos os ambientes via Gradle/JVM'
+    }
+    def producers = parser.parseText(producersXml).component.find { it.@name.text() == 'RunConfigurationProducerService' }
+            .option.find { it.@name.text() == 'ignoredProducers' }.set.option.collect { it.@value.text() }
+    if (!producers.contains('com.android.tools.idea.testartifacts.instrumented.AndroidTestConfigurationProducer')) {
+        errors += 'All Tests não deve gerar automaticamente configuração instrumentada'
+    }
+    if (producers.any { it.startsWith('org.jetbrains.plugins.gradle.') || it.startsWith('org.jetbrains.kotlin.idea.gradleJava.') }) {
+        errors += 'Produtores de testes JVM/Gradle devem continuar habilitados'
+    }
+    errors
+}
 tasks.register('verifyAndroidStudioRunConfiguration') {
     group = 'verification'
     description = 'Validates native shared Android Studio configuration and isolated regression fixtures.'
@@ -65,6 +85,35 @@ tasks.register('verifyAndroidStudioRunConfiguration') {
             }
         }
         if (problems(xml, 'cx').isEmpty()) throw new GradleException('Nome de módulo dependente da pasta aceito')
+        def runXml = file('.run/SIMLO_Testes_JVM.run.xml').getText('UTF-8')
+        def producersXml = file('.idea/runConfigurations.xml').getText('UTF-8')
+        def testErrors = localTestProblems(runXml, producersXml)
+        if (testErrors) throw new GradleException(testErrors.join('; '))
+        def globalReport = tasks.named('allEnvironmentTestReport').get()
+        def routesToGlobalReport = { Collection dependencies -> dependencies.toSet() == ([globalReport] as Set) }
+        def incomplete = allprojects.findAll { owner ->
+            def alias = owner.tasks.findByName('runAllTests')
+            alias == null || !routesToGlobalReport(alias.taskDependencies.getDependencies(alias))
+        }
+        if (incomplete) throw new GradleException("Run All Tests deve executar o projeto completo em cada módulo: ${incomplete*.path}")
+        def partialSuite = tasks.named('allUnitTests').get()
+        [[], [partialSuite], [globalReport, partialSuite]].each { fixture ->
+            if (routesToGlobalReport(fixture)) throw new GradleException('Encaminhamento vazio, parcial ou duplicado aceito')
+        }
+        [runXml.replace('GradleRunConfiguration', 'AndroidTestRunConfigurationType'),
+         runXml.replace('runAllTests', ':app:connectedPrdDebugAndroidTest')].each { fixture ->
+            if (fixture == runXml || localTestProblems(fixture, producersXml).isEmpty()) {
+                throw new GradleException('Suíte compartilhada instrumentada aceita')
+            }
+        }
+        def instrumented = 'com.android.tools.idea.testartifacts.instrumented.AndroidTestConfigurationProducer'
+        if (localTestProblems(runXml, producersXml.replace(instrumented, 'unused.Producer')).isEmpty()) {
+            throw new GradleException('Seleção automática instrumentada aceita')
+        }
+        def disabledGradle = producersXml.replace('</set>', '<option value="org.jetbrains.plugins.gradle.execution.test.runner.AllInDirectoryGradleConfigurationProducer" /></set>')
+        if (localTestProblems(runXml, disabledGradle).isEmpty()) throw new GradleException('Executor Gradle desabilitado aceito')
         logger.lifecycle('Studio nativo: SIMLO App abre MainActivity; 12 fixtures aprovadas; nenhum script ou workspace modificado.')
+        logger.lifecycle('Run Tests: Gradle/JVM em todos os módulos; seleção automática instrumentada desabilitada; 4 regressões rejeitadas.')
+        logger.lifecycle("Run All Tests: ${allprojects.size()} entradas encaminham para a mesma suíte global dos três ambientes; 3 regressões de encaminhamento rejeitadas.")
     }
 }

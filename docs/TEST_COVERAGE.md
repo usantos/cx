@@ -2,6 +2,18 @@
 
 ## Todos os ambientes sem emulador
 
+**Run All Tests — projeto completo (JVM)** executa todos os testes locais de
+todos os módulos e camadas, em PRD, TQS e Automação. A mesma opção está disponível
+no painel **Gradle → <qualquer módulo> → Tasks → verification → runAllTests**.
+Sincronize o Gradle após atualizar o projeto. Se o painel mostrar **Task list not
+built**, habilite **Settings → Experimental → Configure all Gradle tasks during
+Gradle Sync** e sincronize novamente, ou use a configuração compartilhada na barra Run.
+
+Na linha de comando, `./gradlew :app:runAllTests --continue --console=plain` e
+`./gradlew :core:domain:runAllTests --continue --console=plain` executam o mesmo
+conjunto global; o módulo usado para iniciar a tarefa não limita o alcance.
+`./gradlew runAllTests --continue --console=plain` também executa esse conjunto.
+
 No Windows, com JDK 21, execute na raiz:
 
 ```powershell
@@ -9,9 +21,20 @@ No Windows, com JDK 21, execute na raiz:
 ```
 
 No macOS/Linux: `./gradlew allEnvironmentTestReport --continue --console=plain`.
-No Android Studio, selecione **SIMLO Testes JVM — todos os ambientes** e clique em
+No Android Studio, selecione **Run All Tests — projeto completo (JVM)** e clique em
 Run. É uma configuração Gradle compartilhada, sem seleção de aparelho. Não use a
 configuração Android Instrumented Tests para executar a suíte local.
+
+O menu nativo **Run Tests / Tests in '<módulo>'** executa os testes locais da
+variante selecionada daquele módulo. Para incluir todas as outras camadas, use
+**runAllTests** no painel Gradle ou a configuração global na barra Run.
+O produtor automático de
+**All Tests** instrumentado está desabilitado em `.idea/runConfigurations.xml`,
+para que a seleção do módulo não crie uma execução que peça dispositivo.
+As configurações instrumentadas explícitas continuam disponíveis em
+**Run > Edit Configurations > Android Instrumented Tests** para os cenários de
+sistema. Após receber estas configurações compartilhadas, reabra o projeto no
+Studio para recarregar a política.
 
 `allEnvironmentUnitTests` executa os testes de todos os módulos: PRD Debug, TQS
 Debug e Automação Debug no app e nos módulos dinâmicos; Debug nas bibliotecas
