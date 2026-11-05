@@ -8,6 +8,7 @@ O projeto usa o formato nativo de instruções do Copilot. As regras valem para 
 |---|---|
 | [Instruções gerais](../.github/copilot-instructions.md) | Arquitetura, restrições, segurança, variantes, validação e mapa dos guias |
 | [Android](../.github/instructions/android.instructions.md) | App, Core, features, sample, MVVM/Redux, LoteriasCaixaDS, acessibilidade e IDs |
+| [Core independente](../.github/instructions/core.instructions.md) | Contratos canônicos, grafo acíclico, compilação independente e integração com app legado |
 | [Qualidade](../.github/instructions/quality.instructions.md) | Gradle, scripts, CI, testes, pre-commit e JaCoCo |
 | [Segurança](../.github/instructions/security.instructions.md) | Sessão, TLS, rede, persistência e Remote Config |
 | [Documentação](../.github/instructions/documentation.instructions.md) | Guias, contratos, evidências, geração do PDF e manutenção das instruções |
@@ -27,6 +28,35 @@ As instruções específicas usam frontmatter `applyTo` com caminhos relativos �
 Exemplo de solicitação:
 
 > Leia as instruções do repositório e de Android. Corrija o fluxo de usuário da feature account, mantendo MVVM, Clean Architecture, ReduxKotlin e IDs existentes. Preserve headers e baselines. Atualize testes e documentação e informe os resultados das verificações executadas.
+
+Para trabalhar na integração do Core:
+
+> Leia `.github/copilot-instructions.md`, `.github/instructions/core.instructions.md` e o plano de integração indicado nele. Implemente a atividade atribuída preservando a direção legado → ponte → Core, sem importar funcionalidades do app novo. Confira o build real do legado antes de usar os caminhos propostos e informe os testes e limitações da entrega.
+
+## Testes locais pelo Copilot
+
+O comando global, iniciado pelo módulo app, é:
+
+```sh
+./gradlew :app:runAllTests --continue --console=plain
+```
+
+No PowerShell:
+
+```powershell
+.\gradlew.bat :app:runAllTests --continue --console=plain
+```
+
+`runAllTests` também aparece em **Gradle → qualquer módulo → Tasks → verification**
+e encaminha para todos os módulos e os três ambientes na JVM. A configuração
+compartilhada se chama **Run All Tests — projeto completo (JVM)**. O menu nativo
+**Tests in '<módulo>'** executa somente o módulo e a variante selecionados.
+Não iniciar ADB, aparelho ou emulador para a suíte local. Os cenários Robot e
+instrumentados de sistema têm execução própria, conforme seus guias.
+
+Se a tarefa não existir, confira pasta aberta, remoto, branch e commit antes de
+alterar o build. Os scripts Gradle detectam Python por `gradle/python-runtime.gradle`;
+não é necessário substituir comandos por `python3` fixo no Windows.
 
 ## Validação obrigatória
 
@@ -51,7 +81,14 @@ Atualize instruções quando a arquitetura, os comandos ou os contratos mudarem.
 
 Formato conferido na [documentação oficial do GitHub sobre instruções de repositório](https://docs.github.com/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions) e na [documentação do VS Code sobre instruções personalizadas](https://code.visualstudio.com/docs/agent-customization/custom-instructions), em 29/10/2026. A disponibilidade por cliente deve ser conferida na versão usada pela equipe.
 
+Em 05/11/2026, o formato `.github/copilot-instructions.md` e
+`.github/instructions/*.instructions.md`, com frontmatter `applyTo`, foi
+reconferido na documentação oficial do GitHub. As regras de Core e testes globais
+foram atualizadas de acordo com a implementação do repositório. Essa conferência
+do formato não comprova que o plugin instalado em cada IDE carregou os arquivos;
+verifique as referências do cliente ou anexe as instruções da área.
+
 
 ## Nomenclatura de evidências e registros
 
-As evidências técnicas usam nomes do projeto: diretórios `simlo-parity` e `simlo-financial-parity`, tags `SimloParityCapture` e `SimloOptionDialog` e arquivos temporários `simlo-pix-probe-<identificador>`. Planos e especificações ficam em `docs/engineering/`. As datas, hashes e métricas de relatórios históricos foram preservadas; a nomenclatura apresentada foi padronizada sem reexecutar capturas antigas. Os cinco registros de baseline relacionados a violações já corrigidas foram removidos mediante autorização específica, sem novas exceções.
+As evidências técnicas usam nomes do projeto: diretórios `simlo-parity` e `simlo-financial-parity`, tags `SimloParityCapture` e `SimloOptionDialog` e arquivos temporários `simlo-pix-probe-<identificador>`. Planos e especificações existentes ficam em `docs/engineering/`; o [plano de integração do Core e backlog](superpowers/plans/2026-11-05-core-legacy-integration.md) está em `docs/superpowers/plans/`. Preserve os caminhos publicados ao atualizar esses documentos. As datas, hashes e métricas de relatórios históricos foram preservadas; a nomenclatura apresentada foi padronizada sem reexecutar capturas antigas. Os cinco registros de baseline relacionados a violações já corrigidas foram removidos mediante autorização específica, sem novas exceções.

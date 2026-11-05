@@ -1,0 +1,14 @@
+﻿ID,Atividade,Responsavel,Revisor,Dependencias,Onda,Criterio_de_aceite
+C0,Compatibilidade e importação mínima,Você,Dev 1 + Dev 6,,0,Inventário e caminhos reais registrados; Debug e Release compilam; nenhum feature novo ou SDK duplicado
+C1,"Ponte, contratos e seleção de capacidades",Dev 1,Você,C0,1,Ponte sem dependência do app; capacidades inicialmente desligadas; testes de adaptação e ambientes aprovados
+C2,"Rede, dados e consulta piloto",Dev 2,Dev 4,C1; C4,2,Consulta GET com paridade de contrato; preparação segura obrigatória; sem execução pelo segundo caminho
+C3,Autenticação e proprietário de sessão,Dev 3,Dev 4,C1; C2; C4; C5 quando houver credenciais lembradas,3,"Proprietário fixo; refresh, logout, troca de conta e recriação do processo validados"
+C4,"Segurança, chaves e SDK homologado",Dev 4,Dev 2 + Dev 3,C0; C1,1-2,TLS e configurações inválidas rejeitados; SDK único; Debug e Release aprovados
+C5,Persistência e migração,Dev 5,Dev 3,C1; C4,3,Migração retomável; leitura confirmada antes da limpeza; isolamento e recuperação comprovados
+C6,Fila,Dev 5,Dev 4,C1; C4; C5 por disponibilidade do responsável,3,Passagem única; callbacks atrasados ignorados; lifecycle e SDK preservados
+C7,Componentes visuais necessários,Dev 1,Você,C1; C10; somente se necessário,3 - condicional,UI pontual preserva lifecycle e telas antigas; sem dependências visuais sem consumidor
+C8,Navegação e entrega de módulos,Você,Dev 1 + Dev 6,C1; C10; C7 quando necessário,3 - condicional,Rotas existentes preservadas; nenhum split ou feature novo instalado sem consumidor
+C9A,Infraestrutura de testes e CI do piloto,Dev 6,Você,C0; C1,1,Entrada JVM global e pipeline mínimo aprovados no Windows e CI; arquitetura verificada sem dispositivo
+C9B,Regressão e evidências consolidadas,Dev 6,Você + donos das capacidades,C9A; C10; C2 a C8 conforme capacidades adotadas,4,"Matriz dos três ambientes; qualidade, Release e cobertura do consumidor registradas separadamente da origem"
+C10,Piloto GET em TQS,"Você + Devs 2, 4 e 6",Dev 6,C2; C4; C9A,2,Primeira consulta selecionável Core ou legado; mesmo contrato e UI; retorno ao caminho antigo ensaiado
+C11,Recuperação e implantação por capacidade,Você + equipe,Dev 6 + donos das capacidades,C10; C9B; aceite das capacidades que serão habilitadas,4,"Liberação gradual e recuperação ensaiada por capacidade; sem duplicação de sessão, gravação ou perda de dados"

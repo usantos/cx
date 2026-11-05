@@ -6,6 +6,7 @@ applyTo: "app/**,core/**,feature/**,sample/**"
 Leia [APP_ARCHITECTURE](../../docs/APP_ARCHITECTURE.md), [REDUX_MVVM](../../docs/REDUX_MVVM.md) e [DATA_ACCESS_BY_FEATURE](../../docs/DATA_ACCESS_BY_FEATURE.md). Confirme classes/contratos reais antes de criar novas abstrações.
 
 - Preserve MVVM/Clean/ReduxKotlin: negócio em Domain, adaptadores em Data, estado/efeitos no ViewModel, reducers determinísticos. Compose e navegação não chamam repositories, serviços ou preferências diretamente.
+- Alterações em Core seguem também [core.instructions.md](core.instructions.md): nenhum import ou dependência Core → feature/app, inclusive nos testes. Consumidores declaram seus contratos diretamente; não reintroduzir exportações de funcionalidades por Core para corrigir o classpath.
 - Stores seguem o ciclo de vida do ViewModel. Cancele trabalhos corretamente, preserve CancellationException e rejeite respostas de sessões/gerações antigas. Uma escrita mantém seu proprietário até concluir; não repetir operações financeiras automaticamente.
 - Hilt compõe dependências; não criar service locator. Domain/Data não dependem de Redux. Não criar ViewModel ou UseCase vazio só por convenção.
 - Reutilize LoteriasCaixaDS, recursos, tokens, temas e formatação existentes. Não editar `core/design-system/src/main/java/br/gov/caixa/loterias/core/designsystem/components/LoteriasCaixaDSScreenComponents.kt` nem `feature/cart/presentation/src/main/java/br/gov/caixa/loterias/feature/cart/presentation/components/CurrentCartScaffold.kt`.

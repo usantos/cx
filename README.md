@@ -33,7 +33,7 @@ pacotes Kotlin e o namespace Android. As pastas-pai não compilam fontes.
 
 ## GitHub Copilot
 
-As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github/copilot-instructions.md), complementadas por [instruções por área](.github/instructions/). Elas cobrem arquitetura, Android/LoteriasCaixaDS, IDs, segurança, testes, Gradle/CI, documentação e Robot. Consulte o [guia de uso](docs/COPILOT.md). O pacote Robot contém configuração própria para o repositório receptor.
+As regras do projeto inteiro estão em [.github/copilot-instructions.md](.github/copilot-instructions.md), complementadas por [instruções por área](.github/instructions/). Elas cobrem arquitetura, [Core independente e integração com legado](.github/instructions/core.instructions.md), Android/LoteriasCaixaDS, IDs, segurança, testes JVM dos três ambientes, Gradle/CI, documentação e Robot. Consulte o [guia de uso](docs/COPILOT.md) para os arquivos, sua abrangência e o carregamento no IDE. O pacote Robot contém configuração própria para o repositório receptor; preserve a pasta oculta `.github/` ao copiá-lo.
 
 ## Configuração local e CI
 

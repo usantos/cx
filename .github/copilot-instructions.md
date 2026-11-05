@@ -9,6 +9,7 @@ Projeto Gradle modular Kotlin/Jetpack Compose, MVVM, Clean Architecture, ReduxKo
 - Presentation: Route integra plataforma; Screen recebe estado/callbacks; ViewModel coordena casos de uso e efeitos. Estado de negócio de UI usa a ponte Redux existente; reducers puros, sem I/O, relógio global ou navegação.
 - Domain: regras, entidades, portas e casos de uso; sem Android, Compose, Retrofit ou Redux.
 - Data: repositories, fontes e mapeadores; transporte/DTO não vaza para Presentation/Domain. DI liga contratos a implementações. Dependências entre features passam pelos contratos existentes, sem ciclos ou módulos vazios.
+- Core: independente de app e features, inclusive nas dependências de teste. Pode depender de outros módulos Core e bibliotecas declaradas. Contratos compartilhados ficam em `core.domain.contract`, e DTOs compartilhados em `core.network.dto`; consulte [as instruções de Core](instructions/core.instructions.md). Não recriar os módulos de transporte removidos nem resolver imports com dependências de volta para consumidores.
 - Use LoteriasCaixaDS e preserve acessibilidade e IDs estáveis. Leia as instruções específicas em `.github/instructions/` antes de editar a respectiva área, inclusive quando o cliente não as anexar automaticamente.
 
 ## Restrições de toda alteração
@@ -25,6 +26,8 @@ Execute testes pertinentes durante a implementação, uma invocação Gradle por
 - Feedback estático: `./gradlew quickQualityCheck`.
 - Contratos de arquitetura/IDs: `./gradlew verifyCleanArchitecture verifyAutomationIds`.
 - APK de desenvolvimento: `./gradlew :app:assembleTqsDebug`.
+- Todos os testes locais do projeto: `./gradlew :app:runAllTests --continue --console=plain`. Executa PRD, TQS e Automação na JVM/Robolectric, sem aparelho/emulador. A mesma tarefa em qualquer módulo encaminha para a suíte global; o menu nativo `Tests in '<módulo>'` continua limitado ao módulo/variante selecionados.
+- No PowerShell, use `.\gradlew.bat` no lugar de `./gradlew`. Tarefas Gradle que usam Python devem reutilizar `rootProject.pythonCommand()` de `gradle/python-runtime.gradle`, sem presumir que o executável se chama `python3` no Windows.
 - Gate completo: `./gradlew preCommitCheck --continue --console=plain`.
 - Instalar hook: `sh scripts/install-git-hooks.sh`. Antes do commit, com workspace/index completos e correspondentes: `python3 scripts/validate-pre-commit.py`.
 Não preparar arquivos nem criar commit automaticamente. Não usar `--no-verify`, `-x`, atualizar baseline ou aceitar falha como sucesso. Informe comandos executados, resultados e limites; dry-run, build Debug e relatório antigo não comprovam certificação/release/cobertura atual.
@@ -32,6 +35,7 @@ Não preparar arquivos nem criar commit automaticamente. Não usar `--no-verify`
 ## Fontes de consulta
 
 - [Arquitetura](../docs/APP_ARCHITECTURE.md), [Redux/MVVM](../docs/REDUX_MVVM.md).
+- [Core independente](../docs/CORE_STANDALONE_INTEGRATION.md), [Copilot e instruções por área](../docs/COPILOT.md).
 - [Classes, serviços, endpoints, parâmetros e retornos por funcionalidade](../docs/DATA_ACCESS_BY_FEATURE.md).
 - [Qualidade](../docs/QUALITY_GATE.md), [hook e CI](../docs/quality/hooks-and-ci.md).
 - [Ambientes](../docs/ENVIRONMENTS.md), [TLS](../docs/SECURE_PIN_ROTATION.md).
