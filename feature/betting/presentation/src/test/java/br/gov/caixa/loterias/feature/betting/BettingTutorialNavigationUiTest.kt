@@ -12,6 +12,8 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
@@ -36,10 +38,8 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetU
 import br.gov.caixa.loterias.feature.betting.navigation.BettingNavigationDependencies
 import br.gov.caixa.loterias.feature.betting.navigation.bettingTutorialGraph
 import br.gov.caixa.loterias.feature.betting.presentation.screen.bettingScreens
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.GetBettingTutorialDismissedUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase

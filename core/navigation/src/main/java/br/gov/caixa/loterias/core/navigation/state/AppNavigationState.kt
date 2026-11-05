@@ -7,7 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
 
 /** Dados entre destinos; o estado das telas das features permanece nos ViewModels pertencentes aos destinos. */
 class AppNavigationState(

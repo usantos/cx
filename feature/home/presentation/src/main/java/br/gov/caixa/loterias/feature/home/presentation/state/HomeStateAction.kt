@@ -12,20 +12,20 @@ internal sealed interface HomeStateAction {
         val message: String = messageText("nenhuma_modalidade_disponivel_no_8d67af"),
     ) : HomeLoadingAction
     data class ParametersReceived(
-        val parameters: br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters,
+        val parameters: br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters,
         val features: HomeFeatureConfiguration,
         val combos: List<br.gov.caixa.loterias.feature.betting.domain.model.BetCombo>,
-        val resaleOffers: List<br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability>,
+        val resaleOffers: List<br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability>,
     ) : HomeLoadingAction
     data class ParametersFailed(val retryMessage: String?, val message: String = messageText("nao_foi_possivel_carregar_as_mod_7d682d")) :
         HomeLoadingAction
     data object ParametersLoadingFinished : HomeLoadingAction
-    data class SessionContentObserved(val content: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent?) :
+    data class SessionContentObserved(val content: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent?) :
         HomeSessionAction
     data object LocalCartReviewAcknowledged : HomeSessionAction
     data object PaymentNoticeAcknowledged : HomeSessionAction
     data object BetEntryStarted : HomeEntryAction
-    data class BetEntryPrepared(val decision: br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision) : HomeEntryAction
+    data class BetEntryPrepared(val decision: br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision) : HomeEntryAction
     data object BetEntryConsumed : HomeEntryAction
     data object BetEntryErrorDismissed : HomeEntryAction
     data object PoolEntryStarted : HomeEntryAction
@@ -38,7 +38,7 @@ internal sealed interface HomeStateAction {
     data class ExternalBettingFailed(val message: String = messageText("nao_foi_possivel_abrir_o_navegad_b731a5")) : HomeEntryAction
     data class BetEntryFailed(val error: AppError, val message: String = captureHomeEntryFailure(error)) : HomeEntryAction
     data object CartLoading : HomeContentAction
-    data class CartReceived(val requestCurrent: Boolean, val cart: br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart) :
+    data class CartReceived(val requestCurrent: Boolean, val cart: br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart) :
         HomeContentAction
     data class CartFailed(val requestCurrent: Boolean) : HomeContentAction
     data object SocialTransfersLoading : HomeContentAction

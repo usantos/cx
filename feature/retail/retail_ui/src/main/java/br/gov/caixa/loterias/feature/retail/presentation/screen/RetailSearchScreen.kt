@@ -75,7 +75,7 @@ internal fun DeliveredRetailSearchScreen(state: RetailSearchUiState, actions: Re
 
 @Composable
 private fun RetailFavoriteConfirmation(
-    candidate: br.gov.caixa.loterias.feature.retail.domain.model.Retailer?,
+    candidate: br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer?,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {

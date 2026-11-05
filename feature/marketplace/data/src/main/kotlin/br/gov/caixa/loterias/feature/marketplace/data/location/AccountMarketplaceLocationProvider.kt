@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.marketplace.data.location
 
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceLocation
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountMunicipalityRepository
 import br.gov.caixa.loterias.feature.marketplace.data.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceLocation
 import br.gov.caixa.loterias.feature.marketplace.domain.port.MarketplaceLocationProvider
 
 class AccountMarketplaceLocationProvider(

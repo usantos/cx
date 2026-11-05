@@ -8,14 +8,14 @@ import android.content.ContextWrapper
 import android.content.Intent
 import androidx.core.net.toUri
 import androidx.test.core.app.ApplicationProvider
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.CheckedTicketAward
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_INVALID_IDENTIFICATION
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OPERATION_FAILED
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_REQUEST_FAILED
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
-import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketAward
 import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
 import br.gov.caixa.loterias.feature.tickets.presentation.components.TicketResultAwardRow
 import br.gov.caixa.loterias.feature.tickets.presentation.components.ticketResultVisualData

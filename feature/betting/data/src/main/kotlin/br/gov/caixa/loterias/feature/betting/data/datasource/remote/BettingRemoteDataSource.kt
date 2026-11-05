@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddComboRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboDto
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 
 interface BettingRemoteDataSource {
     suspend fun modalities(): List<LotteryModalityDto>?

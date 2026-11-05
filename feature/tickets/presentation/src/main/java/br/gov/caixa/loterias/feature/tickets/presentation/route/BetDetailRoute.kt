@@ -13,7 +13,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSLoading
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailFavoriteOverwriteDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailReceiptEffect
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailServiceFailureDialog

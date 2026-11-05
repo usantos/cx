@@ -1,17 +1,16 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
-
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class ConfirmedBetRangeApiTest {
     @Test fun `both PDF endpoints disable legacy crypto`() = runTest {

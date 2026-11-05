@@ -9,6 +9,19 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
@@ -19,32 +32,20 @@ import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OFFLINE
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_OPERATION_FAILED
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_RESPONSE_TIMEOUT
 import br.gov.caixa.loterias.core.presentation.formatting.LEGACY_UPDATED_TERMS
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
 import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryRequest
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingAction
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingTarget
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombosUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingActionUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.home.presentation.route.notificationBrowserLink
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeNotificationRedirect
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
@@ -67,11 +68,11 @@ import org.junit.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModelTest {
-    private val unreadIdentity = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(64))
-    private var currentUnreadIdentity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity? = unreadIdentity
-    private val unreadSessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+    private val unreadIdentity = br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity("a".repeat(64))
+    private var currentUnreadIdentity: AuthenticatedSessionIdentity? = unreadIdentity
+    private val unreadSessions = object : br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider {
         override fun captureIdentity() = currentUnreadIdentity
-        override fun isCurrent(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity) =
+        override fun isCurrent(identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity) =
             identity === currentUnreadIdentity
     }
     private fun unread(source: suspend () -> Int) = br.gov.caixa.loterias.feature.account.domain.usecase.GetUnreadNotificationCountUseCase(
@@ -718,7 +719,7 @@ class HomeViewModelTest {
         val poolsOnly = parameters.copy(
             games = emptyList(),
             availablePoolModalities = listOf(
-                br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability(
+                br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability(
                     2,
                     "MEGA_SENA",
                     "NORMAL",

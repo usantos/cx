@@ -3,9 +3,9 @@ package br.gov.caixa.loterias.feature.cart.presentation.coordinator
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartCheckoutAction

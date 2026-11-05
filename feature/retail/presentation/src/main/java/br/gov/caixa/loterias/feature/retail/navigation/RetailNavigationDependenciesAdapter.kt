@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.retail.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase

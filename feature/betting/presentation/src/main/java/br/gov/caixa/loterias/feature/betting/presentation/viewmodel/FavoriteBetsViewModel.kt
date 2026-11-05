@@ -6,11 +6,13 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.recovery.BettingCheckpointSession
 import br.gov.caixa.loterias.feature.betting.domain.rule.favoriteBetAlreadyInCart
 import br.gov.caixa.loterias.feature.betting.domain.rule.favoriteBetPrice
@@ -19,7 +21,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUse
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetFavoriteBetsUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingMutationBarrier
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessage
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecoveryMessages
@@ -27,10 +28,9 @@ import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingWriteN
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.FavoriteBetsUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.reduceFavoriteBetsState
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 class FavoriteBetsViewModel(
     private val getFavorites: GetFavoriteBetsUseCase,
     private val getParameters: GetBettingParametersUseCase,

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.core.network.api
 
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseErrorEnvelopeDto
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonParseException
@@ -9,8 +11,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseErrorEnvelopeDto
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseEnvelopeDto
 
 /** O texto da exceção não inclui requisição, corpo bruto, credenciais ou mensagem do servidor. */
 class PurchaseHttpException(val statusCode: Int, val error: PurchaseErrorEnvelopeDto?) :

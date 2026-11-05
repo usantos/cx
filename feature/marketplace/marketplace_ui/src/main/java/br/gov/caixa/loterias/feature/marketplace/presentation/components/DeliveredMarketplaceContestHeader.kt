@@ -30,7 +30,7 @@ import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketp
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSDrawablePainter
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceDrawDate
 import br.gov.caixa.loterias.feature.marketplace.ui.R as DeliveryR
 import java.util.Locale

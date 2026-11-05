@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.core.network.adapter
 
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseEnvelopeDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import com.google.gson.Gson
 import com.google.gson.TypeAdapter
 import com.google.gson.TypeAdapterFactory
 import com.google.gson.reflect.TypeToken
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseEnvelopeDto
 
 /** Observa o envelope CAIXA após a conversão normal do Gson; nunca consome o corpo duas vezes. */
 class ServerTimeAdapterFactory(private val onServerTime: (String) -> Unit) : TypeAdapterFactory {

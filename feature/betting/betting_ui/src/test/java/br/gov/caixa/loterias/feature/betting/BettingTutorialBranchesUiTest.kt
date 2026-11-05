@@ -17,12 +17,12 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeRight
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.components.AnimatedLotteryTutorial
 import br.gov.caixa.loterias.feature.betting.presentation.components.BettingTeamsContent
 import br.gov.caixa.loterias.feature.betting.presentation.components.SuperSevenTutorial

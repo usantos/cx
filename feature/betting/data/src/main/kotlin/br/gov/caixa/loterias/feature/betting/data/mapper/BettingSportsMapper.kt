@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsBetTeamDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsMatchParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamParameterDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.network.dto.betting.SportsBetTeamDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsMatchParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamParameterDto
 
 internal fun SportsTeamParameterDto.toBettingTeam(shields: Map<Int, String?>) = SportsTeam(
     number = number ?: 0,

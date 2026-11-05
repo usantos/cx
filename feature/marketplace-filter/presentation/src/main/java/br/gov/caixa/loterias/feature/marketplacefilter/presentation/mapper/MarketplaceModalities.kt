@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
 
 internal val allNumberQuantityOptions = (5..26).toList()
 

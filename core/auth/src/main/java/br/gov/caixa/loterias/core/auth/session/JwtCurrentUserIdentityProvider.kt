@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.core.auth.session
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedUser
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import com.google.gson.Gson
 
 class JwtCurrentUserIdentityProvider(

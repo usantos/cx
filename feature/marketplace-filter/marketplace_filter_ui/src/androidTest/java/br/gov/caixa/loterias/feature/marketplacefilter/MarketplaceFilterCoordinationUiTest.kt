@@ -24,6 +24,7 @@ import androidx.compose.ui.test.performTextInputSelection
 import androidx.compose.ui.test.performTextReplacement
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.allModalities
@@ -32,7 +33,6 @@ import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.Marke
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue

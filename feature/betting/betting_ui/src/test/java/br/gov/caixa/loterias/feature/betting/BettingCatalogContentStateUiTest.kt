@@ -15,13 +15,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.components.ComboDetailEntryCard
 import br.gov.caixa.loterias.feature.betting.presentation.screen.BetComboDetailScreenDelivered
 import br.gov.caixa.loterias.feature.betting.presentation.screen.BetCombosScreenDelivered

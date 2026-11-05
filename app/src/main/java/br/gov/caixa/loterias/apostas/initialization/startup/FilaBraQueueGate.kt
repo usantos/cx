@@ -115,7 +115,7 @@ private fun initialSessionDestination(session: AppSessionDependencies): String {
         access.clearForegroundSession(check)
     }
     val biometric = session.account.authentication as?
-        br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences
+        br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences
     return startupDestination(
         check.status,
         hasIdentity = session.account.authenticatedSessionIdentity.captureIdentity() != null,

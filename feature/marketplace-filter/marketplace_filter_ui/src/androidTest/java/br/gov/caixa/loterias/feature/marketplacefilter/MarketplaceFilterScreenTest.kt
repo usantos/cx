@@ -21,9 +21,9 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
+import br.gov.caixa.loterias.core.domain.contract.marketplace.rule.MarketplaceFilterRules
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.marketplace.domain.rule.MarketplaceFilterRules
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.allModalities
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.MarketplaceFilterScreenDelivered

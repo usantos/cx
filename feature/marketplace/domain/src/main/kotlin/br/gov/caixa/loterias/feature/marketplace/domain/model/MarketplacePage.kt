@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.marketplace.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
+
 data class MarketplacePage(
     val pools: List<MarketplacePool>,
     val currentPage: Int,

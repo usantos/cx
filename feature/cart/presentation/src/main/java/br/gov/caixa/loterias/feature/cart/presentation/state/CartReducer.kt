@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.cart.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.canFavoriteCart
 import java.math.BigDecimal
 

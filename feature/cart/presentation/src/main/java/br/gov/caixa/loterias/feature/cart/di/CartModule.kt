@@ -3,7 +3,8 @@ package br.gov.caixa.loterias.feature.cart.di
 import android.content.Context
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.FavoriteCartRemoteDataSource
@@ -22,7 +23,6 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBet
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBets
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCarts

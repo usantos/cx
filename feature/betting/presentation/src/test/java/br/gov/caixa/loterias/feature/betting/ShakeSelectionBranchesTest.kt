@@ -3,11 +3,11 @@
 
 package br.gov.caixa.loterias.feature.betting
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.shakeComplete
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.withShake
 import br.gov.caixa.loterias.feature.betting.presentation.state.BetEntryMode

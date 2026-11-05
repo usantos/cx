@@ -4,5 +4,5 @@ package br.gov.caixa.loterias.core.navigation.fixture
 interface VisualBetNavigationFixtures {
     fun visualConfirmedBet(variant: String, originalRecurringBet: Boolean = false,
         redeemedPrize: Boolean = false,
-    ): br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+    ): br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 }

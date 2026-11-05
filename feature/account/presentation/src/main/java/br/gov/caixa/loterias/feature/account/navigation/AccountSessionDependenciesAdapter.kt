@@ -1,20 +1,20 @@
 package br.gov.caixa.loterias.feature.account.navigation
 
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.auth.gateway.EndSessionGateway
 import br.gov.caixa.loterias.core.auth.session.ForegroundSessionAccess
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.account.domain.usecase.ClearLocalSessionDataUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResumeLocalSessionCleanupUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSessionUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
-import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
 
 class AccountSessionDependenciesAdapter @Inject constructor(
     override val authentication: AuthenticationGateway,

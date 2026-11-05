@@ -26,7 +26,7 @@ data class TicketResultAwardRow(
 
 fun ticketResultVisualData(
     result: br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult,
-    currentGame: br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters? = null,
+    currentGame: br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters? = null,
 ): TicketResultVisualData {
     val currency = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("pt-BR"))
     return TicketResultVisualData(

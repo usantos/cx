@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.network.dto.cart.CartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartComboDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartPoolReservationDto
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartComboDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartPoolReservationDto
 import br.gov.caixa.loterias.feature.cart.data.repository.CartRepositoryImpl
 import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import java.math.BigDecimal

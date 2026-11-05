@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.core.navigation.state
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 
 val accountCompletionRedirects = setOf(ServiceRedirect.LOGIN, ServiceRedirect.REGISTER_ACCOUNT, ServiceRedirect.ACCEPT_TERMS)
@@ -12,11 +13,11 @@ fun loggedContinuation(source: String, betId: Long? = null): String = when {
     else -> "home"
 }
 
-fun postLoginDestinationRoute(destination: br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination): String = when (destination) {
-    br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.HOME -> "home"
-    br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.REGISTRATION -> "account/register"
-    br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.TERMS -> "support/terms-acceptance"
-    br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.SELF_ASSESSMENT -> "responsible/start/required"
+fun postLoginDestinationRoute(destination: PostLoginDestination): String = when (destination) {
+    br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.HOME -> "home"
+    br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.REGISTRATION -> "account/register"
+    br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.TERMS -> "support/terms-acceptance"
+    br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.SELF_ASSESSMENT -> "responsible/start/required"
 }
 
 fun restoredLoggedRoute(pattern: String, argument: (String) -> String?): String {

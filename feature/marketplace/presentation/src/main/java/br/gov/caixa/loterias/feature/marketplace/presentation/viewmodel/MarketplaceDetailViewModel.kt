@@ -5,12 +5,11 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceDetailUseCase
-import br.gov.caixa.loterias.feature.marketplace.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailAction
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailStateAction
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailUiState
@@ -21,6 +20,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.marketplace.presentation.formatting.localizedMessage as messageText
 
 class MarketplaceDetailViewModel(
     private val poolCode: String,

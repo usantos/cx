@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.results.data.repository
 
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
 import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
 import com.google.gson.Gson
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest

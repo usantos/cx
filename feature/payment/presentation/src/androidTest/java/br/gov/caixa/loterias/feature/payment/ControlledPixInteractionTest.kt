@@ -19,14 +19,14 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSPixPanel
 import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSPixPanelText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.DamValidation
 import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase

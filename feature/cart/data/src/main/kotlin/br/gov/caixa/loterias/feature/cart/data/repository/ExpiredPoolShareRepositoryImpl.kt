@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.BoundCartRemovalRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.repository.ExpiredPoolShareRepository
 
 class ExpiredPoolShareRepositoryImpl(

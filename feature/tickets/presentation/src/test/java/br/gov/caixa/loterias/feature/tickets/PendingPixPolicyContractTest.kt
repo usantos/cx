@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.tickets
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.isPendingPix
 import java.math.BigDecimal
 import org.junit.Assert.assertFalse

@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+
 data class FavoriteBetDraft(
     val modalityId: Int,
     val modalityName: String,

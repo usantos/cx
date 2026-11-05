@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.cart.domain.usecase
 
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import kotlinx.coroutines.flow.first
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.cart.domain.model.CartReview
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartTransferRepository
+import kotlinx.coroutines.flow.first
 
 /** Exclui somente o recibo explicitamente revisado; mantém a proteção em torno da publicação do conteúdo. */
 class DiscardLocalCartReviewUseCase(

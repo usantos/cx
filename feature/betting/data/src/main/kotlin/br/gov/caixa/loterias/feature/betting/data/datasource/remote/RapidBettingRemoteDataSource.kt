@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 
 interface RapidBettingRemoteDataSource {
     suspend fun configuration(): RapidConfigurationDto?

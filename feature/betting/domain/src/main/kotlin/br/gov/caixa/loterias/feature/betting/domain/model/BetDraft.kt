@@ -1,5 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+
 data class BetDraft(
     val modalityId: Int,
     val contestType: String = "NORMAL",

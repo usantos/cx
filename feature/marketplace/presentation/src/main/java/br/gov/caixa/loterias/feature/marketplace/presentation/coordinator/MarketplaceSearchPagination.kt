@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.marketplace.presentation.coordinator
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
 
 internal class MarketplaceSearchPagination(private val filter: MarketplaceFilter) {

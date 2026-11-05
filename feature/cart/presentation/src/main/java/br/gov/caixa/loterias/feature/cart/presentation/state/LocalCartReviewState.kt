@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.CartReview
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 
 data class LocalCartReviewState(
     val loading: Boolean = false,

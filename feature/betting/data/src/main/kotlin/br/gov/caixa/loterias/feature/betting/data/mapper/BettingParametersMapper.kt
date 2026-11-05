@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryGameParameterDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryGameParameterDto
 import java.math.BigDecimal
 
 internal fun BettingParametersDto.toBettingParameters(shields: Map<Int, String?>): BettingParameters {

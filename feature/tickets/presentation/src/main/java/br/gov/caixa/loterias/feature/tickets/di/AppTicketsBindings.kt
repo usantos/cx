@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.di
 
 import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.provider.BetsHistoryApiProvider
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
 import dagger.Module
 import dagger.Provides

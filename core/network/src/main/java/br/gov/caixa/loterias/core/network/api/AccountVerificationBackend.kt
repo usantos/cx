@@ -1,5 +1,8 @@
 package br.gov.caixa.loterias.core.network.api
 
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
 import com.google.gson.Strictness
@@ -16,9 +19,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 import retrofit2.http.Streaming
 import retrofit2.http.Tag
-import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationEnvelopeDto
 
 /** Os dois callbacks usam um login capturado, nunca o token genérico disponível no momento. */
 class AccountVerificationSession(

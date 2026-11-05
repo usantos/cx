@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.coordinator
 
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.LotecaOutcome
 

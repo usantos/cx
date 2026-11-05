@@ -28,14 +28,14 @@ import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
 import br.gov.caixa.loterias.core.navigation.workflow.VisitorLoginCallbacks
 import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestination
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase

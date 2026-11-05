@@ -61,7 +61,7 @@ class SportsDrawPresentationTest {
     }
 
     @Test fun `Super Sete repeated correct digit scores all seven columns`() {
-        val bet = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet(
+        val bet = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet(
             1,
             "Super Sete",
             1,
@@ -76,7 +76,7 @@ class SportsDrawPresentationTest {
     }
 
     @Test fun `Super Sete wrong column does not count even when digit appears elsewhere`() {
-        val bet = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet(
+        val bet = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet(
             1,
             "Super Sete",
             1,
@@ -89,7 +89,7 @@ class SportsDrawPresentationTest {
     }
 
     @Test fun `ordinary numeric games retain number matching across draw order`() {
-        val bet = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet(
+        val bet = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet(
             1,
             "Mega-Sena",
             1,

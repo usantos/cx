@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryGameParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryGameParameterDto
 import com.google.gson.Gson
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals

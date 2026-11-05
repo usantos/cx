@@ -1,15 +1,7 @@
 package br.gov.caixa.loterias.feature.retail.data.repository
 
-import br.gov.caixa.loterias.feature.retail.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationToken
-import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
-import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
-import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
-import br.gov.caixa.loterias.feature.retail.domain.repository.PrizeRedemptionRepository
-import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionResult
-import br.gov.caixa.loterias.feature.retail.domain.repository.RetailRepository
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.MercadoPagoRegistrationLoader
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.PrizeRedemptionOperations
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.PrizeRedemptionRemoteDataSource
@@ -17,6 +9,13 @@ import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RedemptionRec
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailFavorites
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailLotterySearch
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSource
+import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
+import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
+import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
+import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionResult
+import br.gov.caixa.loterias.feature.retail.domain.repository.PrizeRedemptionRepository
+import br.gov.caixa.loterias.feature.retail.domain.repository.RetailRepository
+import br.gov.caixa.loterias.feature.retail.data.localizedMessage as messageText
 
 class RetailRepositoryImpl(
     private val remote: RetailRemoteDataSource,

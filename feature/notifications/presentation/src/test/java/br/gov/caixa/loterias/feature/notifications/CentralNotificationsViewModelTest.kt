@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.notifications
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationInbox
 import br.gov.caixa.loterias.feature.notifications.domain.repository.NotificationInboxRepository

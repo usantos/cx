@@ -4,8 +4,8 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests
 import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingSpecialContests
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

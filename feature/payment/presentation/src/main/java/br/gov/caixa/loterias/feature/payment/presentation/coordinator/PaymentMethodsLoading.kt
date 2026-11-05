@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase

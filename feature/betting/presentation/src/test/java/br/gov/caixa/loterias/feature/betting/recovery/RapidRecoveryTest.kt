@@ -5,10 +5,10 @@ package br.gov.caixa.loterias.feature.betting.recovery
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidListViewModel
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import java.math.BigDecimal

@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.core.domain.configuration.model
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 
 data class HomeFeatureConfiguration(
     val poolSalesEnabled: Boolean = false,

@@ -3,15 +3,15 @@
 
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import br.gov.caixa.loterias.feature.cart.domain.model.CartModality
 import br.gov.caixa.loterias.feature.cart.domain.model.CartNumbers
 import java.math.BigDecimal

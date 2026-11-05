@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.retail.presentation.state
 
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 
 internal sealed interface RetailSearchStateAction {
     data class QueryChanged(val query: String) : RetailSearchStateAction

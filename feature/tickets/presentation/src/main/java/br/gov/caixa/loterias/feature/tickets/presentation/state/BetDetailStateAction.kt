@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.state
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 
 internal sealed interface BetDetailStateAction {
-    data class DetailsLoaded(val bet: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet) : BetDetailDetailsAction
-    data class RecoveryFailed(val bet: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet, val message: String) :
+    data class DetailsLoaded(val bet: br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet) : BetDetailDetailsAction
+    data class RecoveryFailed(val bet: br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet, val message: String) :
         BetDetailDetailsAction
     data object DetailsLoading : BetDetailDetailsAction
     data class DetailsFailed(val message: String) : BetDetailDetailsAction

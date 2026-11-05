@@ -1,14 +1,14 @@
 package br.gov.caixa.loterias.feature.betting.data.remote
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.featureBettingApi
 import java.lang.reflect.Proxy
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.featureBettingApi
 
 class FeatureApiSnapshotTest {
     @Test fun clientRotationDuringArgumentCreationDoesNotRebindTheSelectedOperation() = runTest {

@@ -1,19 +1,20 @@
 package br.gov.caixa.loterias.feature.account
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-
 import android.content.Intent
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
+import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
+import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
 import java.math.BigDecimal
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -21,8 +22,6 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
@@ -33,12 +32,12 @@ class LoginViewModelTest {
     @Test fun `superseded post login check never logs out the replacement session`() = runTest(dispatcherRule.dispatcher) {
         val identity = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
         var current = true
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val sessions = object : br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = identity
             override fun isCurrent(identity: AuthenticatedSessionIdentity) = current
         }
         var replacementLoggedOut = false
-        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+        val authentication = object : br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication {
             override fun cancelAuthorization() = Unit
             override fun logout() {
                 replacementLoggedOut = true
@@ -61,11 +60,11 @@ class LoginViewModelTest {
         var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
         val old = current
         var logouts = 0
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val sessions = object : br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = current
             override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
         }
-        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+        val authentication = object : br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication {
             override fun cancelAuthorization() = Unit
             override fun logout() {
                 logouts++
@@ -101,11 +100,11 @@ class LoginViewModelTest {
     ) {
         var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
         var logouts = 0
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val sessions = object : br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = current
             override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
         }
-        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+        val authentication = object : br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication {
             override fun cancelAuthorization() = Unit
             override fun logout() {
                 logouts++
@@ -133,11 +132,11 @@ class LoginViewModelTest {
 
     @Test fun `verified result cannot authenticate an identity replaced after domain returns`() = runTest(dispatcherRule.dispatcher) {
         var current = AuthenticatedSessionIdentity("a".repeat(SYNTHETIC_OWNER_HASH_LENGTH))
-        val sessions = object : br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider {
+        val sessions = object : br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider {
             override fun captureIdentity() = current
             override fun isCurrent(identity: AuthenticatedSessionIdentity) = current === identity
         }
-        val authentication = object : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+        val authentication = object : br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication {
             override fun cancelAuthorization() = Unit
             override fun logout() = error("Must not revoke replacement")
             override fun isCurrent(identity: AuthenticatedSessionIdentity) = sessions.isCurrent(identity)

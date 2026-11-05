@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.payment.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
+
 /** A ausência de continuação significa que o protocolo de processamento do cartão terminou, não que todas as apostas foram efetivadas. */
 data class PurchaseProgress(
     val purchaseId: Long,

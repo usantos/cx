@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSDetailClover
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSMarketplaceNumberRing
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
 import br.gov.caixa.loterias.feature.marketplace.ui.R as DeliveryR
 

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.domain.rule
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 import java.math.BigDecimal
 
 /** A consulta compartilhada retorna ausência explicitamente: a apresentação pode mostrar zero; o cadastro deve rejeitá-lo. */

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.marketplace.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.dto.betting.AddPoolShareRequestDto
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
 
 class MarketplaceRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,

@@ -40,7 +40,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSBu
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameActions
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR

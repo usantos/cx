@@ -3,8 +3,8 @@ package br.gov.caixa.loterias.feature.cart.presentation.screen
 import androidx.compose.ui.layout.FirstBaseline
 import androidx.compose.ui.layout.MeasurePolicy
 import androidx.compose.ui.unit.dp
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
 import kotlin.math.roundToInt
 
 fun currentCartIndividualMeasurePolicy(item: CartItem, superSeven: Boolean, hasExtras: Boolean, hasIndicators: Boolean) =

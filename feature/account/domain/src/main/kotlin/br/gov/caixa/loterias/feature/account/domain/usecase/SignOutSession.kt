@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.account.domain.usecase
 
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
 import br.gov.caixa.loterias.feature.account.domain.repository.SessionSignOutRepository
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 
 /** A confirmação SILCE deve preceder a exclusão local de credenciais e o encerramento da sessão SSO. */
 class SignOutSession(

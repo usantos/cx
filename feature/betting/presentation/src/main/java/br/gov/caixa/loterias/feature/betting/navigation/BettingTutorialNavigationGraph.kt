@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.navigation.destination.PoolTutorialRoute
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.workflow.nextDestination
@@ -14,7 +15,6 @@ import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.core.presentation.state.WorkflowSpec
 import br.gov.caixa.loterias.feature.betting.presentation.route.BettingRoute
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingFlowViewModel
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 
 fun NavGraphBuilder.bettingTutorialGraph(
     appContainer: BettingNavigationDependencies,

@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.retail
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
 import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode

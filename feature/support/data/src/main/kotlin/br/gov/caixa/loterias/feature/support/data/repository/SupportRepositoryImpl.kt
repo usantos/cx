@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.support.data.repository
 
-import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
-import br.gov.caixa.loterias.feature.support.domain.repository.SupportRepository
-import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
-import br.gov.caixa.loterias.feature.support.data.dto.SupportQuestionDto
-import br.gov.caixa.loterias.feature.support.data.dto.SupportSectionDto
+import br.gov.caixa.loterias.core.network.dto.support.SupportQuestionDto
+import br.gov.caixa.loterias.core.network.dto.support.SupportSectionDto
 import br.gov.caixa.loterias.feature.support.data.datasource.remote.SupportRemoteDataSource
+import br.gov.caixa.loterias.feature.support.domain.model.SupportQuestion
+import br.gov.caixa.loterias.feature.support.domain.model.SupportSection
+import br.gov.caixa.loterias.feature.support.domain.repository.SupportRepository
 
 class SupportRepositoryImpl(
     private val remote: SupportRemoteDataSource,

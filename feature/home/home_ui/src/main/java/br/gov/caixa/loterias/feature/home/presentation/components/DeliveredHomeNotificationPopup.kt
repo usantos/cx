@@ -30,7 +30,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import br.gov.caixa.loterias.core.designsystem.automation.legacyAutomationId
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 

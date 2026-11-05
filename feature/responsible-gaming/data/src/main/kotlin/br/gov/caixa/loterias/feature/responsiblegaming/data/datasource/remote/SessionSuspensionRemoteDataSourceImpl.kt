@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.responsiblegaming.data.datasource.remote
 
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SuspendAccountRequestDto
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
 
 /** GET e POST compartilham o mesmo vínculo; nenhum deles usa o login genérico como fallback. */
 internal class SessionSuspensionRemoteDataSourceImpl(

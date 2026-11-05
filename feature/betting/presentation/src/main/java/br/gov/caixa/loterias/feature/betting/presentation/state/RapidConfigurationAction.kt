@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 import java.math.BigDecimal

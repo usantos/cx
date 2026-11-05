@@ -12,13 +12,14 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel
 import java.math.BigDecimal
@@ -149,13 +150,13 @@ class CartSummaryIntegrationTest {
                     dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate),
                     getBettingParameters = br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase {
                         AppResult.Success(
-                            br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters(
+                            br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters(
                                 BigDecimal("500"),
                                 minimum,
                                 50,
                                 listOf(
-                                    br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters(
-                                        br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
+                                    br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters(
+                                        LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
                                         2900, "10/09/2026", 60, 6, 20, 15, emptyList(), emptyList()
                                     )
                                 )

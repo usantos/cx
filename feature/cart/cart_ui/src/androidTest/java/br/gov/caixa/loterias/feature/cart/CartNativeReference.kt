@@ -48,9 +48,9 @@ internal class CartNativeReference(target: Context) {
                 "SUPER_7", "TIMEMANIA", "DIA_DE_SORTE", "MAIS_MILIONARIA", "LOTECA"
             )
         return codes.associateWith { code ->
-            val item = br.gov.caixa.loterias.feature.cart.domain.model.CartItem(
+            val item = br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem(
                 1,
-                br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind.INDIVIDUAL_BET,
+                br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind.INDIVIDUAL_BET,
                 code,
                 "",
                 java.math.BigDecimal.ONE,
@@ -61,7 +61,7 @@ internal class CartNativeReference(target: Context) {
         }
     }
 
-    fun betRow(item: br.gov.caixa.loterias.feature.cart.domain.model.CartItem): View {
+    fun betRow(item: br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem): View {
         val row = inflate("item_aposta_carrinho")
         val function = type("kotlin.jvm.functions.Function1")
         val unit = type("kotlin.Unit").getField("INSTANCE").get(null)

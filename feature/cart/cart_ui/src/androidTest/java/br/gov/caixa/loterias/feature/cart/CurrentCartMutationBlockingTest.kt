@@ -14,14 +14,14 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.SaveCurrentCartFavoriteUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.CartViewModel

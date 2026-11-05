@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.retail.presentation.state
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
+import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
 import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
-import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 
 enum class PrizeRedemptionStage { LOADING, OPTIONS, LOTTERY, AGENCY, PIX_ENTRY, PIX_CONFIRM, MERCADO_PAGO, SUCCESS }
 enum class PrizePixKeySource { CPF, OTHER }

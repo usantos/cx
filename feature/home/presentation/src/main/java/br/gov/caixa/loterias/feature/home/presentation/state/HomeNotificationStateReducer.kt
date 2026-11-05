@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.home.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 
 internal sealed interface HomeNotificationAction : HomeStateAction {
     data class UnreadCountReceived(val count: Int) : HomeNotificationAction

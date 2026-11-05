@@ -1,11 +1,10 @@
 package br.gov.caixa.loterias.feature.results.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.results.data.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
-import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.data.mapper.checkedPayload
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
+import br.gov.caixa.loterias.feature.results.data.localizedMessage as messageText
 
 class ResultsRemoteDataSourceImpl(private val apiProvider: LoteriasApiProvider, private val legacyApiProvider: BackendApiProvider? = null) :
     ResultsRemoteDataSource {

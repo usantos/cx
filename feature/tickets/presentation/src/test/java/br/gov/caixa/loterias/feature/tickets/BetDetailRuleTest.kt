@@ -11,7 +11,7 @@ import org.junit.Test
 
 class BetDetailRuleTest {
     @Test fun `notices use real recurring count exchange and paid status with CX branch exclusions`() {
-        val bet = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet(
+        val bet = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet(
             41,
             "Quina",
             7000,

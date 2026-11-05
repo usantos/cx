@@ -11,10 +11,10 @@ import br.gov.caixa.loterias.apostas.navigation.PostLoginShakeTutorial
 import br.gov.caixa.loterias.apostas.navigation.PostLoginTutorialRequest
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.repository.ShakeSettingsRepository
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
 import br.gov.caixa.loterias.feature.home.domain.usecase.HomePreferencesUseCases

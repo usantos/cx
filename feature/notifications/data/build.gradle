@@ -55,4 +55,4 @@ dependencies { implementation project(':core:persistence') }
 
 dependencies { implementation project(':core:network') }
 
-dependencies { api project(':feature:notifications:transport') }
+dependencies { api project(':core:network') }

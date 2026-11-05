@@ -3,8 +3,8 @@ package br.gov.caixa.loterias.feature.retail
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
 import br.gov.caixa.loterias.feature.retail.domain.model.LotteryRedemptionCode
 import br.gov.caixa.loterias.feature.retail.domain.model.PixBeneficiary
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel

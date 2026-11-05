@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.cart.domain.model.LocalCartBet
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
 import br.gov.caixa.loterias.feature.cart.data.mapper.toUploadDto
+import br.gov.caixa.loterias.feature.cart.domain.model.LocalCartBet
 
 /** A raiz de composição vincula ambos os callbacks à MESMA identidade capturada. */
 fun interface AccountVerificationSessionBinding {

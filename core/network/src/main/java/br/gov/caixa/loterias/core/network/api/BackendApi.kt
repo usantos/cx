@@ -1,5 +1,15 @@
 package br.gov.caixa.loterias.core.network.api
 
+import br.gov.caixa.loterias.core.network.dto.account.BlockedAccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetPageDto
+import br.gov.caixa.loterias.core.network.dto.betting.GroupedFavoriteBetsDto
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.retail.MercadoPagoRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.retail.PrizeRedemptionEnvelopeDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import com.google.gson.JsonElement
 import okhttp3.ResponseBody
 import retrofit2.http.Body
@@ -12,16 +22,6 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.account.data.dto.BlockedAccountVerificationEnvelopeDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
-import br.gov.caixa.loterias.feature.retail.data.dto.PrizeRedemptionEnvelopeDto
-import br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamShieldDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetPageDto
-import br.gov.caixa.loterias.feature.betting.data.dto.GroupedFavoriteBetsDto
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
 
 /**
  * Contrato Retrofit das operações legadas que ainda não possuem DTO próprio da feature.

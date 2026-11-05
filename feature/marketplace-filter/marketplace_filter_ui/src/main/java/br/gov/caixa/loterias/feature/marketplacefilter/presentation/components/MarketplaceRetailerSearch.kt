@@ -25,11 +25,11 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSHo
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.components.loteriasCaixaDSMarketplaceFilterText as filterText
 import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSLineHeight
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 import br.gov.caixa.loterias.feature.marketplacefilter.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 
 @Composable
 fun MarketplaceRetailerSearch(state: MarketplaceFilterUiState, onAction: (MarketplaceFilterAction) -> Unit) {

@@ -12,9 +12,9 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.top
 import br.gov.caixa.loterias.core.designsystem.artwork.LoteriasCaixaDSNotificationPlaceholder
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.components.RenderHomeNotificationPopup as HomeNotificationPopup
 import br.gov.caixa.loterias.feature.home.presentation.components.decodeNotificationImage
 import org.junit.Assert.assertEquals

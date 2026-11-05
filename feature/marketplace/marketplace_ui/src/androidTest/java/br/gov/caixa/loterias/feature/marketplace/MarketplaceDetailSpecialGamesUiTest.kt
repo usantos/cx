@@ -9,12 +9,12 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceDetailScreenDelivered

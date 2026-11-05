@@ -3,7 +3,8 @@ package br.gov.caixa.loterias.feature.marketplace
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
@@ -13,7 +14,6 @@ import br.gov.caixa.loterias.feature.marketplace.domain.usecase.SearchMarketplac
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
 import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceDetailViewModel
 import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import java.math.BigDecimal

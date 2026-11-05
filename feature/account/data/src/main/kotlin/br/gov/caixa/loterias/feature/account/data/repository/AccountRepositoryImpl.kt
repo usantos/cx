@@ -1,21 +1,20 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.feature.account.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityIdDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSource
+import br.gov.caixa.loterias.feature.account.data.mapper.accountAccess
+import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.AccountRegistration
-import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepository
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.domain.model.PersonalDataUpdate
 import br.gov.caixa.loterias.feature.account.domain.model.ZipCodeLocation
-import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityIdDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
+import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepository
 import java.math.BigDecimal
-import br.gov.caixa.loterias.feature.account.data.mapper.accountAccess
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSource
+import br.gov.caixa.loterias.feature.account.data.localizedMessage as messageText
 
 class AccountRepositoryImpl(private val remote: AccountRemoteDataSource) : AccountRepository {
     override suspend fun profile(): AccountProfile {

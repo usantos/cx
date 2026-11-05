@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.core.auth.gateway
 
 import android.content.Intent
-import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
-import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
 import br.gov.caixa.loterias.core.auth.authorization.PendingAuthorization
+import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 /** Login lembrado opcional. Uma solicitação local, sozinha, nunca concede acesso ao servidor. */
-interface BiometricAuthenticationGateway : br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences {
+interface BiometricAuthenticationGateway : br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences {
     override val biometricEnabled: Boolean
     /** NONE_ENROLLED ainda oferece o cadastro; hardware ausente ou indisponível oculta a linha. */
     override val biometricHardwareAvailable: Boolean get() = true

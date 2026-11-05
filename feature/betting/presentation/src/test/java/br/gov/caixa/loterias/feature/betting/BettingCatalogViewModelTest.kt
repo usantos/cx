@@ -3,10 +3,11 @@ package br.gov.caixa.loterias.feature.betting
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.recovery.BettingCheckpointSession
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddComboToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombosUseCase
@@ -14,7 +15,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogMode
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingCatalogViewModel
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineDispatcher

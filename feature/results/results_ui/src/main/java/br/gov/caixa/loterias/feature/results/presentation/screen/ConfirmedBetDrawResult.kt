@@ -20,6 +20,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.components.DrawNumberColumns
@@ -27,7 +28,6 @@ import br.gov.caixa.loterias.feature.results.presentation.components.DrawResultS
 import br.gov.caixa.loterias.feature.results.presentation.components.DrawSportsResults
 import br.gov.caixa.loterias.feature.results.presentation.components.drawResultTitle
 import br.gov.caixa.loterias.feature.results.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 @Composable
 internal fun ConfirmedBetDrawResult(bet: ConfirmedBet, result: DrawResult, campaignStyle: LoteriasCaixaDSLotteryStyle?, resultText: Color) {

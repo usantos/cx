@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.feature.cart.data.datasource.local
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.feature.cart.data.mapper.decodeLegacyCart
+import br.gov.caixa.loterias.feature.cart.data.mapper.guestCartRows
 import br.gov.caixa.loterias.feature.cart.domain.model.CartNumbers
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.data.mapper.guestCartRows
-import br.gov.caixa.loterias.feature.cart.data.mapper.decodeLegacyCart
 
 class GuestCartRowsTest {
     private fun game(id: Int, name: String) = LotteryGameParameters(

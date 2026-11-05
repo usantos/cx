@@ -1,17 +1,16 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto
-
+import br.gov.caixa.loterias.core.network.dto.retail.MercadoPagoRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 import com.google.gson.JsonParser
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
-import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
-import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
 /** Respostas totalmente interceptadas: sem servidor HTTP, socket ou pagamento real. */
 class MockPurchaseStatusTest {

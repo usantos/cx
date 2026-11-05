@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
 import br.gov.caixa.loterias.feature.home.presentation.components.infiniteCarouselInitialPage
 import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions

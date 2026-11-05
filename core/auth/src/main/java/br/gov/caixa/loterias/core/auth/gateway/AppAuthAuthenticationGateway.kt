@@ -1,25 +1,24 @@
 package br.gov.caixa.loterias.core.auth.gateway
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
 import android.content.Context
 import android.content.Intent
-import br.gov.caixa.loterias.core.auth.appauth.AppAuthRefresh
-import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
 import br.gov.caixa.loterias.core.auth.appauth.AppAuthBiometricAuthorization
-import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.appauth.AppAuthBrowserAuthorization
 import br.gov.caixa.loterias.core.auth.appauth.AppAuthEndSession
+import br.gov.caixa.loterias.core.auth.appauth.AppAuthRefresh
+import br.gov.caixa.loterias.core.auth.appauth.AppAuthSession
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
 import br.gov.caixa.loterias.core.auth.biometric.BiometricCredential
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
-import br.gov.caixa.loterias.core.auth.appauth.AppAuthSession
-import br.gov.caixa.loterias.core.auth.appauth.AppAuthBrowserAuthorization
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionLaunch
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionOutcome
 
 internal fun biometricRefreshContext(configuration: OidcConfiguration, nonce: String, idToken: String?): RegularSessionRefreshContext =
     RegularSessionRefreshContext(

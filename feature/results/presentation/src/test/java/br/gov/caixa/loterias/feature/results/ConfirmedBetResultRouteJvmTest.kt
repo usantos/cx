@@ -20,6 +20,12 @@ import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
@@ -27,11 +33,6 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawRegionalWinner
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
@@ -42,7 +43,6 @@ import br.gov.caixa.loterias.feature.results.domain.model.UpcomingDrawContest
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase
 import br.gov.caixa.loterias.feature.results.presentation.route.ConfirmedBetResultRoute
 import br.gov.caixa.loterias.feature.results.presentation.viewmodel.ConfirmedBetResultsViewModel
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import java.math.BigDecimal
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

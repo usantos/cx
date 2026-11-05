@@ -23,7 +23,7 @@ class PushPlatformIntegrationTest {
 
     @Test fun registrationStorePersistsOnlyTheConfirmedMarker() = kotlinx.coroutines.runBlocking {
         val fixtureContext = instrumentation.context
-        val identity = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity("a".repeat(DIGEST_WIDTH))
+        val identity = br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity("a".repeat(DIGEST_WIDTH))
         val environment = br.gov.caixa.loterias.core.domain.persistence.secureEnvironmentKey(
             "fixture",
             java.util.UUID.randomUUID().toString()

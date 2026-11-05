@@ -4,9 +4,9 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.data.datasource.push.PushTokenDataSource
 import br.gov.caixa.loterias.feature.notifications.data.datasource.push.PushTokenDataSourceImpl
 import br.gov.caixa.loterias.feature.notifications.data.push.PushFirebaseOptions

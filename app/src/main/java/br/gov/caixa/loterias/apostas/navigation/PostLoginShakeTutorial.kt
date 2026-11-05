@@ -20,8 +20,8 @@ import br.gov.caixa.loterias.apostas.R as LocalizedR
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialRoute
 import br.gov.caixa.loterias.feature.home.domain.usecase.HomePreferencesUseCases
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel

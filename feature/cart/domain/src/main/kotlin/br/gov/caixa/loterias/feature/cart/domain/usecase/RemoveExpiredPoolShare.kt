@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.cart.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.appResultOf
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.cart.domain.repository.ExpiredPoolShareRepository
 

@@ -3,8 +3,8 @@
 
 package br.gov.caixa.loterias.feature.betting.recovery
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingDraftCommands
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState

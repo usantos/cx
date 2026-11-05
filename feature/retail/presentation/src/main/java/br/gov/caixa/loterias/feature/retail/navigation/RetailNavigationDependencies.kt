@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.retail.navigation
 
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.CancelPixRedemptionUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.ConsultPixRedemptionKeyUseCase

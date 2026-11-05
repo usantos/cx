@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
 
 class SessionBettingRepositoryImpl(

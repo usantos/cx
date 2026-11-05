@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.core.auth.appauth
 
 import android.content.Intent
 import androidx.core.net.toUri
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionLaunch
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionOutcome
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.EndSessionRequest

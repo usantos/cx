@@ -12,9 +12,9 @@ import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.viewmodel.DestinationSnapshotViewModel
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 
 /** Retrato restrito ao destino; nunca retém o carrinho de outra sessão. */
 @Composable

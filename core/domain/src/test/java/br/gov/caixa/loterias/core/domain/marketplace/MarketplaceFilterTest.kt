@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
-import org.junit.Test
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import org.junit.Test
 
 class MarketplaceFilterTest {
     @Test

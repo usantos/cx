@@ -5,13 +5,13 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.event.SingleConsumerEventQueue
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceiptUseCase
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.RecoverConfirmedBetUseCase
 import br.gov.caixa.loterias.feature.tickets.presentation.coordinator.BetDetailDetailsCoordinator
 import br.gov.caixa.loterias.feature.tickets.presentation.coordinator.BetDetailFavoriteCoordinator

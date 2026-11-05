@@ -3,7 +3,7 @@ package br.gov.caixa.loterias.feature.tickets
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsUseCase

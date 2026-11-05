@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartLotecaSelection
 import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
 import com.google.gson.JsonElement
 
 internal fun JsonElement?.cartTeamName(): String {

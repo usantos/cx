@@ -2,13 +2,13 @@ package br.gov.caixa.loterias.feature.home.presentation.route
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
 import androidx.lifecycle.Lifecycle
-import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryDecision
-import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
+import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
+import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
 
 /** A atualização do ciclo de vida e as decisões de domínio consumidas preservam suas chaves de efeito originais. */
 @Composable

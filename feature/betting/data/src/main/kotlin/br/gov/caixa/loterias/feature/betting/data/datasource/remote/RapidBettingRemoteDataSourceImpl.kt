@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
 import br.gov.caixa.loterias.core.data.mapper.checkedPayload
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
 
 class RapidBettingRemoteDataSourceImpl(
     private val provider: BackendApiProvider,

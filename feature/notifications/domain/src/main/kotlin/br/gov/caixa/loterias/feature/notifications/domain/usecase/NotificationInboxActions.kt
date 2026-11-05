@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.notifications.domain.usecase
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.notifications.domain.repository.NotificationInboxRepository
 
 class NotificationInboxActions(private val repository: NotificationInboxRepository) {

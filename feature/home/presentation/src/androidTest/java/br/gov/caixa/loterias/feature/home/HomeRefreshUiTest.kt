@@ -18,10 +18,10 @@ import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.repository.ShakeSettingsRepository
 import br.gov.caixa.loterias.feature.betting.presentation.route.ShakeTutorialRoute
 import br.gov.caixa.loterias.feature.home.domain.repository.HomeLayoutRepository
@@ -32,7 +32,6 @@ import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
-import br.gov.caixa.loterias.feature.home.ui.R as DeliveryR
 import java.math.BigDecimal
 import java.util.concurrent.atomic.AtomicInteger
 import kotlinx.coroutines.cancel
@@ -40,6 +39,7 @@ import kotlinx.coroutines.flow.flowOf
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import br.gov.caixa.loterias.feature.home.ui.R as DeliveryR
 
 class HomeRefreshUiTest {
     @get:Rule val compose = createComposeRule()

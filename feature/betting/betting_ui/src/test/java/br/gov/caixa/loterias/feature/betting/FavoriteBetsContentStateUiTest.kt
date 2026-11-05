@@ -13,10 +13,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.components.FavoriteBetsList
 import br.gov.caixa.loterias.feature.betting.presentation.screen.BettingLegacyMirrorDelivered
 import br.gov.caixa.loterias.feature.betting.presentation.screen.FavoriteBetsContentDelivered

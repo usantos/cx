@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.feature.payment.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.network.api.PurchaseBackendResponse
 import br.gov.caixa.loterias.core.network.api.PurchaseHttpException
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseEnvelopeDto
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseErrorEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseErrorEnvelopeDto
 import br.gov.caixa.loterias.feature.payment.data.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchasePolling
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseSubmission
 
 /** Interpretação pura das respostas do protocolo de compra e da precedência dos erros de negócio legados. */

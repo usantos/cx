@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.navigation.destination.BettingSimulationRoute
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

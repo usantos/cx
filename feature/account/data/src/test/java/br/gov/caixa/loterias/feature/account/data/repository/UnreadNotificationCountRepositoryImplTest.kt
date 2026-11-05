@@ -1,13 +1,15 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.NotificationReadApi
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.core.network.api.NotificationReadEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationRequestDto
 import br.gov.caixa.loterias.core.network.api.UnreadNotificationsEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationRequestDto
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.data.repository.UnreadNotificationCountRepositoryImpl
 import com.google.gson.Gson
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody.Companion.toResponseBody
@@ -16,8 +18,6 @@ import org.junit.Test
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Tag
-import br.gov.caixa.loterias.feature.account.data.repository.UnreadNotificationCountRepositoryImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 
 class UnreadNotificationCountRepositoryImplTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

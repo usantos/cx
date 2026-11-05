@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.marketplace.data
 
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.network.dto.betting.AddPoolShareRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePageDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePoolDetailDto
 import br.gov.caixa.loterias.feature.marketplace.data.datasource.remote.MarketplaceRemoteDataSource
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePoolDetailDto
 import br.gov.caixa.loterias.feature.marketplace.data.repository.MarketplaceRepositoryImpl
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

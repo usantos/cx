@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
-import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
+import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
+import kotlin.coroutines.coroutineContext
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ensureActive
-import kotlin.coroutines.coroutineContext
+import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
 
 class SessionCartRepositoryImpl(
     private val remote: CartRepository,

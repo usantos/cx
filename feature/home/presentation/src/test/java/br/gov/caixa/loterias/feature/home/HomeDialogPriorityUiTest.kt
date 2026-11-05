@@ -8,9 +8,9 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.lifecycle.Lifecycle
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeDialogActions
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRouteDialogs
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState

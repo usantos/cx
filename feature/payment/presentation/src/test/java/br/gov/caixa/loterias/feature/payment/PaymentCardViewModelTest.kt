@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.CardPaymentRequest
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
@@ -14,7 +15,6 @@ import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNotice
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseNoticeReason
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchasePolling
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseSubmission
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
@@ -58,8 +58,8 @@ class PaymentCardViewModelTest {
     private var submitted: CardPaymentRequest? = null
     private val recordedAmounts = mutableListOf<java.math.BigDecimal>()
     private var recordResult: AppResult<Unit> = AppResult.Success(Unit)
-    private var cartResult: AppResult<br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart> = AppResult.Success(
-        br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal("30.50"), emptyList())
+    private var cartResult: AppResult<br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart> = AppResult.Success(
+        br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart(1, java.math.BigDecimal("30.50"), emptyList())
     )
 
     @Before fun setUp() = Dispatchers.setMain(UnconfinedTestDispatcher())
@@ -275,7 +275,7 @@ class PaymentCardViewModelTest {
         assertEquals(PaymentCardStage.FAILURE, vm.state.value.stage)
         assertNull(submitted)
         cartResult =
-            AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.ZERO, emptyList()))
+            AppResult.Success(br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart(1, java.math.BigDecimal.ZERO, emptyList()))
         vm.retry()
         vm.submit()
         advanceUntilIdle()
@@ -381,7 +381,7 @@ class PaymentCardViewModelTest {
         assertEquals("", vm.state.value.cvv)
         // Um carrinho alterado não deve mudar o valor original da compra ao repetir uma consulta.
         cartResult =
-            AppResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, java.math.BigDecimal.TEN, emptyList()))
+            AppResult.Success(br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart(1, java.math.BigDecimal.TEN, emptyList()))
         progressResults.add(AppResult.Success(PurchaseProgress(20, 8)))
         vm.retry()
         vm.retry()
@@ -983,7 +983,7 @@ class PaymentCardViewModelTest {
         val dispatcher = UnconfinedTestDispatcher()
         return PaymentCardViewModel(
             clock = java.time.Clock.fixed(java.time.Instant.parse("2026-09-07T15:00:00Z"), java.time.ZoneId.of("America/Sao_Paulo")),
-            getCurrentCart = cart ?: br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase { cartResult },
+            getCurrentCart = cart ?: br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase { cartResult },
             recordRecentPurchase = record ?: br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase {
                 recordedAmounts += it
                 recordResult

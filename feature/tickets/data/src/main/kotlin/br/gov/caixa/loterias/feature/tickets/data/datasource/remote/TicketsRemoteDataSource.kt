@@ -1,18 +1,18 @@
 package br.gov.caixa.loterias.feature.tickets.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.data.mapper.checkedPayload
 import br.gov.caixa.loterias.core.network.model.AppParametersDto
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.provider.BetsHistoryApiProvider
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
-import br.gov.caixa.loterias.core.data.mapper.checkedPayload
 
 interface TicketsRemoteDataSource {
     suspend fun confirmedBets(filters: Map<String, String>): JsonElement?
-    fun confirmedBetsBackend(): br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend =
-        br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.SILCE
+    fun confirmedBetsBackend(): br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend =
+        br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.SILCE
     suspend fun recoverConfirmedBet(betId: Long): JsonElement? = null
     suspend fun checkConfirmedBet(betId: Long): JsonElement? = null
     suspend fun confirmedBetPrizeDetails(betId: Long): JsonElement? = null
@@ -62,7 +62,7 @@ class TicketsRemoteDataSourceImpl(
     }
 
     override fun confirmedBetsBackend() =
-        br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.valueOf(activeBetHistoryRoute.backend.name)
+        br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.valueOf(activeBetHistoryRoute.backend.name)
 
     override suspend fun recoverConfirmedBet(betId: Long): JsonElement? {
         val route = activeBetHistoryRoute.takeIf { it.backend == BetHistoryBackend.NOVA_API } ?: return null

@@ -4,9 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performClick
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.PurchaseDetailActions
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.PurchaseDetailContentDelivered
 import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState

@@ -3,9 +3,9 @@ package br.gov.caixa.loterias.feature.cart
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase

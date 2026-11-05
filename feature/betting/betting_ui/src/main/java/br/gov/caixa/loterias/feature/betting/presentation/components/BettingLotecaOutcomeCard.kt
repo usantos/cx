@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR
 
 // Fronteira declarativa existente da interface; a formatação revelou complexidade da baseline sem alterar a lógica.

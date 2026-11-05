@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 
 @Composable
 fun CurrentCartContent(

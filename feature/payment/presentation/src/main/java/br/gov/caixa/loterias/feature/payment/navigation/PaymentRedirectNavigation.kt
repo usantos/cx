@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.payment.navigation
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 
 fun paymentRedirectRoute(destination: PurchaseRedirect): String = when (destination) {
     PurchaseRedirect.LOGIN -> LoginNavigation.authorize

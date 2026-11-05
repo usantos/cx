@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.tickets.data.mapper
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import com.google.gson.JsonElement
 
 internal fun JsonElement?.mapTicketPurchases(): List<Purchase> = ticketCollectObjects().filter { objectValue ->

@@ -1,6 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.domain.model
 
 import br.gov.caixa.loterias.core.common.time.LotteryDateTimes
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
 import java.time.Instant
 
 /** EncerramentoUtil: os instantes de encerramento individual e da revenda são inclusivos. */

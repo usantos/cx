@@ -8,12 +8,12 @@ import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
 import androidx.compose.runtime.saveable.SaverScope
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContext
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoveryEvidence
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySaver
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession
 import br.gov.caixa.loterias.core.navigation.state.rememberLoggedDetailContext
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals

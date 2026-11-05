@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.home.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeStateAction
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeUiState
 import java.util.concurrent.atomic.AtomicLong

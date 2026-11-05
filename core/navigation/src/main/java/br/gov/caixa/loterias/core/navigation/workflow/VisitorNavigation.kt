@@ -1,13 +1,15 @@
 package br.gov.caixa.loterias.core.navigation.workflow
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+
 // A procedência referencial da concessão sobrevive à restauração de configuração somente neste processo.
 // Chaves fracas evitam reter sessões expiradas; um processo reiniciado não pode validar um marcador antigo.
-private val privateEntryLeaseMarkers = java.util.WeakHashMap<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity, String>()
+private val privateEntryLeaseMarkers = java.util.WeakHashMap<AuthenticatedSessionIdentity, String>()
 private val privateVisitorMarker = java.util.UUID.randomUUID().toString()
 
 /** Retém o estado carregado somente quando o marcador restaurado pertence exatamente à concessão atual. */
 @androidx.compose.runtime.Composable
-fun rememberPrivateEntryKey(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?): String {
+fun rememberPrivateEntryKey(identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?): String {
     val leaseMarker = synchronized(privateEntryLeaseMarkers) {
         if (identity == null) {
             privateVisitorMarker

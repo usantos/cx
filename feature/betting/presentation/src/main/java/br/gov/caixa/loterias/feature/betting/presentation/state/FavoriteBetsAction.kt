@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 internal sealed interface FavoriteBetsAction {
     data object LoadingStarted : FavoriteBetsAction

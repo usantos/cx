@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
 
 internal fun LotteryModalityDto.toBettingModality() = LotteryModality(
     id = id ?: 0,

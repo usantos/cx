@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
-
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePageDto
+import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
-import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.interceptor.MockBackendInterceptor
-import br.gov.caixa.loterias.core.network.mock.fixture.MockBackendFixtures
 
 class MarketplaceParityFixtureTest {
     private val gson = Gson()

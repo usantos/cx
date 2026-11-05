@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartLotecaSelection
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
 import br.gov.caixa.loterias.feature.cart.domain.model.CartModality
 import br.gov.caixa.loterias.feature.cart.domain.model.CartNumbers
 import br.gov.caixa.loterias.feature.cart.domain.model.CartTeam
 import br.gov.caixa.loterias.feature.cart.domain.model.LocalCartBet
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartSelection
 import java.math.BigDecimal
 

@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.core.auth.refresh
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.FutureTask
-import br.gov.caixa.loterias.core.auth.token.accessTokenExpiration
 import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.auth.token.accessTokenExpiration
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.FutureTask
 
 enum class RegularSessionIdentityMode { OAUTH_ACCESS, OIDC }
 

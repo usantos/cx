@@ -1,16 +1,18 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryGameParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddComboRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboDto
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryGameParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource
+import br.gov.caixa.loterias.feature.betting.data.repository.BettingRepositoryImpl
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.awaitCancellation
@@ -18,12 +20,10 @@ import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource
-import br.gov.caixa.loterias.feature.betting.data.repository.BettingRepositoryImpl
 
 class BettingParametersLoaderCancellationTest {
     @Test fun `direct shields cancellation propagates unchanged without mapping parameters`() = runTest {

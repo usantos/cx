@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.responsiblegaming.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentAnswerDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SuspendAccountRequestDto
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentAnswerDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
 
 class ResponsibleGamingRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,

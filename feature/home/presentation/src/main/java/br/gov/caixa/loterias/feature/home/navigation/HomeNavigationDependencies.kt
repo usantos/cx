@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.home.navigation
 
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombosUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
-import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetLatestResultUseCase
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetResultByContestUseCase
@@ -14,7 +14,7 @@ import br.gov.caixa.loterias.feature.results.domain.usecase.GetResultByContestUs
 interface HomeNavigationDependencies {
     val serverTime: br.gov.caixa.loterias.core.common.time.ServerTimeSource
     val selectHomeResaleOffers: br.gov.caixa.loterias.feature.home.domain.usecase.SelectHomeResaleOffersUseCase
-    val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+    val authenticatedSessionIdentity: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
     val betCombos: GetBetCombosUseCase
     val bettingParameters: GetBettingParametersUseCase
     val currentCart: GetCurrentCartUseCase

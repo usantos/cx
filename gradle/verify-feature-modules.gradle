@@ -54,7 +54,10 @@ tasks.register('verifyFeatureModules') {
             }.collectMany { configuration ->
                 configuration.allDependencies.withType(org.gradle.api.artifacts.ProjectDependency).collect { it.path }
             }.unique().sort()
-            graph[p.path] = [dependencies: dependencies,
+            def allProjectDependencies = p.configurations.collectMany { configuration ->
+                configuration.allDependencies.withType(org.gradle.api.artifacts.ProjectDependency).collect { it.path }
+            }.unique().sort()
+            graph[p.path] = [dependencies: dependencies, allProjectDependencies: allProjectDependencies,
                              android: p.plugins.hasPlugin('com.android.library') || p.plugins.hasPlugin('com.android.application') || p.plugins.hasPlugin('com.android.dynamic-feature'),
                              application: p.plugins.hasPlugin('com.android.application'),
                              dynamicFeature: p.plugins.hasPlugin('com.android.dynamic-feature'),

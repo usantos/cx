@@ -1,9 +1,22 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-
 import br.gov.caixa.loterias.core.keymanagement.model.HostPublicKeyPins
 import br.gov.caixa.loterias.core.keymanagement.model.PublicKeySet
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
+import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
+import br.gov.caixa.loterias.core.network.api.AccountVerificationHttpException
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionInterceptor
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
+import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
+import br.gov.caixa.loterias.core.network.interceptor.SingleAttemptTransactionInterceptor
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
 import com.google.gson.Gson
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
@@ -14,26 +27,12 @@ import okhttp3.Protocol
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
-import org.junit.Assert.*
-import org.junit.Test
-import retrofit2.Response
 import okio.Buffer
 import okio.ForwardingSource
 import okio.buffer
-import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
-import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
-import br.gov.caixa.loterias.core.network.interceptor.SingleAttemptTransactionInterceptor
-import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
-import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
-import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
-import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
-import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
-import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionInterceptor
-import br.gov.caixa.loterias.core.network.api.AccountVerificationHttpException
-import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
-import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
-import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
-import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
+import org.junit.Assert.*
+import org.junit.Test
+import retrofit2.Response
 
 /** Somente respostas no processo: sem apostas de usuários, credenciais reais ou gravações no backend. */
 class AccountVerificationBackendTest {

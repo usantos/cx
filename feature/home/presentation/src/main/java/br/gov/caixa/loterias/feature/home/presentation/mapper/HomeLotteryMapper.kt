@@ -4,8 +4,8 @@ import androidx.annotation.DrawableRes
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.home.R
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLottery
 import br.gov.caixa.loterias.feature.home.presentation.state.HomeLotteryKind
@@ -112,7 +112,7 @@ fun BettingParameters?.toHomeLotteries(
     specialContests: br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests =
         br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests(),
     poolSalesEnabled: Boolean = false,
-    resaleOffers: List<br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability> = emptyList(),
+    resaleOffers: List<br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability> = emptyList(),
 ): List<HomeLottery> {
     val games = this?.games.orEmpty().mapNotNull { game ->
         val canonical = canonicalModality(game.modality.code.ifBlank { game.modality.name })

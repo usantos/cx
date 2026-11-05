@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetPageDto
+import br.gov.caixa.loterias.core.network.dto.betting.GroupedFavoriteBetsDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetPageDto
-import br.gov.caixa.loterias.feature.betting.data.dto.GroupedFavoriteBetsDto
 
 interface FavoriteBetRemoteDataSource {
     suspend fun grouped(): GroupedFavoriteBetsDto?

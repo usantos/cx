@@ -6,7 +6,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.screen.MarketplaceFilterScreen
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterAction
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.viewmodel.MarketplaceFilterViewModel

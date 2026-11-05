@@ -206,7 +206,7 @@ class LoginOfflineRecoveryTest {
         override val activityResultRegistry get() = registry
         val auth: AuthenticationGateway = object :
             AuthenticationGateway,
-            br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences {
+            br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences {
             override val biometricEnabled get() = remembered
             override val biometricAvailable get() = remembered
             override val biometricCredentialAvailable get() = remembered
@@ -232,7 +232,7 @@ class LoginOfflineRecoveryTest {
                 verifications++
                 br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult.Verified(
                     br.gov.caixa.loterias.feature.account.domain.model.AccountAccess(
-                        br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.HOME,
+                        br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.HOME,
                         false,
                         java.math.BigDecimal.ZERO
                     )

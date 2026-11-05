@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.marketplace.domain.model
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.apimessages.localizedMessage as messageText
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.apimessages.localizedMessage as messageText
 import java.util.Locale
 
 data class MarketplaceSpecialContests(val megaThirtyYearsContest: Int? = null, val lotecaFathersDayContest: Int? = null) {

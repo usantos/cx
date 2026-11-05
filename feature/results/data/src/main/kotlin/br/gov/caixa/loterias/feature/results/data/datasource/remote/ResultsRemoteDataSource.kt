@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.results.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
 
 interface ResultsRemoteDataSource {
     suspend fun sportsTeamShields(): Map<Int, String> = emptyMap()

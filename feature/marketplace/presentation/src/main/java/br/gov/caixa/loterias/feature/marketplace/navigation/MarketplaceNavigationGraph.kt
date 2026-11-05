@@ -14,13 +14,13 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.navigation.destination.AppDestination
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.activeCartSummary
 import br.gov.caixa.loterias.core.navigation.state.activeResumingCartSummary
 import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.presentation.route.MarketplaceDetailRoute
 import br.gov.caixa.loterias.feature.marketplace.presentation.route.MarketplaceRoute
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplacePoolConfirmation

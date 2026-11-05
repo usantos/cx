@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.feature.account.domain.model
 
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 
 sealed interface PostLoginAccessResult {
     data class Verified(val access: AccountAccess, val identity: AuthenticatedSessionIdentity? = null) : PostLoginAccessResult

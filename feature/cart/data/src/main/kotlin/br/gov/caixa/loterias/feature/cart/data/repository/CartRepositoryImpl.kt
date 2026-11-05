@@ -1,14 +1,14 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
-import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.mapper.mapCartPayload
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteOperations
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartValidationOperations
+import br.gov.caixa.loterias.feature.cart.data.mapper.mapCartPayload
+import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
+import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
 
 class CartRepositoryImpl(private val remote: CartRemoteDataSource) : CartRepository {
     private val operations = CartRemoteOperations(remote)

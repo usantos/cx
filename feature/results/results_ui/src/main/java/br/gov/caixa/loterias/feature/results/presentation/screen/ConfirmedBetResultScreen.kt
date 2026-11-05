@@ -23,10 +23,10 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.presentation.state.ConfirmedBetResultsState
 import br.gov.caixa.loterias.feature.results.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 @Composable
 internal fun DeliveredConfirmedBetResultScreen(

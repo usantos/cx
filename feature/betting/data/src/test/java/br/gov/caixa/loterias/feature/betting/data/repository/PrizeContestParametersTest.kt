@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryContestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryGameParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryParameterDto
-import com.google.gson.Gson
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryContestDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryGameParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryParameterDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource
+import br.gov.caixa.loterias.feature.betting.data.repository.BettingRepositoryImpl
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
+import com.google.gson.Gson
 import java.lang.reflect.Proxy
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource
-import br.gov.caixa.loterias.feature.betting.data.repository.BettingRepositoryImpl
 
 class PrizeContestParametersTest {
     @Test fun `normal and special draft types are preserved in cart wire requests`() = runTest {

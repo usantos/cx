@@ -14,8 +14,8 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSAl
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTextButton as TextButton
 import br.gov.caixa.loterias.core.designsystem.layout.loteriasCaixaDSModalWidth
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState
 
 @Composable

@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 
 class MarketplaceFilterParametersTest {
     @Test

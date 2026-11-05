@@ -13,10 +13,10 @@ import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffol
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIcon as Icon
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIconButton as IconButton
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidListUiState
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 @Composable
 fun RapidListScreenDelivered(

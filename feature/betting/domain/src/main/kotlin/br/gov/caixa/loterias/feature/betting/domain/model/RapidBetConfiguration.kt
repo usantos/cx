@@ -1,5 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import java.math.BigDecimal
 
 data class RapidBetConfiguration(

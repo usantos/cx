@@ -1,23 +1,25 @@
 package br.gov.caixa.loterias.feature.account.di
 
 import android.content.Context
+import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
 import br.gov.caixa.loterias.core.auth.gateway.AppAuthAuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
 import br.gov.caixa.loterias.core.auth.session.JwtCurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
-import br.gov.caixa.loterias.core.auth.authorization.AuthorizationRequestPolicy
-import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.core.security.authentication.loginAuthorizationRequestPolicy
-import br.gov.caixa.loterias.core.security.authentication.TopazAuthorizationDeviceInfoProvider
 import br.gov.caixa.loterias.core.security.authentication.AndroidWeakBiometricAvailability
-import dagger.Provides
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Singleton
+import br.gov.caixa.loterias.core.security.authentication.TopazAuthorizationDeviceInfoProvider
+import br.gov.caixa.loterias.core.security.authentication.loginAuthorizationRequestPolicy
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -76,13 +78,13 @@ object SessionModule {
     fun authentication(gateway: AppAuthAuthenticationGateway): AuthenticationGateway = gateway
 
     @Provides
-    fun sessionIdentity(tokenStore: SessionTokenStore): br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider = tokenStore
+    fun sessionIdentity(tokenStore: SessionTokenStore): AuthenticatedSessionIdentityProvider = tokenStore
 
     @Provides
-    fun sessionContent(tokenStore: SessionTokenStore): br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository = tokenStore
+    fun sessionContent(tokenStore: SessionTokenStore): AuthenticatedSessionContentRepository = tokenStore
 
     @Provides
-    fun observeSessionContent(repository: br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository):
+    fun observeSessionContent(repository: AuthenticatedSessionContentRepository):
         br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase =
         br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContent(repository)
 

@@ -1,7 +1,6 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
@@ -10,6 +9,11 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.SessionLogoutApi
 import br.gov.caixa.loterias.core.network.api.SessionLogoutApiProvider
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSource
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.account.data.repository.SessionSignOutRepositoryImpl
+import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody
@@ -17,10 +21,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
 import retrofit2.Response
-import br.gov.caixa.loterias.feature.account.data.repository.SessionSignOutRepositoryImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSourceImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSource
 
 class SessionSignOutRepositoryImplTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

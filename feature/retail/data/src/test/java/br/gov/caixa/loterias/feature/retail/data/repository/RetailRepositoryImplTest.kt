@@ -1,43 +1,43 @@
 package br.gov.caixa.loterias.feature.retail.data.repository
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
+import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
+import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
-import br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto
 import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.retail.MercadoPagoRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
 import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
 import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
 import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
-import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.payment.domain.usecase.PrepareMercadoPagoRegistration
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
 import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationResult
 import br.gov.caixa.loterias.feature.payment.domain.model.MercadoPagoRegistrationToken
-import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
-import com.google.gson.JsonObject
-import org.junit.Assert.assertSame
-import com.google.gson.JsonElement
-import com.google.gson.JsonNull
-import com.google.gson.JsonParser
-import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
-import org.junit.Assert.assertNull
-import org.junit.Test
-import okhttp3.ResponseBody.Companion.toResponseBody
+import br.gov.caixa.loterias.feature.payment.domain.usecase.PrepareMercadoPagoRegistration
+import br.gov.caixa.loterias.feature.retail.data.datasource.remote.PrizeRedemptionRemoteDataSource
+import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSource
+import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.retail.data.repository.RetailRepositoryImpl
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionResult
 import br.gov.caixa.loterias.feature.retail.domain.usecase.RedeemPrize
-import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
-import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
-import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.feature.retail.data.datasource.remote.PrizeRedemptionRemoteDataSource
-import br.gov.caixa.loterias.feature.retail.data.repository.RetailRepositoryImpl
-import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSource
-import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSourceImpl
+import com.google.gson.JsonElement
+import com.google.gson.JsonNull
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import kotlinx.coroutines.test.runTest
+import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 class RetailRepositoryImplTest {
     @Test fun `transport failures remain typed through Retrofit for token and both redemption channels`() = runTest {
@@ -169,7 +169,7 @@ class RetailRepositoryImplTest {
         ) { _, method, _ ->
             calls += "$label:${method.name}"
             when (method.name) {
-                "redeemPrize" -> br.gov.caixa.loterias.feature.retail.data.dto.PrizeRedemptionEnvelopeDto(JsonNull.INSTANCE)
+                "redeemPrize" -> br.gov.caixa.loterias.core.network.dto.retail.PrizeRedemptionEnvelopeDto(JsonNull.INSTANCE)
                 "mercadoPagoRegistrationToken" -> MercadoPagoRegistrationEnvelopeDto("token")
                 else -> ApiEnvelope(JsonNull.INSTANCE)
             }
@@ -695,8 +695,8 @@ class RetailRepositoryImplTest {
             calls += method.name
             when (method.name) {
                 "betReceiptPdf", "prizeReceiptPdf" -> "%PDF-1.7\n".toResponseBody()
-                "mercadoPagoRegistrationToken" -> br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto("token")
-                "redeemPrize" -> br.gov.caixa.loterias.feature.retail.data.dto.PrizeRedemptionEnvelopeDto(JsonNull.INSTANCE)
+                "mercadoPagoRegistrationToken" -> br.gov.caixa.loterias.core.network.dto.retail.MercadoPagoRegistrationEnvelopeDto("token")
+                "redeemPrize" -> br.gov.caixa.loterias.core.network.dto.retail.PrizeRedemptionEnvelopeDto(JsonNull.INSTANCE)
                 else -> ApiEnvelope(JsonNull.INSTANCE)
             }
         } as BackendApi

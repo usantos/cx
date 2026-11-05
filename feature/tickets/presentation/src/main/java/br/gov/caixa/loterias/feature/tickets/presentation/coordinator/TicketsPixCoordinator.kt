@@ -2,11 +2,11 @@ package br.gov.caixa.loterias.feature.tickets.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.presentation.effect.ForegroundReadOperation
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseProgress
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.isPendingPix
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetPurchaseDetailsUseCase
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.TicketsPixNoticeUiState
@@ -81,7 +81,7 @@ internal class TicketsPixCoordinator(
         }
     }
 
-    fun consumePixPurchaseRedirect(expected: br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect): Boolean =
+    fun consumePixPurchaseRedirect(expected: br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect): Boolean =
         synchronized(mutableState) {
             if (mutableState.value.pixPurchaseRedirect != expected) return false
             mutableState.dispatch(TicketsStateAction.PixRedirectConsumed(expected))

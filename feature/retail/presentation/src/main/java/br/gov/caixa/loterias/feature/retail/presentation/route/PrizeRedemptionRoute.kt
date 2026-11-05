@@ -27,7 +27,7 @@ fun PrizeRedemptionRoute(
     onMyBets: () -> Unit,
     onRegistration: (String) -> Unit,
     onRedirect: (br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect) -> Unit,
-    onBetEntry: (br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision) -> Unit,
+    onBetEntry: (br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     PrizeRedemptionRedirectEffect(viewModel, state, onRedirect)

@@ -2,6 +2,8 @@ package br.gov.caixa.loterias.apostas.navigation.action
 
 import br.gov.caixa.loterias.apostas.navigation.session.AppSessionCoordinator
 import br.gov.caixa.loterias.apostas.navigation.session.AppSessionDependencies
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.destination.BettingSimulationRoute
 import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
@@ -9,8 +11,6 @@ import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.accountCompletionRedirects
 import br.gov.caixa.loterias.core.navigation.state.loggedContinuation
 import br.gov.caixa.loterias.core.navigation.state.ticketQueryContinuation
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.payment.navigation.paymentRedirectRoute
 
 internal fun appNavigationActions(
@@ -69,7 +69,7 @@ internal fun appNavigationActions(
         }
         navController.navigate(serviceRedirectRoute(destination)) { launchSingleTop = true }
     }
-    val onPaymentRedirect: (br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect) -> Unit = { destination ->
+    val onPaymentRedirect: (br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect) -> Unit = { destination ->
         if (destination.name in setOf("LOGIN", "REGISTER_ACCOUNT", "ACCEPT_TERMS")) session.state.visitorReturnRoute = "cart/current"
         navController.navigate(paymentRedirectRoute(destination)) { launchSingleTop = true }
     }

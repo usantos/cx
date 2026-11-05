@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.screen
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 
 data class PurchaseDetailActions(
     val openPurchaseBetFilters: () -> Unit,

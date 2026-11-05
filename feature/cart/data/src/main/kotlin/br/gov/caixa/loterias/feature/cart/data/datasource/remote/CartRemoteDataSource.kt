@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.cart.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 
 interface CartRemoteDataSource {
     suspend fun currentCart(): CartDto?

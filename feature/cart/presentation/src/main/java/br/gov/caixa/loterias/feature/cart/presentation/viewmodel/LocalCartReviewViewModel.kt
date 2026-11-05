@@ -4,15 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DiscardLocalCartReviewUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetLocalCartReviewUseCase
-import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.cart.presentation.state.LocalCartReviewAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.LocalCartReviewState
 import br.gov.caixa.loterias.feature.cart.presentation.state.reduceLocalCartReviewState
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 
 /** Somente consulta: uma transação incerta nunca é repetida por esta tela. */
 class LocalCartReviewViewModel(

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.marketplace.navigation
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 
 data class MarketplaceFilterEntry(
     val initialFilter: MarketplaceFilter,

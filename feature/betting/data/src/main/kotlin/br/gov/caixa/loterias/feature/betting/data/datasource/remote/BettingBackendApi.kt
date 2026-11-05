@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetPageDto
-import br.gov.caixa.loterias.feature.betting.data.dto.GroupedFavoriteBetsDto
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetPageDto
+import br.gov.caixa.loterias.core.network.dto.betting.GroupedFavoriteBetsDto
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import com.google.gson.JsonElement
 import retrofit2.http.*
 

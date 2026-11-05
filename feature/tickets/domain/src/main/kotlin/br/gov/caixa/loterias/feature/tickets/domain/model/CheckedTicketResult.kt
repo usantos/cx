@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.CheckedTicketAward
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import java.math.BigDecimal
 
 /** Resultado de conferir-bilhete, distinto do contrato do histórico de apostas confirmadas. */

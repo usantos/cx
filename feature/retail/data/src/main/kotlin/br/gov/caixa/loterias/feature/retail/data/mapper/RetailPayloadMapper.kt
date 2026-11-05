@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.retail.data.mapper
 
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 

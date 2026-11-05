@@ -1,13 +1,17 @@
 package br.gov.caixa.loterias.feature.tickets.data.repository
 
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.network.api.BackendApi
 import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.model.AppParametersDto
 import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
-import br.gov.caixa.loterias.core.network.api.BackendApi
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import java.lang.reflect.Proxy
@@ -16,10 +20,6 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
 
 class TicketsRepositoryCharacterizationTest {
     @Test fun `receipt loading propagates cancellation from each remote stage`() = runTest {

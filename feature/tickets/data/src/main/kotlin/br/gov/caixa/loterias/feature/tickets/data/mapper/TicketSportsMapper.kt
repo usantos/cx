@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetFilters
 import br.gov.caixa.loterias.feature.tickets.presentation.state.PurchaseBetFilters
 

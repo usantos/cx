@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.state
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketPeriod
@@ -94,7 +94,7 @@ data class TicketsUiState(
     val selectedPurchase: Purchase? = null,
     val checkingPixPurchase: Boolean = false,
     val pixPurchaseCompleted: Boolean = false,
-    val pixPurchaseRedirect: br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect? = null,
+    val pixPurchaseRedirect: br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect? = null,
     val pixPurchasePaused: Boolean = false,
     val pixPurchaseNotice: TicketsPixNoticeUiState? = null,
 

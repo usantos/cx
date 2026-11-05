@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.retail.presentation.route
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.retail.R as LocalizedR
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionStage

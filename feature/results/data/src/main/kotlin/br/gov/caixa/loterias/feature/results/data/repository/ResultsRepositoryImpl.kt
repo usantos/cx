@@ -1,25 +1,24 @@
 package br.gov.caixa.loterias.feature.results.data.repository
 
-import br.gov.caixa.loterias.feature.results.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.data.mapper.serviceResultOf
+import br.gov.caixa.loterias.core.network.dto.results.DrawContestDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawRegionalWinnerDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawSelectionRewardDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawSportsMatchDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawSportsTeamDto
 import br.gov.caixa.loterias.core.network.mapper.flattenNumbers
+import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
 import br.gov.caixa.loterias.feature.results.domain.model.DrawPayout
 import br.gov.caixa.loterias.feature.results.domain.model.DrawRegionalWinner
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSelectionReward
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsTeam
-import br.gov.caixa.loterias.feature.results.domain.repository.ResultsRepository
 import br.gov.caixa.loterias.feature.results.domain.model.UpcomingDrawContest
-import br.gov.caixa.loterias.feature.results.data.dto.DrawSportsMatchDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawSportsTeamDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawContestDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawSelectionRewardDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawRegionalWinnerDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.feature.results.domain.repository.ResultsRepository
 import com.google.gson.JsonElement
-import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
-import br.gov.caixa.loterias.core.data.mapper.serviceResultOf
+import br.gov.caixa.loterias.feature.results.data.localizedMessage as messageText
 
 class ResultsRepositoryImpl(private val remote: ResultsRemoteDataSource) : ResultsRepository {
     override suspend fun latest(modality: String): DrawResult {
@@ -33,7 +32,7 @@ class ResultsRepositoryImpl(private val remote: ResultsRemoteDataSource) : Resul
         return requireNotNull(remote.resultByContest(modality, contest)) { messageText("resultado_sem_payload_df1f51") }.toDomain()
     }
 
-    override suspend fun forConfirmedBet(bet: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet) = serviceResultOf {
+    override suspend fun forConfirmedBet(bet: br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet) = serviceResultOf {
         require(bet.contest > 0) { messageText("concurso_invalido_892893") }
         val modality = when (bet.modalityId) {
             2 -> "megasena"

@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.tickets.navigation
 
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
@@ -28,7 +28,7 @@ interface TicketsNavigationDependencies :
     br.gov.caixa.loterias.feature.payment.navigation.MercadoPagoRegistrationDependencies,
     br.gov.caixa.loterias.core.navigation.fixture.VisualBetNavigationFixtures {
     val addBetToCart: AddBetToCartUseCase
-    val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+    val authenticatedSessionIdentity: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
     val bettingParameters: GetBettingParametersUseCase
     val checkTicket: CheckTicketUseCase
     val confirmedBetResults: br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase

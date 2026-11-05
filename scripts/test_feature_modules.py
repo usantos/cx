@@ -9,6 +9,33 @@ spec.loader.exec_module(policy)
 
 
 class FeatureModulesTest(unittest.TestCase):
+    def test_configured_core_cannot_hide_feature_dependency_in_test_or_custom_configuration(self):
+        with tempfile.TemporaryDirectory() as folder:
+            configured = {'projects': {':core:auth': {
+                'dependencies': [], 'allProjectDependencies': [':feature:account:domain'],
+            }}}
+            self.assertTrue(any('Core dependency on feature' in e
+                                for e in policy.check(Path(folder), configured)))
+
+    def test_core_cannot_depend_on_features_in_any_source_set(self):
+        for configuration in ('api', 'implementation', 'testImplementation', 'androidTestImplementation'):
+            with self.subTest(configuration=configuration), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                build = root / 'core/domain/build.gradle'
+                build.parent.mkdir(parents=True)
+                build.write_text(configuration + " project(':feature:account:domain')\n")
+                self.assertTrue(any('Core dependency on feature' in e for e in policy.check(root)))
+
+    def test_core_sources_cannot_import_feature_contracts(self):
+        for source_set in ('main', 'test', 'androidTest'):
+            with self.subTest(source_set=source_set), tempfile.TemporaryDirectory() as folder:
+                root = Path(folder)
+                source = root / 'core/auth/src' / source_set / 'kotlin/Session.kt'
+                source.parent.mkdir(parents=True)
+                source.write_text('package br.gov.caixa.loterias.core.auth\n'
+                                  'import br.gov.caixa.loterias.feature.account.domain.Identity\nclass Session')
+                self.assertTrue(any('Core source depends on feature' in e for e in policy.check(root)))
+
     def dynamic_fixture(self, dynamic=True, declared=True, base=':app', cycle=False, configured=False):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)

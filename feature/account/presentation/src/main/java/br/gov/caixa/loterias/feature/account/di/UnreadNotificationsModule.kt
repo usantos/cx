@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.account.di
 
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 import br.gov.caixa.loterias.feature.account.data.repository.UnreadNotificationCountRepositoryImpl
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.usecase.GetUnreadNotificationCountUseCase
 import br.gov.caixa.loterias.feature.account.domain.repository.UnreadNotificationCountRepository
-import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
-import dagger.Provides
+import br.gov.caixa.loterias.feature.account.domain.usecase.GetUnreadNotificationCountUseCase
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 

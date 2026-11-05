@@ -4,26 +4,26 @@ import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartPoolShare
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
 import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.AddMarketplacePoolToCartUseCase
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.SearchMarketplace
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceAction
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
 import br.gov.caixa.loterias.feature.marketplace.presentation.viewmodel.MarketplaceViewModel
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.GetFavoriteRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import java.math.BigDecimal
@@ -64,15 +64,15 @@ class MarketplaceViewModelTest {
 
     @Test
     fun `exhausts local pages then starts state and national at page zero`() = runTest(dispatcherRule.dispatcher) {
-        val calls = mutableListOf<Pair<br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea?, Int>>()
+        val calls = mutableListOf<Pair<br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea?, Int>>()
         val repository = MarketplaceRepository { filter, page ->
             calls += filter.searchArea to page
             val next = when (filter.searchArea) {
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY ->
-                    if (page == 1) br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE else null
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY ->
+                    if (page == 1) br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.STATE else null
 
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE ->
-                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.STATE ->
+                    br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.NATIONAL
 
                 else -> null
             }
@@ -80,7 +80,7 @@ class MarketplaceViewModelTest {
                 listOf(pool.copy(code = "${filter.searchArea}-$page")),
                 page,
                 if (filter.searchArea ==
-                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                    br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY
                 ) {
                     1
                 } else {
@@ -94,7 +94,7 @@ class MarketplaceViewModelTest {
             viewModel(
                 repository,
                 filter = MarketplaceFilter.empty().withSearchArea(
-                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                    br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY
                 )
             )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -104,10 +104,10 @@ class MarketplaceViewModelTest {
         }
         assertEquals(
             listOf(
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 0,
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY to 1,
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE to 0,
-                br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL to 0
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY to 0,
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY to 1,
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.STATE to 0,
+                br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.NATIONAL to 0
             ),
             calls
         )
@@ -123,7 +123,7 @@ class MarketplaceViewModelTest {
             val area = requireNotNull(filter.searchArea)
             MarketplacePage(
                 if (area ==
-                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.NATIONAL
+                    br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.NATIONAL
                 ) {
                     listOf(pool)
                 } else {
@@ -139,7 +139,7 @@ class MarketplaceViewModelTest {
             viewModel(
                 repository,
                 filter = MarketplaceFilter.empty().withSearchArea(
-                    br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY
+                    br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY
                 )
             )
         dispatcherRule.dispatcher.scheduler.advanceUntilIdle()
@@ -159,8 +159,8 @@ class MarketplaceViewModelTest {
 
     @Test
     fun `contest header uses current simulation parameters instead of pool advertisement data`() = runTest(dispatcherRule.dispatcher) {
-        val game = br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters(
-            br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
+        val game = br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters(
+            br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
             4100, "2026-12-31", 60, 6, 20, 1, emptyList(), emptyList(),
             estimatedPrize = BigDecimal("7654321")
         )
@@ -173,7 +173,7 @@ class MarketplaceViewModelTest {
             FixedCoroutineDispatchers(dispatcherRule.dispatcher),
             getBettingParameters = br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase {
                 AppResult.Success(
-                    br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game))
+                    BettingParameters(BigDecimal.ZERO, BigDecimal.ZERO, 0, listOf(game))
                 )
             }
         )

@@ -12,13 +12,13 @@ import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests

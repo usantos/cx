@@ -26,8 +26,8 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCa
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCardDefaults as CardDefaults
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 // Gestos, acessibilidade e menu compartilham o estado desta linha da lista.
 @Composable

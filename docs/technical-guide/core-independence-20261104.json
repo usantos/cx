@@ -1,0 +1,141 @@
+{
+  "date": "2026-11-04",
+  "core_project_dependencies": {
+    ":core:auth": [
+      ":core:auth",
+      ":core:domain",
+      ":core:network"
+    ],
+    ":core:common": [],
+    ":core:data": [
+      ":core:domain",
+      ":core:network"
+    ],
+    ":core:design-system": [
+      ":core:design-system"
+    ],
+    ":core:domain": [
+      ":core:common"
+    ],
+    ":core:key-management": [],
+    ":core:module-delivery": [
+      ":core:domain",
+      ":core:module-delivery",
+      ":core:testing"
+    ],
+    ":core:navigation": [
+      ":core:domain",
+      ":core:navigation",
+      ":core:presentation"
+    ],
+    ":core:network": [
+      ":core:domain",
+      ":core:key-management"
+    ],
+    ":core:persistence": [
+      ":core:domain",
+      ":core:persistence"
+    ],
+    ":core:presentation": [
+      ":core:design-system",
+      ":core:domain",
+      ":core:presentation",
+      ":core:testing"
+    ],
+    ":core:queue": [
+      ":core:design-system",
+      ":core:queue"
+    ],
+    ":core:security": [
+      ":core:auth",
+      ":core:common",
+      ":core:domain",
+      ":core:key-management",
+      ":core:network",
+      ":core:security"
+    ],
+    ":core:testing": [
+      ":core:domain"
+    ]
+  },
+  "production_cycles": [],
+  "standalone_core_compilation": "passed: 14 core modules; no app or feature projects",
+  "all_jvm_test_compilation_tasks": 105,
+  "global_run_all_entries": 91,
+  "tests": {
+    "test_tasks": 105,
+    "environments": {
+      "Prd": {
+        "suites": 216,
+        "tests": 950,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "Compartilhados": {
+        "suites": 587,
+        "tests": 2926,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "Automacao": {
+        "suites": 216,
+        "tests": 950,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "Tqs": {
+        "suites": 216,
+        "tests": 950,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    "app": {
+      "Prd": 412,
+      "Automacao": 412,
+      "Tqs": 412
+    },
+    "totals": {
+      "suites": 1235,
+      "tests": 5776,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "device_tasks": [],
+    "missing": [],
+    "stale": [],
+    "cached_test_tasks": []
+  },
+  "quality": {
+    "ktlint": "passed",
+    "detekt": "passed",
+    "android_lint": "passed",
+    "line_coverage": {
+      "covered": 63348,
+      "total": 66477,
+      "percentage": 95.29
+    },
+    "tooling_tests_passed": 240
+  },
+  "baseline_entries": {
+    "detekt": {
+      "before": 6199,
+      "after": 6199,
+      "added": 0
+    },
+    "ktlint": {
+      "before": 43375,
+      "after": 43375,
+      "added": 0
+    }
+  },
+  "kotlin_test_annotations": {
+    "before": 4165,
+    "after": 4166
+  }
+}

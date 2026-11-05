@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurchaseContext
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage

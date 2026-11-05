@@ -1,19 +1,19 @@
 package br.gov.caixa.loterias.feature.account.di
 
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.network.api.SessionLogoutApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.data.repository.SessionSignOutRepositoryImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSource
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.SessionSignOutRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.account.data.repository.SessionSignOutRepositoryImpl
 import br.gov.caixa.loterias.feature.account.domain.repository.SessionSignOutRepository
 import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSession
 import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSessionUseCase
-import br.gov.caixa.loterias.core.network.api.SessionLogoutApiProvider
-import dagger.Provides
-import javax.inject.Singleton
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)

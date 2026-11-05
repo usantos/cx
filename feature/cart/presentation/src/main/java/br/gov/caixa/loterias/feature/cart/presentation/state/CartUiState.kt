@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.cart.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 
 enum class CartLocationAction { REQUEST_PERMISSION, PERMISSION_SETTINGS, PROVIDER_SETTINGS }

@@ -1,9 +1,14 @@
 package br.gov.caixa.loterias.core.domain.marketplace
 
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.rule.MarketplaceFilterRules
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Assert.fail
 import org.junit.Test
-import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.marketplace.domain.rule.MarketplaceFilterRules
 
 class MarketplaceFilterRulesTest {
     @Test

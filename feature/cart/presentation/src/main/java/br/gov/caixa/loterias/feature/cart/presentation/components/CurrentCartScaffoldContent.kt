@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CartError
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
 

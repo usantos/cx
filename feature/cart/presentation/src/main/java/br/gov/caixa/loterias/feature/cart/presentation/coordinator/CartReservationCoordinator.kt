@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.cart.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.rule.CartReservationExpiry
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartReservationAction
@@ -68,7 +68,7 @@ internal class CartReservationCoordinator(
         }
         if (mutableState.value.loading || expirationJob?.isActive == true) return
         val expired = mutableState.value.cart?.items.orEmpty().filter { item ->
-            item.kind == br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind.POOL_SHARE &&
+            item.kind == br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind.POOL_SHARE &&
                 item.poolShare?.let { share ->
                     CartReservationExpiry.removalDue(share.expiresAt, serverTime.now())
                 } == true
@@ -133,6 +133,6 @@ internal class CartReservationCoordinator(
 }
 
 internal data class CartReservationSession(
-    val identities: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider?,
-    val changes: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>?,
+    val identities: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider?,
+    val changes: kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?>?,
 )

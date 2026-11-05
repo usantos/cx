@@ -1,25 +1,28 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
-import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
-import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
-import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
-import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
 import br.gov.caixa.loterias.core.network.api.NotificationReadApi
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.core.network.api.NotificationReadEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationRequestDto
 import br.gov.caixa.loterias.core.network.api.UnreadNotificationsEnvelopeDto
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationRequestDto
+import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
+import br.gov.caixa.loterias.core.network.interceptor.NetworkLogSink
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.LatestNotificationReadRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.account.data.repository.LatestNotificationReadRepositoryImpl
+import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.coroutines.test.runTest
@@ -28,9 +31,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
 import retrofit2.Response
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.LatestNotificationReadRemoteDataSourceImpl
-import br.gov.caixa.loterias.feature.account.data.repository.LatestNotificationReadRepositoryImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 
 class LatestNotificationReadRepositoryImplTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

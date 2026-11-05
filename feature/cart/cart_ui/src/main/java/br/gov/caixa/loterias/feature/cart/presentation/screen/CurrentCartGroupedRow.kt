@@ -25,7 +25,7 @@ import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSCurrentCartCh
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSCurrentCartColors
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.cart.presentation.components.cartWholeBlockReadout
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartNativeText
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.currentCartModalityName

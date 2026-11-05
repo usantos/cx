@@ -6,8 +6,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
 import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.payment.navigation.PaymentRegistrationHost
 import br.gov.caixa.loterias.feature.payment.navigation.paymentRegistrationViewModel
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel

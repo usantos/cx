@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.coordinator.LoginAuthorizationCoordinator
 import br.gov.caixa.loterias.feature.account.presentation.coordinator.LoginBiometricPreferences
@@ -19,8 +19,8 @@ class LoginViewModel(
     private val authentication: SessionAuthentication,
     private val dispatchers: CoroutineDispatchers = DefaultCoroutineDispatchers,
     private val verifyAccess: VerifyPostLoginAccessUseCase,
-    private val biometric: br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences? =
-        authentication as? br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences,
+    private val biometric: br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences? =
+        authentication as? br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences,
 ) : ViewModel() {
     private val mutableState = reduxStateStore<LoginUiState, LoginAction>(
         LoginUiState(

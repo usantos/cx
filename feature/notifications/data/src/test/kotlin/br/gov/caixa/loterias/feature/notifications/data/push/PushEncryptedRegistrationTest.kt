@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.notifications.data.push
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.persistence.SecureRecordStore
 import br.gov.caixa.loterias.core.domain.persistence.SecureSnapshot
 import br.gov.caixa.loterias.core.domain.persistence.SecureStoreFactory
 import br.gov.caixa.loterias.core.domain.persistence.SecureStoreScope
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.notifications.data.repository.PushRegistrationLocalRepositoryImpl
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertFalse

@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.apostas
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest
 import br.gov.caixa.loterias.core.navigation.destination.PoolTutorialRoute
 import br.gov.caixa.loterias.core.navigation.workflow.nextDestination
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
+
 /** IDs do servidor têm preferência; contratos legados só de exibição mantêm sua alternativa histórica. */
 fun Purchase.isPendingPix(): Boolean = (paymentMethodId == PIX_PAYMENT_METHOD_ID || paymentMethod.contains("pix", true)) &&
     (statusId == AWAITING_PAYMENT_STATUS_ID || status.contains("aguardando", true)) && pixCopyPaste.isNotBlank()

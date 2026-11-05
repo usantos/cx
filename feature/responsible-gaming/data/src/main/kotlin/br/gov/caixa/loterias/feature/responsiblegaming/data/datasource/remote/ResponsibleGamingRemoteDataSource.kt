@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.responsiblegaming.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentAnswerDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentPayloadDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SocialTransfersDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.AccountSuspensionDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.AccountSuspensionDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentAnswerDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentPayloadDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SocialTransfersDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SuspendAccountRequestDto
 
 interface ResponsibleGamingRemoteDataSource {
     suspend fun assessmentQuestions(): SelfAssessmentPayloadDto?

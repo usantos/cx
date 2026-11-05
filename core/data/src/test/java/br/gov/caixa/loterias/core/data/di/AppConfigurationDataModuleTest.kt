@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.core.data.di
 
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
-import br.gov.caixa.loterias.core.data.repository.AppConfigurationRepositoryImpl
 import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSourceImpl
+import br.gov.caixa.loterias.core.data.repository.AppConfigurationRepositoryImpl
 import br.gov.caixa.loterias.core.network.model.AppParametersDto
 import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
@@ -23,7 +23,7 @@ class AppConfigurationDataModuleTest {
         assertTrue(repository is AppConfigurationRepositoryImpl)
 
         assertEquals(AppResult.Success(true), AppConfigurationDataModule.isVersionSupported(repository)("1.24.0"))
-        assertEquals(AppResult.Success(br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters(2, 9)),
+        assertEquals(AppResult.Success(br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters(2, 9)),
             AppConfigurationDataModule.filterParameters(repository)())
         val features = AppConfigurationDataModule.homeFeatureConfiguration(repository)()
         assertEquals(AppResult.Success(br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration(

@@ -6,6 +6,7 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddFavoriteBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.DeleteFavoriteBetUseCase
@@ -16,7 +17,6 @@ import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.FavoriteBets
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase

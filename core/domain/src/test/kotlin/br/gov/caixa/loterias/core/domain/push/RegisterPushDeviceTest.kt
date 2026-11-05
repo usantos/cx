@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.core.domain.push
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
+import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.async
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
-import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
-import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
 
 class RegisterPushDeviceTest {
     private var identity: AuthenticatedSessionIdentity? = AuthenticatedSessionIdentity("a".repeat(64))

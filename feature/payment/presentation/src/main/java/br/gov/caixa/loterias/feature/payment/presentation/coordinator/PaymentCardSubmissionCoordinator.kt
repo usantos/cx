@@ -3,20 +3,20 @@ package br.gov.caixa.loterias.feature.payment.presentation.coordinator
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.model.CardPaymentRequest
 import br.gov.caixa.loterias.feature.payment.domain.model.CardSubmissionOutcome
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentCardDraft
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentCardSelection
 import br.gov.caixa.loterias.feature.payment.domain.usecase.SubmitCardPaymentUseCase
-import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardAction
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardPurchaseContext
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.payment.presentation.formatting.localizedMessage as messageText
 
 internal class PaymentCardSubmissionCoordinator(
     private val mutableState: ReduxStateStore<PaymentCardUiState, PaymentCardAction>,

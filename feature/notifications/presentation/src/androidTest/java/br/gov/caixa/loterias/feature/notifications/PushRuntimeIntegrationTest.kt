@@ -13,11 +13,11 @@ import android.os.SystemClock
 import androidx.test.platform.app.InstrumentationRegistry
 import br.gov.caixa.loterias.core.auth.fixture.SyntheticSessionFixture
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
 import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
 import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.notifications.di.PushRuntime
 import com.google.firebase.messaging.RemoteMessage
 import java.util.concurrent.CountDownLatch

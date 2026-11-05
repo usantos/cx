@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.results.ui
 
 import androidx.annotation.Keep
 import androidx.compose.runtime.Composable
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.presentation.delivery.ResultsUiEntry
 import br.gov.caixa.loterias.feature.results.presentation.state.ConfirmedBetResultsState
 import br.gov.caixa.loterias.feature.results.presentation.state.ResultsUiState
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 @Keep
 class ResultsUiEntryImpl : ResultsUiEntry {

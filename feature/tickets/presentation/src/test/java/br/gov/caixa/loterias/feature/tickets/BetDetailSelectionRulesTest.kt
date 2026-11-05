@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.tickets
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.CheckedTicketAward
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetReceipt
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsTeam
-import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketAward
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetReceipt
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.confirmedBetContestStatus
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.confirmedBetDetailHitCount
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.detailSportsResultLabel

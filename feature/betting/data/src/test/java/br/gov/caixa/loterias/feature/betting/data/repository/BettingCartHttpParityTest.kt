@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.core.network.api.LoteriasApi
-import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.api.LoteriasApi
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCart
 import com.google.gson.JsonParser
 import kotlinx.coroutines.test.runTest
-import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.MockResponse
-import org.junit.Test
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -83,7 +83,7 @@ class BettingCartHttpParityTest {
                         numbers = emptyList(),
                         surprise = true,
                         numberQuantity = 10,
-                        favoriteTeam = br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam(1, "Time", "DF"),
+                        favoriteTeam = br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam(1, "Time", "DF"),
                         contestNumber = 2900,
                         surpriseTeamSelected = selected
                     )

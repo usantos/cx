@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.feature.responsiblegaming.data.repository
 
-import br.gov.caixa.loterias.feature.responsiblegaming.data.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.responsiblegaming.domain.repository.ResponsibleGamingRepository
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentAnswerDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SuspendAccountRequestDto
+import br.gov.caixa.loterias.feature.responsiblegaming.data.datasource.remote.ResponsibleGamingRemoteDataSource
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.AccountSuspension
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentAnswer
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SelfAssessmentQuestion
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SocialTransfers
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentAnswerDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
+import br.gov.caixa.loterias.feature.responsiblegaming.domain.repository.ResponsibleGamingRepository
 import java.math.BigDecimal
-import br.gov.caixa.loterias.feature.responsiblegaming.data.datasource.remote.ResponsibleGamingRemoteDataSource
+import br.gov.caixa.loterias.feature.responsiblegaming.data.localizedMessage as messageText
 
 class ResponsibleGamingRepositoryImpl(private val remote: ResponsibleGamingRemoteDataSource) : ResponsibleGamingRepository {
     override suspend fun assessmentQuestions(): List<SelfAssessmentQuestion> =

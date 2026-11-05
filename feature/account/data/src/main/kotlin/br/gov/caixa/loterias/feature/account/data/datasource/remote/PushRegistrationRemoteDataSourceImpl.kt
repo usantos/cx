@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
 import br.gov.caixa.loterias.core.data.datasource.remote.PushRegistrationRemoteDataSource
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationRequestDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationRequestDto
 
 class PushRegistrationRemoteDataSourceImpl(
     private val provider: NotificationReadApiProvider,

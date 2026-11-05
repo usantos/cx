@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.core.network.error.toBackendHttpFailure
 import retrofit2.HttpException

@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.cart
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.CartCheckoutRedirects
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartCheckoutAction

@@ -1,16 +1,19 @@
 package br.gov.caixa.loterias.core.auth
 
-import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContent
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 
 class SessionContentTest {
     @Test fun `notification completion clears only exact owner and object while retaining cart and payment`() = runBlocking {
@@ -63,7 +66,7 @@ class SessionContentTest {
     @Test fun `only exact active identity can publish and logout emits empty state`() = runBlocking {
         val store = SessionTokenStore()
         val values = mutableListOf<AuthenticatedSessionContent?>()
-        val job = launch(Dispatchers.Unconfined) { ObserveAuthenticatedSessionContent(store)().collect { values += it } }
+        val job = launch(Dispatchers.Unconfined) { store.observe().collect { values += it } }
         try {
             assertNull(store.observe().first())
             assertFalse(store.publish(AuthenticatedSessionIdentity("a".repeat(64)), content))

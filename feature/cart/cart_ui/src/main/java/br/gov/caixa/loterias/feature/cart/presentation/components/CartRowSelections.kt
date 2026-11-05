@@ -19,9 +19,9 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSSu
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.label
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.quantityLabel
 import br.gov.caixa.loterias.feature.cart.ui.R as DeliveryR

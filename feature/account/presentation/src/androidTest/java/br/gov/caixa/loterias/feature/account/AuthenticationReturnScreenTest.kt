@@ -18,11 +18,11 @@ import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.BiometricAuthenticationGateway
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.route.LoginRoute
 import br.gov.caixa.loterias.feature.account.presentation.screen.AccountTokenScreen
@@ -200,7 +200,7 @@ class AuthenticationReturnScreenTest {
     @Test
     fun trialAfterFailedAccountValidationClearsCredentialBeforeReturningToHome() {
         val activeCredential = AtomicBoolean(false)
-        val ownedIdentity = br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity(
+        val ownedIdentity = br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity(
             "a".repeat(SYNTHETIC_OWNER_HASH_LENGTH)
         )
         val trialNavigation = AtomicInteger()
@@ -213,7 +213,7 @@ class AuthenticationReturnScreenTest {
             override fun logout() {
                 activeCredential.set(false)
             }
-            override fun logout(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity): Boolean {
+            override fun logout(identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity): Boolean {
                 if (identity !== ownedIdentity || !activeCredential.get()) return false
                 logout()
                 return true

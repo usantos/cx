@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.payment.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.api.PurchaseBackendApiProvider
+import br.gov.caixa.loterias.core.network.api.PurchaseBackendResponse
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.core.network.provider.PaymentApiProvider
-import br.gov.caixa.loterias.core.network.api.PurchaseBackendApiProvider
-import br.gov.caixa.loterias.core.network.api.PurchaseBackendResponse
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
 import com.google.gson.JsonElement
 
 interface PaymentRemoteDataSource {

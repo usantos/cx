@@ -7,10 +7,10 @@ import android.app.Application
 import android.app.Notification
 import android.app.NotificationManager
 import android.os.Bundle
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.persistence.SecureRecordStore
 import br.gov.caixa.loterias.core.domain.persistence.SecureSnapshot
 import br.gov.caixa.loterias.core.domain.persistence.SecureStoreFactory
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.notifications.data.repository.PushRegistrationLocalRepositoryImpl
 import com.google.firebase.messaging.RemoteMessage
 import org.junit.Assert.assertEquals

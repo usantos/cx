@@ -1,12 +1,11 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartPoolShare
+import br.gov.caixa.loterias.core.network.dto.cart.CartBetDto
 import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
 
 internal fun CartBetDto.cartToCartItem(kind: CartItemKind): CartItem {
     val reservation = poolReservation

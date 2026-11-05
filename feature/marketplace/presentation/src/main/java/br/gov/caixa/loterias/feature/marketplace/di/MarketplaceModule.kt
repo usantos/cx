@@ -50,7 +50,7 @@ object MarketplaceModule {
     fun searchMarketplace(
         repository: MarketplaceRepository,
         account: AccountMunicipalityRepository,
-        sessions: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider,
+        sessions: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider,
     ): SearchMarketplaceUseCase = SearchMarketplace(repository, AccountMarketplaceLocationProvider(account, sessions))
 
     @Provides

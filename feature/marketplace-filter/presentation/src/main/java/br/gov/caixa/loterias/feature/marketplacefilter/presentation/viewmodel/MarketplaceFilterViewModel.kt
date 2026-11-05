@@ -7,13 +7,12 @@ import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.event.SingleConsumerEventQueue
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.rule.MarketplaceFilterRules
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
-import br.gov.caixa.loterias.feature.marketplace.domain.rule.MarketplaceFilterRules
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.GetMarketplaceSpecialContestsUseCase
-import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceFilterState
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceModalities
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
@@ -24,6 +23,7 @@ import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.Market
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.reduceMarketplaceFilterState
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
 
 class MarketplaceFilterViewModel(
     private val getFilterParameters: GetMarketplaceFilterParametersUseCase,
@@ -36,7 +36,7 @@ class MarketplaceFilterViewModel(
         initialFilter.contestType ?: 0
     ),
     lotteryEnabled: Boolean = true,
-    initialRetailer: br.gov.caixa.loterias.feature.retail.domain.model.Retailer? = null,
+    initialRetailer: br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer? = null,
     private val getSpecialContests: GetMarketplaceSpecialContestsUseCase? = null,
 ) : ViewModel() {
     private val mutableState = reduxStateStore<MarketplaceFilterUiState, MarketplaceFilterStateAction>(

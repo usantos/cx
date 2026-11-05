@@ -28,6 +28,9 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedUser
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.domain.environment.model.EffectiveEnvironment
 import br.gov.caixa.loterias.core.domain.environment.model.TestEnvironment
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
@@ -37,12 +40,9 @@ import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.account.domain.environment.ChangeEnvironment
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.domain.model.ZipCodeLocation
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase

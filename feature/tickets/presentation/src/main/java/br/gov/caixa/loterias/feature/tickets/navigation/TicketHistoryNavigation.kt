@@ -10,13 +10,13 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.activeCartSummary
 import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetRepeatActionsOverlay
 import br.gov.caixa.loterias.feature.tickets.presentation.route.ConfirmedBetsDataRoute
 import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.TicketsViewModel

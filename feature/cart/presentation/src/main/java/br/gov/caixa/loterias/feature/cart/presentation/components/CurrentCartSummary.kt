@@ -15,17 +15,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSCurrentCartColors
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartNativeText
+import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartBlue
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButton as Button
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSButtonDefaults as ButtonDefaults
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSOutlinedButton as OutlinedButton
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSSurface as Surface
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSCurrentCartColors
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartNativeText
-import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartBlue
 
 /** Rodapé branco elevado de activity_carrinho; seu resumo zerado também permanece presente. */
 @Composable

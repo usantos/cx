@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.account.presentation.mapper
 
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 
 internal fun AppError.loginUserMessage(): String = when (this) {

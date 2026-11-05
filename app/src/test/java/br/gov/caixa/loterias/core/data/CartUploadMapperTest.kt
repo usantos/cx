@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.core.data
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
-import br.gov.caixa.loterias.feature.cart.data.dto.CartTeamDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartUploadDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartTeamDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartUploadDto
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSourceImpl
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.cart.data.mapper.toUploadDto
 import br.gov.caixa.loterias.feature.cart.domain.model.CartCode
 import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaMatch

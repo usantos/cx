@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
@@ -25,7 +26,6 @@ import br.gov.caixa.loterias.feature.results.domain.usecase.GetLatestResultUseCa
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetResultByContestUseCase
 import br.gov.caixa.loterias.feature.results.navigation.ResultsNavigationDependencies
 import br.gov.caixa.loterias.feature.results.navigation.resultsGraph
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Rule

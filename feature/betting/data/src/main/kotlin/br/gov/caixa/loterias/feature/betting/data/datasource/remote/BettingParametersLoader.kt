@@ -1,10 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.data.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import kotlinx.coroutines.CancellationException
 import br.gov.caixa.loterias.feature.betting.data.mapper.toBettingParameters
+import kotlinx.coroutines.CancellationException
 
 internal class BettingParametersLoader(private val remote: BettingRemoteDataSource) {
     suspend fun parameters(): BettingParameters {

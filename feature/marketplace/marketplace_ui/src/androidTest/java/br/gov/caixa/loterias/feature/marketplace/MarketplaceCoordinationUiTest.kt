@@ -14,6 +14,7 @@ import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeUp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRule
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
@@ -22,7 +23,6 @@ import br.gov.caixa.loterias.feature.marketplace.presentation.delivery.Marketpla
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceScreenDelivered
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test

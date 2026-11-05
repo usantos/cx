@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.responsiblegaming.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSelfAssessmentQuestionsUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.SubmitSelfAssessmentUseCase

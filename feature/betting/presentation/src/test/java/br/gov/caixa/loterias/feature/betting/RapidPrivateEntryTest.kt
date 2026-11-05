@@ -2,9 +2,9 @@ package br.gov.caixa.loterias.feature.betting
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -128,7 +128,7 @@ class RapidPrivateEntryTest {
 
     @Test fun `expired generation lease cannot publish cart or payment readiness`() = runTest {
         var current = true
-        val response = CompletableDeferred<ServiceResult<br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart>>()
+        val response = CompletableDeferred<ServiceResult<br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart>>()
         val vm = RapidListViewModel(
             generateRapidBets = GenerateRapidBetsUseCase { response.await() },
             removeCartItem = RemoveCartItemUseCase { error("No remove") },
@@ -138,7 +138,7 @@ class RapidPrivateEntryTest {
         )
         current = false
         response.complete(
-            ServiceResult.Success(br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart(1, BigDecimal.TEN, emptyList()))
+            ServiceResult.Success(br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart(1, BigDecimal.TEN, emptyList()))
         )
         advanceUntilIdle()
         vm.advance()

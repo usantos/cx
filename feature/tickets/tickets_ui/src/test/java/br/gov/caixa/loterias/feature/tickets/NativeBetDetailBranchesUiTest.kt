@@ -19,12 +19,12 @@ import androidx.compose.ui.test.performScrollTo
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.CheckedTicketAward
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetReceipt
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketAward
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetReceipt
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.BetDetailRouteDelivered
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.ConfirmedBetSelectionDelivered
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.NativeBetDetailFooterDelivered

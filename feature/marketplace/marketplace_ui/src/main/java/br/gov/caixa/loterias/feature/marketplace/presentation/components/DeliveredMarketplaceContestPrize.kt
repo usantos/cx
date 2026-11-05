@@ -12,8 +12,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplacePrizeWords
 import br.gov.caixa.loterias.feature.marketplace.ui.R as DeliveryR
 

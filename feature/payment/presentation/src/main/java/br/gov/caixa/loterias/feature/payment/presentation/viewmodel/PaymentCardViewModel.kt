@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.SubmitCardPaymentUseCase

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.support.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.support.data.dto.SupportSectionDto
-import br.gov.caixa.loterias.feature.support.data.dto.TermsDto
+import br.gov.caixa.loterias.core.network.dto.support.SupportSectionDto
+import br.gov.caixa.loterias.core.network.dto.support.TermsDto
 
 interface SupportRemoteDataSource {
     suspend fun sections(): List<SupportSectionDto>?

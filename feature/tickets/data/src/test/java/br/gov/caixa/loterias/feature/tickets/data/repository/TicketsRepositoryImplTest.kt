@@ -1,8 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.data.repository
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend
-
 import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend
 import br.gov.caixa.loterias.core.network.api.BackendApi
 import br.gov.caixa.loterias.core.network.api.BetsHistoryApi
 import br.gov.caixa.loterias.core.network.model.ApiEnvelope

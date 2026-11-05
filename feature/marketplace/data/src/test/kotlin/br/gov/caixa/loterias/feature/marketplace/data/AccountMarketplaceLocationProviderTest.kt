@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.marketplace.data
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceLocation
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountMunicipalityRepository
 import br.gov.caixa.loterias.feature.marketplace.data.location.AccountMarketplaceLocationProvider
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceLocation
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest

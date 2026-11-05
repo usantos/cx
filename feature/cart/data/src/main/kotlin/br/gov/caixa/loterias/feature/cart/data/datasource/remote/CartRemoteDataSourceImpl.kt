@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.cart.data.datasource.remote
 
+import br.gov.caixa.loterias.core.network.dto.cart.AddFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.SaveFavoriteCartRequestDto
 import br.gov.caixa.loterias.core.network.error.toBackendHttpFailure
-import retrofit2.HttpException
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.cart.data.dto.AddFavoriteCartRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.SaveFavoriteCartRequestDto
+import retrofit2.HttpException
 
 class CartRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,

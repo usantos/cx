@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.account.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.network.dto.account.AccountSessionDto
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
 import java.math.BigDecimal
 
 /** Compartilhado pelas atualizações comuns de conta e pelo endpoint pós-login vinculado à sessão. */

@@ -22,8 +22,8 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIc
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailFavoriteEditor
 import br.gov.caixa.loterias.feature.tickets.presentation.components.BetDetailTeimosinhaDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.teimosinhaNotice

@@ -26,9 +26,9 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.onboarding.presentation.screen.StartupStatusKind
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.StartupState
 import java.time.Clock

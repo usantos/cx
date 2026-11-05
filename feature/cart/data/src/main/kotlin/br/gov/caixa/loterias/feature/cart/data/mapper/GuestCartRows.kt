@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.CartSnapshotRow
-import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
 import com.google.gson.Gson
 import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
 
 /** Codificação legada bruta também consumida pelo retrato imutável de envio e pela impressão digital. */
 internal fun guestCartRows(

@@ -5,13 +5,13 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequestUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase

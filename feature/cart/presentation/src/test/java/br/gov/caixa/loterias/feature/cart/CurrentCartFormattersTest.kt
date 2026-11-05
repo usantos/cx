@@ -3,9 +3,9 @@ package br.gov.caixa.loterias.feature.cart
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartText
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.currentCartModalityName
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.formatCartAmount

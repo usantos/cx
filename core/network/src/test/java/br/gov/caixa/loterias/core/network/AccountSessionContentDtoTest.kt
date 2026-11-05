@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.account.data.dto.AccountNotificationDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-
+import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.account.AccountNotificationDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountSessionDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
+import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
 import com.google.gson.Gson
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
-import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
-import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 
 class AccountSessionContentDtoTest {
     @Test fun `notification only mock permits popup without payment priority`() = kotlinx.coroutines.runBlocking {

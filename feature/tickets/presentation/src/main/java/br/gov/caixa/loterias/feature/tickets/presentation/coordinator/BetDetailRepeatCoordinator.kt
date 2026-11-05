@@ -2,11 +2,11 @@ package br.gov.caixa.loterias.feature.tickets.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.contestType
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.normalizedContestType
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.toCartMessage

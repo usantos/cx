@@ -3,9 +3,9 @@ package br.gov.caixa.loterias.feature.retail
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.presentation.route.PrizeRedemptionBetEntryEffect
 import br.gov.caixa.loterias.feature.retail.presentation.route.PrizeRedemptionInitialSelectionEffect

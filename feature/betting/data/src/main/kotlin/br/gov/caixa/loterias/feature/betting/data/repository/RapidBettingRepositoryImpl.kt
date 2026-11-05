@@ -1,15 +1,14 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.betting.data.localizedMessage as messageText
-
 import br.gov.caixa.loterias.core.data.mapper.serviceResultOf
-import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
-import br.gov.caixa.loterias.feature.betting.domain.repository.RapidBettingRepository
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSource
 import br.gov.caixa.loterias.feature.betting.data.mapper.toDomain
 import br.gov.caixa.loterias.feature.betting.data.mapper.toDto
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSource
+import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
+import br.gov.caixa.loterias.feature.betting.domain.repository.RapidBettingRepository
+import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
+import br.gov.caixa.loterias.feature.betting.data.localizedMessage as messageText
 
 class RapidBettingRepositoryImpl(private val remote: RapidBettingRemoteDataSource) : RapidBettingRepository {
     override suspend fun configuration() = serviceResultOf {

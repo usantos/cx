@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.notifications.data.repository
 
 import android.content.Context
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.domain.persistence.SecureStorageException
 import br.gov.caixa.loterias.core.domain.persistence.SecureStoreFactory
 import br.gov.caixa.loterias.core.domain.persistence.SecureStoreScope
 import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
 import br.gov.caixa.loterias.core.persistence.AndroidSecureStores
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 
 /** Persiste só resumos do par completo titular capturado/ambiente; marcadores históricos ambíguos ficam intactos. */
 class PushRegistrationLocalRepositoryImpl(

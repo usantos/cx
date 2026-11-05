@@ -30,9 +30,9 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIc
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSPurchaseFavoriteIcon
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR
 
 @Composable

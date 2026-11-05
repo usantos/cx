@@ -277,12 +277,12 @@ class HomeParityUiTest {
             headerContentColor = Color(0xFF00A651),
             cloverRes = R.drawable.legacy_home_trevo_timemania_fundo_escuro
         )
-        val parameters = br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters(
+        val parameters = br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters(
             BigDecimal.TEN,
             BigDecimal.TEN,
             10,
             emptyList(),
-            listOf(br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
+            listOf(br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability(2, "MEGA_SENA", "NORMAL"))
         )
         val actions = br.gov.caixa.loterias.feature.home.presentation.screen.HomeActions(
             retry = {}, openMenu = {}, openNotifications = {}, toggleCampaign = {}, toggleQuickAccess = {},

@@ -15,11 +15,11 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaignTheme
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartLotecaSelection
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
 import br.gov.caixa.loterias.feature.cart.presentation.components.CartLotecaContent
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartRowDelivered
 import br.gov.caixa.loterias.feature.cart.presentation.screen.currentCartModalityColor

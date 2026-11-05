@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.mapper.resultModalityCode
@@ -80,7 +81,7 @@ internal fun drawModalityCode(modality: String): String = resultModalityCode(mod
 
 internal fun drawResultTitle(result: DrawResult, ordinaryName: String): String = resultTitle(result, ordinaryName)
 
-internal fun confirmedBetFirstDrawHitCount(bet: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet, result: DrawResult): Int =
+internal fun confirmedBetFirstDrawHitCount(bet: ConfirmedBet, result: DrawResult): Int =
     if (bet.modalityId == 7 || drawModalityCode(bet.modality) == "supersete" || drawModalityCode(result.modality) == "supersete") {
         bet.numberColumns.zip(result.firstDrawNumberColumns).count { (selected, drawn) -> selected.any(drawn::contains) }
     } else {

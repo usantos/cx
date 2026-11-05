@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.presentation.coordinator
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.withShake
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiState

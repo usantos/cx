@@ -3,10 +3,10 @@ package br.gov.caixa.loterias.feature.home.presentation.coordinator
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryRequest
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingAction
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingActionUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase

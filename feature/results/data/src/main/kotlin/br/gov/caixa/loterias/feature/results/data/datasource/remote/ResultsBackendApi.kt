@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.results.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import retrofit2.http.*
 
 /** Contrato HTTP pertencente a esta funcionalidade; anotações de transporte e valores padrão originais são preservados. */

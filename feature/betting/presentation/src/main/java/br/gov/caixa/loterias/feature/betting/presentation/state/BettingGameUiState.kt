@@ -1,14 +1,14 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
-import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.availableNumberQuantities
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.calculateBetTotal
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.resolveBetPrice
 import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
 
 enum class BetEntryMode { MANUAL, SURPRISE }
 
@@ -40,7 +40,7 @@ data class BettingGameUiState(
     val warningMessage: String? = null,
     val errorMessage: String? = null,
     val addedToCart: Boolean = false,
-    val confirmedCart: br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart? = null,
+    val confirmedCart: br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart? = null,
     val dailyLimitConfirmation: Boolean = false,
     val dailyLimit: BigDecimal? = null,
     val duplicateConfirmation: Boolean = false,

@@ -4,6 +4,7 @@
 package br.gov.caixa.loterias.feature.retail
 
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
 import br.gov.caixa.loterias.feature.retail.di.RetailModule
@@ -13,7 +14,6 @@ import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionResult
 import br.gov.caixa.loterias.feature.retail.domain.model.RetailLocationEligibility
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.port.RetailCountrySource
 import br.gov.caixa.loterias.feature.retail.domain.repository.PrizeRedemptionRepository
 import br.gov.caixa.loterias.feature.retail.domain.repository.RetailRepository

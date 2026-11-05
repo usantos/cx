@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 
 private const val MAXIMUM_COMBO_QUANTITY = 15
 

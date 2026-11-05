@@ -51,6 +51,8 @@ def check_type_names(root: Path) -> list[str]:
                     if package and package[1] != expected and not package[1].startswith(expected + '.'):
                         errors.append(f'{relative}: feature source must use its owning namespace {expected}')
                 code = non_code.sub(lambda match: ' ' * len(match[0]), text)
+                if relative.parts[0] == 'core' and re.search(r'\bbr\.gov\.caixa\.loterias\.feature\.', code):
+                    errors.append(f'{relative}: Core source depends on feature; extract a shared contract')
                 declarations = re.findall(r'\b(?:enum\s+class|class|object|interface|typealias|enum|record)\s+(`[^`]+`|[A-Za-z_]\w*)', code)
                 for annotation in re.finditer(r'@file:\s*(?:kotlin\.jvm\.)?JvmName\s*\(', code):
                     argument = re.match(r'\s*"([^"\n]+)"', text[annotation.end():])
@@ -80,6 +82,8 @@ def check(root: Path, configured: dict | None = None) -> list[str]:
             )
             seen = set()
             for configuration, dependency in declared_dependencies:
+                if module.startswith(':core:') and dependency.startswith(':feature:'):
+                    errors.append(f'{module}: Core dependency on feature is forbidden: {configuration} {dependency}')
                 declaration = (configuration, dependency)
                 if declaration in seen:
                     errors.append(f'{build.relative_to(root)}: duplicate dependency {configuration} {dependency}')
@@ -96,6 +100,11 @@ def check(root: Path, configured: dict | None = None) -> list[str]:
     if configured is not None:
         graph = {name: set(value['dependencies']) for name, value in configured['projects'].items()}
         models = configured['projects']
+        for module, model in models.items():
+            if module.startswith(':core:'):
+                for dependency in model.get('allProjectDependencies', []):
+                    if dependency.startswith(':feature:'):
+                        errors.append(f'{module}: Core dependency on feature is forbidden in all configurations: {dependency}')
         for module, dependencies in graph.items():
             if module == ':core:domain' or (module.startswith(':feature:') and module.endswith((':domain', ':api'))):
                 for dependency in dependencies:
@@ -104,6 +113,10 @@ def check(root: Path, configured: dict | None = None) -> list[str]:
                         errors.append(f'{module}: Domain dependency on outer layer {dependency}')
     applications = {name for name, model in models.items() if model.get('application')} | {':app'}
     for module, dependencies in graph.items():
+        if module.startswith(':core:'):
+            for dependency in sorted(dependencies):
+                if dependency.startswith(':feature:'):
+                    errors.append(f'{module}: Core dependency on feature is forbidden: {dependency}')
         for base in dependencies & applications:
             if not (models.get(module, {}).get('dynamicFeature') and
                     models.get(base, {}).get('application') and

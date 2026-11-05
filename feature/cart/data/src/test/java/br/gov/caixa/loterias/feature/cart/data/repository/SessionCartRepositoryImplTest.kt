@@ -1,24 +1,24 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
+import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
+import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
 import java.io.IOException
+import java.math.BigDecimal
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
-import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
 
 class SessionCartRepositoryImplTest {
     private var authenticated = false

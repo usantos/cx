@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.LoteriasApi
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityDto
-import br.gov.caixa.loterias.feature.account.data.dto.NeighborhoodDto
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountSessionDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityDto
+import br.gov.caixa.loterias.core.network.dto.account.NeighborhoodDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

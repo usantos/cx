@@ -1,26 +1,29 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.data.datasource.remote.PushRegistrationRemoteDataSource
+import br.gov.caixa.loterias.core.data.repository.PushRegistrationRepositoryImpl
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.NotificationReadApi
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.core.network.api.NotificationReadEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationPayloadDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationRequestDto
 import br.gov.caixa.loterias.core.network.api.UnreadNotificationsEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationPayloadDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationRequestDto
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.PushRegistrationRemoteDataSourceImpl
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import retrofit2.Response
 import retrofit2.http.POST
 import retrofit2.http.Tag
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.PushRegistrationRemoteDataSourceImpl
-import br.gov.caixa.loterias.core.data.datasource.remote.PushRegistrationRemoteDataSource
-import br.gov.caixa.loterias.core.data.repository.PushRegistrationRepositoryImpl
 
 class PushRegistrationRepositoryImplTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

@@ -3,10 +3,10 @@ package br.gov.caixa.loterias.feature.payment.presentation.components
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.core.presentation.effect.NavigationResumeEffect
-import br.gov.caixa.loterias.feature.payment.R as LocalizedR
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PURCHASE_UPDATED_TERMS_GUIDANCE
+import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 
 /** A navegação pode retornar antes que a composição de saída seja descartada. */
 @Composable

@@ -7,7 +7,7 @@ import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceT
 internal sealed interface MarketplaceStateAction {
     data class HeaderReceived(
         val stale: Boolean,
-        val game: br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters?,
+        val game: br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters?,
         val names: Map<Pair<String, Int>, String>,
         val configured: br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests,
         val specialName: String?,
@@ -27,7 +27,7 @@ internal sealed interface MarketplaceStateAction {
     data class CartAdditionAborted(val poolCode: String) : MarketplaceCartAction
     data class CartAdditionClaimed(val poolCode: String) : MarketplaceCartAction
     data class CartReservationReceived(
-        val reservation: br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare?,
+        val reservation: br.gov.caixa.loterias.core.domain.contract.cart.model.CartPoolShare?,
         val poolCode: String,
         val shares: Int,
         val pool: br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool,
@@ -48,7 +48,7 @@ internal sealed interface MarketplaceStateAction {
     data class FavoriteRetailersLoading(val openAfterLoad: Boolean) : MarketplaceRetailerAction
     data class FavoriteRetailersReceived(
         val stale: Boolean,
-        val result: AppResult<List<br.gov.caixa.loterias.feature.retail.domain.model.Retailer>>,
+        val result: AppResult<List<br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer>>,
         val synchronizePools: Boolean,
         val openAfterLoad: Boolean,
         val message: String = messageText("nao_foi_possivel_carregar_as_lot_60820b"),

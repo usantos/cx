@@ -12,14 +12,14 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.Locale
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
+import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 
 val CartItemKind.sectionTitle: String
     get() = when (this) {

@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSource
 import br.gov.caixa.loterias.feature.account.data.mapper.accountAccess
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.PostLoginAccountRepository
 import br.gov.caixa.loterias.feature.cart.data.mapper.toVisitorCartSnapshot
 import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart

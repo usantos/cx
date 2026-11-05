@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.core.navigation.destination
 
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest
 
 object PoolTutorialRoute {
     const val base = "betting/tutorial"

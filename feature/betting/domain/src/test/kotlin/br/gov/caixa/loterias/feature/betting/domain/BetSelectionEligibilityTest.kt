@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.domain
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.rule.BetSelectionEligibility
 import br.gov.caixa.loterias.feature.betting.domain.rule.BetSelectionStatus
 import org.junit.Assert.assertFalse

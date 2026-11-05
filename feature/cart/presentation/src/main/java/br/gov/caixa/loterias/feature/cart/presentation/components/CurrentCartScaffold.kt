@@ -5,12 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.canClearCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.canFavoriteCart
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartBlue
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 
 @Composable
 internal fun CurrentCartScaffold(

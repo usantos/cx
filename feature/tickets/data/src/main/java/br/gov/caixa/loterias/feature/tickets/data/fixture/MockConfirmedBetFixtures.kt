@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.tickets.data.fixture
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 
 /** Fixtures determinísticas exclusivas do APK mock para homologar estados que dependiam de Serializable extras. */
 fun mockConfirmedBet(

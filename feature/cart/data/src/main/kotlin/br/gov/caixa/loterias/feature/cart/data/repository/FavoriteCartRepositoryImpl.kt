@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartDto
 import br.gov.caixa.loterias.core.network.mapper.flattenNumbers
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.FavoriteCartRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
 import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.repository.FavoriteCartRepository
 
 class FavoriteCartRepositoryImpl(private val remote: FavoriteCartRemoteDataSource) : FavoriteCartRepository {

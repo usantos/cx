@@ -21,10 +21,10 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParametersUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupportedUseCase
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.CompleteIntroductionUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.ShouldShowIntroductionUseCase

@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.cart.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartDto
 
 interface FavoriteCartRemoteDataSource {
     suspend fun favoriteCarts(): List<FavoriteCartDto>?

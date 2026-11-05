@@ -8,7 +8,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.state.BettingGameUiSta
 fun BettingLegacyTeamsDelivered(
     state: BettingGameUiState,
     onQueryChanged: (String) -> Unit,
-    onTeamSelected: (br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam) -> Unit,
+    onTeamSelected: (br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam) -> Unit,
 ) {
     BettingTeamsContent(state, onQueryChanged, onTeamSelected)
 }

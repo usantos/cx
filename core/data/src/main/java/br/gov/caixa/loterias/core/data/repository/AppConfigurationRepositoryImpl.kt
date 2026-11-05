@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.core.data.repository
 
-import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
-import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
-import br.gov.caixa.loterias.core.network.model.AppParametersDto
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.data.mapper.toCommemorativeCampaigns
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaignSettings
+import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.core.network.model.AppParametersDto
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import br.gov.caixa.loterias.core.data.mapper.toCommemorativeCampaigns
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
 
 class AppConfigurationRepositoryImpl(
     private val remote: AppConfigurationRemoteDataSource,

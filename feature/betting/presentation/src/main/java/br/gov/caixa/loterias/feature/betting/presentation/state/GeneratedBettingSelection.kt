@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
 
 internal data class GeneratedBettingSelection(
     val numbers: Set<Int>,

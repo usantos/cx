@@ -1,11 +1,12 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
-import br.gov.caixa.loterias.feature.account.data.dto.BlockedAccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.BlockedAccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
 import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.feature.account.data.repository.BlockedAccountVerificationRepositoryImpl
 import com.google.gson.Gson
 import java.io.IOException
 import kotlinx.coroutines.test.runTest
@@ -17,7 +18,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.data.repository.BlockedAccountVerificationRepositoryImpl
 
 class BlockedAccountVerificationRepositoryImplTest {
     @Test fun `uses the legacy endpoint and rejects http errors and successful envelopes containing error metadata`() = runTest {

@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+
 data class BetComboEntry(
     val modality: LotteryModality,
     val contestType: String,

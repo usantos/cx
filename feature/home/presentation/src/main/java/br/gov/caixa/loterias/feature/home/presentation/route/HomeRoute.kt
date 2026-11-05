@@ -17,13 +17,13 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.domain.configuration.model.CampaignArea
-import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign as HomeCampaign
 import br.gov.caixa.loterias.feature.home.navigation.LocalHomeRuntimeConfiguration
 import br.gov.caixa.loterias.feature.home.presentation.components.SimulationRecoveryPanel
 import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries
 import br.gov.caixa.loterias.feature.home.presentation.mapper.withHomeMegaSenaCampaign
 import br.gov.caixa.loterias.feature.home.presentation.screen.HomePresentation
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
+import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign as HomeCampaign
 
 @Composable
 fun HomeRoute(
@@ -37,7 +37,7 @@ fun HomeRoute(
     requestedModalityId: Int? = null,
     onProtectedAction: ((String) -> Unit)? = null,
     preferencesViewModel: br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomePreferencesViewModel? = null,
-    onBetEntry: (br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision) -> Unit,
+    onBetEntry: (br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision) -> Unit,
     onOtherBetting: (br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision) -> Unit,
     onDrawerOpen: (String) -> Unit = onOpen,
 ) {

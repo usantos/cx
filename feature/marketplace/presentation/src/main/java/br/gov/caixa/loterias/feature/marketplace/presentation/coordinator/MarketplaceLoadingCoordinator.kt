@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.marketplace.presentation.coordinator
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.usecase.SearchMarketplaceUseCase
 import br.gov.caixa.loterias.feature.marketplace.presentation.mapper.marketplaceModalityNames
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceStateAction

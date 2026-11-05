@@ -1,16 +1,15 @@
 package br.gov.caixa.loterias.core.data
 
-import org.junit.Assert.*
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.CartRemoteDataSource
 import br.gov.caixa.loterias.feature.cart.data.repository.CartRepositoryImpl
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
@@ -22,6 +21,8 @@ import kotlinx.coroutines.test.runTest
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.ResponseBody.Companion.toResponseBody
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertSame
 import org.junit.Test
 
 class CartValidationRepositoryTest {

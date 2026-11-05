@@ -2,13 +2,14 @@ package br.gov.caixa.loterias.feature.tickets
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceiptUseCase
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsUseCase
@@ -37,7 +38,7 @@ class TicketsModuleAvailabilityTest {
     private val dispatcher = StandardTestDispatcher()
     private val bet = ConfirmedBet(1, "Mega-Sena", 1, "hoje", "Ativa", listOf(1))
 
-    private val purchase = br.gov.caixa.loterias.feature.tickets.domain.model.Purchase(9, "01/09/2026", "Aprovada", "Pix", BigDecimal.TEN)
+    private val purchase = Purchase(9, "01/09/2026", "Aprovada", "Pix", BigDecimal.TEN)
 
     @Before fun setUp() = Dispatchers.setMain(dispatcher)
 

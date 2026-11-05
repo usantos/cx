@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.account.di
 
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
@@ -12,10 +14,8 @@ import br.gov.caixa.loterias.feature.account.data.repository.AccountRepositoryIm
 import br.gov.caixa.loterias.feature.account.data.repository.BlockedAccountVerificationRepositoryImpl
 import br.gov.caixa.loterias.feature.account.data.repository.PostLoginAccountRepositoryImpl
 import br.gov.caixa.loterias.feature.account.data.repository.SessionAccountRepositoryFactory
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepositoryFactory
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.BlockedAccountVerificationRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.PostLoginAccountRepository
 import br.gov.caixa.loterias.feature.account.domain.usecase.AccountFormUseCasesFactory

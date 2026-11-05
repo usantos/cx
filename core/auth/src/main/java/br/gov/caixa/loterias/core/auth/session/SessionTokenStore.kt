@@ -1,20 +1,20 @@
 package br.gov.caixa.loterias.core.auth.session
 
-import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
-import br.gov.caixa.loterias.feature.account.domain.model.LatestNotificationSession
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
-import br.gov.caixa.loterias.core.auth.token.accessTokenExpiration
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshTicket
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshTicket
+import br.gov.caixa.loterias.core.auth.token.accessTokenExpiration
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.LatestNotificationSession
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
+import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 
 class SessionTokenStore : AuthTokenProvider, AuthenticatedSessionIdentityProvider, AuthenticatedSessionContentRepository, LatestNotificationSession, ForegroundSessionAccess {
     private class State(val token: String?, val attempt: AuthorizationAttempt? = null, val idToken: String? = null,

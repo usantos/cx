@@ -22,9 +22,9 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.betting.presentation.mapper.formatBetAmount
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 @Composable
 fun RapidBetDetails(item: CartItem, style: LoteriasCaixaDSLotteryStyle, offset: Float, panelWidth: Float) {

@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepositoryFactory
 

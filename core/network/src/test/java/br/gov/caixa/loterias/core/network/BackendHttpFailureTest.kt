@@ -1,7 +1,8 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.retail.data.dto.PrizeRedemptionEnvelopeDto
-
+import br.gov.caixa.loterias.core.network.dto.retail.PrizeRedemptionEnvelopeDto
+import br.gov.caixa.loterias.core.network.error.BackendErrorMetadata
+import br.gov.caixa.loterias.core.network.error.toBackendHttpFailure
 import com.google.gson.Gson
 import java.io.IOException
 import kotlinx.coroutines.CancellationException
@@ -13,8 +14,6 @@ import org.junit.Assert.*
 import org.junit.Test
 import retrofit2.HttpException
 import retrofit2.Response
-import br.gov.caixa.loterias.core.network.error.BackendErrorMetadata
-import br.gov.caixa.loterias.core.network.error.toBackendHttpFailure
 
 class BackendHttpFailureTest {
     @Test fun `reads only business metadata and never retains raw error or secrets in exception text`() {

@@ -1,17 +1,19 @@
 package br.gov.caixa.loterias.feature.account
 
-import org.junit.Assert.*
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences
+import br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
-import br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LoginViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 

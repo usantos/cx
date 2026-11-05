@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.payment.navigation
 
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
@@ -11,7 +11,7 @@ import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
 
 /** Dependências deste grafo de destinos, fornecidas pela raiz de composição do aplicativo. */
 interface PaymentNavigationDependencies : br.gov.caixa.loterias.feature.payment.navigation.MercadoPagoRegistrationDependencies {
-    val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+    val authenticatedSessionIdentity: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
     val appModulesConfiguration: br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
     val currentCart: GetCurrentCartUseCase
     val deleteSavedCard: DeleteSavedCardUseCase

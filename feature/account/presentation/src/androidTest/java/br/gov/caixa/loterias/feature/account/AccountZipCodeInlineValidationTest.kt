@@ -11,12 +11,12 @@ import androidx.compose.ui.test.top
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedUser
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase

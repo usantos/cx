@@ -8,16 +8,16 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CheckoutLocationStatus
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordCheckoutLocationRequestUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
@@ -33,12 +33,12 @@ import br.gov.caixa.loterias.feature.cart.presentation.coordinator.CartFavorites
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.CartParametersCoordinator
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.CartReservationCoordinator
 import br.gov.caixa.loterias.feature.cart.presentation.coordinator.CartReservationSession
-import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartLocationAction
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
 import br.gov.caixa.loterias.feature.cart.presentation.state.reduceCartState
 import java.time.Clock
+import br.gov.caixa.loterias.feature.cart.presentation.formatting.localizedMessage as messageText
 
 class CartViewModel(
     private val getCurrentCart: GetCurrentCartUseCase,
@@ -57,9 +57,9 @@ class CartViewModel(
     authenticated: Boolean = false,
     private val networkAvailability: NetworkAvailability = NetworkAvailability { ConnectionAvailability.UNKNOWN },
     private val localClock: Clock = Clock.systemDefaultZone(),
-    private val reservationSessions: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider? = null,
+    private val reservationSessions: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider? = null,
     private val reservationSessionChanges:
-    kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>? = null,
+    kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?>? = null,
     private val removeExpiredPoolShare: br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShareUseCase? = null,
     private val canStartOperation: () -> Boolean = { true },
 ) : ViewModel() {

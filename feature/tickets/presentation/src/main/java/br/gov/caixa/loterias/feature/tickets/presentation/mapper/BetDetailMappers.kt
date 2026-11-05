@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.mapper
 
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailUiState
 import br.gov.caixa.loterias.feature.tickets.presentation.state.RepeatContestOption

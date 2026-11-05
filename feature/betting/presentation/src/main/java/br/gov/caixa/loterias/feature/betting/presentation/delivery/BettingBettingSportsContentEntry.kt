@@ -9,7 +9,7 @@ interface BettingBettingSportsContentEntry {
     fun BettingLegacyTeams(
         state: BettingGameUiState,
         onQueryChanged: (String) -> Unit,
-        onTeamSelected: (br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam) -> Unit,
+        onTeamSelected: (br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam) -> Unit,
     )
 
     @Composable

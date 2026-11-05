@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.network.dto.cart.CartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 import com.google.gson.JsonParser
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals

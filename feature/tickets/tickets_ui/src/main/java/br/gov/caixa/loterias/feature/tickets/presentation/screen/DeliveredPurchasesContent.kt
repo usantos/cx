@@ -14,7 +14,7 @@ import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.components.ErrorData
 import br.gov.caixa.loterias.feature.tickets.presentation.components.LegacyEmptyPurchases
 import br.gov.caixa.loterias.feature.tickets.presentation.components.LegacyPurchaseIntro

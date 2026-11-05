@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.payment.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RecordRecentPurchaseUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.DeleteSavedCardUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GeneratePixChargeUseCase

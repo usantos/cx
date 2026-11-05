@@ -4,17 +4,17 @@ import androidx.compose.runtime.Composable
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.UpdatePersonalDataUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
-import br.gov.caixa.loterias.feature.account.presentation.permission.loginNotificationPermissionReady as permissionReady
 import br.gov.caixa.loterias.feature.account.presentation.route.AccountLoginEnvironmentSelector
 import javax.inject.Inject
+import br.gov.caixa.loterias.feature.account.presentation.permission.loginNotificationPermissionReady as permissionReady
 
 class AccountNavigationDependenciesAdapter @Inject constructor(
     override val loginNetworkAvailability: NetworkAvailability,

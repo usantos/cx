@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
-import br.gov.caixa.loterias.feature.betting.data.dto.LotecaBetMatchDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LuckyMonthParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsBetTeamDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.network.dto.betting.LotecaBetMatchDto
+import br.gov.caixa.loterias.core.network.dto.betting.LuckyMonthParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsBetTeamDto
 
 /** O Gson pode omitir os metadados não nulos do DTO da requisição na resposta legada reduzida. */
 fun SportsBetTeamDto?.toDomainSportsTeam(): SportsTeam? {

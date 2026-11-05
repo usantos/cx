@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.account.domain.usecase
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.repository.AccountRepositoryFactory
 
 /** Os comandos do formulário compartilham o mesmo vínculo adquirido antes de agendar qualquer escrita. */

@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddComboRequestDto
 import br.gov.caixa.loterias.core.network.error.toBackendHttpFailure
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
+import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 
 class BettingRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,
@@ -18,7 +18,7 @@ class BettingRemoteDataSourceImpl(
 
     override suspend fun addBet(request: AddBetRequestDto) = try {
         if (request.surprise) {
-            val body = br.gov.caixa.loterias.feature.betting.data.dto.SurpriseBetRequestDto(
+            val body = br.gov.caixa.loterias.core.network.dto.betting.SurpriseBetRequestDto(
                 modality = request.modality,
                 contestType = request.contestType,
                 surpriseIndicator = request.surpriseIndicator,

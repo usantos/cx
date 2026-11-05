@@ -1,30 +1,35 @@
 package br.gov.caixa.loterias.feature.account
 
-import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
 import android.content.Intent
 import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
 import br.gov.caixa.loterias.core.auth.gateway.EndSessionGateway
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.usecase.ClearLocalSessionDataUseCase
-import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSessionUseCase
-import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionLaunch
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionOutcome
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.service.model.ServiceConnectionFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
+import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
+import br.gov.caixa.loterias.feature.account.domain.usecase.ClearLocalSessionDataUseCase
+import br.gov.caixa.loterias.feature.account.domain.usecase.SignOutSessionUseCase
+import br.gov.caixa.loterias.feature.account.presentation.state.LogoutNotice
+import br.gov.caixa.loterias.feature.account.presentation.state.LogoutUiState
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LogoutViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertSame
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
-import br.gov.caixa.loterias.feature.account.presentation.state.LogoutNotice
-import br.gov.caixa.loterias.feature.account.presentation.state.LogoutUiState
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.LogoutViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LogoutViewModelTest {

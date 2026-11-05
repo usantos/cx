@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.Dp
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaign as HomeCampaign
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.presentation.components.RenderHomeDrawer
 import br.gov.caixa.loterias.feature.home.presentation.components.RenderHomeNotificationPopup
 import br.gov.caixa.loterias.feature.home.presentation.components.RenderHomePaymentNotice

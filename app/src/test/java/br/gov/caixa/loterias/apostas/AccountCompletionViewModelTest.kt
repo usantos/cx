@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.apostas
 
-import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountCompletionViewModel
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.testing.coroutines.MainDispatcherRule
 import br.gov.caixa.loterias.feature.account.domain.model.AccountAccess
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountCompletionViewModel
 import java.math.BigDecimal
 import kotlinx.coroutines.*
 import kotlinx.coroutines.test.*

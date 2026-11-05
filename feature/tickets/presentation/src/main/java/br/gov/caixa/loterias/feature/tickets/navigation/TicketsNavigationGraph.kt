@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.tickets.navigation
 
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 
 fun NavGraphBuilder.ticketsGraph(
     appContainer: TicketsNavigationDependencies,

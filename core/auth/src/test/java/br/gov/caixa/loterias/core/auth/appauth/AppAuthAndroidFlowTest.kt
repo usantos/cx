@@ -24,7 +24,7 @@ import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
 import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionOutcome
 import java.security.Security
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit

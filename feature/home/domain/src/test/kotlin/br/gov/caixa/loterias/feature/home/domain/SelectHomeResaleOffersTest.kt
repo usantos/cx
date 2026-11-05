@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.home.domain
 
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
 import br.gov.caixa.loterias.feature.home.domain.usecase.SelectHomeResaleOffers
 import java.time.Instant
 import org.junit.Assert.assertEquals

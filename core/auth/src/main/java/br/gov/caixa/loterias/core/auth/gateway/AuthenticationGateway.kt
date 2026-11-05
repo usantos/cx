@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.core.auth.gateway
 
 import android.content.Intent
 
-interface AuthenticationGateway : br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication {
+interface AuthenticationGateway : br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication {
     fun createAuthorizationIntent(): Intent
 
     /** Solicita nova autenticação no provedor para permitir a escolha de outra conta. */

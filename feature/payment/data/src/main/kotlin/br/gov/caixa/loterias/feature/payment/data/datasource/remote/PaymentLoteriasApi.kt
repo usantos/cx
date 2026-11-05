@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.payment.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.LoteriasApi
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import retrofit2.http.*
 
 /** Contrato HTTP pertencente a esta funcionalidade; anotações de transporte e valores padrão originais são preservados. */

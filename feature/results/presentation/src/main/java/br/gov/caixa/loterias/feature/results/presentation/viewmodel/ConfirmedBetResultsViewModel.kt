@@ -5,15 +5,15 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase
-import br.gov.caixa.loterias.feature.results.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.results.presentation.state.ConfirmedBetResultsAction
 import br.gov.caixa.loterias.feature.results.presentation.state.ConfirmedBetResultsState
 import br.gov.caixa.loterias.feature.results.presentation.state.reduceConfirmedBetResultsState
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.results.presentation.formatting.localizedMessage as messageText
 
 class ConfirmedBetResultsViewModel(
     private val bet: ConfirmedBet,

@@ -2,7 +2,12 @@ package br.gov.caixa.loterias.feature.cart.domain
 
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartPoolShare
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.domain.repository.ExpiredPoolShareRepository
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShare
 import java.math.BigDecimal
 import kotlinx.coroutines.runBlocking
@@ -10,11 +15,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.domain.repository.ExpiredPoolShareRepository
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 class RemoveExpiredPoolShareTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

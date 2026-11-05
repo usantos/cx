@@ -3,13 +3,13 @@ package br.gov.caixa.loterias.feature.betting
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GenerateRapidBetsUseCase
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.RapidListViewModel
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import java.math.BigDecimal

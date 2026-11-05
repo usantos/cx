@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.notifications.domain.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationInbox
 
 interface NotificationInboxRepository {

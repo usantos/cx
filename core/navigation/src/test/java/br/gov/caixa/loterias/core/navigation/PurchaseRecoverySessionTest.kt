@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.core.navigation
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContext
 import br.gov.caixa.loterias.core.navigation.state.LoggedDetailContextCodec
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoveryEvidence
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
 import java.nio.ByteBuffer
 import org.junit.Assert.assertEquals

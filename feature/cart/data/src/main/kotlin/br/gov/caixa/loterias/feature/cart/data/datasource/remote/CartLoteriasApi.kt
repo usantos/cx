@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.cart.data.datasource.remote
 
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
-import br.gov.caixa.loterias.feature.cart.data.dto.AddFavoriteCartRequestDto
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
 import br.gov.caixa.loterias.core.network.api.LoteriasApi
-import br.gov.caixa.loterias.feature.cart.data.dto.SaveFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.AddFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartDto
+import br.gov.caixa.loterias.core.network.dto.cart.SaveFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import com.google.gson.JsonElement
 import retrofit2.http.*
 

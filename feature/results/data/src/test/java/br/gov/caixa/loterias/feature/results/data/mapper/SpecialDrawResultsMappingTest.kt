@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.results.data.mapper
 
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
+import br.gov.caixa.loterias.feature.results.data.repository.ResultsRepositoryImpl
 import com.google.gson.Gson
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import br.gov.caixa.loterias.feature.results.data.repository.ResultsRepositoryImpl
-import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
 
 class SpecialDrawResultsMappingTest {
     private suspend fun mapped(json: String) = ResultsRepositoryImpl(object : ResultsRemoteDataSource {

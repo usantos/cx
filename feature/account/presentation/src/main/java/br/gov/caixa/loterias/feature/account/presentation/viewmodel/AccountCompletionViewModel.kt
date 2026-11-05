@@ -2,17 +2,17 @@ package br.gov.caixa.loterias.feature.account.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
-import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.account.presentation.state.AccountCompletionAction
 import br.gov.caixa.loterias.feature.account.presentation.state.AccountCompletionOutcome
 import br.gov.caixa.loterias.feature.account.presentation.state.AccountCompletionState
 import br.gov.caixa.loterias.feature.account.presentation.state.reduceAccountCompletionState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 
 class AccountCompletionViewModel(
     private val identities: AuthenticatedSessionIdentityProvider,

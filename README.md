@@ -123,6 +123,7 @@ conservadora do pre-commit estão no [guia de qualidade](docs/QUALITY_GATE.md). 
 
 - [Quality gate e cobertura global](docs/QUALITY_GATE.md)
 - [Arquitetura](docs/APP_ARCHITECTURE.md)
+- [Integração do Core independente](docs/CORE_STANDALONE_INTEGRATION.md)
 - [Dynamic Features — 15 módulos, JSON e entrega híbrida](docs/DYNAMIC_FEATURES.md)
 - [Acesso aos dados por funcionalidade — usuário, apostas e demais áreas](docs/DATA_ACCESS_BY_FEATURE.md)
 - [Auditoria arquitetural completa de 28/10/2026](docs/architecture/FULL_AUDIT_20261028.md)

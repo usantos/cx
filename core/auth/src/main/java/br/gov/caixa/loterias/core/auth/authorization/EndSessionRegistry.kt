@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.core.auth.authorization
 
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionOutcome
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionLaunch
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionOutcome
 
 /** Correlação em memória e de uso único. Uma função de retorno antiga não pode consumir uma requisição mais recente. */
 internal class EndSessionRegistry<T> {

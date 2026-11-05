@@ -1,23 +1,23 @@
 package br.gov.caixa.loterias.core.auth
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.*
-import org.junit.Test
+import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshCoordinator
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
+import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
+import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
 import java.util.Base64
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
-import br.gov.caixa.loterias.core.auth.gateway.OidcConfiguration
-import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionIdentityMode
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshContext
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshRequest
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResponse
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshExecutor
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshResult
-import br.gov.caixa.loterias.core.auth.refresh.RegularSessionRefreshCoordinator
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import org.junit.Assert.*
+import org.junit.Test
 
 class RegularSessionRefreshTest {
     private val owner = "a".repeat(64)

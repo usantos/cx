@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.tickets.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.CheckedTicketAward
 import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketAward
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import java.math.BigDecimal

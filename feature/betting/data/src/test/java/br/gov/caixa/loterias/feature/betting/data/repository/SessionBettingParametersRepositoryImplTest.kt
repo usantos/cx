@@ -1,18 +1,18 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
+import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
+import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 
 class SessionBettingParametersRepositoryImplTest {
     @Test fun `reuses current parameters before 180 seconds and refreshes exactly at TTL`() = runTest {

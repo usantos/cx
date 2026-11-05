@@ -11,11 +11,11 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.route.FavoriteCartDetailRoute
 import br.gov.caixa.loterias.feature.cart.presentation.route.FavoriteCartsRoute
 import br.gov.caixa.loterias.feature.cart.presentation.viewmodel.FavoriteCartsViewModel

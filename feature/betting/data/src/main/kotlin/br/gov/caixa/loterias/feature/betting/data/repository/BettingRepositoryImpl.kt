@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingCombosLoader
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingModalitiesLoader
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingParametersLoader
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingRemoteDataSource
 import br.gov.caixa.loterias.feature.betting.data.datasource.remote.BettingSubmission
+import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
+import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
+import br.gov.caixa.loterias.feature.betting.domain.repository.BettingRepository
 
 class BettingRepositoryImpl(
     private val remote: BettingRemoteDataSource,

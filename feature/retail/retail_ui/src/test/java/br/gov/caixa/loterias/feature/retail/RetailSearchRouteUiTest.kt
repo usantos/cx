@@ -12,9 +12,9 @@ import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
 import br.gov.caixa.loterias.feature.retail.presentation.route.RetailSearchRoute

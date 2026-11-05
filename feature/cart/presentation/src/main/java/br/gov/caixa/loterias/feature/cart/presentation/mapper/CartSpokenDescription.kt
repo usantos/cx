@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.cart.presentation.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartLotecaSelection
 import br.gov.caixa.loterias.core.presentation.accessibility.PortugueseSpeech
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
 import java.util.Locale
 
 /** Fala apenas de apresentação; nunca altera números, preços, seleções ou estado de reserva. */

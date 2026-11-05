@@ -10,6 +10,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.destination.PoolTutorialRoute
@@ -19,12 +21,10 @@ import br.gov.caixa.loterias.core.navigation.workflow.openVisitorDrawerDestinati
 import br.gov.caixa.loterias.core.navigation.workflow.requiresVisitorLogin
 import br.gov.caixa.loterias.core.presentation.delivery.FeatureEntryAccess
 import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.home.R as LocalizedR
 import br.gov.caixa.loterias.feature.home.presentation.route.HomeRoute
 import br.gov.caixa.loterias.feature.home.presentation.route.findActivity
 import br.gov.caixa.loterias.feature.home.presentation.viewmodel.HomeViewModel
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.feature.home.R as LocalizedR
 
 fun NavGraphBuilder.homeGraph(
     appContainer: HomeNavigationDependencies,

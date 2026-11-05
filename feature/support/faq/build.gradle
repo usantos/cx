@@ -47,6 +47,7 @@ dependencies {
     testImplementation project(':core:testing')
     testImplementation project(':core:navigation')
     testImplementation project(':feature:support:presentation')
+    testImplementation project(':feature:betting:domain')
     testImplementation libs.junit4
     testImplementation libs.kotlinx.coroutines.test
     testImplementation libs.androidx.compose.ui.test.junit4

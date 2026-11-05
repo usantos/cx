@@ -17,12 +17,12 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSScaffold
-import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.betting.R as LocalizedR
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingTarget
 import br.gov.caixa.loterias.feature.betting.presentation.coordinator.RapidEntryCoordinator
+import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
+import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 
 @Composable
 internal fun RapidEntryRoute(

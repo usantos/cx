@@ -1,86 +1,89 @@
 package br.gov.caixa.loterias.core.data
 
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountSessionDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.AccountSuspensionDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.AddFavoriteCartRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSourceImpl
+import br.gov.caixa.loterias.core.data.repository.AppConfigurationRepositoryImpl
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotogolMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.api.LoteriasApi
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountSessionDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.account.FederativeUnitDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityIdDto
+import br.gov.caixa.loterias.core.network.dto.account.NeighborhoodDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddComboRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddPoolShareRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.AvailablePoolModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboDto
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboEntryDto
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboTypeDto
+import br.gov.caixa.loterias.core.network.dto.betting.BettingParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryCloverParametersDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryContestDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryGameParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryPriceDto
+import br.gov.caixa.loterias.core.network.dto.betting.LuckyMonthParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsMatchParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsShieldTeamDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.SportsTeamShieldDto
+import br.gov.caixa.loterias.core.network.dto.cart.AddFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartComboDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartComboTypeDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartPoolReservationDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartCloversDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartModalityDto
+import br.gov.caixa.loterias.core.network.dto.cart.SaveFavoriteCartRequestDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplaceBetDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplaceCityDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplaceLotteryDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePageDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePoolDetailDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePoolDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplaceStateDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.AccountSuspensionDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentAnswerDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentPayloadDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SelfAssessmentQuestionDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SocialTransfersDto
+import br.gov.caixa.loterias.core.network.dto.responsiblegaming.SuspendAccountRequestDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawContestDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawPayoutDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
+import br.gov.caixa.loterias.core.network.dto.support.SupportQuestionDto
+import br.gov.caixa.loterias.core.network.dto.support.SupportSectionDto
+import br.gov.caixa.loterias.core.network.dto.support.TermsDto
 import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.model.AppParametersDto
 import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
-import br.gov.caixa.loterias.feature.betting.data.dto.AvailablePoolModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboEntryDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboTypeDto
-import br.gov.caixa.loterias.feature.betting.data.dto.BettingParametersDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartComboDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartComboTypeDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartPoolReservationDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawContestDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawPayoutDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartCloversDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartDto
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartModalityDto
-import br.gov.caixa.loterias.feature.account.data.dto.FederativeUnitDto
-import br.gov.caixa.loterias.core.network.api.BackendApi
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.core.network.api.LoteriasApi
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryCloverParametersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryContestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryGameParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryPriceDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LuckyMonthParameterDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplaceBetDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplaceCityDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplaceLotteryDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePoolDetailDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePoolDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplaceStateDto
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityDto
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityIdDto
-import br.gov.caixa.loterias.feature.account.data.dto.NeighborhoodDto
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
-import br.gov.caixa.loterias.feature.cart.data.dto.SaveFavoriteCartRequestDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentAnswerDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentPayloadDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SelfAssessmentQuestionDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SocialTransfersDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsMatchParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsShieldTeamDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.SportsTeamShieldDto
-import br.gov.caixa.loterias.feature.support.data.dto.SupportQuestionDto
-import br.gov.caixa.loterias.feature.support.data.dto.SupportSectionDto
-import br.gov.caixa.loterias.feature.responsiblegaming.data.dto.SuspendAccountRequestDto
-import br.gov.caixa.loterias.feature.support.data.dto.TermsDto
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
 import br.gov.caixa.loterias.feature.account.data.repository.AccountRepositoryImpl
 import br.gov.caixa.loterias.feature.account.domain.model.AccountRegistration
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.domain.model.PersonalDataUpdate
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.betting.data.repository.BettingRepositoryImpl
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LotogolMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
 import br.gov.caixa.loterias.feature.cart.data.repository.CartRepositoryImpl
 import br.gov.caixa.loterias.feature.cart.data.repository.FavoriteCartRepositoryImpl
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
 import br.gov.caixa.loterias.feature.marketplace.data.repository.MarketplaceRepositoryImpl
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
 import br.gov.caixa.loterias.feature.responsiblegaming.data.repository.ResponsibleGamingRepositoryImpl
 import br.gov.caixa.loterias.feature.results.data.repository.ResultsRepositoryImpl
@@ -93,9 +96,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.core.data.repository.AppConfigurationRepositoryImpl
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSourceImpl
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
 
 class RemoteRepositoriesTest {
     @Test
@@ -158,11 +158,11 @@ class RemoteRepositoriesTest {
             pools = listOf(MarketplacePoolDto(code = "B1")),
         )))
         val filter = MarketplaceFilter("1,00", "9,00", 2, 8, 4, 6, "", "", emptyList(), emptyList())
-            .withSearchArea(br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.MUNICIPALITY)
-            .withSearchLocation(br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceLocation(123, 53))
+            .withSearchArea(br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.MUNICIPALITY)
+            .withSearchLocation(br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceLocation(123, 53))
         val result = MarketplaceRepositoryImpl(source(api)).search(filter, 0)
         assertEquals(1, result.pools.size)
-        assertEquals(br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.STATE, result.nextArea)
+        assertEquals(br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.STATE, result.nextArea)
         assertTrue(result.continueAutomatically)
     }
 
@@ -173,8 +173,8 @@ class RemoteRepositoriesTest {
         )))
         val repository = MarketplaceRepositoryImpl(source(api))
         val filter = MarketplaceFilter.empty().withSearchLocation(
-            br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceLocation(123, 53))
-        for (area in br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea.entries) {
+            br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceLocation(123, 53))
+        for (area in br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea.entries) {
             val result = repository.search(filter.withSearchArea(area), 0)
             assertEquals(area.backendValue.toString(), api.marketplaceQuery["tipoConsulta"])
             assertEquals("123", api.marketplaceQuery["idMunicipio"])
@@ -314,7 +314,7 @@ class RemoteRepositoriesTest {
         assertEquals(55, team.countryNumber); assertEquals("TA", team.shortDescription)
         assertEquals("Equipe", team.className); assertTrue(team.selectionIndicator)
         assertEquals("", team.longDescription); assertEquals("", team.country); assertEquals("", team.countryCode)
-        assertEquals(br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth(10, "Outubro", "OUT"), bet.luckyMonth)
+        assertEquals(br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth(10, "Outubro", "OUT"), bet.luckyMonth)
         val first = bet.lotecaSelections[0]
         assertEquals(9, first.match.number); assertEquals("Casa", first.match.home.name); assertEquals("SP", first.match.away.state)
         assertEquals("Rodada especial", first.match.legendDescription); assertEquals("E", first.match.legendLetter)

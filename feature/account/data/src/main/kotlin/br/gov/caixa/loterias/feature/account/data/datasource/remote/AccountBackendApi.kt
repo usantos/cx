@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
 import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.feature.account.data.dto.BlockedAccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.BlockedAccountVerificationEnvelopeDto
 import retrofit2.http.*
 
 /** Contrato HTTP pertencente a esta funcionalidade; anotações de transporte e valores padrão originais são preservados. */

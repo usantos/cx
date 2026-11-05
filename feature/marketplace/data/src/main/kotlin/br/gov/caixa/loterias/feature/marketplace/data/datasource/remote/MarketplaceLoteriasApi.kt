@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.marketplace.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
 import br.gov.caixa.loterias.core.network.api.LoteriasApi
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePoolDetailDto
+import br.gov.caixa.loterias.core.network.dto.betting.AddPoolShareRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePageDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePoolDetailDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import retrofit2.http.*
 
 /** Contrato HTTP pertencente a esta funcionalidade; anotações de transporte e valores padrão originais são preservados. */

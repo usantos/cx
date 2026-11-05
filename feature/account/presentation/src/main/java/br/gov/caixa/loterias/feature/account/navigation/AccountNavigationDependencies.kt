@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.account.navigation
 
 import br.gov.caixa.loterias.core.auth.gateway.AuthenticationGateway
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RecalculateAuthorizedLimitUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase

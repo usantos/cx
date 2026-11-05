@@ -3,13 +3,13 @@
 
 package br.gov.caixa.loterias.core.navigation
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.navigation.state.authenticatedContinuation
 import br.gov.caixa.loterias.core.navigation.state.loggedContinuation
 import br.gov.caixa.loterias.core.navigation.state.postLoginDestinationRoute
 import br.gov.caixa.loterias.core.navigation.state.restoredLoggedRoute
 import br.gov.caixa.loterias.core.navigation.state.shouldUseLoggedVisualFixture
 import br.gov.caixa.loterias.core.navigation.state.ticketQueryContinuation
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test

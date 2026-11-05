@@ -712,3 +712,9 @@ tasks.register('verifyCaixaDS') {
     description = 'Alias de compatibilidade de verifyLoteriasCaixaDS.'
     dependsOn 'verifyLoteriasCaixaDS'
 }
+
+project(':core:domain') { apply from: rootProject.file('gradle/core-domain-integration-coverage.gradle') }
+
+project(':core:network') { apply from: rootProject.file('gradle/core-network-integration-coverage.gradle') }
+
+project(':core:data') { apply from: rootProject.file('gradle/core-data-integration-coverage.gradle') }

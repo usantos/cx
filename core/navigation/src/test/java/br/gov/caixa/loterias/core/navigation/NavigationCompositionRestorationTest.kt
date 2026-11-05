@@ -10,12 +10,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.saveable.LocalSaveableStateRegistry
 import androidx.compose.runtime.saveable.SaveableStateRegistry
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
 import br.gov.caixa.loterias.core.navigation.workflow.rememberPrivateEntryKey
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -121,7 +121,7 @@ class NavigationCompositionRestorationTest {
         val render: @Composable () -> Unit = { state = rememberAppNavigationState("a".repeat(64)) }
         val saved = Harness().use { harness ->
             harness.content(render)
-            state.details.selectedPurchase = br.gov.caixa.loterias.feature.tickets.domain.model.Purchase(
+            state.details.selectedPurchase = br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase(
                 id = 1,
                 date = "fixture",
                 status = "pending",

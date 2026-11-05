@@ -1,18 +1,18 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSourceImpl
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.feature.account.data.repository.PostLoginAccountRepositoryImpl
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
 import br.gov.caixa.loterias.feature.cart.domain.model.CartCleanupResult
 import br.gov.caixa.loterias.feature.cart.domain.model.CartCode
 import br.gov.caixa.loterias.feature.cart.domain.model.CartModality
@@ -161,7 +161,7 @@ class PostLoginCartTransferTest {
                      "concursoAlvo":3000,"quantidadeNumeros":6},
                     {"id":4,"modalidade":"LOTOFACIL","numerosSelecionados":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
                      "valor":6,"concursoAlvo":3000,"quantidadeNumeros":15}]}}}""",
-                br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationEnvelopeDto::class.java
+                br.gov.caixa.loterias.core.network.dto.account.AccountVerificationEnvelopeDto::class.java
             )
         }
         PostLoginAccountRepositoryImpl(remote, content, transfer, { current }).verifyAccess(identity)
@@ -179,7 +179,7 @@ class PostLoginCartTransferTest {
                 Gson().fromJson(
                     """{"payload":{"carrinho":{"apostasIndividuais":[{"id":3,"modalidade":"MEGA_SENA",
                     "numerosSelecionados":$numbers,"valor":6,"concursoAlvo":3000,"quantidadeNumeros":6}]}}}""",
-                    br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationEnvelopeDto::class.java
+                    br.gov.caixa.loterias.core.network.dto.account.AccountVerificationEnvelopeDto::class.java
                 )
             }
             PostLoginAccountRepositoryImpl(remote, content, transfer, { current }).verifyAccess(identity)

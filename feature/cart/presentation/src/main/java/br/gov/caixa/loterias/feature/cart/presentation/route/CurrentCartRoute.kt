@@ -10,9 +10,9 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.components.ServiceFailureOverlay
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 import br.gov.caixa.loterias.feature.cart.presentation.components.CartLocationDialogs
 import br.gov.caixa.loterias.feature.cart.presentation.components.CurrentCartActions

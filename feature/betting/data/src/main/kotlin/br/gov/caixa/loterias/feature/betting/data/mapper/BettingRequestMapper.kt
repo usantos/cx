@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth
+import br.gov.caixa.loterias.core.network.dto.betting.AddBetRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.DomainCharacterDto
+import br.gov.caixa.loterias.core.network.dto.betting.DomainIntegerDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotecaBetMatchDto
+import br.gov.caixa.loterias.core.network.dto.betting.LotogolBetMatchDto
+import br.gov.caixa.loterias.core.network.dto.betting.LuckyMonthParameterDto
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth
-import br.gov.caixa.loterias.feature.betting.data.dto.AddBetRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.DomainCharacterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.DomainIntegerDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotecaBetMatchDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotogolBetMatchDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LuckyMonthParameterDto
 import com.google.gson.Gson
 
 internal fun BetDraft.toAddBetRequest(): AddBetRequestDto {

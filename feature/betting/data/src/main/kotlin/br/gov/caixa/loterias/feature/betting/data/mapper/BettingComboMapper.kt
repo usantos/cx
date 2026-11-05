@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.network.dto.betting.BetComboDto
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.data.dto.BetComboDto
 import java.math.BigDecimal
 
 internal fun BetComboDto.toBettingCombo() = BetCombo(

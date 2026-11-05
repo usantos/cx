@@ -2,8 +2,8 @@ package br.gov.caixa.loterias.feature.account.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.appResultOf
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.repository.BlockedAccountVerificationRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.PostLoginAccountRepository
 

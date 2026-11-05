@@ -29,7 +29,7 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFa
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
 import br.gov.caixa.loterias.core.designsystem.tokens.loteriasCaixaDSLotteryStyle
 import br.gov.caixa.loterias.core.designsystem.tokens.resolveLoteriasCaixaDSLotteryStyle
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR
 import java.util.Locale

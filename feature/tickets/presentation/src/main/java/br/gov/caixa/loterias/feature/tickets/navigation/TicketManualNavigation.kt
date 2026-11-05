@@ -88,7 +88,7 @@ private fun NavGraphBuilder.ticketResultNavigation(
             val queryState = queryViewModel?.state?.collectAsStateWithLifecycle()?.value
             val ticketResult = queryState?.ticketResult
             var currentGame by remember(ticketResult) {
-                mutableStateOf<br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters?>(null)
+                mutableStateOf<br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters?>(null)
             }
             LaunchedEffect(ticketResult) {
                 ticketResult?.modalityId?.let { modalityId ->

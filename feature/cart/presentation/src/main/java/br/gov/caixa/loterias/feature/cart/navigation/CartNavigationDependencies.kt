@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.feature.cart.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.MarkFavoriteCartAddedUseCase
@@ -21,8 +21,8 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAddedUse
 interface CartNavigationDependencies {
     val appModulesConfiguration: br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
     val addFavoriteCartToCurrent: AddFavoriteCartToCurrentUseCase
-    val authenticatedSessionContent: br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
-    val authenticatedSessionIdentity: br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+    val authenticatedSessionContent: br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
+    val authenticatedSessionIdentity: br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
     val bettingParameters: GetBettingParametersUseCase
     val checkCheckoutLocation: br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUseCase
     val clearCart: ClearCartUseCase
@@ -49,7 +49,7 @@ interface CartNavigationDependencies {
     val visitorCart: br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
     val wasFavoriteCartAdded: WasFavoriteCartAddedUseCase
     val sessionIdentityChanges:
-        kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?>
+        kotlinx.coroutines.flow.Flow<br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?>
 
     @androidx.compose.runtime.Composable
     fun SimulationRecoveryPanel(

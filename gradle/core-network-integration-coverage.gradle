@@ -1,0 +1,117 @@
+// Testes de contrato dos repositories exercitam clientes HTTP, providers e envelopes reais.
+def featureDataProjects = [
+        project(':feature:account:data'),
+        project(':feature:betting:data'),
+        project(':feature:cart:data'),
+        project(':feature:home:data'),
+        project(':feature:marketplace:data'),
+        project(':feature:notifications:data'),
+        project(':feature:onboarding:data'),
+        project(':feature:payment:data'),
+        project(':feature:responsible-gaming:data'),
+        project(':feature:results:data'),
+        project(':feature:retail:data'),
+        project(':feature:support:data'),
+        project(':feature:tickets:data'),
+]
+def networkCoverageData = files(
+        featureDataProjects.collect { owner ->
+            files({
+                owner.tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+            }, fileTree(owner.layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+        },
+        files({
+            project(':app').tasks.named('testPrdDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+        }).filter { it.isFile() },
+        fileTree(layout.buildDirectory).include('jacoco/test.exec'),
+        fileTree(project(':core:data').layout.buildDirectory).include('jacoco/test.exec')
+)
+def networkCoverageTransportProjects = [
+]
+def networkCoverageSources = files('src/main/java', 'src/main/kotlin', networkCoverageTransportProjects.collect { it.file('src/main/kotlin') })
+def networkCoverageIncludes = [
+        '**/SessionNetworkClients*.class',
+        '**/TransactionNetworkClients*.class',
+        '**/AuthenticatedNetworkClients*.class',
+        '**/PaymentProviderNetworkClients*.class',
+        '**/NetworkRetrofitBuilderKt*.class',
+        '**/BearerTokenInterceptor.class',
+        '**/SessionRefreshInterceptor*.class',
+        '**/BoundDeletionSingleAttemptInterceptor*.class',
+        '**/SilceTransportInterceptor*.class',
+        '**/CloudBackendRouting*.class',
+        '**/NetworkClientFactory.class',
+        '**/PinnedHostInterceptor*.class',
+        '**/CurlLoggingInterceptor.class',
+        '**/MockBackendInterceptor.class',
+        '**/ServerTimeAdapterFactory*.class',
+        '**/JsonNumberFlatteningKt*.class',
+        '**/PurchaseBackendClient*.class',
+        '**/PurchaseBackendResponse*.class',
+        '**/PurchaseBackendApiProvider*.class',
+        '**/PurchaseProcessingDto*.class',
+        '**/PurchaseEnvelopeDto*.class',
+        '**/PurchaseErrorEnvelopeDto*.class',
+        '**/MercadoPagoRegistrationEnvelopeDto*.class',
+        '**/PrizeRedemptionEnvelopeDto*.class',
+        '**/PrizeBackendApiProvider*.class',
+        '**/SingleAttemptTransactionInterceptor*.class',
+        '**/BackendHttpFailure*.class',
+        '**/BackendErrorMetadata*.class',
+        '**/PurchaseHttpException*.class',
+        '**/Cart*Dto*.class',
+        '**/AccountVerificationRequestDto*.class',
+        '**/AccountVerification*.class',
+        '**/AccountSessionDto*.class',
+        '**/AccountNotificationDto*.class',
+        '**/NotificationRead*.class',
+]
+def networkCoverageClasses = files(
+    ([project] + networkCoverageTransportProjects).collect { owner ->
+        fileTree(dir: owner.layout.buildDirectory.dir('classes/kotlin/main'), includes: networkCoverageIncludes)
+    }
+)
+
+tasks.register('verifyNetworkCoverageInputs') {
+    // Estas suítes nativas também produzem dados de execução consumidos por este relatório.
+    dependsOn ':feature:account:data:connectedDebugAndroidTest', ':feature:cart:data:connectedDebugAndroidTest', ':feature:notifications:data:connectedDebugAndroidTest'
+    dependsOn tasks.named('test'), ':core:data:test'
+    dependsOn featureDataProjects.collect { it.path + ':testDebugUnitTest' }
+    dependsOn ':app:testPrdDebugUnitTest'
+    doLast {
+        if (networkCoverageClasses.asFileTree.isEmpty() || networkCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura de rede sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoTestCoverageReport', JacocoReport) {
+    dependsOn tasks.named('verifyNetworkCoverageInputs')
+    executionData.setFrom(networkCoverageData)
+    sourceDirectories.setFrom(networkCoverageSources)
+    classDirectories.setFrom(networkCoverageClasses)
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+}
+
+tasks.named('jacocoTestCoverageVerification', JacocoCoverageVerification).configure {
+    dependsOn tasks.named('jacocoTestCoverageReport')
+    executionData.setFrom(networkCoverageData)
+    sourceDirectories.setFrom(networkCoverageSources)
+    classDirectories.setFrom(networkCoverageClasses)
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.9501
+            }
+        }
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn tasks.named('jacocoTestCoverageVerification')
+}

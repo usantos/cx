@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityDto
-import br.gov.caixa.loterias.feature.account.data.dto.NeighborhoodDto
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityDto
+import br.gov.caixa.loterias.core.network.dto.account.NeighborhoodDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
 
 interface AccountRemoteDataSource {
     suspend fun currentUserProfile(): UserProfileDto?

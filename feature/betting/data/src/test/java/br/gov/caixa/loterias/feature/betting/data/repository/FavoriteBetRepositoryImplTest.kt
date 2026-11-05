@@ -1,17 +1,20 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetCloversDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetEnumDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetNamedParameterDto
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetPageDto
+import br.gov.caixa.loterias.core.network.dto.betting.GroupedFavoriteBetsDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
+import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.FavoriteBetRemoteDataSource
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.FavoriteBetRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.betting.data.repository.FavoriteBetRepositoryImpl
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetCartOptions
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBetDraft
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetCloversDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetEnumDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetNamedParameterDto
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetPageDto
-import br.gov.caixa.loterias.feature.betting.data.dto.GroupedFavoriteBetsDto
-import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
 import com.google.gson.JsonParser
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
@@ -19,9 +22,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.FavoriteBetRemoteDataSource
-import br.gov.caixa.loterias.feature.betting.data.repository.FavoriteBetRepositoryImpl
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.FavoriteBetRemoteDataSourceImpl
 
 class FavoriteBetRepositoryImplTest {
     private val flat = FavoriteBetDto(
@@ -135,8 +135,8 @@ class FavoriteBetRepositoryImplTest {
             "Nome que será mantido",
             listOf(listOf(1, 2, 3)),
             clovers = listOf(2, 5),
-            favoriteTeam = br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam(101, "Time Azul", "DF"),
-            luckyMonth = br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth(9, "Setembro", "SET"),
+            favoriteTeam = br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam(101, "Time Azul", "DF"),
+            luckyMonth = br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth(9, "Setembro", "SET"),
         )
         source.validate(draft)
         source.save(draft.copy(numberColumns = listOf(listOf(1), listOf(2))))

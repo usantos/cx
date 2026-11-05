@@ -13,7 +13,6 @@ dependencies {
     testImplementation libs.kotlinx.coroutines.test
 }
 
-
 dependencies {
     api libs.kotlinx.coroutines.core
     testImplementation libs.junit4

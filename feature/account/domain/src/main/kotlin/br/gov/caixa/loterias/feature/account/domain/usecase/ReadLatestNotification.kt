@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.account.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.appResultOf
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
-import br.gov.caixa.loterias.feature.account.domain.model.LatestNotificationSession
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.LatestNotificationSession
 import br.gov.caixa.loterias.feature.account.domain.model.NotificationReadResult
 import br.gov.caixa.loterias.feature.account.domain.model.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.account.domain.repository.LatestNotificationReadRepository

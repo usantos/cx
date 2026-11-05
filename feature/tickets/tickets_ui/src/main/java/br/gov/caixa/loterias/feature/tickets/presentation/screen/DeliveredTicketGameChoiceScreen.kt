@@ -28,7 +28,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 import br.gov.caixa.loterias.feature.tickets.presentation.state.TicketsUiState
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR

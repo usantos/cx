@@ -31,12 +31,13 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LocalLoteriasCaixaDSMegaSenaCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSCampaign
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.betting.domain.model.BetComboEntry
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddComboToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBetCombosUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
@@ -46,7 +47,6 @@ import br.gov.caixa.loterias.feature.betting.presentation.route.BetCombosRoute
 import br.gov.caixa.loterias.feature.betting.presentation.route.LotteryModalitiesRoute
 import br.gov.caixa.loterias.feature.betting.presentation.state.BettingCatalogMode
 import br.gov.caixa.loterias.feature.betting.presentation.viewmodel.BettingCatalogViewModel
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.Dispatchers

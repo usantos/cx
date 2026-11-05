@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.results.data.repository
 
-import org.junit.Assert.*
-import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResults
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.results.data.dto.DrawResultDto
-import br.gov.caixa.loterias.feature.results.data.dto.DrawContestDto
-import kotlinx.coroutines.test.runTest
-import org.junit.Test
-import br.gov.caixa.loterias.feature.results.data.repository.ResultsRepositoryImpl
+import br.gov.caixa.loterias.core.network.dto.results.DrawContestDto
+import br.gov.caixa.loterias.core.network.dto.results.DrawResultDto
 import br.gov.caixa.loterias.feature.results.data.datasource.remote.ResultsRemoteDataSource
+import br.gov.caixa.loterias.feature.results.data.repository.ResultsRepositoryImpl
+import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResults
+import kotlinx.coroutines.test.runTest
+import org.junit.Assert.*
+import org.junit.Test
 
 class ConfirmedBetRangeResultsTest {
     @Test fun `teimosinha fetches every contest once from initial contest`() = runTest {

@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 

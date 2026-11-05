@@ -7,6 +7,7 @@ import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
@@ -17,7 +18,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingActionUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.home.presentation.coordinator.HomeCartCoordinator
 import br.gov.caixa.loterias.feature.home.presentation.coordinator.HomeEntryCoordinator
 import br.gov.caixa.loterias.feature.home.presentation.coordinator.HomeLoadingCoordinator

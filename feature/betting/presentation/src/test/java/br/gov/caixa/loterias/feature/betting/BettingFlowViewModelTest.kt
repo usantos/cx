@@ -37,7 +37,7 @@ class BettingFlowViewModelTest {
                 br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase {
                     br.gov.caixa.loterias.core.common.result.AppResult.Success(
                         br.gov.caixa.loterias.feature.account.domain.model.AccountAccess(
-                            br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination.HOME,
+                            br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination.HOME,
                             false,
                             java.math.BigDecimal.ZERO
                         )
@@ -45,7 +45,7 @@ class BettingFlowViewModelTest {
                 },
                 repository
             )
-            val request = br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest(2, "ESPECIAL")
+            val request = br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest(2, "ESPECIAL")
             val vm = BettingFlowViewModel(
                 WorkflowSpec("betting/tutorial", "Tutorial", "", primaryAction = ""),
                 br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissed(repository)

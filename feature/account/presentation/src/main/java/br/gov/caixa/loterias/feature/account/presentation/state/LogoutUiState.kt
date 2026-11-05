@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.account.presentation.state
 
-import br.gov.caixa.loterias.feature.account.domain.model.EndSessionLaunch
+import br.gov.caixa.loterias.core.domain.contract.account.model.EndSessionLaunch
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import kotlinx.coroutines.launch
 

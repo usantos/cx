@@ -1,18 +1,18 @@
 package br.gov.caixa.loterias.feature.cart.domain.rule
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.VISITOR_DUPLICATE_CONFIRMATION
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartEntry
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartSelection
-import br.gov.caixa.loterias.feature.cart.domain.model.localizedMessage as messageText
 import java.math.BigDecimal
 import java.text.Normalizer
 import java.util.Locale
+import br.gov.caixa.loterias.feature.cart.domain.model.localizedMessage as messageText
 
 /** Regras de apostas de visitantes. A persistência fornece retratos e aplica todas as mutações atomicamente. */
 object VisitorCartPolicy {

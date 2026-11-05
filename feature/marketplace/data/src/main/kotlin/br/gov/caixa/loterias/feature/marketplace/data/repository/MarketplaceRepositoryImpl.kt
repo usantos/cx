@@ -1,28 +1,27 @@
 package br.gov.caixa.loterias.feature.marketplace.data.repository
 
-import br.gov.caixa.loterias.feature.marketplace.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.domain.contract.marketplace.rule.MarketplaceFilterRules
+import br.gov.caixa.loterias.core.network.dto.betting.AddPoolShareRequestDto
+import br.gov.caixa.loterias.core.network.dto.betting.DomainCharacterDto
+import br.gov.caixa.loterias.core.network.dto.marketplace.MarketplacePageDto
 import br.gov.caixa.loterias.core.network.mapper.flattenNumbers
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
-import br.gov.caixa.loterias.feature.marketplace.domain.rule.MarketplaceFilterRules
-import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
-import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceDetailRepository
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
-import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplacePurchaseRepository
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
-import br.gov.caixa.loterias.feature.betting.data.dto.AddPoolShareRequestDto
-import br.gov.caixa.loterias.feature.betting.data.dto.DomainCharacterDto
-import java.math.BigDecimal
-import br.gov.caixa.loterias.feature.marketplace.data.datasource.remote.MarketplaceRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
 import br.gov.caixa.loterias.feature.betting.data.mapper.toDomainLotecaSelection
 import br.gov.caixa.loterias.feature.betting.data.mapper.toDomainLuckyMonth
 import br.gov.caixa.loterias.feature.betting.data.mapper.toDomainSportsTeam
-import br.gov.caixa.loterias.feature.marketplace.data.dto.MarketplacePageDto
+import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
+import br.gov.caixa.loterias.feature.marketplace.data.datasource.remote.MarketplaceRemoteDataSource
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePage
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
+import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolOrder
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceDetailRepository
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplacePurchaseRepository
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
+import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.marketplace.data.localizedMessage as messageText
 
 class MarketplaceRepositoryImpl(private val remote: MarketplaceRemoteDataSource) :
     MarketplaceRepository,

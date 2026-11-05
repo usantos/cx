@@ -1,19 +1,19 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
 import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityIdDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
 import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityIdDto
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
 import br.gov.caixa.loterias.feature.account.domain.model.AccountProfile
 import br.gov.caixa.loterias.feature.account.domain.model.AccountRegistration
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import br.gov.caixa.loterias.feature.account.domain.model.PersonalDataUpdate

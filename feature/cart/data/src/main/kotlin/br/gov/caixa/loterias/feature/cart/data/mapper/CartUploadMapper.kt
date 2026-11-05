@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
-import br.gov.caixa.loterias.feature.cart.data.dto.CartCodeDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartLotecaDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartLotogolDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartMonthDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartTeamDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartUploadDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartCodeDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartLotecaDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartLotogolDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartMonthDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartTeamDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartUploadDto
 import br.gov.caixa.loterias.feature.cart.domain.model.CartMatchTeam
 import br.gov.caixa.loterias.feature.cart.domain.model.CartModality
 import br.gov.caixa.loterias.feature.cart.domain.model.CartNumbers

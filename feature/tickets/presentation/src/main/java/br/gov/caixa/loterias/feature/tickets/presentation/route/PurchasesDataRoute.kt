@@ -5,8 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.navigation.state.PurchaseRecoverySession
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseFiltersActions
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseFiltersDialog
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.PurchasesContent

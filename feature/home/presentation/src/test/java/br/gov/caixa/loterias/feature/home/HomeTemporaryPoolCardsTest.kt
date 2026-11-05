@@ -1,6 +1,10 @@
 package br.gov.caixa.loterias.feature.home
 
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeSpecialContests
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
 import br.gov.caixa.loterias.feature.betting.domain.model.*
 import br.gov.caixa.loterias.feature.home.presentation.mapper.shouldShowPoolButton
 import br.gov.caixa.loterias.feature.home.presentation.mapper.toHomeLotteries

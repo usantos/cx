@@ -1,22 +1,22 @@
 package br.gov.caixa.loterias.feature.betting.data.repository
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSource
+import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.betting.data.repository.RapidBettingRepositoryImpl
+import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import java.math.BigDecimal
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSource
-import br.gov.caixa.loterias.feature.betting.data.repository.RapidBettingRepositoryImpl
-import br.gov.caixa.loterias.feature.betting.data.datasource.remote.RapidBettingRemoteDataSourceImpl
 
 class RapidBettingRepositoryImplTest {
     @Test fun `maps configuration saves stable payload and generates cart`() = runTest {

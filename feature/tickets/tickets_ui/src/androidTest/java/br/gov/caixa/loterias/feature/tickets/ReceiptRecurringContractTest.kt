@@ -8,11 +8,11 @@ import androidx.compose.ui.test.performScrollToNode
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
 import br.gov.caixa.loterias.core.testing.delivery.createFeatureComposeRuleV2
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsUseCase
@@ -58,7 +58,7 @@ class ReceiptRecurringContractTest {
 
     @Test fun purchasePixRecreationUsesCapturedServerDeadlineAndExpiresMonotonically() {
         var elapsed = 10_000L
-        val purchase = br.gov.caixa.loterias.feature.tickets.domain.model.Purchase(
+        val purchase = br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase(
             9, "", "Aguardando pagamento", "Pix", java.math.BigDecimal.TEN,
             statusId = 10, paymentMethodId = 6, pixCopyPaste = "CONTROLLED-NOT-PAYABLE", paymentExpiresAt = "2020-01-01T15:10:00"
         )

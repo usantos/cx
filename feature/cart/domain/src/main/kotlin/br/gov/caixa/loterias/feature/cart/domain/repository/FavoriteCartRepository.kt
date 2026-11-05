@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.cart.domain.repository
 
-import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCart
+import br.gov.caixa.loterias.feature.cart.domain.model.FavoriteCartBet
 
 interface FavoriteCartRepository {
     suspend fun favorites(): List<FavoriteCart>

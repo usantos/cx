@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.core.testing.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionContent
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionContent
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class FakeSessionContentRepository : AuthenticatedSessionContentRepository {

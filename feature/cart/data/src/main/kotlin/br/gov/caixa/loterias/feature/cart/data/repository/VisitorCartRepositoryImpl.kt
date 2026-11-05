@@ -1,21 +1,21 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
 import android.content.Context
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.feature.cart.data.datasource.local.VisitorCartGraphStorage
+import br.gov.caixa.loterias.feature.cart.data.mapper.LEGACY_CART_TABLE
+import br.gov.caixa.loterias.feature.cart.data.mapper.decodeLegacyCart
+import br.gov.caixa.loterias.feature.cart.data.mapper.guestCartRows
+import br.gov.caixa.loterias.feature.cart.data.mapper.legacyVisitorCart
+import br.gov.caixa.loterias.feature.cart.data.mapper.visitorCartSelection
 import br.gov.caixa.loterias.feature.cart.domain.model.VisitorCartEntry
-import br.gov.caixa.loterias.feature.cart.domain.rule.VisitorCartPolicy
 import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
+import br.gov.caixa.loterias.feature.cart.domain.rule.VisitorCartPolicy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import br.gov.caixa.loterias.feature.cart.data.mapper.visitorCartSelection
-import br.gov.caixa.loterias.feature.cart.data.mapper.legacyVisitorCart
-import br.gov.caixa.loterias.feature.cart.data.datasource.local.VisitorCartGraphStorage
-import br.gov.caixa.loterias.feature.cart.data.mapper.decodeLegacyCart
-import br.gov.caixa.loterias.feature.cart.data.mapper.LEGACY_CART_TABLE
-import br.gov.caixa.loterias.feature.cart.data.mapper.guestCartRows
 
 /** Coordena as regras de domínio de visitantes e as gravações atômicas no grafo de transferência legado. */
 class VisitorCartRepositoryImpl internal constructor(private val storage: VisitorCartGraphStorage) : VisitorCartRepository {

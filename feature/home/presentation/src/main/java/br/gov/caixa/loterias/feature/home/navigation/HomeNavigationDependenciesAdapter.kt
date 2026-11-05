@@ -4,9 +4,10 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetHomeFeatureConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetUnreadNotificationCountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ObserveAuthenticatedSessionContentUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ReadLatestNotificationUseCase
@@ -15,7 +16,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareBetEntryUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PrepareHomeBettingActionUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.PreparePoolEntryUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.home.domain.usecase.HomePreferencesUseCases
 import br.gov.caixa.loterias.feature.home.domain.usecase.SelectHomeResaleOffersUseCase
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.usecase.GetSocialTransfersUseCase

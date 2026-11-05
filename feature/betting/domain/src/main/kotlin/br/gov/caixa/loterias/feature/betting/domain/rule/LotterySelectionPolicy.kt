@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.betting.domain.rule
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
 
 /** Limites de seleção e combinações permitidas pelos contratos existentes das loterias. */
 object LotterySelectionPolicy {

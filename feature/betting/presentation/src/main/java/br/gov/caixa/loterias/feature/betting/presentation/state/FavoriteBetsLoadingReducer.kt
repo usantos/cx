@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 
 internal fun reduceFavoriteBetsLoading(state: FavoriteBetsUiState, action: FavoriteBetsAction): FavoriteBetsUiState = when (action) {
     FavoriteBetsAction.LoadingStarted -> reduceFavoriteBetsLoadingStarted(state)

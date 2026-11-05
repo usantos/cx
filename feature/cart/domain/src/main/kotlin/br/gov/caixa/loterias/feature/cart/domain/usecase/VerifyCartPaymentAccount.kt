@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.CartPaymentAccountDecision
 

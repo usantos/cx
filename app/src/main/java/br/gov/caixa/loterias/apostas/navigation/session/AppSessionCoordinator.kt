@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountCompl
 /** Funções de retorno e concessão da sessão capturadas por esta composição; os ViewModels das telas pertencem aos destinos. */
 internal class AppSessionCoordinator(
     override val state: AppSessionState,
-    override val identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?,
+    override val identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?,
     override val privateEntryKey: String,
     override val isPrivateSessionCurrent: () -> Boolean,
     val logoutViewModel: br.gov.caixa.loterias.feature.account.presentation.viewmodel.LogoutViewModel,
@@ -37,7 +37,7 @@ internal fun rememberAppSessionCoordinator(
     sessionDependencies: AppSessionDependencies,
     navController: androidx.navigation.NavHostController,
     navigation: AppNavigationState,
-    identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?,
+    identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?,
     onForegroundSessionRestart: () -> Unit,
 ): AppSessionCoordinator {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current

@@ -1,15 +1,15 @@
 package br.gov.caixa.loterias.feature.tickets.domain.repository
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
-import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage
+import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
-import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketQuery
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
 
 interface TicketsRepository {
     fun prepareScannedQuery(code: String, orientation: TicketScanOrientation): TicketQuery? = TicketQuery(code, true)

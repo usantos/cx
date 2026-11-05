@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.core.data
 
+import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
 import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
 import br.gov.caixa.loterias.core.network.provider.PrizeBackendApiProvider
 import br.gov.caixa.loterias.feature.retail.data.datasource.remote.RetailRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
@@ -22,7 +22,7 @@ class ReceiptPdfTransportTest {
                     .message("OK").body(body.toResponseBody()).build()
             })
         val repository = TicketsRepositoryImpl(TicketsRemoteDataSourceImpl(BackendApiProvider().apply { replace(api) }))
-        val purchase = br.gov.caixa.loterias.feature.tickets.domain.model.Purchase(9003, "", "", "Pix", java.math.BigDecimal.TEN)
+        val purchase = br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase(9003, "", "", "Pix", java.math.BigDecimal.TEN)
         assertEquals("2020-01-01T15:00:00.000", repository.purchaseDetails(purchase).serverDateTime)
     }
 

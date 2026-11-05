@@ -1,13 +1,13 @@
 package br.gov.caixa.loterias.core.domain.push.usecase
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
+import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
 import java.security.MessageDigest
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
-import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
 
 /** Registra o dispositivo para o login capturado. Requisições com falha podem ser repetidas na próxima retomada. */
 class RegisterPushDevice(

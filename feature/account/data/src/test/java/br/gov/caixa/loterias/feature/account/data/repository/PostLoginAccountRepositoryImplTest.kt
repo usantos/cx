@@ -1,16 +1,20 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.core.testing.repository.FakeSessionContentRepository
-import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendApi
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendClient
 import br.gov.caixa.loterias.core.network.api.AccountVerificationBackendProvider
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationEnvelopeDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.testing.repository.FakeSessionContentRepository
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSource
+import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSourceImpl
+import br.gov.caixa.loterias.feature.account.data.repository.PostLoginAccountRepositoryImpl
+import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
 import com.google.gson.Gson
 import java.io.IOException
 import java.math.BigDecimal
@@ -22,10 +26,6 @@ import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.*
 import org.junit.Test
 import retrofit2.Response
-import br.gov.caixa.loterias.feature.account.data.repository.PostLoginAccountRepositoryImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSourceImpl
-import br.gov.caixa.loterias.feature.account.data.datasource.remote.PostLoginAccountDataSource
 
 class PostLoginAccountRepositoryImplTest {
 

@@ -4,6 +4,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.junit4.StateRestorationTester
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
@@ -11,8 +13,6 @@ import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
 import br.gov.caixa.loterias.core.testing.delivery.InstalledFeatureTestContent
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

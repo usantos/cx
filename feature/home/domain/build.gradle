@@ -16,3 +16,5 @@ dependencies {
 dependencies {
     api project(':feature:betting:domain')
 }
+
+dependencies { api project(':core:domain') }

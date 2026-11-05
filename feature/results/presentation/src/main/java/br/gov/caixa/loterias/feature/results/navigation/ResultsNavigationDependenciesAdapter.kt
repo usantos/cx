@@ -19,6 +19,6 @@ class ResultsNavigationDependenciesAdapter @Inject constructor(
         variant: String,
         originalRecurringBet: Boolean,
         redeemedPrize: Boolean,
-    ): br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet =
+    ): br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet =
         visualBetFixtures.visualConfirmedBet(variant, originalRecurringBet, redeemedPrize)
 }

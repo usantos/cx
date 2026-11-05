@@ -1,13 +1,12 @@
 package br.gov.caixa.loterias.core.network
 
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartCodeDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartLotecaDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartLotogolDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartMonthDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartTeamDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartUploadDto
-
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartCodeDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartLotecaDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartLotogolDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartMonthDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartTeamDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartUploadDto
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import java.math.BigDecimal

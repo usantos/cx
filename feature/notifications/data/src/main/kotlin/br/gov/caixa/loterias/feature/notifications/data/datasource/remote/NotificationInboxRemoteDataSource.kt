@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.notifications.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.notifications.data.dto.NotificationInboxEnvelopeDto
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.network.dto.notifications.NotificationInboxEnvelopeDto
 
 interface NotificationInboxRemoteDataSource {
     suspend fun load(identity: AuthenticatedSessionIdentity): Pair<NotificationInboxEnvelopeDto, NotificationInboxEnvelopeDto>

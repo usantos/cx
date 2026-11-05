@@ -7,7 +7,7 @@ import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurati
 import br.gov.caixa.loterias.core.domain.configuration.usecase.GetMarketplaceFilterParameters
 import br.gov.caixa.loterias.core.domain.configuration.usecase.IsVersionSupported
 import br.gov.caixa.loterias.core.domain.configuration.usecase.PrepareNetworkSecurityUseCase
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.feature.onboarding.presentation.state.StartupState
 import br.gov.caixa.loterias.feature.onboarding.presentation.viewmodel.StartupViewModel
 import kotlinx.coroutines.CancellationException

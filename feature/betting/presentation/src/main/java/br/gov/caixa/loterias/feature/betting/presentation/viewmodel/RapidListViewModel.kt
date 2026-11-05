@@ -8,6 +8,9 @@ import br.gov.caixa.loterias.core.common.network.ConnectionAvailability
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent
@@ -22,10 +25,7 @@ import br.gov.caixa.loterias.feature.betting.presentation.recovery.BettingRecove
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidListAction
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidListUiState
 import br.gov.caixa.loterias.feature.betting.presentation.state.reduceRapidListState
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import java.time.Clock

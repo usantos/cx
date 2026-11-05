@@ -1,14 +1,14 @@
 package br.gov.caixa.loterias.feature.cart.data.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.network.dto.cart.CartBetDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
 import br.gov.caixa.loterias.feature.cart.data.datasource.remote.summaryTotal
-import br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
-import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import java.math.BigDecimal
+import br.gov.caixa.loterias.feature.cart.data.localizedMessage as messageText
 
 internal fun CartDto?.mapCartPayload(): ShoppingCart {
     val cart = requireNotNull(this) { messageText("carrinho_sem_payload_d5c84c") }

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.account.presentation.coordinator
 
+import br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
-import br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication
 import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginAction
 import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
@@ -9,7 +9,7 @@ import br.gov.caixa.loterias.feature.account.presentation.state.LoginUiState
 internal class LoginBiometricPreferences(
     private val mutableState: ReduxStateStore<LoginUiState, LoginAction>,
     private val authentication: SessionAuthentication,
-    private val biometric: br.gov.caixa.loterias.feature.account.domain.port.BiometricLoginPreferences?,
+    private val biometric: br.gov.caixa.loterias.core.domain.contract.account.port.BiometricLoginPreferences?,
 ) {
     private var enableAfterEnrollment = false
 

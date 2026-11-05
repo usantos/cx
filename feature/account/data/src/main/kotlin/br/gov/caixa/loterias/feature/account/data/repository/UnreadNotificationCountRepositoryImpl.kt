@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.account.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.repository.UnreadNotificationCountRepository
-import br.gov.caixa.loterias.feature.account.domain.model.UnreadNotificationCountUnavailableException
-import com.google.gson.JsonParseException
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
+import br.gov.caixa.loterias.feature.account.domain.model.UnreadNotificationCountUnavailableException
+import br.gov.caixa.loterias.feature.account.domain.repository.UnreadNotificationCountRepository
+import com.google.gson.JsonParseException
 
 class UnreadNotificationCountRepositoryImpl(
     private val provider: NotificationReadApiProvider,

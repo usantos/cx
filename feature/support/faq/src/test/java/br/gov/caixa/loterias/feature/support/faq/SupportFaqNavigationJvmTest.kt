@@ -24,10 +24,10 @@ import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModulesConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.repository.AppModulesConfigurationRepository
 import br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.support.domain.delivery.SupportDeliveryState
 import br.gov.caixa.loterias.feature.support.domain.delivery.SupportModuleDelivery

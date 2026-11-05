@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.notifications.domain.push
 
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 
 /** A captura da identidade ocorre antes da obtenção assíncrona do token da plataforma. */
 class PushRegistrationCoordinator(

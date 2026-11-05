@@ -14,6 +14,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModule
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.returnToModalitiesHome
 import br.gov.caixa.loterias.core.navigation.destination.serviceRedirectRoute
@@ -23,7 +24,6 @@ import br.gov.caixa.loterias.core.navigation.state.accountCompletionRedirects
 import br.gov.caixa.loterias.core.navigation.workflow.LoginNavigation
 import br.gov.caixa.loterias.core.presentation.delivery.FeatureModuleAdmission
 import br.gov.caixa.loterias.core.presentation.delivery.rememberFeatureWritePermission
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.cart.presentation.route.CartAdditionRoute
 import br.gov.caixa.loterias.feature.cart.presentation.route.CurrentCartRoute
 import br.gov.caixa.loterias.feature.cart.presentation.route.FavoriteCartDetailRoute
@@ -87,7 +87,7 @@ private fun NavGraphBuilder.currentCartGraph(
             val cartViewModel = currentCartViewModel(appContainer)
             val cartState by cartViewModel.state.collectAsStateWithLifecycle()
             var lastObservedCart by remember(cartViewModel) {
-                mutableStateOf<br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart?>(null)
+                mutableStateOf<br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart?>(null)
             }
             LaunchedEffect(cartState.cart) {
                 cartState.cart?.let { current ->

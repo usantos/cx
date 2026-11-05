@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.home.presentation.state
 
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
 import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.model.HomeBettingDecision
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryDecision
 import br.gov.caixa.loterias.feature.responsiblegaming.domain.model.SocialTransfers
@@ -21,7 +21,7 @@ data class HomeUiState(
     val parameters: BettingParameters? = null,
     val features: HomeFeatureConfiguration = HomeFeatureConfiguration(),
     val combos: List<BetCombo> = emptyList(),
-    val resaleOffers: List<br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability> = emptyList(),
+    val resaleOffers: List<br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability> = emptyList(),
     val socialTransfers: SocialTransfers? = null,
     val loadingSocialTransfers: Boolean = false,
     val cartTotal: BigDecimal = BigDecimal.ZERO,

@@ -8,6 +8,9 @@ import br.gov.caixa.loterias.core.network.api.PurchaseBackendApiProvider
 import br.gov.caixa.loterias.core.network.api.PurchaseBackendClient
 import br.gov.caixa.loterias.core.network.api.PurchaseHttpException
 import br.gov.caixa.loterias.core.network.client.NetworkClientFactory
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseErrorEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.payment.PurchaseProcessingDto
 import br.gov.caixa.loterias.core.network.interceptor.AuthTokenProvider
 import br.gov.caixa.loterias.core.network.interceptor.BearerTokenInterceptor
 import br.gov.caixa.loterias.core.network.interceptor.CurlLoggingInterceptor
@@ -16,9 +19,6 @@ import br.gov.caixa.loterias.core.network.interceptor.NetworkDebugOptions
 import br.gov.caixa.loterias.core.network.interceptor.PinnedHostInterceptor
 import br.gov.caixa.loterias.core.network.mock.MockBackendOptions
 import br.gov.caixa.loterias.core.network.mock.MockBackendScenario
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseEnvelopeDto
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseErrorEnvelopeDto
-import br.gov.caixa.loterias.feature.payment.data.dto.PurchaseProcessingDto
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonElement

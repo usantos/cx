@@ -2,12 +2,12 @@ package br.gov.caixa.loterias.apostas.navigation.session
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 import br.gov.caixa.loterias.core.navigation.state.AppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.AppSessionState
 import br.gov.caixa.loterias.core.navigation.state.DetailRestorationOutcome
 import br.gov.caixa.loterias.core.navigation.state.authenticatedContinuation
 import br.gov.caixa.loterias.core.navigation.state.postLoginDestinationRoute
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
 import br.gov.caixa.loterias.feature.account.presentation.components.AccountCompletionDialogs
 import br.gov.caixa.loterias.feature.account.presentation.viewmodel.AccountCompletionViewModel
 

@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.cart.domain.rule
 
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import java.time.Duration
 import java.time.Instant
 import java.time.LocalDateTime

@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.account.data
 
+import br.gov.caixa.loterias.core.network.dto.account.MunicipalityIdDto
+import br.gov.caixa.loterias.core.network.dto.account.UserProfileDto
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountRemoteDataSource
-import br.gov.caixa.loterias.feature.account.data.dto.MunicipalityIdDto
-import br.gov.caixa.loterias.feature.account.data.dto.UserProfileDto
 import br.gov.caixa.loterias.feature.account.data.repository.AccountMunicipalityRepositoryImpl
 import br.gov.caixa.loterias.feature.account.domain.model.MunicipalityId
 import java.io.IOException
@@ -63,16 +63,16 @@ class AccountMunicipalityRepositoryImplTest {
             profileReads++
             return read()
         }
-        override suspend fun municipalities(stateId: Long): List<br.gov.caixa.loterias.feature.account.data.dto.MunicipalityDto>? {
+        override suspend fun municipalities(stateId: Long): List<br.gov.caixa.loterias.core.network.dto.account.MunicipalityDto>? {
             municipalityReads++
             error("A localizacao do Marketplace nao consulta a lista de municipios")
         }
         override suspend fun neighborhoodsByZipCode(
             zipCode: String,
-        ): List<br.gov.caixa.loterias.feature.account.data.dto.NeighborhoodDto>? = error("Nao utilizado")
-        override suspend fun updatePersonalData(request: br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto) =
+        ): List<br.gov.caixa.loterias.core.network.dto.account.NeighborhoodDto>? = error("Nao utilizado")
+        override suspend fun updatePersonalData(request: br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto) =
             error("Nao utilizado")
-        override suspend fun registerAccount(request: br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto) =
+        override suspend fun registerAccount(request: br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto) =
             error("Nao utilizado")
         override suspend fun verifyAccount(): br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationRemoteData =
             error("Nao utilizado")

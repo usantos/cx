@@ -1,8 +1,9 @@
 package br.gov.caixa.loterias.feature.cart.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.model.LocalCartReviewSnapshot
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartTransferRepository
 import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository

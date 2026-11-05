@@ -4,11 +4,12 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
 import android.app.Application
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemBadge
 import br.gov.caixa.loterias.feature.betting.domain.model.BetDraft
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.CartMemorySecureStore
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.CartReceipt
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.CartReceiptPhase
@@ -16,7 +17,6 @@ import br.gov.caixa.loterias.feature.cart.data.datasource.local.SecureCartDocume
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.VisitorCartGraphStorage
 import br.gov.caixa.loterias.feature.cart.data.mapper.LEGACY_CART_TABLE
 import br.gov.caixa.loterias.feature.cart.data.mapper.toUploadDto
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemBadge
 import java.math.BigDecimal
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -85,10 +85,10 @@ class VisitorCartSQLiteIntegrationTest {
         assertTrue(uploads.all { it.id == null && it.contestType.value == "1" && it.quickPickIndicator.value == 1 })
         assertEquals(anonymous, VisitorCartRepositoryImpl(SecureCartDocument(disk)).current())
         val gson = com.google.gson.Gson()
-        val received = br.gov.caixa.loterias.feature.cart.data.dto.CartDto(
+        val received = br.gov.caixa.loterias.core.network.dto.cart.CartDto(
             id = 1,
             individualBets = uploads.mapIndexed { index, upload ->
-                gson.fromJson(gson.toJson(upload), br.gov.caixa.loterias.feature.cart.data.dto.CartBetDto::class.java)
+                gson.fromJson(gson.toJson(upload), br.gov.caixa.loterias.core.network.dto.cart.CartBetDto::class.java)
                     .copy(id = (index + 100).toLong())
             }
         ).toDomainCart()

@@ -26,7 +26,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR
 
 val ListTextColor = LoteriasCaixaDSColorTokens.NotificationText

@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.retail.data.datasource.remote
 
-import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.api.BackendApi
-import br.gov.caixa.loterias.feature.retail.data.dto.MercadoPagoRegistrationEnvelopeDto
-import br.gov.caixa.loterias.feature.retail.data.dto.PrizeRedemptionEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.retail.MercadoPagoRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.retail.PrizeRedemptionEnvelopeDto
+import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import com.google.gson.JsonElement
 import okhttp3.ResponseBody
 import retrofit2.http.*

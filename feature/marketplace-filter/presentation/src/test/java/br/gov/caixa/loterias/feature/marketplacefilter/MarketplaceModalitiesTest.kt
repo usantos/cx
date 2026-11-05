@@ -1,10 +1,11 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetPrice
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BetPrice
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.filterRetailers
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceModalities
@@ -13,7 +14,6 @@ import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDom
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.wantedNumberOptions
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

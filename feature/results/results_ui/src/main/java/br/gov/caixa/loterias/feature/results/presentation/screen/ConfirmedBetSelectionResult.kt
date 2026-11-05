@@ -11,12 +11,12 @@ import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSCard
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.R as LocalizedR
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.presentation.components.DrawNumberColumns
 import br.gov.caixa.loterias.feature.results.presentation.components.confirmedBetFirstDrawHitCount
 import br.gov.caixa.loterias.feature.results.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 @Composable
 internal fun ConfirmedBetSelectionResult(bet: ConfirmedBet, result: DrawResult, campaignStyle: LoteriasCaixaDSLotteryStyle?) {

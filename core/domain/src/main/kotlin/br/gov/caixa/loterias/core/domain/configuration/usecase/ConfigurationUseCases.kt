@@ -2,9 +2,9 @@ package br.gov.caixa.loterias.core.domain.configuration.usecase
 
 import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.result.appResultOf
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.repository.AppConfigurationRepository
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 
 /** Conclui a preparação de segurança antes de permitir o início de uma operação de negócio dependente. */
 fun interface PrepareNetworkSecurityUseCase {

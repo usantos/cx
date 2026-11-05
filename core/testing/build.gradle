@@ -14,7 +14,9 @@ dependencies {
 }
 
 dependencies {
-    api project(':feature:account:domain')
+
     api libs.junit4
     api libs.kotlinx.coroutines.test
 }
+
+dependencies { api project(':core:domain') }

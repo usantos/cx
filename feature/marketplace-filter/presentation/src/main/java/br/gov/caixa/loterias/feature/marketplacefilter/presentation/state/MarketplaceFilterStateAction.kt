@@ -8,7 +8,7 @@ internal sealed interface MarketplaceFilterStateAction {
         MarketplaceFilterSelectionAction
     data class ModalitySelected(val modality: MarketplaceFilterModalityUi) : MarketplaceFilterSelectionAction
     data class RetailerSelected(
-        val retailer: br.gov.caixa.loterias.feature.retail.domain.model.Retailer,
+        val retailer: br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer,
         val allModality: MarketplaceFilterModalityUi = allModalities,
     ) : MarketplaceFilterSelectionAction
     data class MinimumValueChanged(val value: String) : MarketplaceFilterInputsAction
@@ -30,7 +30,7 @@ internal sealed interface MarketplaceFilterStateAction {
     data class LotteryChanged(val value: String, val lastIndividualModality: MarketplaceFilterModalityUi?) : MarketplaceFilterLoadingAction
     data class RetailersReceived(
         val query: String,
-        val retailers: List<br.gov.caixa.loterias.feature.retail.domain.model.Retailer>,
+        val retailers: List<br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer>,
         val emptyMessage: String = messageText("sua_busca_nao_retornou_resultado_d069d5"),
     ) : MarketplaceFilterLoadingAction
     data class RetailersFailed(val query: String) : MarketplaceFilterLoadingAction

@@ -27,11 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import br.gov.caixa.loterias.core.designsystem.components.navigation.LoteriasCaixaDSStatusBar
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotecaMatchSelection
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsMatch
+import br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.betting.domain.model.LotecaMatchSelection
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsMatch
-import br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceBet
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePoolDetail
 import br.gov.caixa.loterias.feature.marketplace.presentation.components.DetailBetGrid
@@ -45,7 +46,6 @@ import br.gov.caixa.loterias.feature.marketplace.presentation.screen.Marketplace
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceDetailUiState
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceTab
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import java.math.BigDecimal
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

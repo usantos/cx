@@ -28,7 +28,7 @@ import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFuturaFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.account.domain.model.AccountNotification
+import br.gov.caixa.loterias.core.domain.contract.account.model.AccountNotification
 import br.gov.caixa.loterias.feature.home.ui.R as DeliveryR
 
 /** Geometria e cores de nova_popup_notificacao; sem WebView nem leiaute XML em execução. */

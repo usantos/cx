@@ -23,8 +23,8 @@ import androidx.compose.ui.unit.sp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.presentation.formatting.formatBrazilianCurrency
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.paymentSecondsRemaining
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR
 import kotlinx.coroutines.delay

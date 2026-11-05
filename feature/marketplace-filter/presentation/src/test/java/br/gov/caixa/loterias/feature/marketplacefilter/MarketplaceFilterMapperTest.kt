@@ -1,11 +1,11 @@
 package br.gov.caixa.loterias.feature.marketplacefilter
 
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.marketplaceFilterState
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.retailerDisplayLabel
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper.toDomain
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -18,7 +18,7 @@ class MarketplaceFilterMapperTest {
     }
 
     @Test fun `restored retailer identifier survives reopening until text is edited`() {
-        val original = br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter.empty().withLottery("101")
+        val original = br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter.empty().withLottery("101")
         val state = marketplaceFilterState(original, true)
         assertEquals("101", state.toDomain().lottery)
     }

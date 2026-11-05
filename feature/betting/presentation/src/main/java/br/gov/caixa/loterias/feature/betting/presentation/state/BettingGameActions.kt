@@ -10,7 +10,7 @@ data class BettingGameActions(
     val toggleMirror: () -> Unit,
     val toggleClover: (Int) -> Unit,
     val toggleSuperSevenDigit: (Int, Int) -> Unit,
-    val selectLuckyMonth: (br.gov.caixa.loterias.feature.betting.domain.model.LuckyMonth) -> Unit,
+    val selectLuckyMonth: (br.gov.caixa.loterias.core.domain.contract.betting.model.LuckyMonth) -> Unit,
     val selectLotogolScore: (Int, Boolean, Int) -> Unit,
     val clearSelection: () -> Unit,
     val requestFavorite: () -> Unit,

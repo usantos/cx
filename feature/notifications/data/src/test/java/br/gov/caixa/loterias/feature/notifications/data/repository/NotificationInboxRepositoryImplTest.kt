@@ -1,12 +1,12 @@
 package br.gov.caixa.loterias.feature.notifications.data.repository
 
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.NotificationInboxApi
 import br.gov.caixa.loterias.core.network.api.NotificationInboxApiProvider
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.network.dto.notifications.NotificationInboxEnvelopeDto
 import br.gov.caixa.loterias.feature.notifications.data.datasource.remote.NotificationInboxRemoteDataSourceImpl
 import br.gov.caixa.loterias.feature.notifications.data.datasource.remote.NotificationInboxSessionBinding
-import br.gov.caixa.loterias.feature.notifications.data.dto.NotificationInboxEnvelopeDto
 import com.google.gson.Gson
 import kotlinx.coroutines.test.runTest
 import okhttp3.ResponseBody

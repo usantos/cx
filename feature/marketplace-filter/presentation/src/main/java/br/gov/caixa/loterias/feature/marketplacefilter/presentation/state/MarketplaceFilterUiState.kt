@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.marketplacefilter.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.formatting.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 
 data class MarketplaceFilterModalityUi(
     val id: Int?,

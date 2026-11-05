@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModelStore
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
 import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfigurationUseCase

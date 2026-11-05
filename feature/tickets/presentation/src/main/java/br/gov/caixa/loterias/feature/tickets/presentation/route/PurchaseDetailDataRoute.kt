@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.presentation.components.FavoritePurchaseActions
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseBetFiltersActions
 import br.gov.caixa.loterias.feature.tickets.presentation.components.PurchaseBetFiltersDialog
@@ -25,7 +25,7 @@ fun PurchaseDetailDataRoute(
     purchase: Purchase,
     onBack: () -> Unit,
     onOpen: (String) -> Unit = {},
-    onPixRedirect: (br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect) -> Unit = {},
+    onPixRedirect: (br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect) -> Unit = {},
     onPixRegistration: (() -> Unit)? = null,
     onHelp: (() -> Unit)? = null,
 ) {

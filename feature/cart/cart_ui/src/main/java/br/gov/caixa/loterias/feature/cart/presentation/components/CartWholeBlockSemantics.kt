@@ -5,7 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartSpokenDescription
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.poolExpiry
 import java.time.Instant

@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.notifications.data.repository
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.network.dto.notifications.NotificationInboxEnvelopeDto
 import br.gov.caixa.loterias.feature.notifications.data.datasource.remote.NotificationInboxRemoteDataSource
-import br.gov.caixa.loterias.feature.notifications.data.dto.NotificationInboxEnvelopeDto
 import br.gov.caixa.loterias.feature.notifications.domain.model.InboxNotification
 import br.gov.caixa.loterias.feature.notifications.domain.model.NotificationInbox
 import br.gov.caixa.loterias.feature.notifications.domain.repository.NotificationInboxRepository

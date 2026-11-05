@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.mapper
 
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawSportsMatch
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 
 fun shouldShowInvalidTeimosinhaAlert(isOriginalRecurringBet: Boolean, hasPrizeRedemption: Boolean) =
@@ -13,7 +13,7 @@ fun betDetailRoute(isOriginalRecurringBet: Boolean, hasPrizeRedemption: Boolean)
 
 enum class TeimosinhaNotice { ORIGINAL_PAID, FIRST_CONTEST }
 
-fun teimosinhaNotice(bet: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet): TeimosinhaNotice? = when {
+fun teimosinhaNotice(bet: br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet): TeimosinhaNotice? = when {
     bet.recurringDraws <= 0 || bet.statusId == 100L -> null
     !bet.exchange && bet.statusId == 11L -> TeimosinhaNotice.ORIGINAL_PAID
     bet.status.contains("não apurado", ignoreCase = true) -> null

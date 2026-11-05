@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.presentation.screen.ConfirmedBetResultScreen
 import br.gov.caixa.loterias.feature.results.presentation.viewmodel.ConfirmedBetResultsViewModel
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 
 @Composable
 fun ConfirmedBetResultRoute(

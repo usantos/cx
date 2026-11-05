@@ -8,12 +8,12 @@ import br.gov.caixa.loterias.core.common.network.NetworkAvailability
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.repository.AuthenticatedSessionContentRepository
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.repository.AuthenticatedSessionContentRepository
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartTransferRepository
 import br.gov.caixa.loterias.feature.cart.domain.repository.VisitorCartRepository
 import br.gov.caixa.loterias.feature.cart.domain.usecase.AddFavoriteCartToCurrentUseCase
@@ -21,7 +21,6 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.CheckCheckoutLocationUs
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartBetUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.DeleteFavoriteCartUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartBetsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.GetFavoriteCartsUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.HasRecentPurchaseUseCase
@@ -35,6 +34,7 @@ import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNam
 import br.gov.caixa.loterias.feature.cart.domain.usecase.VerifyCartPaymentAccountUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.WasFavoriteCartAddedUseCase
 import javax.inject.Inject
+import br.gov.caixa.loterias.feature.cart.R as LocalizedR
 
 class CartNavigationDependenciesAdapter @Inject constructor(
     private val contents: CartContentDependencies,

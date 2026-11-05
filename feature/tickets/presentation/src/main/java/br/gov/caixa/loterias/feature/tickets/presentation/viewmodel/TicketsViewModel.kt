@@ -5,12 +5,12 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.ValidateDamUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketPeriod
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
@@ -150,7 +150,7 @@ class TicketsViewModel(
 
     fun checkPendingPixStatus() = pix.checkPendingPixStatus()
 
-    fun consumePixPurchaseRedirect(expected: br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect): Boolean =
+    fun consumePixPurchaseRedirect(expected: br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect): Boolean =
         pix.consumePixPurchaseRedirect(expected)
 
     fun consumePixPurchaseNotice(expected: TicketsPixNoticeUiState, pause: Boolean = false): Boolean =

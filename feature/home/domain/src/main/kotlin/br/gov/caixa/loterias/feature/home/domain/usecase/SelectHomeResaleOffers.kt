@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.home.domain.usecase
 
 import br.gov.caixa.loterias.core.common.time.LotteryDateTimes
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolModalityAvailability
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolModalityAvailability
 
 fun interface SelectHomeResaleOffersUseCase {
     operator fun invoke(offers: List<PoolModalityAvailability>, enabled: Boolean): List<PoolModalityAvailability>

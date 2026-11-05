@@ -10,7 +10,7 @@ import br.gov.caixa.loterias.core.navigation.state.restoredLoggedRoute
 
 @Composable
 internal fun AppSessionRestorationEffects(
-    identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity?,
+    identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity?,
     currentNavigationEntry: androidx.navigation.NavBackStackEntry?,
     foregroundNoticeController: ForegroundSessionNoticeController,
     navController: androidx.navigation.NavHostController,

@@ -3,13 +3,13 @@ package br.gov.caixa.loterias.feature.notifications.di
 import android.content.Context
 import br.gov.caixa.loterias.core.auth.session.SessionTokenStore
 import br.gov.caixa.loterias.core.data.repository.PushRegistrationRepositoryImpl
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.domain.persistence.secureEnvironmentKey
 import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.network.api.NotificationReadApiProvider
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerificationSessionBinding
 import br.gov.caixa.loterias.feature.account.data.datasource.remote.PushRegistrationRemoteDataSourceImpl
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.data.repository.PushRegistrationLocalRepositoryImpl
 import dagger.Module
 import dagger.Provides

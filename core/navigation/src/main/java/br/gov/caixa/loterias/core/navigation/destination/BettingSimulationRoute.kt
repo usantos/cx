@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.core.navigation.destination
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 
 /** Transporta o concurso validado durante a atualização independente dos parâmetros do simulador. */
 object BettingSimulationRoute {

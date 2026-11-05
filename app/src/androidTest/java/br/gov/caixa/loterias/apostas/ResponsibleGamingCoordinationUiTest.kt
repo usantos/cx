@@ -150,7 +150,7 @@ class ResponsibleGamingCoordinationUiTest {
     fun socialHelpGraphOpensQuestionsBeforeTermsForVisitor() {
         val fixture = Fixture()
         val dependencies = object : br.gov.caixa.loterias.feature.responsiblegaming.navigation.ResponsibleGamingNavigationDependencies {
-            override val currentUserIdentity = br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider { null }
+            override val currentUserIdentity = br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider { null }
             override val dispatchers = FixedCoroutineDispatchers(Dispatchers.Main.immediate)
             override val selfAssessmentQuestions = GetSelfAssessmentQuestionsUseCase { error("Private questions must not load") }
             override val socialTransfers = GetSocialTransfersUseCase {
@@ -162,7 +162,7 @@ class ResponsibleGamingCoordinationUiTest {
         }
         val session = object : br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions {
             override val state = br.gov.caixa.loterias.core.navigation.state.AppSessionState()
-            override val identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity? = null
+            override val identity: br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity? = null
             override val privateEntryKey = "visitor"
             override val isPrivateSessionCurrent: () -> Boolean = { false }
             override val onLogout: () -> Unit = { error("Unexpected logout") }

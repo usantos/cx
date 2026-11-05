@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.payment.presentation.state
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.PaymentMethod
 import br.gov.caixa.loterias.feature.payment.domain.model.PixCharge
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.domain.model.SavedPaymentCard
 import br.gov.caixa.loterias.feature.payment.presentation.mapper.PurchaseNoticeUiState
 import java.math.BigDecimal

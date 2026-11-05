@@ -2,15 +2,16 @@ package br.gov.caixa.loterias.feature.tickets.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.network.NetworkAvailability
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.GetAccountProfileUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetLotteryModalitiesUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateFavoriteCartNameUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPurchaseProgressUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.PrepareMercadoPagoRegistrationUseCase
@@ -19,7 +20,6 @@ import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResul
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadBetReceiptUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.DownloadPrizeReceiptUseCase
 import br.gov.caixa.loterias.feature.tickets.data.fixture.mockConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.CheckTicketUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsConfigurationUseCase
 import br.gov.caixa.loterias.feature.tickets.domain.usecase.GetConfirmedBetsUseCase

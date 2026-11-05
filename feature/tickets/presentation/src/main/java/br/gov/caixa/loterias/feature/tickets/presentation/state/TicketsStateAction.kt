@@ -1,8 +1,10 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.state
+
 import br.gov.caixa.loterias.core.common.result.AppError
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
 import br.gov.caixa.loterias.feature.tickets.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.tickets.presentation.mapper.TicketsPixNoticeUiState
@@ -17,7 +19,7 @@ internal sealed interface TicketsStateAction {
     data object BetsLoading : TicketsHistoryAction
     data class BetsConfigurationReceived(
         val configuration: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration,
-        val modalities: List<br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality>,
+        val modalities: List<br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality>,
     ) : TicketsHistoryAction
     data object BetFiltersApplied : TicketsHistoryAction
     data class BetsReceived(val page: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage) : TicketsHistoryAction
@@ -26,8 +28,7 @@ internal sealed interface TicketsStateAction {
         TicketsHistoryAction
     data object PurchasesReloading : TicketsHistoryAction
     data object PurchasePageLoading : TicketsHistoryAction
-    data class PurchasePageReceived(val append: Boolean, val purchases: List<br.gov.caixa.loterias.feature.tickets.domain.model.Purchase>) :
-        TicketsHistoryAction
+    data class PurchasePageReceived(val append: Boolean, val purchases: List<Purchase>) : TicketsHistoryAction
     data class PurchaseMonthSelected(val month: br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth) :
         TicketsPurchaseFilterAction
     data object PurchaseFiltersLoading : TicketsPurchaseFilterAction
@@ -50,7 +51,7 @@ internal sealed interface TicketsStateAction {
     data class TicketResultReceived(val result: br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult) : TicketsQueryAction
     data object TicketErrorDismissed : TicketsQueryAction
     data object TicketModalitiesLoading : TicketsQueryAction
-    data class TicketModalitiesReceived(val modalities: List<br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality>) :
+    data class TicketModalitiesReceived(val modalities: List<br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality>) :
         TicketsQueryAction
     data class TicketModalityToggled(val id: Int) : TicketsQueryAction
     data object PixStatusCancelled : TicketsPixAction
@@ -64,7 +65,7 @@ internal sealed interface TicketsStateAction {
     ) : TicketsPixAction
     data class PixDetailsRefreshFailed(val purchaseId: Long, val message: String = messageText("nao_foi_possivel_atualizar_os_de_006e16")) :
         TicketsPixAction
-    data class PixRedirectConsumed(val expected: br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect) : TicketsPixAction
+    data class PixRedirectConsumed(val expected: PurchaseRedirect) : TicketsPixAction
     data class PixNoticeConsumed(val pause: Boolean, val expected: TicketsPixNoticeUiState) : TicketsPixAction
     data object PixRedirectResumed : TicketsPixAction
     data object PixPurchaseReset : TicketsPixAction

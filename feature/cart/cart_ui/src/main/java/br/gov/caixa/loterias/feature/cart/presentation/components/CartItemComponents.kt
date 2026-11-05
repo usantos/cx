@@ -20,7 +20,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSIcons
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.PoolExpiryState
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartModalityColor
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.poolExpiry

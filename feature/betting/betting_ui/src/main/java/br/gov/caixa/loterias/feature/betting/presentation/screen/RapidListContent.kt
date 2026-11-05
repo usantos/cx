@@ -24,11 +24,11 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSTe
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSFontFamily
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.betting.R as LocalizedR
 import br.gov.caixa.loterias.feature.betting.presentation.components.RapidBetCard
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidListUiState
 import br.gov.caixa.loterias.feature.betting.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 @Composable
 fun RapidListContentDelivered(state: RapidListUiState, padding: PaddingValues, onGenerate: () -> Unit, onRemove: (CartItem) -> Unit) {

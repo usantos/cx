@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.tickets.ui
 
 import androidx.compose.runtime.Composable
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.delivery.TicketsBetDetailScreenEntry
 import br.gov.caixa.loterias.feature.tickets.presentation.state.BetDetailUiState
 import java.math.BigDecimal

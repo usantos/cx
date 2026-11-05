@@ -2,7 +2,7 @@ package br.gov.caixa.loterias.feature.cart.ui
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.cart.presentation.delivery.CartCurrentCartBodyEntry
 import br.gov.caixa.loterias.feature.cart.presentation.state.CartUiState
 

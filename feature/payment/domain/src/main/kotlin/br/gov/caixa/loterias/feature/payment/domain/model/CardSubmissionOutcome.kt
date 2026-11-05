@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.payment.domain.model
 
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
+
 /** Um envio inconclusivo não é uma rejeição e não deve oferecer outro POST de cartão. */
 sealed interface CardSubmissionOutcome {
     data class Submitted(val purchase: PurchaseSubmission) : CardSubmissionOutcome

@@ -35,7 +35,7 @@ fun PaymentDataRoute(
     onApproved: () -> Unit,
     onHome: () -> Unit,
     onPurchases: () -> Unit,
-    onRedirect: (br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect) -> Unit,
+    onRedirect: (br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect) -> Unit,
     onRegistration: () -> Unit,
     privateDataEnabled: Boolean = true,
 ) {

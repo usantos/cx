@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.account.domain.usecase
 
-import java.io.IOException
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.model.UnreadNotificationCountUnavailableException
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.repository.UnreadNotificationCountRepository
+import java.io.IOException
 
 class GetUnreadNotificationCountUseCase(
     private val repository: UnreadNotificationCountRepository,

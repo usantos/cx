@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.core.domain.configuration.repository
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilterParameters
 import br.gov.caixa.loterias.core.domain.configuration.model.CommemorativeCampaignSettings
 import br.gov.caixa.loterias.core.domain.configuration.model.HomeFeatureConfiguration
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilterParameters
 
 interface AppConfigurationRepository {
     val campaignSettings: kotlinx.coroutines.flow.Flow<CommemorativeCampaignSettings>

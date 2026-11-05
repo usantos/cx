@@ -6,14 +6,13 @@ import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedUser
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.model.AccountRegistration
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedUser
 import br.gov.caixa.loterias.feature.account.domain.model.Gender
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.usecase.RegisterAccountUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.ResolveZipCodeUseCase
-import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.account.presentation.state.RegistrationAction
 import br.gov.caixa.loterias.feature.account.presentation.state.RegistrationUiState
 import br.gov.caixa.loterias.feature.account.presentation.state.reduceRegistrationState
@@ -21,6 +20,7 @@ import java.util.concurrent.atomic.AtomicLong
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 
 class RegistrationViewModel(
     identityProvider: CurrentUserIdentityProvider,

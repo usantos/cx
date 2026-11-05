@@ -2,13 +2,13 @@ package br.gov.caixa.loterias.feature.betting.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.betting.model.PoolEntryRequest
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryDecision
-import br.gov.caixa.loterias.feature.betting.domain.model.PoolEntryRequest
-import br.gov.caixa.loterias.feature.betting.domain.model.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.onboarding.domain.model.BettingTutorial
 import br.gov.caixa.loterias.feature.onboarding.domain.repository.OnboardingRepository
+import br.gov.caixa.loterias.feature.betting.domain.model.localizedMessage as messageText
 
 class PreparePoolEntry(private val verifyAccess: VerifyAccountAccessUseCase, private val onboarding: OnboardingRepository) :
     PreparePoolEntryUseCase {

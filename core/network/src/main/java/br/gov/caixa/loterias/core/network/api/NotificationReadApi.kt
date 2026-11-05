@@ -1,16 +1,16 @@
 package br.gov.caixa.loterias.core.network.api
 
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.account.PushRegistrationRequestDto
 import com.google.gson.JsonElement
 import com.google.gson.annotations.SerializedName
 import retrofit2.Response
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Tag
-import retrofit2.http.POST
-import retrofit2.http.Body
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationRequestDto
-import br.gov.caixa.loterias.feature.account.data.dto.PushRegistrationEnvelopeDto
 
 data class NotificationReadEnvelopeDto(
     @SerializedName("codigo") val code: String? = null,

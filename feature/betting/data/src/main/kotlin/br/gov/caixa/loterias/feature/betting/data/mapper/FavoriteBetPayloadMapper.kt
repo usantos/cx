@@ -1,11 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.data.localizedMessage as messageText
-
+import br.gov.caixa.loterias.core.network.dto.betting.FavoriteBetDto
 import br.gov.caixa.loterias.core.network.mapper.flattenNumbers
 import br.gov.caixa.loterias.feature.betting.domain.model.FavoriteBet
-import br.gov.caixa.loterias.feature.betting.data.dto.FavoriteBetDto
 import com.google.gson.JsonElement
+import br.gov.caixa.loterias.feature.betting.data.localizedMessage as messageText
 
 internal fun FavoriteBetDto.toDomain(): FavoriteBet {
     val rows = selectedNumbers.numberRows()

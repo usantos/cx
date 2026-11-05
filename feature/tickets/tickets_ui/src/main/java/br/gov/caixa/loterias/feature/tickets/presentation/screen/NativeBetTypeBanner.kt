@@ -22,7 +22,7 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIc
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSBetTypeIcons
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSLotteryStyle
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.ui.R as DeliveryR
 
 @Composable

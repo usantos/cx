@@ -1,5 +1,7 @@
 package br.gov.caixa.loterias.feature.retail.presentation.state
+
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.feature.retail.domain.model.PrizeRedemptionChannel
@@ -10,11 +12,10 @@ internal sealed interface PrizeRedemptionStateAction {
     data object DetailsLoading : PrizeRedemptionLoadingAction
     data class DetailsReceived(val details: br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails) : PrizeRedemptionLoadingAction
     data object ContestLoading : PrizeRedemptionLoadingAction
-    data class ContestReceived(val parameters: br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters, val modalityId: Int) :
-        PrizeRedemptionLoadingAction
+    data class ContestReceived(val parameters: BettingParameters, val modalityId: Int) : PrizeRedemptionLoadingAction
     data class ContestFailed(val message: String = messageText("nao_foi_possivel_consultar_o_con_5fcb9e")) : PrizeRedemptionLoadingAction
     data object BetEntryStarted : PrizeRedemptionLoadingAction
-    data class BetEntryPrepared(val decision: br.gov.caixa.loterias.feature.betting.domain.model.BetEntryDecision) :
+    data class BetEntryPrepared(val decision: br.gov.caixa.loterias.core.domain.contract.betting.model.BetEntryDecision) :
         PrizeRedemptionLoadingAction
     data class TimerTicked(val seconds: Int) : PrizeRedemptionLoadingAction
     data object ReceiptLoading : PrizeRedemptionReceiptAction

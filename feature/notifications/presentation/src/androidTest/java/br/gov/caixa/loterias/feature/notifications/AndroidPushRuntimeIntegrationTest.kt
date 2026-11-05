@@ -3,11 +3,11 @@ package br.gov.caixa.loterias.feature.notifications
 import android.app.Activity
 import android.app.Application
 import androidx.test.platform.app.InstrumentationRegistry
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationLocalRepository
 import br.gov.caixa.loterias.core.domain.push.repository.PushRegistrationRepository
 import br.gov.caixa.loterias.core.domain.push.usecase.RegisterPushDevice
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.notifications.data.datasource.push.PushTokenDataSource
 import br.gov.caixa.loterias.feature.notifications.data.push.PushFirebaseOptions
 import br.gov.caixa.loterias.feature.notifications.di.AndroidPushRuntime

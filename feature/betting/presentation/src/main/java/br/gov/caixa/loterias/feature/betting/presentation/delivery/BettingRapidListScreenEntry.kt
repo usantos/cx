@@ -1,8 +1,8 @@
 package br.gov.caixa.loterias.feature.betting.presentation.delivery
 
 import androidx.compose.runtime.Composable
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
 import br.gov.caixa.loterias.feature.betting.presentation.state.RapidListUiState
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 
 interface BettingRapidListScreenEntry {
     @Composable

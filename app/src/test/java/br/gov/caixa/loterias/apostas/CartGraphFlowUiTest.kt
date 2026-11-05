@@ -19,17 +19,18 @@ import br.gov.caixa.loterias.core.common.result.AppResult
 import br.gov.caixa.loterias.core.common.time.ServerTimeSource
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.account.port.CurrentUserIdentityProvider
+import br.gov.caixa.loterias.core.domain.contract.betting.model.BettingParameters
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppNavigationState
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
-import br.gov.caixa.loterias.feature.account.domain.port.CurrentUserIdentityProvider
-import br.gov.caixa.loterias.feature.betting.domain.model.BettingParameters
 import br.gov.caixa.loterias.feature.betting.domain.usecase.GetBettingParametersUseCase
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.navigation.CartNavigationDependencies
 import br.gov.caixa.loterias.feature.cart.navigation.cartGraph
 import java.lang.reflect.Proxy
@@ -130,8 +131,8 @@ class CartGraphFlowUiTest {
                         BigDecimal.ONE,
                         30,
                         listOf(
-                            br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters(
-                                br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
+                            br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters(
+                                br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality(2, "Mega-Sena", "MEGA_SENA"),
                                 3073, "22/10/2026", 60, 6, 20, 10, emptyList(), emptyList()
                             )
                         )
@@ -153,7 +154,7 @@ class CartGraphFlowUiTest {
 
             "getAuthenticatedSessionIdentity" -> object : AuthenticatedSessionIdentityProvider {
                 override fun captureIdentity() = null
-                override fun isCurrent(identity: br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity) = false
+                override fun isCurrent(identity: AuthenticatedSessionIdentity) = false
             }
 
             else -> {

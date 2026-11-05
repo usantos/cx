@@ -2,6 +2,20 @@
 
 Para saber **quais classes chamar para obter dados**, consulte [Acesso aos dados por funcionalidade](DATA_ACCESS_BY_FEATURE.md): identidade e cadastro, apostas confirmadas, carrinho, resultados, configurações e catálogo de contratos por feature.
 
+## Core independente — 04/11/2026
+
+Os 14 módulos Core não dependem de funcionalidades, inclusive nos testes. Contratos
+compartilhados de domínio pertencem a `core:domain` (`core.domain.contract`), e os
+DTOs usados pelos clientes HTTP compartilhados pertencem a `core:network`
+(`core.network.dto`). As funcionalidades consomem essas definições canônicas.
+Os casos de uso específicos e seus testes permanecem nas funcionalidades.
+
+A composição de cobertura entre App/Core/features pertence aos scripts Gradle da
+raiz. `verifyFeatureModules` rejeita dependências Core → feature e ciclos no grafo
+de produção. A compilação de um consumidor contendo somente os 14 módulos Core
+foi validada, além da suíte JVM global de 5.776 testes. Consulte o
+[guia de integração do Core](CORE_STANDALONE_INTEGRATION.md).
+
 ## Entrega híbrida das funcionalidades — 02/11/2026
 
 O App Bundle registra 15 capacidades de interface. Account, Home e Responsible Gaming são install-time; Onboarding, Betting, Cart, Payment, Tickets, Marketplace, Marketplace Filter, Results, Notifications, Retail, Support Help e FAQ são on-demand. Renderizadores Compose e recursos exclusivos pertencem aos splits reais. Core, bootstrap, contratos, Domain/Data/DI, ViewModels, Redux e coordenação das jornadas permanecem na base.

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.feature.betting.navigation
 
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.cart.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyAccountAccessUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddBetToCartUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.AddComboToCartUseCase
@@ -15,7 +16,6 @@ import br.gov.caixa.loterias.feature.betting.domain.usecase.GetRapidBetConfigura
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveFavoriteBetUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.SaveRapidBetConfigurationUseCase
 import br.gov.caixa.loterias.feature.betting.domain.usecase.ValidateFavoriteBetUseCase
-import br.gov.caixa.loterias.feature.cart.domain.usecase.GetCurrentCartUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveCartItemUseCase
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ValidateCartUseCase
 import br.gov.caixa.loterias.feature.onboarding.domain.usecase.SetBettingTutorialDismissedUseCase

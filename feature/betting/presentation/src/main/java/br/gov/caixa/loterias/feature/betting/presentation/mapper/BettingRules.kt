@@ -20,11 +20,11 @@ fun formatBetAmount(amount: BigDecimal?): String = NumberFormat
     .replace('\u00A0', ' ')
     .replace('\u202F', ' ')
 
-internal fun availableNumberQuantities(game: br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters): List<Int> =
+internal fun availableNumberQuantities(game: br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters): List<Int> =
     br.gov.caixa.loterias.feature.betting.domain.rule.BetPricing.availableNumberQuantities(game)
 
 internal fun resolveBetPrice(
-    game: br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters,
+    game: br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters,
     numberQuantity: Int,
     cloverQuantity: Int,
 ): BigDecimal = br.gov.caixa.loterias.feature.betting.domain.rule.BetPricing.numericPrice(game, numberQuantity, cloverQuantity)?.amount

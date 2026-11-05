@@ -28,8 +28,8 @@ import br.gov.caixa.loterias.feature.retail.ui.R as DeliveryR
 
 @Composable
 internal fun RetailerResultRow(
-    retailer: br.gov.caixa.loterias.feature.retail.domain.model.Retailer,
-    onToggle: (br.gov.caixa.loterias.feature.retail.domain.model.Retailer) -> Unit,
+    retailer: br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer,
+    onToggle: (br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer) -> Unit,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     Column(Modifier.fillMaxWidth().uiId("retail.0044").clickable { onToggle(retailer) }) {

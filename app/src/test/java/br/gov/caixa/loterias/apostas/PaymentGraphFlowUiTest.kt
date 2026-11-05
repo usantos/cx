@@ -23,12 +23,12 @@ import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
 import br.gov.caixa.loterias.core.domain.configuration.model.AppModulesConfiguration
 import br.gov.caixa.loterias.core.domain.configuration.repository.AppModulesConfigurationRepository
 import br.gov.caixa.loterias.core.domain.configuration.usecase.AppModulesConfigurationUseCase
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.navigation.action.AppNavigationActions
 import br.gov.caixa.loterias.core.navigation.action.SessionNavigationActions
 import br.gov.caixa.loterias.core.navigation.state.rememberAppSessionState
 import br.gov.caixa.loterias.core.testing.delivery.setFeatureContent
 import br.gov.caixa.loterias.core.testing.runner.DynamicFeatureRobolectricTestRunner
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetPaymentMethodsUseCase
 import br.gov.caixa.loterias.feature.payment.domain.usecase.GetSavedCardsUseCase
 import br.gov.caixa.loterias.feature.payment.navigation.PaymentNavigationDependencies

@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
-import br.gov.caixa.loterias.feature.betting.data.dto.AddComboRequestDto
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
+import br.gov.caixa.loterias.core.network.dto.betting.AddComboRequestDto
 import br.gov.caixa.loterias.feature.betting.data.mapper.toBettingCombo
+import br.gov.caixa.loterias.feature.betting.domain.model.BetCombo
 import br.gov.caixa.loterias.feature.cart.data.repository.toDomainCart
 
 internal class BettingCombosLoader(private val remote: BettingRemoteDataSource) {

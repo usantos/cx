@@ -18,12 +18,12 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
-import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
 import br.gov.caixa.loterias.feature.tickets.presentation.components.TicketCameraPreview
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.TicketScannerScreen
 import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.TicketsViewModel
+import br.gov.caixa.loterias.feature.tickets.R as LocalizedR
 
 @Composable
 fun TicketScannerRoute(viewModel: TicketsViewModel, onBack: () -> Unit, onManual: () -> Unit, onResult: (List<ConfirmedBet>) -> Unit) {

@@ -1,14 +1,13 @@
 package br.gov.caixa.loterias.feature.tickets.data.datasource.remote
 
-import br.gov.caixa.loterias.feature.tickets.data.localizedMessage as messageText
-
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import com.google.gson.JsonElement
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.data.mapper.ticketDisplayName
 import br.gov.caixa.loterias.feature.tickets.data.mapper.ticketLong
 import br.gov.caixa.loterias.feature.tickets.data.mapper.ticketText
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toBets
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toCheckedTicketResult
+import com.google.gson.JsonElement
+import br.gov.caixa.loterias.feature.tickets.data.localizedMessage as messageText
 
 /** Coordena as chamadas legadas de conferência, recibo e detalhes opcionais de prêmio na ordem original. */
 internal class ConfirmedBetReceiptLoader(private val remote: TicketsRemoteDataSource) {
@@ -23,7 +22,7 @@ internal class ConfirmedBetReceiptLoader(private val remote: TicketsRemoteDataSo
         } else {
             bet
         }
-        val payload = if (bet.backend == br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.NOVA_API) {
+        val payload = if (bet.backend == br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.NOVA_API) {
             remote.recoverConfirmedBet(checked.id)
         } else {
             remote.confirmedBetReceipt(checked.id, paid = checked.statusId == 11L, historical = checked.statusId == 3L)
@@ -33,7 +32,7 @@ internal class ConfirmedBetReceiptLoader(private val remote: TicketsRemoteDataSo
         }
         // Clientes instalados preservam o estado da lista para Nova API/microsserviço e teimosinhas;
         // os dois endpoints de recibo possuem um indicador de combo reconhecidamente incorreto.
-        val keepStatus = bet.backend != br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.SILCE ||
+        val keepStatus = bet.backend != br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.SILCE ||
             hydrated.recurringDraws > 0 || checked !== bet || checked.statusId in setOf(3L, 11L, 100L)
         val receiptRoot = payload?.takeIf(JsonElement::isJsonObject)?.asJsonObject
         val prizeRoot = if (checked.statusId in setOf(100L, 11L) &&
@@ -49,7 +48,7 @@ internal class ConfirmedBetReceiptLoader(private val remote: TicketsRemoteDataSo
             runCatching { it.asBigDecimal }.getOrNull()
         }
         if (checked.statusId in setOf(100L, 11L)) requireNotNull(netPrize) { messageText("valor_liquido_do_premio_ausente_8a11c9") }
-        val receipt = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetReceipt(
+        val receipt = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetReceipt(
             nsbi = receiptRoot?.ticketText("nsbi").orEmpty(),
             paymentDate = prize?.ticketText("dataPagamento").orEmpty(),
             paymentTime = prize?.ticketText("horaPagamento").orEmpty(),

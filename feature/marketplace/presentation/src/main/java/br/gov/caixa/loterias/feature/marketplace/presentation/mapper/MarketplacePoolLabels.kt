@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.marketplace.presentation.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryGameParameters
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryGameParameters
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplacePool
 import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSpecialContests
 import br.gov.caixa.loterias.feature.marketplace.presentation.formatting.localizedMessage as messageText

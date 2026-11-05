@@ -5,17 +5,17 @@ import androidx.lifecycle.viewModelScope
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
 import br.gov.caixa.loterias.core.common.coroutines.DefaultCoroutineDispatchers
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.core.presentation.state.reduxStateStore
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SearchRetailersUseCase
 import br.gov.caixa.loterias.feature.retail.domain.usecase.SetRetailerFavoriteUseCase
-import br.gov.caixa.loterias.feature.retail.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.retail.presentation.state.RetailSearchStateAction
 import br.gov.caixa.loterias.feature.retail.presentation.state.RetailSearchUiState
 import br.gov.caixa.loterias.feature.retail.presentation.state.reduceRetailSearchState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import br.gov.caixa.loterias.feature.retail.presentation.formatting.localizedMessage as messageText
 
 class RetailSearchViewModel(
     private val searchRetailers: SearchRetailersUseCase,

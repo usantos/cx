@@ -20,3 +20,8 @@ dependencies {
     api project(':feature:betting:domain')
     api project(':feature:cart:api')
 }
+
+dependencies {
+    testImplementation project(':feature:results:domain')
+    testImplementation project(':feature:support:domain')
+}

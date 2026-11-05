@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.tickets.data.mapper
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 

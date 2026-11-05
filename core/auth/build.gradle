@@ -30,7 +30,6 @@ android {
 dependencies {
     implementation libs.androidx.lifecycle.process
 
-    implementation project(':feature:account:domain')
     implementation project(':core:network')
     implementation libs.appauth
     implementation libs.gson
@@ -89,3 +88,5 @@ tasks.register('jacocoDebugCoverageVerification', JacocoCoverageVerification) {
 }
 
 tasks.named('check').configure { dependsOn tasks.named('jacocoDebugCoverageVerification') }
+
+dependencies { api project(':core:domain') }

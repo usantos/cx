@@ -1,7 +1,7 @@
 package br.gov.caixa.loterias.feature.account.presentation.state
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.account.domain.model.PostLoginDestination
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.model.PostLoginDestination
 
 data class AccountCompletionOutcome(val identity: AuthenticatedSessionIdentity, val destination: PostLoginDestination)
 

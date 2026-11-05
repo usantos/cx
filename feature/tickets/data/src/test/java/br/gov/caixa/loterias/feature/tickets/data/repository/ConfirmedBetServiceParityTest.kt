@@ -1,26 +1,27 @@
 package br.gov.caixa.loterias.feature.tickets.data.repository
 
-import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.MICROSERVICE
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceRedirect
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
+import br.gov.caixa.loterias.core.network.api.BackendApi
+import br.gov.caixa.loterias.core.network.api.BetsHistoryApi
 import br.gov.caixa.loterias.core.network.model.ApiEnvelope
 import br.gov.caixa.loterias.core.network.model.AppParametersDto
 import br.gov.caixa.loterias.core.network.model.AppParametersMapDto
-import br.gov.caixa.loterias.core.network.api.BackendApi
 import br.gov.caixa.loterias.core.network.provider.BackendApiProvider
-import br.gov.caixa.loterias.core.network.api.BetsHistoryApi
 import br.gov.caixa.loterias.core.network.provider.BetsHistoryApiProvider
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
+import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
+import java.lang.reflect.Proxy
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Test
-import java.lang.reflect.Proxy
-import br.gov.caixa.loterias.feature.tickets.data.repository.TicketsRepositoryImpl
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSourceImpl
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
-import br.gov.caixa.loterias.core.data.datasource.remote.AppConfigurationRemoteDataSource
 
 class ConfirmedBetServiceParityTest {
     private val calls = mutableListOf<String>()
@@ -59,7 +60,7 @@ class ConfirmedBetServiceParityTest {
         assertEquals(listOf("prizeReceipt", "historicalPrizeReceipt"), calls)
     }
     @Test fun `microservice receipt preserves the list status`() = runTest {
-        val loaded = TicketsRepositoryImpl(source()).loadConfirmedBet(bet(100).copy(backend = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.MICROSERVICE)) as ServiceResult.Success
+        val loaded = TicketsRepositoryImpl(source()).loadConfirmedBet(bet(100).copy(backend = MICROSERVICE)) as ServiceResult.Success
         assertEquals(100L, loaded.value.statusId)
         assertEquals(listOf("betReceipt", "prizeDetails"), calls)
     }
@@ -119,7 +120,7 @@ class ConfirmedBetServiceParityTest {
         val remote = TicketsRemoteDataSourceImpl(BackendApiProvider(), history, config)
         remote.confirmedBets(emptyMap())
         val result = TicketsRepositoryImpl(remote).loadConfirmedBet(bet(9).copy(
-            backend = br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsBackend.NOVA_API,
+            backend = br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBetsBackend.NOVA_API,
         )) as ServiceResult.Rejected
         assertEquals(ServiceFailure.RedirectRequired(ServiceRedirect.ACCEPT_TERMS), result.failure)
     }

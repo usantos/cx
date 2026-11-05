@@ -1,20 +1,13 @@
 package br.gov.caixa.loterias.feature.tickets.data.repository
 
-import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
-import br.gov.caixa.loterias.feature.tickets.domain.model.Purchase
-import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
-import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
-import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
-import br.gov.caixa.loterias.feature.tickets.domain.model.PreparedTicketScan
-import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.prepareLegacyTicketPayload
-import br.gov.caixa.loterias.feature.tickets.domain.model.TicketQuery
-import br.gov.caixa.loterias.feature.tickets.domain.repository.TicketsRepository
+import br.gov.caixa.loterias.core.data.mapper.serviceResultOf
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.Purchase
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.ConfirmedBetReceiptLoader
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.RsaTicketCodeEncoder
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketCodeEncoder
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
+import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.prepareLegacyTicketPayload
 import br.gov.caixa.loterias.feature.tickets.data.mapper.ticketFindFirstText
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toBets
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toCheckedTicketResult
@@ -22,8 +15,15 @@ import br.gov.caixa.loterias.feature.tickets.data.mapper.toConfirmedBetsConfigur
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toFilterOptions
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toPurchaseMonths
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toPurchases
-import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
-import br.gov.caixa.loterias.core.data.mapper.serviceResultOf
+import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
+import br.gov.caixa.loterias.feature.tickets.domain.model.PreparedTicketScan
+import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
+import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketFilterOption
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketQuery
+import br.gov.caixa.loterias.feature.tickets.domain.model.TicketScanOrientation
+import br.gov.caixa.loterias.feature.tickets.domain.repository.TicketsRepository
 
 class TicketsRepositoryImpl(
     private val remote: TicketsRemoteDataSource,

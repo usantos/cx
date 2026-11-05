@@ -42,7 +42,6 @@ include ':feature:retail:domain'
 include ':feature:support:domain'
 include ':feature:tickets:domain'
 include ':feature:cart:api'
-include ':feature:account:api'
 include ':feature:marketplace:api'
 
 include ':core:testing'
@@ -61,15 +60,6 @@ include ':feature:support:data'
 include ':feature:tickets:data'
 
 // Contratos estáveis de transporte das funcionalidades, sem dependências de clientes ou apresentação.
-include ':feature:account:transport'
-include ':feature:betting:transport'
-include ':feature:cart:transport'
-include ':feature:marketplace:transport'
-include ':feature:retail:transport'
-include ':feature:responsible-gaming:transport'
-include ':feature:results:transport'
-include ':feature:support:transport'
-include ':feature:payment:transport'
 
 
 include ':core:security'
@@ -78,7 +68,6 @@ include ':sample:design-system'
 
 include ':core:persistence'
 
-include ':feature:notifications:transport'
 
 include ':feature:support:faq'
 

@@ -8,8 +8,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSAlertDialog
 import br.gov.caixa.loterias.core.designsystem.components.dialog.LoteriasCaixaDSDialog
-import br.gov.caixa.loterias.feature.payment.R as LocalizedR
-import br.gov.caixa.loterias.feature.payment.domain.model.PurchaseRedirect
+import br.gov.caixa.loterias.core.domain.contract.payment.model.PurchaseRedirect
 import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseNoticeDialog
 import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectEffect
 import br.gov.caixa.loterias.feature.payment.presentation.components.PurchaseRedirectResumeEffect
@@ -18,6 +17,7 @@ import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardActi
 import br.gov.caixa.loterias.feature.payment.presentation.screen.PaymentCardFlowScreen
 import br.gov.caixa.loterias.feature.payment.presentation.state.PaymentCardStage
 import br.gov.caixa.loterias.feature.payment.presentation.viewmodel.PaymentCardViewModel
+import br.gov.caixa.loterias.feature.payment.R as LocalizedR
 
 @Composable
 fun PaymentCardFlowRoute(

@@ -1,6 +1,7 @@
 package br.gov.caixa.loterias.feature.results
 
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.core.domain.service.model.ServiceFailure
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNotice
 import br.gov.caixa.loterias.core.domain.service.model.ServiceNoticeReason
@@ -9,7 +10,6 @@ import br.gov.caixa.loterias.core.domain.service.model.ServiceResult
 import br.gov.caixa.loterias.feature.results.domain.model.DrawResult
 import br.gov.caixa.loterias.feature.results.domain.usecase.GetConfirmedBetResultsUseCase
 import br.gov.caixa.loterias.feature.results.presentation.viewmodel.ConfirmedBetResultsViewModel
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals

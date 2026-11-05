@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBet
+import br.gov.caixa.loterias.core.domain.contract.tickets.model.ConfirmedBet
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.ManualTicketActions
 import br.gov.caixa.loterias.feature.tickets.presentation.screen.ManualTicketContent
 import br.gov.caixa.loterias.feature.tickets.presentation.viewmodel.TicketsViewModel

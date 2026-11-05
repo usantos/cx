@@ -2,12 +2,16 @@ package br.gov.caixa.loterias.feature.cart.data.repository
 
 import br.gov.caixa.loterias.core.common.result.AppError
 import br.gov.caixa.loterias.core.common.result.AppResult
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItemKind
-import br.gov.caixa.loterias.feature.cart.domain.model.CartPoolShare
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItemKind
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartPoolShare
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
-import br.gov.caixa.loterias.feature.cart.data.dto.CartDto
+import br.gov.caixa.loterias.core.network.dto.cart.CartDto
+import br.gov.caixa.loterias.feature.cart.data.datasource.remote.BoundCartRemovalRemoteDataSource
+import br.gov.caixa.loterias.feature.cart.data.repository.ExpiredPoolShareRepositoryImpl
+import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShare
+import java.io.IOException
 import java.math.BigDecimal
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
@@ -16,10 +20,6 @@ import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Test
-import br.gov.caixa.loterias.feature.cart.data.datasource.remote.BoundCartRemovalRemoteDataSource
-import br.gov.caixa.loterias.feature.cart.data.repository.ExpiredPoolShareRepositoryImpl
-import br.gov.caixa.loterias.feature.cart.domain.usecase.RemoveExpiredPoolShare
-import java.io.IOException
 
 class RemoveExpiredPoolShareIntegrationTest {
     private val identity = AuthenticatedSessionIdentity("a".repeat(64))

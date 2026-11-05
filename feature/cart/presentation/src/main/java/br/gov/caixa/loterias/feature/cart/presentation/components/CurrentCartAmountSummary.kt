@@ -31,8 +31,8 @@ import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSIc
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.icon.LoteriasCaixaDSCurrentCartIcon
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSCurrentCartColors
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.R as LocalizedR
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartNativeText
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.formatCartAmount
 import br.gov.caixa.loterias.feature.cart.presentation.screen.CurrentCartText

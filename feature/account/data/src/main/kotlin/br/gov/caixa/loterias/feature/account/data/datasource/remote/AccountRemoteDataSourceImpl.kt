@@ -2,10 +2,10 @@ package br.gov.caixa.loterias.feature.account.data.datasource.remote
 
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSessionExpiredException
+import br.gov.caixa.loterias.core.network.dto.account.AccountRegistrationDto
+import br.gov.caixa.loterias.core.network.dto.account.AccountVerificationRequestDto
+import br.gov.caixa.loterias.core.network.dto.account.PersonalDataUpdateDto
 import br.gov.caixa.loterias.core.network.provider.LoteriasApiProvider
-import br.gov.caixa.loterias.feature.account.data.dto.PersonalDataUpdateDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountRegistrationDto
-import br.gov.caixa.loterias.feature.account.data.dto.AccountVerificationRequestDto
 
 class AccountRemoteDataSourceImpl(
     private val apiProvider: LoteriasApiProvider,

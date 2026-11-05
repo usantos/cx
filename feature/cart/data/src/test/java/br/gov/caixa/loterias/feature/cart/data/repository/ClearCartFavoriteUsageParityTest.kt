@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.cart.data.repository
 
 import br.gov.caixa.loterias.core.common.result.AppResult
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartItem
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.data.datasource.local.FavoriteCartUsageLocalDataSource
-import br.gov.caixa.loterias.feature.cart.domain.model.CartItem
 import br.gov.caixa.loterias.feature.cart.domain.model.CartValidationResult
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 import br.gov.caixa.loterias.feature.cart.domain.repository.CartRepository
 import br.gov.caixa.loterias.feature.cart.domain.usecase.ClearCart
 import java.io.IOException

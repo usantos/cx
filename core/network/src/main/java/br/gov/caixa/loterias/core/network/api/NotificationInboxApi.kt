@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.core.network.api
 
-import br.gov.caixa.loterias.feature.notifications.data.dto.NotificationInboxEnvelopeDto
+import br.gov.caixa.loterias.core.network.dto.notifications.NotificationInboxEnvelopeDto
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.GET

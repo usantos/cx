@@ -11,11 +11,11 @@ import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.LoteriasCaixaDSMarketplaceFavoriteRetailer
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSCircularProgressIndicator as CircularProgressIndicator
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDS
+import br.gov.caixa.loterias.core.domain.contract.retail.model.Retailer
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.MarketplaceEmptyStateDelivered
 import br.gov.caixa.loterias.feature.marketplace.presentation.screen.marketplaceFavoriteRetailerName
 import br.gov.caixa.loterias.feature.marketplace.presentation.state.MarketplaceUiState
 import br.gov.caixa.loterias.feature.marketplace.ui.R as DeliveryR
-import br.gov.caixa.loterias.feature.retail.domain.model.Retailer
 
 @Composable
 fun FavoriteRetailersContent(state: MarketplaceUiState, onOpen: (Retailer) -> Unit, onRemove: (Long) -> Unit) {

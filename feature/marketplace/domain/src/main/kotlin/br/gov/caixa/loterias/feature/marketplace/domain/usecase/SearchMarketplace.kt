@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.marketplace.domain.usecase
 
 import br.gov.caixa.loterias.core.common.result.appResultOf
-import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceSearchArea
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceSearchArea
 import br.gov.caixa.loterias.feature.marketplace.domain.port.MarketplaceLocationProvider
+import br.gov.caixa.loterias.feature.marketplace.domain.repository.MarketplaceRepository
 
 class SearchMarketplace(
     private val repository: MarketplaceRepository,

@@ -1,6 +1,6 @@
 package br.gov.caixa.loterias.feature.marketplacefilter.presentation.mapper
 
-import br.gov.caixa.loterias.feature.marketplace.domain.model.MarketplaceFilter
+import br.gov.caixa.loterias.core.domain.contract.marketplace.model.MarketplaceFilter
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterModalityUi
 import br.gov.caixa.loterias.feature.marketplacefilter.presentation.state.MarketplaceFilterUiState
 

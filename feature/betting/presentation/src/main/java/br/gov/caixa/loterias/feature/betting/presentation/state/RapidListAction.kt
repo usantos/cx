@@ -1,9 +1,9 @@
 package br.gov.caixa.loterias.feature.betting.presentation.state
 import br.gov.caixa.loterias.core.common.result.AppError
+import br.gov.caixa.loterias.core.domain.contract.cart.model.ShoppingCart
 import br.gov.caixa.loterias.core.presentation.rule.ServiceNoticeUiState
 import br.gov.caixa.loterias.core.presentation.state.ServiceFailurePresentation
 import br.gov.caixa.loterias.feature.betting.presentation.formatting.localizedMessage as messageText
-import br.gov.caixa.loterias.feature.cart.domain.model.ShoppingCart
 internal sealed interface RapidListAction {
     data class ServiceRedirectConsumed(val expected: br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent) : RapidListAction
     data class ValidationRedirectConsumed(val expected: br.gov.caixa.loterias.core.presentation.state.ServiceRedirectEvent) :

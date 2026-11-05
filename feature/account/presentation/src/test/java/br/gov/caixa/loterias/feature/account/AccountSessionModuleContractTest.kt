@@ -5,6 +5,8 @@ package br.gov.caixa.loterias.feature.account
 
 import android.content.Context
 import br.gov.caixa.loterias.core.common.coroutines.FixedCoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.core.domain.persistence.SecureStorageException
 import br.gov.caixa.loterias.core.navigation.configuration.HostFeatureConfiguration
 import br.gov.caixa.loterias.core.network.api.AccountVerificationSession
@@ -13,11 +15,9 @@ import br.gov.caixa.loterias.feature.account.data.datasource.remote.AccountVerif
 import br.gov.caixa.loterias.feature.account.di.LatestNotificationModule
 import br.gov.caixa.loterias.feature.account.di.SessionLogoutModule
 import br.gov.caixa.loterias.feature.account.di.SessionModule
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
 import br.gov.caixa.loterias.feature.account.domain.model.LocalSessionRecovery
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
 import br.gov.caixa.loterias.feature.account.domain.model.SessionSignOutResult
-import br.gov.caixa.loterias.feature.account.domain.port.AuthenticatedSessionIdentityProvider
 import br.gov.caixa.loterias.feature.account.domain.repository.LocalSessionCleanupRecoveryRepository
 import br.gov.caixa.loterias.feature.account.domain.repository.LocalSessionDataRepository
 import br.gov.caixa.loterias.feature.account.domain.usecase.ClearLocalSessionDataUseCase

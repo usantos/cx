@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.automation.uiId
 import br.gov.caixa.loterias.core.designsystem.components.base.LoteriasCaixaDSText as Text
 import br.gov.caixa.loterias.core.designsystem.tokens.LoteriasCaixaDSColorTokens
-import br.gov.caixa.loterias.feature.cart.domain.model.CartLotecaSelection
+import br.gov.caixa.loterias.core.domain.contract.cart.model.CartLotecaSelection
 import br.gov.caixa.loterias.feature.cart.presentation.mapper.cartText
 import br.gov.caixa.loterias.feature.cart.ui.R as DeliveryR
 import java.util.Locale

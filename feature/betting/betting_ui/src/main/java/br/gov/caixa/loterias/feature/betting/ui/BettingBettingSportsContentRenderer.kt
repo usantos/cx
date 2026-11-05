@@ -10,7 +10,7 @@ internal class BettingBettingSportsContentRenderer : BettingBettingSportsContent
     override fun BettingLegacyTeams(
         state: BettingGameUiState,
         onQueryChanged: (String) -> Unit,
-        onTeamSelected: (br.gov.caixa.loterias.feature.betting.domain.model.SportsTeam) -> Unit,
+        onTeamSelected: (br.gov.caixa.loterias.core.domain.contract.betting.model.SportsTeam) -> Unit,
     ) {
         br.gov.caixa.loterias.feature.betting.presentation.screen.BettingLegacyTeamsDelivered(state, onQueryChanged, onTeamSelected)
     }

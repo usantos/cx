@@ -1,12 +1,11 @@
 package br.gov.caixa.loterias.feature.account.presentation.coordinator
 
-import br.gov.caixa.loterias.feature.account.domain.model.AuthenticatedSessionIdentity
-
 import br.gov.caixa.loterias.core.common.coroutines.CoroutineDispatchers
+import br.gov.caixa.loterias.core.domain.contract.account.model.AuthenticatedSessionIdentity
+import br.gov.caixa.loterias.core.domain.contract.account.port.SessionAuthentication
 import br.gov.caixa.loterias.core.presentation.state.ReduxStateStore
 import br.gov.caixa.loterias.feature.account.domain.model.AccountStatus
 import br.gov.caixa.loterias.feature.account.domain.model.PostLoginAccessResult
-import br.gov.caixa.loterias.feature.account.domain.port.SessionAuthentication
 import br.gov.caixa.loterias.feature.account.domain.usecase.VerifyPostLoginAccessUseCase
 import br.gov.caixa.loterias.feature.account.presentation.formatting.localizedMessage as messageText
 import br.gov.caixa.loterias.feature.account.presentation.mapper.loginRoute

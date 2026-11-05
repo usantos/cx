@@ -1,10 +1,10 @@
 package br.gov.caixa.loterias.feature.betting.data.mapper
 
-import br.gov.caixa.loterias.feature.betting.domain.model.LotteryModality
+import br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality
+import br.gov.caixa.loterias.core.network.dto.betting.LotteryModalityDto
+import br.gov.caixa.loterias.core.network.dto.betting.RapidConfigurationDto
+import br.gov.caixa.loterias.core.network.dto.cart.FavoriteCartBetDto
 import br.gov.caixa.loterias.feature.betting.domain.model.RapidBetConfiguration
-import br.gov.caixa.loterias.feature.cart.data.dto.FavoriteCartBetDto
-import br.gov.caixa.loterias.feature.betting.data.dto.LotteryModalityDto
-import br.gov.caixa.loterias.feature.betting.data.dto.RapidConfigurationDto
 import java.math.BigDecimal
 
 internal fun RapidConfigurationDto.toDomain() = RapidBetConfiguration(
