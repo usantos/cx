@@ -44,7 +44,7 @@ project(':core').subprojects { coreModule ->
     }
     coreModule.plugins.withId('com.android.library') {
         coreModule.android {
-            compileSdk 36
+            compileSdk 37
             compileOptions {
                 sourceCompatibility = javaVersion
                 targetCompatibility = javaVersion
