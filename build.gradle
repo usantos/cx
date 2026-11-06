@@ -31,7 +31,9 @@ project(':core').subprojects { coreModule ->
     def javaVersion = JavaVersion.VERSION_17
     ['org.jetbrains.kotlin.android', 'org.jetbrains.kotlin.jvm'].each { pluginId ->
         coreModule.plugins.withId(pluginId) {
-            coreModule.kotlin.jvmToolchain(javaVersion.majorVersion.toInteger())
+            coreModule.kotlin.compilerOptions.jvmTarget.set(
+                org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(javaVersion.majorVersion)
+            )
         }
     }
     coreModule.plugins.withId('java-library') {
