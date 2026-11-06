@@ -14,7 +14,7 @@ def PRD_VERSION_CODE = project.PRD_VERSION_CODE
 def PRD_VERSION_NAME = project.PRD_VERSION_NAME
 
 android {
-    compileSdkVersion 37
+    compileSdkVersion 36
     buildToolsVersion '36.0.0'
     defaultConfig {
         resValue "string", "app_name", "Loterias"

@@ -44,7 +44,7 @@ project(':core').subprojects { coreModule ->
     }
     coreModule.plugins.withId('com.android.library') {
         coreModule.android {
-            compileSdk 37
+            compileSdk 36
             compileOptions {
                 sourceCompatibility = javaVersion
                 targetCompatibility = javaVersion
@@ -116,6 +116,3 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-
-
