@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.moduledelivery'
+    defaultConfig { minSdk 24 }
+    testOptions.unitTests.all {
+        jacoco.includeNoLocationClasses = true
+        jacoco.excludes = ['jdk.internal.*']
+    }
+}
+dependencies {
+    api project(':core:domain')
+    implementation libs.play.feature.delivery
+    implementation libs.kotlinx.coroutines.core
+    testImplementation project(':core:testing')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.androidx.activity.compose
+}

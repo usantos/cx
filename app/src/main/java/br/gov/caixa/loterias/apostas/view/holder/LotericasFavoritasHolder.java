@@ -15,6 +15,7 @@ import br.gov.caixa.loterias.apostas.R;
 import br.gov.caixa.loterias.apostas.model.bo.silce.dto.LotericaFavoritaDTO;
 import br.gov.caixa.loterias.apostas.utils.DialogUtils;
 import br.gov.caixa.loterias.apostas.utils.StringUtils;
+import br.gov.caixa.loterias.apostas.utils.NomeLotericaFormatter;
 import br.gov.caixa.loterias.apostas.utils.ViewUtils;
 import br.gov.caixa.loterias.apostas.view.listener.OnDialogBotaoListener;
 import br.gov.caixa.loterias.apostas.view.listener.OnItemLotericaFavoritaListener;
@@ -52,11 +53,8 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
 	@Override
 	public void bind(LotericaFavoritaDTO loterica, int position) {
 
-		if (loterica.getNomeFantasia().length() > 30){
-			nomeLoterica.setText(StringUtils.capitalizerNovo(loterica.getNomeFantasia().substring(0,20).concat("...")));
-		} else {
-			nomeLoterica.setText(StringUtils.capitalizerNovo(loterica.getNomeFantasia()));
-		}
+		nomeLoterica.setText(NomeLotericaFormatter.formatar(
+				StringUtils.capitalizerNovo(loterica.getNomeFantasia()), 27));
 		String nomeMunicipio = StringUtils.capitalizerNovo(loterica.getNomeMunicipio());
 		String cidadeUf;
 		if(nomeMunicipio.length() > 30){
@@ -80,7 +78,7 @@ public class LotericasFavoritasHolder extends LoteriasHolder<LotericaFavoritaDTO
                     break;
                 }
 
-                final String nome = nomeLoterica.getText().toString();
+                final String nome = nomeLoterica.getText().toString().replace('\n', ' ');
                 final String mensagem = excluirFavorita.replace("xxx", nome);
 
 				DialogUtils.dialogConfirmar(

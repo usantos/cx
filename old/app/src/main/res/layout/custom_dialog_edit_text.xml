@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_modal"
+    android:paddingTop="24dp"
+    android:paddingHorizontal="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco">
+
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Titulo" />
+
+    <View
+        android:id="@+id/traco_separador"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/cinza70"
+        app:layout_constraintTop_toBottomOf="@+id/tv_titulo"
+        app:layout_constraintEnd_toStartOf="parent"
+        />
+
+    <EditText
+        android:id="@+id/et_carrinho"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/nome_do_carrinho_favorito"
+        android:maxLength="30"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/traco_separador" />
+
+    <CheckBox
+        android:id="@+id/ck_manter_surpresinhas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/blue_caixa"
+        android:layout_marginTop="10dp"
+        android:checked="true"
+        android:visibility="gone"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintStart_toStartOf="@id/et_carrinho"
+        app:layout_constraintTop_toBottomOf="@id/et_carrinho"
+        />
+
+    <TextView
+        android:id="@+id/tv_manter_surpresinhas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/carrinho_fav_manter_surp"
+        android:textColor="@color/cinza110"
+        android:textSize="15sp"
+        android:visibility="gone"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintStart_toEndOf="@+id/ck_manter_surpresinhas"
+        app:layout_constraintTop_toBottomOf="@id/et_carrinho"
+        />
+
+    <Button
+        android:id="@+id/btn_cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:text="@string/cancelar"
+        android:textAllCaps="false"
+        android:textColor="@color/cinza110"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintEnd_toStartOf="@+id/btn_ok"
+        app:layout_constraintTop_toBottomOf="@+id/tv_manter_surpresinhas" />
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:background="@color/branco"
+        android:gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="@string/title_salvar"
+        android:textAllCaps="false"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:ellipsize="end"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_manter_surpresinhas" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

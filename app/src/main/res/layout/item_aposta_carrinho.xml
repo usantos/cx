@@ -15,10 +15,25 @@
         android:textColor="#009B55"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/btnExcluir"
+        app:layout_constraintEnd_toStartOf="@id/legendaLoteca"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/legendaLoteca"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/legendaLoteca"
+        android:layout_marginEnd="18dp"
+        android:padding="9dp"
+        android:visibility="gone"
+        android:src="@drawable/lupa_legenda"
+        app:layout_constraintBottom_toBottomOf="@+id/tvModalidade"
+        app:layout_constraintEnd_toStartOf="@+id/btnExcluir"
+        app:layout_constraintTop_toTopOf="@+id/tvModalidade"
+        app:tint="@color/azul_caixa" />
 
     <ImageButton
         android:id="@+id/btnExcluir"
@@ -99,6 +114,17 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/containerLoteca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/guidelineInformacoes"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvModalidade" />
+
     <TextView
         android:id="@+id/tvConcurso"
         android:layout_width="wrap_content"
@@ -131,7 +157,7 @@
         android:layout_height="wrap_content"
         app:barrierAllowsGoneWidgets="false"
         app:barrierDirection="bottom"
-        app:constraint_referenced_ids="containerNumeros,containerSuperSete,tvValor" />
+        app:constraint_referenced_ids="containerNumeros,containerSuperSete,containerLoteca,tvValor" />
 
     <TextView
         android:id="@+id/tvExtra"

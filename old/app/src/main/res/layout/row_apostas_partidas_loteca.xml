@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_row_apostas_partidas_loteca_list_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/placeholder_titulo"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/cinza_titulo_jogo_loteca"
+       />
+
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLotecaView
+        android:id="@+id/apostas_partida_loteca_view_um"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLotecaView
+        android:id="@+id/apostas_partida_loteca_view_empate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLotecaView
+        android:id="@+id/apostas_partida_loteca_view_dois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_marginTop="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divisor_cinza_escuro" />
+
+</LinearLayout>

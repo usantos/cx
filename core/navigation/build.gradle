@@ -1,0 +1,23 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.navigation'
+    compileOptions { coreLibraryDesugaringEnabled true }
+    defaultConfig { minSdk 24 }
+    buildFeatures { compose = true }
+}
+
+dependencies {
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:presentation')
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    api project(':core:domain')
+    api libs.androidx.navigation.compose
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    testImplementation libs.junit4
+}

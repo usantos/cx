@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.JogosConfirmadosPremioMercadoPagoActivity"
+    tools:showIn="@layout/activity_jogos_confirmados_premio_mercado_pago">
+
+    <ScrollView
+        android:id="@+id/scrollViewResgateMP"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Container - Content Principal -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentPrincipal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/resgate_premio_buttons"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.1">
+
+            <ImageView
+                android:id="@+id/imageViewMercadoPago"
+                android:layout_width="177dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_mercadopago"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Container 1 - Tela - Solicitação de resgate de prêmio - Tela inicial-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_efetuar_resgate"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMercadoPago">
+
+                <!-- SubContainer 1 - Fundo azul onde mostra label de premio e valor do premio-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/contentValorPremio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="40dp"
+                    android:background="@color/azulfavoritas"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/txt_label_premio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:text="@string/label_premio"
+                        android:textColor="@color/cinza"
+                        android:textSize="15.2sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/valorPremioTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="21sp"
+                        android:paddingBottom="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_label_premio"
+                        tools:text="R$ 00,00" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SubContainer 2 - label receber premio e input e-mail-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/contentConfirmarLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="252dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/contentValorPremio">
+
+                    <TextView
+                        android:id="@+id/txt_label_confirmar_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="@string/para_receber_seu_pr_mio_npor_favor_confirme_seu_email"
+                        android:textColor="@color/cinza"
+                        android:textSize="18.2dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/label_email_resgate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:inputType="textEmailAddress"
+                        android:textColor="@color/azulfavoritas"
+                        android:text="@string/e_mail"
+                        android:layout_marginTop="20dp"
+                        android:textColorHint="@color/azulFormNovoTipoPagamento"
+                        android:textSize="15.2sp"
+                        app:layout_constraintTop_toBottomOf="@+id/txt_label_confirmar_email"
+                        app:layout_constraintStart_toStartOf="@+id/ayout_emailPremioMercadoPagoEditText"
+                        app:layout_constraintBottom_toTopOf="@+id/ayout_emailPremioMercadoPagoEditText"
+                         />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/ayout_emailPremioMercadoPagoEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label_email_resgate">
+
+                        <EditText
+                            android:id="@+id/emailPremioMercadoPagoEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/cinza"
+                            android:textColorHint="@color/azulFormNovoTipoPagamento"
+                            android:textSize="20sp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="parent" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout> <!-- Fim do Container 1 -->
+
+            <!-- Container 2 - Tela - Resgate efetuado com sucesso -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_resgate_concluido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewMercadoPago">
+
+                <!-- SubContainer 1 - Texto , com fundo verde azul, de solicitacão efetuada com sucesso-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/txt_resgate_sucesso"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/background_gradient_verde"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="29dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="@string/solicitacao_efetuada_sucesso"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="18.2sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SubContainer 2 - Textos informativos do resgate de prêmio-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_textos_informativos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_resgate_sucesso">
+
+                    <TextView
+                        android:id="@+id/textoTituloPremioConfirmado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="30dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="@string/em_breve_seu_pr_mio_estar_dispon_vel_em_sua_conta_no_mercado_pago"
+                        android:textAlignment="center"
+                        android:textColor="@color/cinza"
+                        android:textSize="15.2sp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                    <!-- contentConfirmadoLinearLayout // alterar para visible gone-->
+                    <TextView
+                        android:id="@+id/textoPremioConfirmado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="19dp"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:textAlignment="center"
+                        android:textColor="@color/cinza"
+                        android:textSize="15.2sp"
+                        android:visibility="visible"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textoTituloPremioConfirmado"
+                        tools:text="@string/um_email_foi_enviado_para_dmalva_monumenta_com_br_com_todas_as_informa_es_e_passo_a_passo_para_o_recebimento_de_seu_pr_mio" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- SubContainer 3 - Visualizar comprovante de prêmio-->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/comprovanteLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/background_gradient_verde"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layout_textos_informativos"
+                    >
+
+                    <TextView
+                        android:id="@+id/tv_num_bilhete"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:gravity="center"
+                        android:paddingTop="20dp"
+                        android:paddingBottom="20dp"
+                        android:text="@string/label_visualizar_comprovante_premio"
+                        android:textColor="@color/branco"
+                        android:textSize="15.2sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                  </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- Botões Resgatar Prêmio layout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/resgate_premio_buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <View
+                    android:id="@+id/viewCinzaBottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/cinzamercadopago"
+                    app:layout_constraintStart_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                </View>
+
+                <Button
+                    android:id="@+id/resgatarPremioButton"
+                    android:layout_width="184dp"
+                    android:layout_height="84dp"
+                    android:layout_marginBottom="@dimen/text_margin_20"
+                    android:background="@drawable/button_rounded_verdeazul"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:text="@string/resgatar_premio_mp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="17.7sp"
+                    android:visibility="visible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <Button
+                    android:id="@+id/voltarPremioButton"
+                    android:layout_width="184dp"
+                    android:layout_height="84dp"
+                    android:layout_marginBottom="@dimen/text_margin_20"
+                    android:background="@drawable/button_rounded_verdeazul"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:text="@string/label_voltar_ao_inicio"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="17.7sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toTopOf="@+id/resgatarNovoPremioButton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/resgatarNovoPremioButton"
+                    android:layout_width="184dp"
+                    android:layout_height="84dp"
+                    android:layout_marginBottom="@dimen/text_margin_20"
+                    android:background="@drawable/button_rounded_verdeazul"
+                    android:fontFamily="@font/caixa_std_bold"
+                    android:text="@string/resgatar_novo_premio"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco"
+                    android:textSize="17.7sp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/voltarPremioButton"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

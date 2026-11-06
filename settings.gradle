@@ -1,1 +1,7 @@
 include ':app'
+
+// Core do projeto Compose, importado da revisão fc28da57e.
+include ':core:common', ':core:domain'
+include ':core:auth', ':core:data', ':core:design-system', ':core:key-management'
+include ':core:module-delivery', ':core:navigation', ':core:network', ':core:persistence'
+include ':core:presentation', ':core:queue', ':core:security', ':core:testing'

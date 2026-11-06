@@ -1,0 +1,61 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        kotlin_version = '2.1.0'
+    }
+    repositories {
+        google()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.13.1'
+        classpath "com.google.gms:google-services:4.4.1"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:2.9.9"
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
+        classpath "com.github.triplet.gradle:play-publisher:3.8.6"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlin_version"
+        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.21'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+        google()
+        maven { url "https://jitpack.io" }
+
+        maven {
+            url 'https://s3.amazonaws.com/fabric-artifacts-private/internal-snapshots'
+        }
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
+        maven {
+            url 's3://mobile-artifacts-repo/releases'
+            credentials(AwsCredentials) {
+                accessKey "AKIAXZ36BNOEOOHHXSPJ" // Chave fornecida pelo time da Topaz OFD
+                secretKey "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" // Chave fornecida pelo time da Topaz OFD
+            }
+        }
+        maven {
+            url "https://artifacts.mercadolibre.com/repository/android-releases"
+        }
+
+        maven {
+            url("http://binario.caixa:8081/repository/releases/")
+            setAllowInsecureProtocol(true)
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+
+

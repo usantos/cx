@@ -33,6 +33,7 @@ public class PartidaLotecaDTO implements Serializable {
     protected Integer numero = null;
     @Expose(serialize = false, deserialize = false)
     protected transient Long idDB;
+    //define sub20 / feminino - apenas funcional em apostas individuais
     @SerializedName("descricaoLegenda")
     protected String descricaoLegenda = null;
     @SerializedName("letraLegenda")
@@ -154,13 +155,14 @@ public class PartidaLotecaDTO implements Serializable {
 
     @Override
     public String toString() {
-
-        String sb = "class PartidaLotecaDTO {\n" +
-                "  numero: " + numero + "\n" +
-                "  equipe1: " + equipe1 + "\n" +
-                "  equipe2: " + equipe2 + "\n" +
-                "  empate: " + empate + "\n" +
-                "}\n";
-        return sb;
+        return "PartidaLotecaDTO{" +
+                "equipe1=" + equipe1 +
+                ", equipe2=" + equipe2 +
+                ", empate=" + empate +
+                ", numero=" + numero +
+                ", idDB=" + idDB +
+                ", descricaoLegenda='" + descricaoLegenda + '\'' +
+                ", letraLegenda='" + letraLegenda + '\'' +
+                '}';
     }
 }

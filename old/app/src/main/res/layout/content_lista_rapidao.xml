@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ListaRapidaoActivity"
+    tools:showIn="@layout/activity_lista_rapidao">
+
+    <ScrollView
+        android:id="@+id/carrinhoRapidaoScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewTabBarRapidao"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/carrinhoRapidaoMainLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/branco"
+            android:focusableInTouchMode="true"
+            android:minHeight="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/infoPacoteRapidao"
+                style="@style/editTextCaixaStdTheme"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="17dp"
+                android:gravity="start"
+                android:text="@string/o_seu_pacote_de_apostas_prontas_para_serem_adquiridas_em_um_toque"
+                android:textAlignment="textStart"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tituloConfirmaApostasRapidao" />
+
+            <TextView
+                android:id="@+id/tituloConfirmaApostasRapidao"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="17dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="90dp"
+                android:layout_marginRight="90dp"
+                android:gravity="start"
+                android:text="@string/titulo_lista_rapidao"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorAccent"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/apostasListaRecycleViewRapidao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:paddingBottom="120dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/infoPacoteRapidao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+    <Button
+        android:id="@+id/botaoFazerNovaApostaRapidao"
+        android:layout_width="183dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_white_with_green_border"
+        android:paddingLeft="14dp"
+        android:paddingRight="14dp"
+        android:text="@string/fazerNovaAposta"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/verdeazul"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintBottom_toTopOf="@+id/botaoAvancarPagamentoRapidao"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <Button
+        android:id="@+id/botaoAvancarPagamentoRapidao"
+        android:layout_width="184dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/verdeazul"
+        android:text="@string/avancarFormaPagamento"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+        android:textColor="@color/branco"
+        android:textSize="17sp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/viewTabBarRapidao"
+        android:layout_width="0dp"
+        android:layout_height="99dp"
+        android:background="@color/azulclaro"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_total"
+            android:layout_width="80dp"
+            android:layout_marginRight="10dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <TextView
+                android:id="@+id/tv_valor_total_carrinho"
+                style="@style/CaixaStdBold"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:textAlignment="center"
+                android:textColor="@color/cinza_total"
+                android:textSize="16sp"
+                app:autoSizeMaxTextSize="16dp"
+                app:autoSizeMinTextSize="8sp"
+                app:autoSizeStepGranularity="2sp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toTopOf="@id/tv_total"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="R$100,00" />
+
+            <TextView
+                android:id="@+id/tv_total"
+                style="@style/CaixaStdRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparente"
+                android:text="@string/total"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/azulescuro"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_valor_total_carrinho" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <FrameLayout
+        android:id="@+id/id_somador_carrinho"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

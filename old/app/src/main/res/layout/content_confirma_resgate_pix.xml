@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <ScrollView
+            android:layout_marginTop="64dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="177dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="40dp"
+                    android:src="@drawable/ic_pix" />
+
+                <LinearLayout
+                    android:id="@+id/excelente"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_marginTop="35dp"
+                    android:background="@drawable/background_gradient_verde"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="29dp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        android:text="@string/seu_resgate_foi_solicitado_com_sucesso"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/contentConfirmarLinearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/caixa_std_regular"
+                        android:gravity="center"
+                        android:textAlignment="center"
+                        android:justificationMode="inter_word"
+                        android:text="@string/voce_pode_acompanhar_situacao"
+                        android:textColor="@color/cinzaescuro"
+                        android:textSize="20dp" />
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:layout_gravity="center">
+
+                    <Button
+                        android:id="@+id/btn_minhas_apostas"
+                        android:layout_width="184dp"
+                        android:layout_height="84dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/btn_round_resgate_outlined"
+                        android:backgroundTint="@color/fonte_verde_resgate"
+                        android:fontFamily="@font/futura_std_bold"
+                        android:text="@string/acesse_minhas_apostas"
+                        android:textAllCaps="false"
+                        android:textColor="@color/branco"
+                        android:textSize="17.7sp"
+                        android:visibility="visible" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+

@@ -1,0 +1,24 @@
+// Configuração das suítes JVM Android importadas do Core do Compose.
+project(':core').subprojects { owner ->
+    owner.plugins.withId('com.android.library') {
+        owner.android.testOptions.unitTests.includeAndroidResources = true
+        owner.dependencies.add('testImplementation', 'org.robolectric:robolectric:4.17')
+        owner.tasks.withType(Test).configureEach {
+            // O Chucker usado por :core:security foi compilado com Java 21.
+            javaLauncher = owner.javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(21)
+            }
+            systemProperty 'robolectric.dependency.repo.url', 'https://repo.maven.apache.org/maven2'
+            jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED',
+                    '--add-opens=java.base/java.lang.reflect=ALL-UNNAMED'
+            maxHeapSize = '2g'
+        }
+    }
+    owner.plugins.withId('org.jetbrains.kotlin.plugin.compose') {
+        owner.android.sourceSets.test.kotlin.srcDir(rootProject.file('core/design-system/src/testSupport/kotlin'))
+        owner.dependencies.add('testImplementation', owner.dependencies.platform(libs.androidx.compose.bom))
+        owner.dependencies.add('testImplementation', libs.androidx.compose.ui.test.junit4)
+        owner.dependencies.add('testImplementation', libs.androidx.test.ext.junit)
+        owner.dependencies.add('debugImplementation', libs.androidx.compose.ui.test.manifest)
+    }
+}

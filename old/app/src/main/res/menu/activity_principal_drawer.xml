@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_minhaarea"
+            android:icon="@drawable/ic_menu_minha_area"
+            android:title="@string/title_minhaArea">
+        </item>
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_menu_resultados"
+            android:title="@string/label_resultado" />
+        <item
+            android:id="@+id/nav_rapidao"
+            android:icon="@drawable/menu4_rapidao"
+            android:title="@string/label_rapidao" />
+
+        <item
+            android:id="@+id/nav_bilhetes"
+            android:icon="@drawable/ic_menu_conferir_bilhete"
+            android:title="@string/title_lerBilhete" />
+
+        <item
+            android:id="@+id/nav_jogo_responsavel"
+            android:icon="@drawable/ic_menu_jogo_responsavel"
+            android:title="@string/jr_titulo" />
+
+        <item
+            android:id="@+id/nav_sociais"
+            android:icon="@drawable/ic_menu_repasses_socieais"
+            android:title="@string/title_repassesSociais" />
+        <item
+            android:id="@+id/nav_notificacoes"
+            android:icon="@drawable/ic_elipse_menu_item3"
+            android:title="@string/title_notificacoes" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_sair"
+            android:icon="@drawable/icon_sair"
+            android:title="@string/title_sair" />
+    </group>
+
+
+</menu>

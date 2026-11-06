@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco"
+    android:paddingTop="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/confirmar_chave_pix_resgate"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textSize="14sp"
+        android:textColor="@color/blue_caixa"
+        android:layout_margin="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/labelChave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dados_titular_chave"
+        android:textColor="@color/blue_caixa"
+        android:fontFamily="@font/caixa_std_bold"
+        app:layout_constraintTop_toBottomOf="@id/titulo"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="24dp"/>
+
+    <TextView
+        android:id="@+id/txt_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Helton Sol Gonçalves"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@id/labelChave"
+        app:layout_constraintTop_toBottomOf="@id/labelChave"/>
+
+    <TextView
+        android:id="@+id/txt_cpf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="***.721.971-**"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/txt_nome"
+        app:layout_constraintTop_toBottomOf="@id/txt_nome"/>
+
+    <TextView
+        android:id="@+id/txt_chave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Chave: 12345678910"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/black"
+        android:layout_marginTop="4dp"
+        app:layout_constraintStart_toStartOf="@id/txt_cpf"
+        app:layout_constraintTop_toBottomOf="@id/txt_cpf"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

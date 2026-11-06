@@ -1,0 +1,186 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/branco"
+    android:paddingTop="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_resumo_item_list_bolao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/seta_bolao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/seta_baixo_lista_boloes"
+            android:backgroundTint="@color/cinza110"
+            android:contentDescription="@string/seta_detalhes_bolao"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/container_modalidade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/modalidade_bolao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:fontFamily="@font/futura_std_bold"
+                android:text="mega-sena"
+                android:textColor="@color/mega_verde_claro_mkp"
+                android:textSize="16sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@id/valor_estimado_premio_bolao"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/valor_estimado_premio_bolao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="R$ 0.000"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@id/valor_estimado_premio_bolao_por_extenso"
+                app:layout_constraintStart_toStartOf="@+id/modalidade_bolao"
+                app:layout_constraintTop_toBottomOf="@+id/modalidade_bolao"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/valor_estimado_premio_bolao_por_extenso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(R$ 0 Mil)"
+                android:textColor="@color/cinza110"
+                android:textSize="12sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/valor_estimado_premio_bolao"
+                app:layout_constraintTop_toBottomOf="@+id/valor_estimado_premio_bolao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="visible"
+            android:id="@+id/container_loterica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <br.gov.caixa.loterias.apostas.view.custom.BotaoFavoritar
+                android:id="@+id/btn_favoritar_mkp"
+                android:layout_width="24dp"
+                android:layout_height="21dp"
+                android:layout_marginStart="24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/cidade_bolao"
+                app:layout_constraintEnd_toStartOf="@+id/loterica_bolao"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/loterica_bolao" />
+
+            <TextView
+                android:id="@+id/loterica_bolao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="Mina de Ouro"
+                android:textColor="@color/cinza130"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_favoritar_mkp"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/cidade_bolao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Brasília - DF"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/loterica_bolao"
+                app:layout_constraintTop_toBottomOf="@+id/loterica_bolao" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cotas_e_dezenas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Restam 1 de 10 cotas\n5 apostas de 10 dezenas"
+            android:textColor="@color/cinza110"
+            android:textSize="14sp"
+            />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/valor_cota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="Valor da Cota"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@id/valor_bolao"
+            app:layout_constraintEnd_toStartOf="@id/seta_bolao"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed" />
+
+        <TextView
+            android:id="@+id/valor_bolao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="R$ 000,00"
+            android:textColor="@color/cinza130"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/valor_cota"
+            app:layout_constraintTop_toBottomOf="@id/valor_cota" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:id="@+id/linha_divisao"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/linhaDivisa"
+        app:layout_constraintTop_toBottomOf="@+id/container_resumo_item_list_bolao" />
+
+    <ViewStub
+        android:id="@+id/verMaisStub"
+        android:layout="@layout/ver_mais_bolao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linha_divisao"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

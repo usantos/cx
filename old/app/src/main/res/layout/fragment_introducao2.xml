@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:importantForAccessibility="no"
+tools:context="br.gov.caixa.loterias.apostas.view.fragment.Introducao2Fragment">
+<!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:id="@+id/imageViewLogoLoterias"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="29dp"
+        android:importantForAccessibility="yes"
+        android:contentDescription="@string/logoLoteriasCaixa"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageViewTelefone"
+        android:layout_width="161dp"
+        android:layout_height="70dp"
+        android:layout_below="@+id/imageViewLogoLoterias"
+        android:importantForAccessibility="no"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        app:srcCompat="@drawable/ic_star" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="125dp"
+        android:layout_height="1dp"
+        android:minHeight="1dp"
+        android:maxHeight="1dp"
+        android:importantForAccessibility="no"
+        android:layout_below="@id/imageViewTelefone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@color/branco" />
+
+    <TextView
+        android:id="@+id/textView1Fragment2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="@string/novas_funcionalidades"
+        android:textColor="@color/branco"
+        android:textSize="18sp" />
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1Fragment2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/suas_apostas_ainda_mais_f_ceis_e_muito_mais_r_pidas"
+        android:textAlignment="center"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="@color/branco"
+        android:textSize="20sp" />
+
+</RelativeLayout>

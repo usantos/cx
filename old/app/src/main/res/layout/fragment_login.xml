@@ -1,0 +1,182 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context="br.gov.caixa.loterias.apostas.view.fragment.LoginFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="93dp"
+            android:importantForAccessibility="yes"
+            android:contentDescription="@string/logoLoteriasCaixa"
+            android:layout_height="95dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="130dp"
+            android:background="@drawable/logo" />
+
+        <Button
+            android:id="@+id/buttonAposteAgora"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="57dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/button_border_new"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="@string/label_experimente"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+
+        <LinearLayout
+            android:id="@+id/imageView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/buttonAposteAgora"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"
+                android:importantForAccessibility="no"
+                android:background="@color/branco" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_bold"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="OU"
+                android:textColor="@color/branco"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="1dp"
+                android:importantForAccessibility="no"
+                android:background="@color/branco" />
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/buttonFacaLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView3"
+            android:layout_marginTop="42dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/button_border_laranja"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:outlineProvider="none"
+            android:text="@string/label_faca_login_cadastre"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/biometriaLinearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/textVersao"
+            android:importantForAccessibility="yes"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="32dp"
+            android:visibility="visible">
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="23dp"
+                android:layout_height="30dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/digital2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/textViewBiometria"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+            <TextView
+                android:id="@+id/textViewBiometria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/leitor_digital"
+                android:textColor="@color/branco"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textSize="20sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintHorizontal_weight="1"
+                app:layout_constraintStart_toEndOf="@+id/imageView5"
+                android:importantForAccessibility="no"
+                app:layout_constraintEnd_toStartOf="@+id/biometriaSwitch"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <Switch
+                android:id="@+id/biometriaSwitch"
+                android:layout_width="50dp"
+                android:importantForAccessibility="no"
+                android:layout_height="40dp"
+                android:checked="false"
+                android:theme="@style/SwitchTheme"
+                tools:ignore="UseSwitchCompatOrMaterialXml"
+                app:layout_constraintStart_toEndOf="@+id/textViewBiometria"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/textVersao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="26dp"
+            android:clickable="true"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/placeholder_versao"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/spin_ambiente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="46dp"
+            android:backgroundTint="@color/branco"
+            android:dropDownWidth="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</FrameLayout>
+ 

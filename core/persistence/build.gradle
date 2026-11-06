@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'jacoco'
+
+android {
+    namespace 'br.gov.caixa.loterias.core.persistence'
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+}
+
+dependencies {
+    api project(':core:domain')
+    implementation libs.androidx.datastore.core
+    implementation libs.kotlinx.coroutines.core
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.androidx.test.auth.runner
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+}

@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:windowSoftInputMode="adjustPan"
+    android:background="@color/branco">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textViewTituloCadastrar"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/title_cadastrar"
+            android:textColor="@color/cinza"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            />
+
+        <View
+            android:id="@+id/linhaDivisaTopo"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/linhaDivisa"
+            android:layout_below="@+id/textViewTituloCadastrar"
+            android:layout_marginTop="19dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewTituloCadastrar"/>
+
+        <TextView
+            android:id="@+id/textViewTituloCadastrar2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linhaDivisaTopo"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:text=""
+            android:textColor="@color/verdeazul"
+            android:textSize="18sp"
+            app:layout_constraintTop_toBottomOf="@id/linhaDivisaTopo"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewTituloCadastrar3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTituloCadastrar2"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/label_cadastro_rapido"
+            android:textColor="@color/cinza"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintTop_toBottomOf="@id/textViewTituloCadastrar2"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextCpf"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewTituloCadastrar3"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="63dp"
+            app:layout_constraintTop_toBottomOf="@id/textViewTituloCadastrar3"
+            >
+
+            <com.github.pinball83.maskededittext.MaskedEditText
+                android:id="@+id/editTextCpfContent"
+                android:ems="10"
+                android:hint="@string/title_cpf"
+                style="@style/editTextRegisterTheme"
+                android:inputType="number"
+                app:mask="***.***.***-**"
+                app:notMaskedSymbol="*"
+                android:enabled="false"
+                android:alpha="0.3"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextCpf"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/editTextCpf"
+            >
+
+            <EditText
+                android:id="@+id/editTextNomeContent"
+                android:ems="10"
+                android:hint="@string/label_nome"
+                style="@style/editTextRegisterTheme"
+                android:inputType="textPersonName"
+                android:enabled="false"
+                android:alpha="0.3"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup
+            android:id="@+id/segmentedButtonSexo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_below="@id/editTextNome"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            android:elevation="2dp"
+            app:sb_textStyle="bold"
+            app:sbg_animateSelector="fastOutSlowIn"
+            app:sbg_animateSelectorDuration="1000"
+            app:sbg_backgroundColor="@color/cinzaclaro"
+            app:sbg_position="0"
+            app:sbg_ripple="true"
+            app:sbg_selectorColor="@color/verdeazul"
+            app:layout_constraintTop_toBottomOf="@id/editTextNome">
+
+            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                app:sb_text="Masculino"
+                app:sb_textColor="@color/verdeazul"
+                app:sb_textColor_onSelection="@color/branco"
+                app:sb_textStyle="bold"
+                app:sb_textGravity="center"
+                android:layout_gravity="center_vertical"/>
+
+            <br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButton
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                app:sb_text="Feminino"
+                app:sb_textColor="@color/verdeazul"
+                app:sb_textColor_onSelection="@color/branco"
+                app:sb_textStyle="bold" />
+
+        </br.gov.caixa.loterias.apostas.utils.segmentedbutton.SegmentedButtonGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextCEP"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:layout_below="@id/segmentedButtonSexo"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/segmentedButtonSexo"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/naoSeiCep">
+
+            <com.github.pinball83.maskededittext.MaskedEditText
+                android:id="@+id/editTextCepContent"
+                style="@style/editTextRegisterTheme"
+                android:ems="10"
+                android:hint="@string/label_cep"
+                android:inputType="number"
+                app:mask="*****-***"
+                app:notMaskedSymbol="*" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/naoSeiCep"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza"
+            android:text="@string/nao_sei_cep"
+            android:background="@drawable/button_border_verde"
+            android:textAllCaps="false"
+            android:textSize="14sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toTopOf="@id/editTextCEP"
+            app:layout_constraintStart_toEndOf="@id/editTextCEP"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextUF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_below="@id/editTextCEP"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/editTextCEP">
+
+            <EditText
+                android:id="@+id/editTextUFContent"
+                android:drawableRight="@drawable/icon_input_ok"
+                style="@style/editTextRegisterTheme"
+                android:ems="10"
+                android:focusableInTouchMode="false"
+                android:hint="@string/title_uf"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextMunicipio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_below="@id/editTextUF"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/editTextUF">
+
+            <EditText
+                android:id="@+id/editTextMunicipioContent"
+                android:drawableRight="@drawable/icon_input_ok"
+                style="@style/editTextRegisterTheme"
+                android:ems="10"
+                android:focusableInTouchMode="false"
+                android:hint="@string/label_municipio"
+                android:inputType="textPersonName" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextMunicipio"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/editTextMunicipio"
+            >
+
+            <EditText
+                android:id="@+id/editTextEmailContent"
+                style="@style/editTextRegisterTheme"
+                android:ems="10"
+                android:hint="@string/label_email"
+                android:inputType="textEmailAddress"
+                android:enabled="false"
+                android:alpha="0.3"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/aceiteTermo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/transparente50"
+            app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_declaracao_termo_uso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/editTextArialMTTheme"
+            android:textColor="@color/cinza"
+            android:text="@string/declaracao_termo_uso_politica_privacidade"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintTop_toTopOf="@id/aceiteTermo"
+            app:layout_constraintStart_toEndOf="@id/aceiteTermo"/>
+
+        <TextView
+            android:id="@+id/termoPolitica"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinza"
+            android:text="@string/termo_de_uso_underline"
+            style="@style/editTextArialMTTheme"
+            app:layout_constraintTop_toBottomOf="@id/tv_declaracao_termo_uso"
+            app:layout_constraintStart_toStartOf="@id/tv_declaracao_termo_uso"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/aceiteNotificacoes"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="20dp"
+            android:checked="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/check_box_selected"
+            android:button="@color/transparente50"
+            app:layout_constraintTop_toBottomOf="@id/termoPolitica"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_declaracao_notificacoes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/editTextArialMTTheme"
+            android:textColor="@color/cinza"
+            android:text="@string/declaracao_notificacoes"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintTop_toTopOf="@id/aceiteNotificacoes"
+            app:layout_constraintStart_toEndOf="@id/aceiteNotificacoes"/>
+
+        <Button
+            android:id="@+id/buttonFinalizarCadastro"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="60dp"
+            android:background="@color/amarelo"
+            android:text="@string/btn_finalizar"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aceiteNotificacoes"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_item"
+    android:layout_width="280dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardCornerRadius="0dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutTopResultados"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/mega_verde_escuro_mkp">
+
+            <RelativeLayout
+                android:id="@+id/setaEsquerdaAcaoRelativeLayout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="17dp"
+                    android:src="@drawable/seta_esquerda" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/buttonActionResultadosModalidade"
+                    style="@style/editTextCaixaRegularTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:background="@null"
+                    android:gravity="center"
+                    android:text="@string/label_ultimo_resultado"
+                    android:textAllCaps="false"
+                    android:textColor="@color/branco" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/setaDireitaAcaoRelativeLayout"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentEnd="true"
+                android:visibility="invisible">
+
+                <ImageView
+                    android:layout_width="8dp"
+                    android:layout_height="12dp"
+                    android:layout_centerInParent="true"
+                    android:layout_marginEnd="17dp"
+                    android:src="@drawable/seta_direita" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/setaBaixoAcaoRelativeLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:layout_centerInParent="true"
+                android:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/imgSetaResultado"
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/ic_seta_baixo" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutResultadosApostas"
+            android:layout_width="240dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/mega_verde_escuro_mkp"
+            android:orientation="vertical"/>
+
+        <LinearLayout
+            android:id="@+id/linearLayoutContentCardModalide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/linear_layout"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@color/branco"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_especiais"
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_especiais"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        tools:src="@drawable/mega_virada_novo" />
+
+                    <TextView
+                        android:id="@+id/tv_nome_especiais"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="90dp"
+                        android:layout_marginEnd="10dp"
+                        android:autoSizeMaxTextSize="18sp"
+                        android:autoSizeMinTextSize="8sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/branco"
+                        android:textSize="18.0sp"
+                        android:fontFamily="@font/futura_std_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="@string/mega_sena" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutTopModalidades"
+                    android:layout_width="match_parent"
+                    android:layout_height="71dp"
+                    android:background="@color/mega_verde_claro_mkp"
+                    android:gravity="left"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:id="@+id/RelativeLayoutTrevo"
+                        android:layout_width="85dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_trapeze_megasena">
+
+                        <ImageView
+                            android:id="@+id/trevoImagem"
+                            android:layout_width="23dp"
+                            android:layout_height="23dp"
+                            android:layout_marginStart="23dp"
+                            android:layout_marginTop="24dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/trevo" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/textViewCardTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="10dp"
+                        android:autoSizeMaxTextSize="17sp"
+                        android:autoSizeMinTextSize="8sp"
+                        android:autoSizeStepGranularity="1sp"
+                        android:autoSizeTextType="uniform"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/branco"
+                        android:textSize="17.0sp"
+                        tools:text="@string/mega_sena"
+                        android:fontFamily="@font/futura_std_bold"/>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutContainerCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/LinearLayoutContentCard"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/branco"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textPortalCombo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="40dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="@string/portal_combo"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/imageCombo"
+                            android:layout_width="233dp"
+                            android:layout_height="327dp"
+                            android:layout_gravity="center"
+                            android:background="@color/branco"
+                            android:src="@drawable/imagem_combos"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textVieCardAcumulatedValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/mega_verde_claro_mkp"
+                            android:textSize="25sp"
+                            android:fontFamily="@font/caixa_std_bold"
+                            tools:text="R$ 0.000" />
+
+                        <TextView
+                            android:id="@+id/textViewSpelledValue"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/mega_verde_claro_mkp"
+                            android:textSize="20sp"
+                            android:fontFamily="@font/caixa_std_bold"
+                            tools:text="(R$ 0 Mil)" />
+
+                        <TextView
+                            android:id="@+id/textPremioEstimadoConcurso"
+                            style="@style/editTextArialMTTheme"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="Prêmio estimado do concurso "
+                            android:fontFamily="@font/caixa_std_regular" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/LinearLayoutContentCard"
+                        android:layout_marginTop="8dp"
+                        android:gravity="bottom"
+                        android:orientation="vertical">
+
+                        <View
+                            android:id="@+id/viewSeparador"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginLeft="18dp"
+                            android:layout_marginRight="18dp"
+                            android:background="@color/cinza2" />
+
+                        <LinearLayout
+                            android:id="@+id/linearCalendar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginRight="19dp"
+                            android:background="@color/branco"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imageCalendar"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:background="@color/branco"
+                                android:src="@drawable/icon_data_megasena" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:background="@color/branco"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textViewSorteioOuEncerramento"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/title_sorteio"
+                                    android:fontFamily="@font/caixa_std_regular"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/textVieCardDrawDate"
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="bottom"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="12sp"
+                                    android:fontFamily="@font/caixa_std_semi_bold"
+                                    tools:text="Segunda-feira\n 25/03/2024 às 18:00" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearRelogio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="19dp"
+                            android:layout_marginTop="7dp"
+                            android:layout_marginRight="19dp"
+                            android:layout_marginBottom="0dp"
+                            android:background="@color/branco">
+
+                            <ImageView
+                                android:id="@+id/imageWatch"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:layout_gravity="center"
+                                android:background="@color/branco"
+                                android:src="@drawable/icon_horario_megasena" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
+                                android:background="@color/branco"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/textVieCardApostasEncerramEm"
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/title_apostasEncerram"
+                                    android:fontFamily="@font/caixa_std_regular"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/textVieCardClosingOfBets"
+                                    style="@style/editTextArialMTTheme"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="bottom"
+                                    android:textColor="@color/cinzaescuro"
+                                    android:textSize="12sp"
+                                    android:fontFamily="@font/caixa_std_semi_bold"
+                                    tools:text="0 dias e 0 horas" />
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/imageInstantanea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:background="@color/branco"
+                            android:src="@drawable/imagem_instantanea"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/textPortalInstantanea"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:textAlignment="center"
+                            android:textColor="@color/cinzaescuro"
+                            android:textSize="13.8sp"
+                            tools:text="@string/portal_instantanea"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_timer30Min"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:visibility="gone"
+                        android:layout_centerInParent="true">
+
+                        <TextView
+                            android:id="@+id/tv_voce_tem"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/caixa_std_semi_bold"
+                            android:text="@string/pix_voce_tem"
+                            android:textColor="@color/azul_alterar"
+                            android:textSize="12sp"
+                            android:textAlignment="center"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            />
+
+                        <ImageView
+                            android:id="@+id/img_relogio_card"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:background="@drawable/ic_timer"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginStart="-15dp"
+                            app:layout_constraintStart_toStartOf="@+id/tv_voce_tem"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_voce_tem"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_contador_card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/caixa_std_bold"
+                            android:text="30:00"
+                            android:textSize="16sp"
+                            android:textColor="@color/azul_alterar"
+                            android:layout_marginStart="10dp"
+                            app:layout_constraintTop_toTopOf="@id/img_relogio_card"
+                            app:layout_constraintBottom_toBottomOf="@id/img_relogio_card"
+                            app:layout_constraintStart_toEndOf="@id/img_relogio_card"/>
+
+                        <TextView
+                            android:id="@+id/tv_para_comprar_bolao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:text="@string/para_comprar_seu_bolao"
+                            android:textSize="12sp"
+                            android:textColor="@color/azul_alterar"
+                            android:layout_marginTop="0dp"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_contador_card"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"/>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

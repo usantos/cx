@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="vertical"
+    app:layout_constraintHeight_max="wrap">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/shape_border_rounded">
+
+        <TextView
+            android:id="@+id/titulo_left_right"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="Titulo"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="17dp"
+            android:fontFamily="@font/caixa_std_bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/back_ll"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/mensagem_left_right"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="Mensagem"
+                android:textColor="@android:color/black"
+                android:textSize="13dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_below="@+id/linhaDivisaoBotoes"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_left"
+                android:layout_width="100dp"
+                android:layout_height="55dp"
+                android:layout_weight="0.5"
+                android:background="@color/branco"
+                android:text="@string/label_nao"
+                android:textAllCaps="false"
+                android:textColor="@color/label_nao_sim"
+                android:textSize="17dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:gravity="center" />
+
+            <Button
+                android:id="@+id/btn_right"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:background="@color/branco"
+                android:text="@string/label_sim"
+                android:textAllCaps="false"
+                android:textColor="@color/label_nao_sim"
+                android:textSize="17dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:gravity="center" />
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

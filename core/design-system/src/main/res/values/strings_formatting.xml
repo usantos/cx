@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="format_back">"Voltar"</string>
+    <string name="format_cancel">"Cancelar"</string>
+    <string name="format_cart_bets_zero">"0 apostas"</string>
+    <plurals name="format_cart_bets_description">
+        <item quantity="one">"%1$d aposta"</item>
+        <item quantity="other">"%1$d apostas"</item>
+    </plurals>
+    <string name="format_confirm">"Confirmar"</string>
+    <string name="format_contest">"Concurso"</string>
+    <string name="format_help">"Ajuda"</string>
+    <string name="format_loading">"Carregando"</string>
+    <string name="format_loading_ellipsis">"Carregando…"</string>
+    <string name="format_pix_attention">"Atenção:"</string>
+    <string name="format_pix_check_payment">"Verificar Pagamento"</string>
+    <string name="format_pix_expired">"Código Expirado"</string>
+    <string name="format_pix_intro">"Copie o código abaixo e utilize o Pix Copia e Cola no aplicativo que você fará o pagamento."</string>
+    <string name="format_pix_purchases">"Ir para as\nMinhas Compras"</string>
+    <string name="format_pix_single_payment">"*O código poderá ser pago somente 1 vez."</string>
+    <string name="format_pix_time_intro">"Você tem"</string>
+    <string name="format_pix_time_outro">"Para efetuar o pagamento"</string>
+    <string name="format_pix_title">"Pix Copia e Cola"</string>
+    <string name="format_understood">"Entendi"</string>
+</resources>

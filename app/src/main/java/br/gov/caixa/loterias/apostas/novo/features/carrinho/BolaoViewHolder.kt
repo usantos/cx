@@ -58,7 +58,7 @@ class BolaoViewHolder(
             setTextColor(
                 ContextCompat.getColor(
                     context,
-                    estilo.corClara
+                    estilo.corLetraLista
                 )
             )
         }

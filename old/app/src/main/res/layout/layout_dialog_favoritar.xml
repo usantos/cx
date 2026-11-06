@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="14dp"
+    android:background="@color/branco">
+
+    <TextView
+        android:id="@+id/titulo_dialog_favoritar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Atenção"
+        android:textColor="@color/blue_caixa"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_bold"
+        />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="17dp"
+        android:background="@color/cinza70" />
+
+    <TextView
+        android:id="@+id/description_dialog_favoritar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        tools:text="Informações relevantes ao diálogo"
+        android:layout_marginTop="16dp"
+        android:textColor="@color/cinza110"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular" />
+
+    <EditText
+        android:id="@+id/edit_dialog_favoritar"
+        android:layout_width="match_parent"
+        android:minHeight="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/cinza110"
+        android:background="@drawable/bg_edit_favoritar"
+        android:hint="@string/nome_do_carrinho_favorito"
+        android:textSize="16sp"
+        android:inputType="text"
+        android:autofillHints="name"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <LinearLayout
+        android:id="@+id/layout_manter_surpresinhas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:visibility="gone">
+
+        <CheckBox
+            android:id="@+id/check_manter_surpresinhas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/blue_caixa"
+            android:layout_marginTop="10dp"
+            android:checked="false"
+            android:fontFamily="@font/caixa_std_regular"
+            />
+        <TextView
+            android:id="@+id/text_manter_surpresinhas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="@string/carrinho_fav_manter_surp"
+            android:textColor="@color/cinza110"
+            android:textSize="15sp"
+            android:fontFamily="@font/caixa_std_regular"
+            />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_botoes_favoritar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="end"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btn_negativo"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:text="@string/cancelar"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textColor="@color/cinza110"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:ellipsize="end"/>
+
+        <Button
+            android:id="@+id/btn_positivo"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:textAllCaps="false"
+            android:text="@string/confirmar"
+            android:textSize="16sp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:textColor="@color/blue_caixa"
+            android:ellipsize="end"
+            />
+    </LinearLayout>
+
+</LinearLayout>

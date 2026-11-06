@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/confirmacaoPagamentoMainLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ConfirmacaoPagamentoActivity"
+    android:background="@drawable/navigation_gradient_azul">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_ResgatePix"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        >
+        <ImageButton
+            android:id="@+id/botao_termo"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:padding="8dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/duvidas_toolbar_icon"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/botao_duvidas"
+            android:background="@color/transparente" />
+
+        <TextView
+            android:id="@+id/textInfoApostas"
+            style="@style/editTextCaixaRegularTheme"
+            android:layout_width="266dp"
+            android:layout_height="156dp"
+            android:layout_marginStart="67dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="51dp"
+            android:text="@string/confirmacaoPagamentoInfoApostas"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            app:layout_constraintHorizontal_bias="0.522"
+            app:layout_constraintLeft_toLeftOf="@+id/imageViewSetaParaApostas"
+            app:layout_constraintRight_toRightOf="@+id/imageViewSetaParaApostas"
+            app:layout_constraintTop_toTopOf="@+id/imageViewSetaParaApostas" />
+
+        <View
+            android:id="@+id/v_linha"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/verdeazul"
+            app:layout_constraintTop_toBottomOf="@id/textTitulo"
+            app:layout_constraintBottom_toTopOf="@+id/textInfoApostas"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageViewSetaParaApostas"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="13dp"
+            android:layout_marginEnd="55dp"
+            android:layout_marginBottom="106dp"
+            android:rotation="180"
+            android:scaleType="fitXY"
+            android:scaleY="-1"
+            android:visibility="invisible"
+            android:importantForAccessibility="no"
+            android:focusable="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textTitulo"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/rectangle_5_copy" />
+
+        <TextView
+            android:id="@+id/textConfirmacao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/confirmacao"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:textSize="14.2sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textTitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="115dp"
+            android:layout_marginRight="115dp"
+            android:layout_marginTop="100dp"
+            android:text="@string/confirmacaopagamentoParabens"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:textSize="14.2sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/viewTabBar"
+            android:layout_width="0dp"
+            android:layout_height="94dp"
+            android:background="@color/azulclaro"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+            <RelativeLayout
+                android:id="@+id/carrinhoApostas"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="13dp"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="10dp"
+                android:clipToPadding="false">
+
+                <TextView
+                    android:id="@+id/textViewCarrinhoCartelaCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/botaoCarrinho"
+                    android:layout_alignEnd="@+id/textInfoCarrinho"
+                    android:background="@drawable/rounded_textview"
+                    android:layout_marginEnd="6dp"
+                    android:gravity="center"
+                    android:fontFamily="@font/caixa_std_regular"
+                    tools:text="0"
+                    android:textColor="@color/branco"
+                    android:textSize="12sp"
+                    android:outlineProvider="none"
+                    android:translationZ="3dp"/>
+
+                <Button
+                    android:id="@+id/botaoCarrinho"
+                    android:layout_width="34dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/icon_apostas"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/textInfoCarrinho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/minhasApostas"
+                    android:textAlignment="center"
+                    android:textColor="@color/azulescuro"
+                    android:textSize="12sp"
+                    style="@style/editTextCaixaRegularTheme"/>
+
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <Button
+            android:id="@+id/botaoAcompanheSuasCompras"
+            android:layout_width="184dp"
+            android:layout_height="84dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_border"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:fontFamily="@font/caixa_std_regular"
+            tools:text="@string/label_acompanhe_suas_compras"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/botaoVoltarInicio"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+        <Button
+            android:id="@+id/botaoVoltarInicio"
+            android:layout_width="184dp"
+            android:layout_height="84dp"
+            android:layout_marginBottom="51dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@color/verdeazul"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:text="@string/btn_title_voltarAoInicio"
+            android:fontFamily="@font/caixa_std_regular"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/viewTabBar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_confirmacao_pagamento"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar_confirmacao"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/colorAccent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textConfirmacao_Pagamento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="@string/confirmacao"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/botao_termo_confirmacao"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:padding="8dp"
+                android:layout_marginEnd="24dp"
+                android:background="@color/transparente"
+                android:contentDescription="@string/botao_duvidas"
+                android:scaleType="fitXY"
+                android:src="@drawable/duvidas_toolbar_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_confirmacao"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:overScrollMode="ifContentScrolls"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_confirmacao"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/btn_acompanhe_compras_confirmacao">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/content_info_confirmacao"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ImageView
+                        android:id="@+id/img_processamento_compra"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/ic_processamento_compra"
+                        android:importantForAccessibility="no"
+                        android:focusable="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textTitulo_confirmacao"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/caixa_std_semi_bold"
+                        android:text="@string/confirmacaoPagamentoProcessamento"
+                        android:textAlignment="center"
+                        android:textColor="@color/branco"
+                        android:textSize="20sp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/img_processamento_compra" />
+
+                    <View
+                        android:id="@+id/v_linha_confirmacao"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:background="@color/bolao_slider_areola"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textTitulo_confirmacao" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/container_infos_confirmacao"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="40dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/v_linha_confirmacao">
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_info1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <ImageView
+                                android:id="@+id/bullet_info1"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo1_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo1"
+                                />
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/layout_info2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info1">
+
+                            <ImageView
+                                android:id="@+id/bullet_info2"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo2_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="8dp"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo2" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layout_info3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info2">
+
+                            <ImageView
+                                android:id="@+id/bullet_info3"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                android:src="@drawable/bullet_branco" />
+
+                            <TextView
+                                android:id="@+id/textInfo3_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo3" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/layout_info3">
+
+                            <ImageView
+                                android:id="@+id/bullet_info4"
+                                android:layout_width="7dp"
+                                android:layout_height="7dp"
+                                android:layout_marginTop="7dp"
+                                android:src="@drawable/bullet_branco"
+                                android:importantForAccessibility="no"
+                                android:focusable="false"
+                                app:layout_constraintEnd_toStartOf="@+id/textInfo4_confirmacao"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/bullet_info3" />
+
+                            <TextView
+                                android:id="@+id/textInfo4_confirmacao"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="8dp"
+                                android:fontFamily="@font/caixa_std_regular"
+                                android:textAlignment="textStart"
+                                android:textColor="@color/branco"
+                                android:textSize="16sp"
+                                android:importantForAccessibility="yes"
+                                android:focusable="true"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/bullet_info4"
+                                app:layout_constraintTop_toBottomOf="@+id/textInfo3_confirmacao"
+                                tools:text="@string/confirmacaoPagamentoProcessamentoInfo4" />
+                        </LinearLayout>
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:id="@+id/viewTabBarConfirmacao"
+            android:layout_width="0dp"
+            android:layout_height="41dp"
+            android:background="@color/branco"
+            android:elevation="0dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
+
+        </View>
+
+
+        <Button
+            android:id="@+id/btn_acompanhe_compras_confirmacao"
+            android:layout_width="274dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/btn_round_laranja"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="@string/acompanhe_suas_compras"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/branco"
+            android:textSize="17sp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_voltar_inicio_confirmacao"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <Button
+            android:id="@+id/btn_voltar_inicio_confirmacao"
+            android:layout_width="274dp"
+            android:layout_height="52dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/button_white_blue_border_round"
+            android:elevation="1dp"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="@string/label_voltar_ao_inicio"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

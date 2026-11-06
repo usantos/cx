@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".view.fragment.TutorialSuperSete1Fragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            android:paddingBottom="150dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_pronto"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_bold"
+                android:layout_height="wrap_content"
+                android:text="@string/pronto"/>
+
+            <TextView
+                android:id="@+id/tv_confirmar_carrinho"
+                android:layout_marginTop="20dp"
+                android:layout_width="wrap_content"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_regular"
+                tools:text="@string/confirmar_carrinho"/>
+
+            <ImageView
+                android:id="@+id/iv_gif"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:adjustViewBounds="true"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="30dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/aumente_suas_chances" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -257,7 +257,7 @@
     <string name="title_activity_lista_compras">Minhas Compras</string>
 
     <string name="msg_qtd_max_ultrapassada">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
-    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de números, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
+    <string name="msg_qtd_max_loteca">Você aumentou a quantidade de palpites, o valor será alterado. Fique atento ao valor final da sua aposta.</string>
     <string name="label_combinacao_invalida_loteca">Essa combinação de simples, duplos e triplos não é permitida para a Loteca. Tente outra combinação.</string>
     <string name="btn_entendi">entendi</string>
     <string name="button_entendi">Entendi</string>
@@ -786,6 +786,7 @@
     <string name="titulo">Titulo</string>
     <string name="botao">Botão</string>
     <string name="loteca">loteca</string>
+    <string name="legendaLoteca">Icone de lupa - Detalha a legenda da loteca</string>
     <string name="selecione_as_op_es_e_clique_em_adicionar">Selecione as opções e clique em adicionar</string>
     <string name="escolha_o_tipo_de_concurso">Escolha o tipo de concurso que você quer participar:</string>
     <string name="tipo_de_concurso">Tipo de Concurso</string>
@@ -1648,6 +1649,7 @@
     <string name="estado_vazio_mkp_descricao">Não foram encontrados bolões disponíveis para os filtros informados. Limpe os filtros e tente novamente.</string>
     <string name="vazio_Lotericas_favoritas">Você ainda não possui nenhuma lotérica favorita.</string>
     <string name="sem_boloes_lotericas_favoritas">Esta lotérica não possui bolões disponíveis no momento.</string>
+    <string name="erro_busca_lotericas">Não foi possível atualizar a lista de lotéricas favoritas.</string>
     <string name="msg_incluir_favorita">Deseja incluir %1$s na sua lista de favoritas?</string>
     <string name="msg_excluir_favorita">Deseja excluir %1$s da sua lista de favoritas?</string>
     <string name="loterica_favorita">Lotérica Favorita</string>
@@ -1727,7 +1729,8 @@
     <string name="animacao_msg">Deseja ocultar essa animação nas próximas vezes?</string>
     <string name="txt_como_jogar">Como jogar</string>
     <string name="txt_apostas_identicas">Existem apostas idênticas em seu carrinho, por favor verifique.</string>
-
+    <string name="txt_empate">EMPATE</string>
+    <string name="jogo_numero">Jogo %1$02d</string>
     <string name="txt_buscar_exemplo">Insira o nome da lotérica ou o código somente com os números do segundo campo, com 6 dígitos, Exemplo: E.Lotérico 10.000004-01, digite 000004.</string>
     <string name="txt_name_code">Nome ou código</string>
     <string name="txt_lotericas">Lotéricas</string>

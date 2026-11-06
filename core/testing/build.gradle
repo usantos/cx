@@ -1,0 +1,9 @@
+apply plugin: 'java-library'
+apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'jacoco'
+
+dependencies {
+    api project(':core:domain')
+    api libs.junit4
+    api libs.kotlinx.coroutines.test
+}

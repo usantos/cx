@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         tools:text="@string/placeholder_titulo"
         android:textSize="16sp"
-        android:fontFamily="@font/caixa_std_bold"
+        android:fontFamily="@font/caixa_std_regular"
         android:textColor="@color/cinza_titulo_jogo_loteca"
        />
 
@@ -33,6 +33,7 @@
         android:layout_height="wrap_content" />
 
     <View
+        android:id="@+id/divisor_partida_loteca"
         android:layout_marginTop="4dp"
         android:layout_width="match_parent"
         android:layout_height="1dp"

@@ -1,0 +1,444 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'org.sonarqube'
+apply plugin: 'com.google.firebase.crashlytics'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
+apply plugin: 'jacoco'
+def DES_VERSION_CODE = project.DES_VERSION_CODE
+def DES_VERSION_NAME = project.DES_VERSION_NAME
+def PLT_VERSION_CODE = project.PLT_VERSION_CODE
+def PLT_VERSION_NAME = project.PLT_VERSION_NAME
+def PRD_VERSION_CODE = project.PRD_VERSION_CODE
+def PRD_VERSION_NAME = project.PRD_VERSION_NAME
+
+android {
+    compileSdkVersion 37
+    buildToolsVersion '36.0.0'
+    defaultConfig {
+        resValue "string", "app_name", "Loterias"
+        applicationId "br.gov.caixa.loterias.apostas"
+        minSdkVersion 23
+        targetSdkVersion 36
+
+        //                   24                 1.24.0 = 01 024               00
+        //version code = minSdkVersion + versionName(sem pontuação) + versão interna
+        versionCode = PRD_VERSION_CODE.toInteger()
+        versionName = PRD_VERSION_NAME
+        vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        testOptions {
+            execution 'ANDROID_TEST_ORCHESTRATOR'
+        }
+
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_17
+            targetCompatibility JavaVersion.VERSION_17
+        }
+
+        kotlinOptions {
+            jvmTarget = "17"
+        }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["resourcePackageName": "br.gov.caixa.loterias.apostas"]
+                arguments = ["androidManifestFile": "$projectDir/src/main/AndroidManifest.xml".toString()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            ndk {
+                debugSymbolLevel 'SYMBOL_TABLE'
+            }
+        }
+        debug {
+            debuggable = true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions 'default'
+    productFlavors {
+        prd {
+            dimension "default"
+            versionCode PRD_VERSION_CODE.toInteger()
+            versionName PRD_VERSION_NAME
+            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://mobileloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "PUBLIC_KEY_MP", "\"APP_USR-7cebaf99-f15f-4ef2-a9b4-61d3ca29b279\""
+            buildConfigField "String", "APIKEY_CHAVE", "\"635c94f6079c4c909e88389564c7e0fb\""
+            buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "URL_SSO", "\"https://login.caixa.gov.br\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+            buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+            buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure.recarga.com\""
+            buildConfigField "String", "APP_CENTER_KEY", "\"a4640b29-34da-4726-9224-b48a68e920d9\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME", "\"caixa\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME", "\"loteriasprd\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "false"
+            manifestPlaceholders = [appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                                    hostName             : "br.gov.caixa.caixaloterias",
+                                    path                 : "/oauth2Callback",
+                                    scheme               : "https"]
+        }
+
+        tqs {
+            dimension "default"
+            applicationIdSuffix ".hmp"
+            versionCode DES_VERSION_CODE.toInteger()
+            versionName DES_VERSION_NAME
+            resValue "string", "app_name", "Loterias_tqs"
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_EXTERNO", "\"https://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_INTERNO", "\"https://simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_EXTERNO_ESTEIRA", "\"https://silce.simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_INTERNO_ESTEIRA", "\"https://silce-simlo.tqs.caixa/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_HML", "\"https://nbcfvgbhnjmkasdef-lce.caixa.gov.br/\""
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE_PILOTO", "\"https://pilotoloterias.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "SSO_CLIENT_ID_EXTERNO_ESTEIRA", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_CLIENT_ID_INTERNO_ESTEIRA", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_CLIENT_ID_EXTERNO", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_CLIENT_ID_INTERNO", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_CLIENT_ID_HML", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_CLIENT_ID_PILOTO", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_REDIRECT_EXTERNO_ESTEIRA", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "SSO_REDIRECT_INTERNO_ESTEIRA", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "SSO_REDIRECT_EXTERNO", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "SSO_REDIRECT_INTERNO", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "SSO_REDIRECT_HML", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "SSO_REDIRECT_PILOTO", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "URL_SSO_EXTERNO", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO_EXTERNO_ESTEIRA", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO_INTERNO", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO_INTERNO_ESTEIRA", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO_HML", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_SSO_PILOTO", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_EXTERNO", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_EXTERNO_ESTEIRA", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_INTERNO", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_INTERNO_ESTEIRA", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_HML", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN_PILOTO", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_SSO_TOKEN_EXTERNO", "BuildConfig.URL_SSO_EXTERNO+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_EXTERNO"
+            buildConfigField "String", "URL_SSO_TOKEN_EXTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_EXTERNO"
+            buildConfigField "String", "URL_SSO_TOKEN_INTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_EXTERNO"
+            buildConfigField "String", "URL_SSO_TOKEN_INTERNO", "BuildConfig.URL_SSO_INTERNO+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_INTERNO"
+            buildConfigField "String", "URL_SSO_TOKEN_HML", "BuildConfig.URL_SSO_HML+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_HML"
+            buildConfigField "String", "URL_SSO_TOKEN_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/\"+BuildConfig.URL_ENDPOINT_TOKEN_PILOTO"
+            buildConfigField "String", "URL_SSO_AUTH_EXTERNO", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_AUTH_EXTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_AUTH_INTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_AUTH_INTERNO", "BuildConfig.URL_SSO_INTERNO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_AUTH_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_AUTH_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_LOGOUT_EXTERNO", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_LOGOUT_EXTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_LOGOUT_INTERNO_ESTEIRA", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_LOGOUT_INTERNO", "BuildConfig.URL_SSO_INTERNO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_LOGOUT_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_LOGOUT_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_ACCOUNT_EXTERNO", "BuildConfig.URL_SSO_EXTERNO+\"/auth/realms/internet/account\""
+            buildConfigField "String", "URL_SSO_ACCOUNT_INTERNO", "BuildConfig.URL_SSO_INTERNO+\"/auth/realms/internet/account\""
+            buildConfigField "String", "URL_SSO_ACCOUNT_HML", "BuildConfig.URL_SSO_HML+\"/auth/realms/internet/account\""
+            buildConfigField "String", "URL_SSO_ACCOUNT_PILOTO", "BuildConfig.URL_SSO_PILOTO+\"/auth/realms/internet/account\""
+            buildConfigField "String", "MP_PAYMENT_URL_EXTERNO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_PAYMENT_URL_EXTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_PAYMENT_URL_INTERNO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_PAYMENT_URL_INTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_PAYMENT_URL_HML", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_PAYMENT_URL_PILOTO", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_EXTERNO", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_EXTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_INTERNO", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_INTERNO_ESTEIRA", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_HML", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL_PILOTO", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_EXTERNO", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_EXTERNO_ESTEIRA", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_INTERNO", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_INTERNO_ESTEIRA", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_HML", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL_PILOTO", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "APP_CENTER_KEY_EXTERNO", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_INTERNO", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_HML", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_PILOTO", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_EXTERNO_ESTEIRA", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_INTERNO_ESTEIRA", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "APP_CENTER_KEY_PILOTO", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_EXTERNO", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_EXTERNO", "\"loteriasdes\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_INTERNO", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_INTERNO", "\"loteriasdes\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_HML", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_HML", "\"loteriasdes\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_PILOTO", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_PILOTO", "\"loteriasplt\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_EXTERNO_ESTEIRA", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_EXTERNO_ESTEIRA", "\"loteriasdes\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME_INTERNO_ESTEIRA", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME_INTERNO_ESTEIRA", "\"loteriasdes\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_EXTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_EXTERNO_ESTEIRA", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_INTERNO_ESTEIRA", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_HML", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "String", "URL_BASE_API_NOTIFICACOES_PILOTO", "\"https://api.des.caixa:8443/notificacoes-digitais\""
+            buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "true"
+            buildConfigField "String", "APIKEY_CHAVE", "\"ca5af87c9f7647de88eb7dcb93c7b021\""
+            manifestPlaceholders = [appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                                    hostName             : "br.gov.caixa.caixaloterias",
+                                    path                 : "/oauth2Callback",
+                                    scheme               : "https"]
+        }
+
+        automacao {
+            dimension "default"
+            applicationIdSuffix ".hmp"
+            versionCode DES_VERSION_CODE.toInteger()
+            versionName DES_VERSION_NAME
+            resValue "string", "app_name", "Loterias_automacao"
+            buildConfigField "boolean", "CAIXA_NETWORK_STUB", "false"
+            buildConfigField "String", "CAIXA_BASE_URL_SILCE", "\"https://simlo.tqs.caixa.gov.br/silce-servico-rest/rest/v1/\""
+            buildConfigField "String", "PUBLIC_KEY_MP", "\"TEST-946a3077-5cf1-446c-bab3-e3a266357e9f\""
+            buildConfigField "String", "SSO_CLIENT_ID", "\"cli-mob-lce\""
+            buildConfigField "String", "SSO_REDIRECT", "\"br.gov.caixa.caixaloterias:/oauth2Callback\""
+            buildConfigField "String", "URL_SSO", "\"https://logindes.caixa.gov.br\""
+            buildConfigField "String", "URL_ENDPOINT_TOKEN", "\"auth/realms/internet/protocol/openid-connect/token\""
+            buildConfigField "String", "URL_SSO_TOKEN", "URL_SSO+\"/\"+URL_ENDPOINT_TOKEN"
+            buildConfigField "String", "URL_SSO_AUTH", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/auth\""
+            buildConfigField "String", "URL_SSO_LOGOUT", "URL_SSO+\"/auth/realms/internet/protocol/openid-connect/logout\""
+            buildConfigField "String", "URL_SSO_ACCOUNT", "URL_SSO+\"/auth/realms/internet/account\""
+            buildConfigField "String", "MP_PAYMENT_URL", "\"https://api.mercadopago.com/v1/payment_methods/installments?\""
+            buildConfigField "String", "MP_CREATE_TOKEN_URL", "\"https://api.mercadopago.com/v1/card_tokens?\""
+            buildConfigField "String", "RP_CREATE_TOKEN_URL", "\"https://secure-sandbox.recargapay.com\""
+            buildConfigField "String", "APP_CENTER_KEY", "\"dcb5815f-9f49-4a88-818f-053e3a005e20\""
+            buildConfigField "String", "FILABRA_ACCOUNT_SYSTEM_NAME", "\"caixaloteriasdev\""
+            buildConfigField "String", "FILABRA_QUEUE_SYSTEM_NAME", "\"loteriasdes\""
+            buildConfigField "boolean", "ENABLE_NETWORK_INSPECTOR", "false"
+            buildConfigField "String", "APIKEY_CHAVE", "\"ca5af87c9f7647de88eb7dcb93c7b021\""
+            manifestPlaceholders = [appAuthRedirectScheme: "br.gov.caixa.caixaloterias",
+                                    hostName             : "br.gov.caixa.caixaloterias",
+                                    path                 : "/oauth2Callback",
+                                    scheme               : "https"]
+        }
+    }
+    buildFeatures {
+        viewBinding true
+        compose = true
+    }
+    namespace 'br.gov.caixa.loterias.apostas'
+    lint {
+        abortOnError false
+        checkReleaseBuilds false
+    }
+}
+
+jacoco {
+    toolVersion = '0.8.12'
+}
+
+tasks.register('jacocoTestPrdReleaseUnitTestReport', JacocoReport) {
+    dependsOn 'testPrdReleaseUnitTest'
+
+    def prdReleaseClasses = layout.buildDirectory.dir('intermediates/javac/prdRelease/compilePrdReleaseJavaWithJavac/classes').get().asFile
+    def prdReleaseExecutionData = layout.buildDirectory.file('jacoco/testPrdReleaseUnitTest.exec').get().asFile
+
+    def exclusions = ['**/R.class',
+                      '**/R$*.class',
+                      '**/BuildConfig.*',
+                      '**/Manifest*.*']
+
+    sourceDirectories.setFrom(files('src/main/java', 'src/main/kotlin'))
+    classDirectories.setFrom(files(fileTree(dir: prdReleaseClasses,
+            excludes: exclusions),
+            fileTree(dir: "$buildDir/tmp/kotlin-classes/prdRelease",
+                    excludes: exclusions)))
+
+    executionData.setFrom(files(prdReleaseExecutionData))
+
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = false
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation 'androidx.activity:activity-compose:1.10.1'
+    implementation 'androidx.compose.runtime:runtime:1.7.8'
+    implementation 'androidx.compose.ui:ui:1.7.8'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.7.8'
+    implementation 'androidx.compose.material3:material3:1.3.2'
+    debugImplementation 'androidx.compose.ui:ui-tooling:1.7.8'
+
+    implementation 'androidx.navigation:navigation-fragment:2.9.8'
+    implementation 'androidx.navigation:navigation-ui:2.9.8'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation 'androidx.activity:activity:1.8.0'
+    // versions
+    def supportVersion = '27.1.1'
+    def lottieVersion = '6.7.1';
+    def appCenterSdkVersion = '5.0.6'
+
+    def lifecycleVersion = '2.9.4'
+    implementation "androidx.lifecycle:lifecycle-process:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+
+    // implementation deps
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+
+    implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.google.android.material:material:1.14.0'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.3.0'
+    implementation 'androidx.recyclerview:recyclerview:1.4.0'
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.2.0'
+
+
+    //Multidex (necessário quando há mais de 64k métodos)
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    //animations
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    //Progressbar
+    implementation 'me.relex:circleindicator:2.1.6'
+
+    //EditText
+    implementation 'com.github.pinball83:masked-edittext:1.0.4'
+    implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
+    //AppAuth
+    implementation 'net.openid:appauth:0.11.1'
+
+    //DiscreteScrollView - RecyclerView com animação
+    //implementation 'com.yarolegovich:discrete-scrollview:1.3.1'
+    implementation fileTree('libs/discrete-scrollview-1.3.1.aar')
+
+    //Biblioteca para arrastar os itens do Recyclerview
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    //Serialização de JSON
+    implementation 'com.google.code.gson:gson:2.14.0'
+
+    //Find Bugs in Java Programs
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    //Requisições com a API
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'io.swagger:swagger-annotations:1.6.16'
+
+    //Android application with RESTful services secured with OAuth 2 using Pipe
+    implementation 'commons-codec:commons-codec:1.22.0'
+
+    //Biblioteca de gerenciamento de imagens
+    implementation 'com.github.bumptech.glide:glide:5.0.9'
+
+    //Biblioteca de scanner de código de barras
+    implementation 'com.google.zxing:core:3.5.4'
+    implementation 'commons-lang:commons-lang:2.6'
+
+    implementation 'com.google.mlkit:barcode-scanning:17.3.0'
+    implementation "androidx.camera:camera-core:1.6.1"
+    implementation "androidx.camera:camera-camera2:1.6.1"
+    implementation "androidx.camera:camera-lifecycle:1.6.1"
+    implementation "androidx.camera:camera-view:1.6.1"
+
+    //QRCode gerador
+    //implementation 'androidmads.library.qrgenearator:QRGenearator:1.0.3'
+    implementation fileTree('libs/QRGenearator-1.0.3.aar')
+
+    implementation 'com.mercadolibre.android.device:sdk:6.0.0'
+
+    //Apache commons
+    implementation 'org.apache.commons:commons-collections4:4.5.0'
+
+
+    //Segmented Control
+    implementation 'info.hoang8f:android-segmented:1.0.6'
+
+    //Flexbox
+    //implementation 'com.google.android:flexbox:1.0.0'
+    //implementation 'com.google.android:flexbox:3.0.0'
+    implementation fileTree('libs/flexbox-3.0.0.aar')
+
+    //AppCenter
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
+    //FilaBRA
+    implementation 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
+
+    //Joda time
+    implementation 'net.danlew:android.joda:2.14.2.1'
+
+    // testImplementation deps
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:5.23.0'
+    testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
+
+    // androidTestImplementation deps
+    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+    // root check
+    implementation 'com.scottyab:rootbeer-lib:0.1.2'
+
+    //Topaz OFD
+    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
+
+    //Biometria
+    implementation 'androidx.biometric:biometric:1.1.0'
+
+    //Work Manager dependency
+    implementation 'androidx.work:work-runtime:2.11.2'
+
+    androidTestImplementation 'androidx.test:runner:1.7.0'
+    androidTestUtil 'androidx.test:orchestrator:1.5.0'
+
+    //Firebase
+    implementation platform("com.google.firebase:firebase-bom:34.16.0")
+    implementation "com.google.firebase:firebase-analytics"
+    implementation "com.google.firebase:firebase-crashlytics"
+    implementation "com.google.firebase:firebase-messaging"
+    implementation "com.google.firebase:firebase-config"
+    implementation "com.google.firebase:firebase-perf"
+    implementation "com.google.firebase:firebase-appcheck"
+    implementation "com.google.firebase:firebase-installations"
+    implementation "com.google.firebase:firebase-sessions"
+
+    //PlayStore
+    implementation "com.google.android.play:review:2.0.2"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+}
+

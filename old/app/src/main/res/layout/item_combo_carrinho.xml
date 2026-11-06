@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="16dp"
+    >
+
+    <!-- Nome do combo -->
+    <TextView
+        android:id="@+id/tvNomeCombo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:textColor="#46515A"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/btnExcluirCombo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Sorte de Hoje" />
+
+    <!-- Excluir combo -->
+    <ImageButton
+        android:id="@+id/btnExcluirCombo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/excluir"
+        android:padding="7dp"
+        android:src="@drawable/trash"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNomeCombo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvNomeCombo" />
+
+    <!-- Quantidade de apostas -->
+    <TextView
+        android:id="@+id/tvQuantidadeApostas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="#46515A"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tvValorCombo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNomeCombo"
+        tools:text="7 apostas" />
+
+    <!-- Valor -->
+    <TextView
+        android:id="@+id/tvValorCombo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textColor="#46515A"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnExcluirCombo"
+        tools:text="R$ 21,00" />
+
+    <!-- Mais detalhes -->
+    <TextView
+        android:id="@+id/btnMaisDetalhes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:gravity="center_vertical"
+        android:text="mais detalhes"
+        android:textColor="#006BB6"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/ic_arrow"
+        app:layout_constraintTop_toBottomOf="@id/tvValorCombo" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_arrow"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/chevron_right"
+        android:tint="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="@+id/btnMaisDetalhes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btnMaisDetalhes" />
+
+    <View
+        android:id="@+id/tracoViewDivisoriaResultado"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/linhaDivisa"
+        app:layout_constraintTop_toBottomOf="@id/btnMaisDetalhes" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+    android:orientation="horizontal"
+    android:id="@+id/conteudoLinha"
+    android:weightSum="12">
+
+    <TextView
+        android:id="@+id/faixaPremio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_line"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/valorCota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_line"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+    <TextView
+        android:id="@+id/valorTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/branco"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_line"
+        android:fontFamily="@font/caixa_std_regular"/>
+
+</LinearLayout>

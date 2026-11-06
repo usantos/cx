@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.LerBilhetesActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        >
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/mascara_loteria" />
+
+        <ImageView
+            android:id="@+id/iconeTrevoLeitor"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="32dp"
+            android:elevation="3dp"
+            android:src="@drawable/logo_cinza"
+            />
+
+        <TextView
+            android:id="@+id/resultadoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="34dp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/label_resultado"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/fecharLeitorCodBarras"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/close_circle_outline" />
+
+        <TextView
+            android:id="@+id/TextoLeitorCodBarras"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="68dp"
+            android:layout_marginTop="64dp"
+            android:layout_marginRight="68dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/title_orientacaoCodigoBarras2"
+            android:textColor="@color/branco"
+            android:textSize="14.2sp" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="26dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.widget.Space
+                android:layout_width="32dp"
+                android:layout_height="55dp" />
+
+            <Button
+                android:id="@+id/buttonQrCode"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+
+                android:background="@drawable/button_border_amareloqueimado_arredondado"
+                android:drawableLeft="@drawable/ic_qrcode"
+                android:drawablePadding="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/title_QrCode"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/amareloQueimado"
+                android:textSize="14.2sp" />
+
+            <android.widget.Space
+                android:layout_width="32dp"
+                android:layout_height="55dp" />
+
+            <Button
+                android:id="@+id/buttonDigitarAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="55dp"
+
+                android:background="@drawable/button_border_amareloqueimado_arredondado"
+                android:drawableLeft="@drawable/ic_edit"
+                android:drawablePadding="8dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:fontFamily="@font/caixa_std_regular"
+                android:text="@string/title_digiteSuaAposta"
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@color/amareloQueimado"
+                android:textSize="14.2sp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

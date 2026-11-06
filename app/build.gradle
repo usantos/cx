@@ -394,7 +394,7 @@ dependencies {
     implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     //FilaBRA
-    implementation 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
+    implementation rootProject.filaBraSdk
 
     //Joda time
     implementation 'net.danlew:android.joda:2.14.2.1'
@@ -414,7 +414,7 @@ dependencies {
     implementation 'com.scottyab:rootbeer-lib:0.1.2'
 
     //Topaz OFD
-    implementation 'br.com.topaz:heartbeat:4.38.0.1658708'
+    implementation libs.topaz.heartbeat
 
     //Biometria
     implementation 'androidx.biometric:biometric:1.1.0'

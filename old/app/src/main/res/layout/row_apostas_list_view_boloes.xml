@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="utf-8"?>
+<br.gov.caixa.loterias.apostas.utils.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/dadosApostaCarrinho"
+        android:layout_width="229dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/dadosCarrinho"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/drawer_linha_divisao_cinza_claro"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:layout_marginTop="14dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelQuantidadeApostadas"
+                    style="@style/CaixaStdRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/label_voce_apostou"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/quantidadeApostadas"
+                    style="@style/CaixaStdBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="@string/label_voce_apostou"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/labelQuantidadeSorteios"
+                    style="@style/CaixaStdRegular"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="31dp"
+                    android:text="@string/label_para"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/quantidadeSorteios"
+                    style="@style/CaixaStdBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="@string/label_para"
+                    android:textColor="@color/branco"
+                    android:textSize="14sp"
+                    />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonApostaEspelho"
+            android:layout_width="197dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/button_border"
+            android:text="@string/label_aposta_espelho"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_bold"
+            android:visibility="gone" />
+
+        <LinearLayout
+            android:id="@+id/layoutTimeCoracao"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/labelTimeCoracaoTxt"
+                style="@style/CaixaStdRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_time_coracao"
+                android:textColor="@color/branco"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/textViewTimeCoracao"
+                style="@style/CaixaStdBold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/branco"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/dadosCarrinho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:visibility="visible">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contentTest"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="14dp"
+            android:background="@color/branco">
+
+            <LinearLayout
+                android:id="@+id/modalidadeConcursoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tipoAposta"
+                    style="@style/editTextFuturaBoldTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxWidth="110dp"
+                    android:textSize="14.2sp"
+                    tools:text="lotofácil da independência" />
+
+                <TextView
+                    android:id="@+id/numeroConcurso"
+                    style="@style/editTextCaixaRegularTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tipoAposta"
+                    android:layout_marginBottom="13dp"
+                    android:lines="1"
+                    android:maxWidth="100dp"
+                    android:paddingEnd="0dp"
+                    android:textSize="14.2sp"
+                    tools:text="Conc. 777" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_container_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="-5dp"
+                app:layout_constraintTop_toBottomOf="@id/modalidadeConcursoLayout"/>
+
+            <TextView
+                android:id="@+id/tv_numero_concurso_novo"
+                style="@style/editTextCaixaRegularTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:lines="1"
+                android:visibility="gone"
+                android:maxWidth="100dp"
+                android:paddingEnd="0dp"
+                android:textSize="14.2sp"
+                tools:text="Conc. 777"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
+                />
+
+            <RelativeLayout
+                android:id="@+id/layoutCabecalhoLoteca"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
+                >
+
+                <TextView
+                    android:id="@+id/texto_coluna_loteca"
+                    style="@style/editTextCaixaBoldTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textSize="14.2sp"
+                    />
+
+                <TextView
+                    android:id="@+id/texto_time_loteca"
+                    style="@style/editTextCaixaBoldTheme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="14dp"
+                    android:layout_toEndOf="@+id/texto_coluna_loteca"
+                    android:text=""
+                    android:textSize="14.2sp"
+                    tools:visibility="visible" />
+            </RelativeLayout>
+
+            <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightRecyclerView
+                android:id="@+id/recycleViewDetalheAposta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/modalidadeConcursoLayout"
+                android:layout_marginLeft="35dp"
+                android:layout_below="@+id/modalidadeConcursoLayout"
+                android:clickable="false"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@+id/modalidadeConcursoLayout"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <TextView
+                android:id="@+id/numerosText"
+                style="@style/editTextCaixaRegularTheme"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text=""
+                android:textColor="@color/cinza"
+                android:textSize="14.2sp"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
+                />
+
+            <ImageView
+                android:id="@+id/imageViewDetalheBoloes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_trevo_carrinho_bolao"
+                android:visibility="visible"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                android:contentDescription="@string/detalhes_bolao"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
+                app:layout_constraintEnd_toStartOf="@+id/valorAposta"
+                />
+
+            <TextView
+                android:id="@+id/textQtdCotas"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00/00"
+                android:textColor="@color/cotas_boloes"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewDetalheBoloes"
+                app:layout_constraintStart_toStartOf="@+id/imageViewDetalheBoloes"
+                />
+
+            <TextView
+                android:id="@+id/trevos"
+                style="@style/editTextCaixaRegularTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/cinza"
+                android:textSize="14.2sp"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/numerosText"
+                app:layout_constraintStart_toEndOf="@+id/modalidadeConcursoLayout"
+                app:layout_constraintEnd_toStartOf="@+id/valorAposta"
+                />
+
+            <TextView
+                android:id="@+id/valorAposta"
+                style="@style/editTextCaixaRegularTheme"
+                android:layout_width="118dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                android:layout_marginEnd="0dp"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                android:text="@string/r_0_00"
+                android:textAlignment="textStart"
+                android:textSize="14.2sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/excluirApostaCarrinhoLayout"/>
+
+            <ImageView
+                android:id="@+id/imageViewRelogioBoloes"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/ic_timer"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/valorAposta"
+                app:layout_constraintStart_toStartOf="@+id/valorAposta"
+                />
+
+            <TextView
+                android:id="@+id/contadorBolao"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_toStartOf="@+id/imageViewRelogioBoloes"
+                android:text="@string/tempo_zerado"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textAlignment="textStart"
+                android:textColor="@color/bolao_barra_titulo"
+                android:textSize="12sp"
+                android:visibility="visible"
+                android:layout_marginStart="5dp"
+                app:layout_constraintTop_toBottomOf="@+id/valorAposta"
+                app:layout_constraintStart_toEndOf="@+id/imageViewRelogioBoloes"
+                />
+
+            <TextView
+                android:id="@+id/textCotas"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_toStartOf="@+id/excluirApostaCarrinhoLayout"
+                android:text="@string/cota_reservada"
+                android:importantForAccessibility="yes"
+                android:focusable="true"
+                android:fontFamily="@font/caixa_std_bold"
+                android:textAlignment="textStart"
+                android:textColor="@color/bolao_barra_titulo"
+                android:textSize="12sp"
+                android:singleLine="true"
+                android:ellipsize="none"
+                android:visibility="visible"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewRelogioBoloes"
+                app:layout_constraintStart_toStartOf="@+id/imageViewRelogioBoloes"
+                />
+
+            <RelativeLayout
+                android:id="@+id/excluirApostaCarrinhoLayout"
+                android:layout_width="44dp"
+                android:layout_height="44dp"
+                android:clickable="true"
+                android:gravity="center_horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                >
+
+                <ImageButton
+                    android:id="@+id/excluirApostaCarrinho"
+                    android:layout_width="18dp"
+                    android:layout_height="22dp"
+                    android:layout_marginTop="2dp"
+                    android:importantForAccessibility="yes"
+                    android:focusable="true"
+                    android:layout_marginEnd="16dp"
+                    android:background="@color/transparente"
+                    app:tint="@color/colorAccent"
+                    android:src="@drawable/ic_lixeira_mkp" />
+            </RelativeLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+                android:id="@+id/tipo_aposta_linha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/v_div_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:importantForAccessibility="no"
+                android:background="@color/cinzaclaro"/>
+
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</br.gov.caixa.loterias.apostas.utils.SwipeLayout>

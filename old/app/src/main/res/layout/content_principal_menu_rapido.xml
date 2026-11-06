@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/atalhoRapidoLoterias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentRapidao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tituloRapidao"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/label_rapidao"
+                            android:textColor="@color/laranjacaixa"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tituloRapidao"
+                            android:gravity="end"
+                            android:text="@string/label_faca_apostas_apenas_um_clique"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_rapidao" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentLerBilhetes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tituloLerBilhetes"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:text="@string/label_ler_bilhestes"
+                            android:textColor="@color/vermelhoBilhetes"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tituloLerBilhetes"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="end"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:text="@string/label_apostou_loterica_confira_resultados"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_bilhetes" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlJogoResponsavel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_titulo_jr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/jr_titulo_maiusculo"
+                            android:textColor="@color/jr_radio_text_selected"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_titulo_jr"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:text="@string/jr_desc_menu_trevo"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_jr_menu_trevo" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentFavoritas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tituloFavoritas"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/label_favoritas"
+                            android:textColor="@color/azulfavoritas"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_below="@+id/tituloFavoritas"
+                            android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:text="@string/label_suas_apostas_sorte_apenas_clique"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_favoritas" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutContentRepassados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/valorRepassesPrincipal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:textColor="@color/verdeazul"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold" />
+
+                        <TextView
+                            android:id="@+id/textoRepassados"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="right"
+                            android:layout_below="@+id/valorRepassesPrincipal"
+                            android:textColor="@color/cinza"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/icon_repassados" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlMsgDisque180"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.0"
+            android:visibility="visible">
+
+            <RelativeLayout
+                android:layout_width="294dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/LlMsgDisque180"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible">
+
+                    <RelativeLayout
+                        android:layout_width="199dp"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvMsgDisque180"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:text="@string/tituloMsgDisque180"
+                            android:gravity="right"
+                            android:textColor="@color/rosa_radio_text"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/caixa_std_bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvMsgDisque180"
+                            android:layout_alignParentEnd="true"
+                            android:gravity="right"
+                            android:fontFamily="@font/caixa_std_regular"
+                            android:text="@string/textoMsgDisque180"
+                            android:textColor="@color/cinza"
+                            android:textSize="13sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="95dp"
+                        android:layout_height="60dp">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_disque_180" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+</LinearLayout>

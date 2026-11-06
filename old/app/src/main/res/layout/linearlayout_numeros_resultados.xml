@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="56dp"
+    android:layout_height="40dp"
+    android:layout_marginBottom="10dp"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginHorizontal="8dp"
+        android:orientation="horizontal"
+        android:id="@+id/linearLayoutContentNumerosResultados"
+        android:background="@drawable/circle_numeros_branco"
+        >
+
+        <TextView
+            android:id="@+id/textViewTituloNumerosResultados"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/_01"
+            android:textAlignment="center"
+            android:textColor="@color/transparente"
+            android:textSize="14.1sp"
+            android:fontFamily="@font/caixa_std_bold"/>
+    </LinearLayout>
+
+</LinearLayout>

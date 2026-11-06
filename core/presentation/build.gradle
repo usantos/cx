@@ -1,0 +1,77 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.presentation'
+    compileOptions { coreLibraryDesugaringEnabled true }
+    defaultConfig {
+        minSdk 24
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes { debug { enableAndroidTestCoverage = true } }
+    testCoverage { jacocoVersion = '0.8.13' }
+    buildFeatures { compose = true }
+}
+
+dependencies {
+    api(libs.redux.kotlin.threadsafe) {
+        exclude group: 'org.reduxkotlin', module: 'redux-kotlin'
+    }
+    api libs.redux.kotlin.core
+    api project(':core:domain')
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation project(':core:design-system')
+    implementation platform(libs.androidx.compose.bom)
+    implementation libs.androidx.compose.material3
+    implementation libs.androidx.compose.ui
+    implementation libs.androidx.compose.ui.tooling.preview
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation libs.androidx.lifecycle.viewmodel.compose
+    implementation libs.androidx.activity.compose
+    implementation libs.play.feature.delivery
+    implementation libs.androidx.lifecycle.runtime.compose
+    implementation libs.kotlinx.coroutines.core
+    debugImplementation libs.androidx.compose.ui.tooling
+    testImplementation project(':core:testing')
+    testImplementation libs.junit4
+    testImplementation libs.kotlinx.coroutines.test
+    testImplementation libs.androidx.compose.ui.test.manifest
+    androidTestImplementation platform(libs.androidx.compose.bom)
+    androidTestImplementation libs.androidx.compose.ui.test.junit4
+    androidTestImplementation libs.androidx.test.runner
+}
+
+// As regras compartilhadas de avisos de serviço mantêm sua própria verificação após a extração de retail.
+// O AGP escolhe o destino dos testes unitários; nunca mescle um arquivo exec fixo obsoleto.
+def noticeCoverageData = files({
+    tasks.named('testDebugUnitTest').get().extensions.getByType(org.gradle.testing.jacoco.plugins.JacocoTaskExtension).destinationFile
+}, fileTree(layout.buildDirectory).include('outputs/code_coverage/**/*.ec')).filter { it.isFile() }
+def noticeCoverageClasses = files(fileTree(
+        dir: layout.buildDirectory.dir('tmp/kotlin-classes/debug'),
+        includes: ['**/BrazilianCurrencyFormattingKt*.class', '**/NoticeFormatting*.class', '**/ServiceNoticeRules*.class', '**/ServiceNoticeUiState*.class', '**/ServiceConnectionRules*.class', '**/ServiceFailure*.class', '**/ServiceRedirectEvent*.class']
+))
+tasks.register('verifyNoticeCoverageInputs') {
+    dependsOn tasks.named('testDebugUnitTest'), 'connectedDebugAndroidTest'
+    doLast {
+        if (noticeCoverageClasses.asFileTree.isEmpty() || noticeCoverageData.isEmpty()) {
+            throw new GradleException('Cobertura dos avisos compartilhados sem classes ou execução de testes.')
+        }
+    }
+}
+tasks.register('jacocoNoticeReport', JacocoReport) {
+    dependsOn tasks.named('verifyNoticeCoverageInputs')
+    executionData.from(noticeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(noticeCoverageClasses)
+    reports { xml.required = true; html.required = true }
+}
+tasks.register('jacocoNoticeVerification', JacocoCoverageVerification) {
+    dependsOn tasks.named('jacocoNoticeReport')
+    executionData.from(noticeCoverageData)
+    sourceDirectories.from(files('src/main/java'))
+    classDirectories.from(noticeCoverageClasses)
+    violationRules { rule { limit { counter = 'LINE'; value = 'COVEREDRATIO'; minimum = 0.9501 } } }
+}
+tasks.named('check').configure { dependsOn tasks.named('jacocoNoticeVerification') }

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_row_aposta_partida_lotogol"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparente"
+    android:orientation="vertical">
+
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView
+        android:id="@+id/aposta_equipe_lotogol_um"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/aposta_versus_lotogol"
+        style="@style/ArialMT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="9dp"
+        android:text="@string/label_x_minusculo"
+        android:textColor="@color/cinza"
+        android:textSize="14sp" />
+
+    <br.gov.caixa.loterias.apostas.view.custom.ApostaEquipeLototgolView
+        android:id="@+id/aposta_equipe_lotogol_dois"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/linhaDivisao"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="14dp"
+        android:background="@color/linhaDivisa"/>
+
+</LinearLayout>

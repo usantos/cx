@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.ResgatePremioLotericaAgenciaActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <RelativeLayout
+            android:id="@+id/categoriaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/cinza"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/activity_vertical_margin">
+
+            <TextView
+                android:id="@+id/categoriaText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/branco"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_bold"
+                tools:text="tipo de resgate" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/duploResgateRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="@color/cinza"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/activity_vertical_margin"
+            android:visibility="gone"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/duploResgateText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textColor="@color/branco"
+                android:textSize="16sp"
+                android:fontFamily="@font/caixa_std_bold"
+                tools:text="@string/label_resgatar_premio_loterica" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/resgatePremioLotericaAgenciaScrool"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="39dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorUmText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_um"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold"/>
+
+                    <TextView
+                        android:id="@+id/informacaoTopicoUmText"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                        android:layout_toEndOf="@+id/enumeradorUmText"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        tools:text="texto 01" />
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/qrCodeApostaImage"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="58dp"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="35dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorDoisText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_dois"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold"/>
+
+                    <TextView
+                        android:id="@+id/informacaoTopicoDoisText"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_toEndOf="@+id/enumeradorDoisText"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        tools:text="texto 02" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/activity_vertical_margin"
+                    android:layout_marginTop="39dp"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/enumeradorTresText"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_linha_divisiva"
+                        android:gravity="center"
+                        android:text="@string/label_numerico_tres"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="17.5sp"
+                        android:fontFamily="@font/caixa_std_bold"/>
+
+                    <TextView
+                        android:id="@+id/informacaoTopicoTresText"
+                        style="@style/ArialMT"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/text_margin_small"
+                        android:layout_marginTop="@dimen/text_margin_20"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_toEndOf="@+id/enumeradorTresText"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/cinza"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/caixa_std_bold"
+                        tools:text="texto 03" />
+
+                </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonGerarPDF"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/label_gerar_pdf"
+        android:textAllCaps="false"
+        android:fontFamily="@font/caixa_std_bold"
+        android:textColor="@color/verdeazul"
+        android:background="@drawable/button_white_with_green_border"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

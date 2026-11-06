@@ -1,0 +1,15 @@
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetTop="2dp"
+    android:insetRight="2dp"
+    android:insetBottom="2dp"
+    android:insetLeft="2dp"
+    >
+        <rotate
+            android:fromDegrees="90"
+            android:toDegrees="90"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:drawable="@drawable/icon_trevo"
+            >
+        </rotate>
+</inset>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ic_notificacao_topo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_notificacao_topo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/elipse_quantidade"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_marginTop="2dp"
+        android:visibility="gone"
+        android:background="@drawable/ic_elipse_contador"
+        app:layout_constraintEnd_toEndOf="@+id/ic_notificacao_topo"
+        app:layout_constraintStart_toEndOf="@+id/ic_notificacao_topo"
+        app:layout_constraintTop_toTopOf="@+id/ic_notificacao_topo" />
+
+    <TextView
+        android:id="@+id/tv_push_quantidade_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/contador_notificacoes"
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/elipse_quantidade"
+        app:layout_constraintEnd_toEndOf="@id/elipse_quantidade"
+        app:layout_constraintStart_toStartOf="@id/elipse_quantidade"
+        app:layout_constraintTop_toTopOf="@id/elipse_quantidade" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

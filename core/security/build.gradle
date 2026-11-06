@@ -1,0 +1,34 @@
+apply plugin: 'com.android.library'
+apply plugin: 'org.jetbrains.kotlin.android'
+apply plugin: 'jacoco'
+
+android {
+    namespace = 'br.gov.caixa.loterias.core.security'
+    compileOptions { coreLibraryDesugaringEnabled true }
+    defaultConfig {
+        minSdk 24
+        manifestPlaceholders = [appAuthRedirectScheme: 'br.gov.caixa.caixaloterias']
+    }
+}
+
+dependencies {
+    implementation project(':core:common')
+    coreLibraryDesugaring libs.desugar.jdk.libs
+    implementation libs.androidx.core
+    api project(':core:auth')
+    api project(':core:key-management')
+    implementation project(':core:domain')
+    implementation project(':core:network')
+    implementation libs.androidx.lifecycle.process
+    implementation libs.androidx.biometric
+    // O aplicativo hospedeiro fornece o SDK em execução.
+    compileOnly libs.topaz.heartbeat
+    testImplementation libs.topaz.heartbeat
+    implementation platform(libs.firebase.bom)
+    implementation libs.firebase.config
+    implementation libs.gson
+    implementation libs.kotlinx.coroutines.core
+    implementation libs.okhttp
+    debugImplementation libs.chucker
+    testImplementation libs.junit4
+}

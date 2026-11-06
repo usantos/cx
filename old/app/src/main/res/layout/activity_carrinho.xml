@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/branco">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/app_bar_degrade_pesquisa_novo" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="?attr/actionBarSize" />
+
+    <!-- Conteúdo -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/contentContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/layoutBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/gl_toolbar">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="24dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guidelineEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="24dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaCarrinho"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clipToPadding="false"
+            android:overScrollMode="never"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:id="@+id/layoutCarrinhoVazio"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
+            app:layout_constraintStart_toStartOf="@id/guidelineStart"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55"
+            tools:visibility="visible">
+
+            <ImageView
+                android:id="@+id/ivCarrinhoVazio"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:contentDescription="@string/carrinho_vazio"
+                android:src="@drawable/ic_cart"
+                app:tint="#EEEEEE" />
+
+            <TextView
+                android:id="@+id/tvCarrinhoVazio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:text="@string/carrinho_vazio"
+                android:textColor="@color/colorAccent"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Rodapé elevado -->
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:elevation="12dp"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <Button
+            android:id="@+id/btn_nova_aposta"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/button_white_blue_border_round"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/adicionarNovaAposta"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_avancar_pagamento"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/btn_rounded_state_blue"
+            android:enabled="false"
+            android:fontFamily="@font/caixa_std_bold"
+            android:text="@string/irParaPagamento"
+            android:textAllCaps="false"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/id_fg_somador_carrinho"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"
+            android:background="@android:color/white">
+
+            <!-- Divisão: 60% esquerda / 40% direita -->
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guidelineDivisorCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.60" />
+
+            <!-- Bloco com título e valor -->
+            <LinearLayout
+                android:id="@+id/containerTotalCarrinho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guidelineDivisorCarrinho"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tvTituloTotalCarrinho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_regular"
+                    android:text="Total do carrinho"
+                    android:textColor="#46515A"
+                    android:textSize="14sp"
+                    tools:text="Total do carrinho" />
+
+                <TextView
+                    android:id="@+id/tvValorTotalCarrinho"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/caixa_std_semi_bold"
+                    android:textColor="#46515A"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    tools:text="R$ 154,00" />
+
+            </LinearLayout>
+
+            <!-- Divisor exatamente em 60% -->
+            <View
+                android:id="@+id/divisorCarrinho"
+                android:layout_width="1dp"
+                android:layout_height="43dp"
+                android:background="#AEBFC7"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guidelineDivisorCarrinho"
+                app:layout_constraintStart_toStartOf="@id/guidelineDivisorCarrinho"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Área do carrinho: últimos 40% -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/containerIconeCarrinho"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guidelineDivisorCarrinho">
+
+                <ImageView
+                    android:id="@+id/ivCarrinho"
+                    android:layout_width="41dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/txt_carrinho"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_cart"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.35"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <FrameLayout
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:background="@drawable/bg_badge_carrinho"
+                    app:layout_constraintEnd_toEndOf="@id/ivCarrinho"
+                    app:layout_constraintTop_toTopOf="@id/ivCarrinho">
+
+                    <TextView
+                        android:id="@+id/tvQuantidadeCarrinho"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:fontFamily="@font/caixa_std_semi_bold"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:textColor="#46515A"
+                        android:textSize="12sp"
+                        android:translationY="-0.5dp"
+                        tools:text="2" />
+
+                </FrameLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

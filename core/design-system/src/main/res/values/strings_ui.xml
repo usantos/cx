@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="ui_02d_02d_0b2e34" formatted="false">"%02d:%02d"</string>
+    <string name="ui_1_s_concursos_8cb664">"%1$s concursos"</string>
+    <string name="ui_abrir_carrinho_fcb650" formatted="false">"Abrir carrinho"</string>
+    <string name="ui_abrir_menu_7db0b2" formatted="false">"Abrir menu"</string>
+    <string name="ui_acao_principal_3e09e8" formatted="false">"Ação principal"</string>
+    <string name="ui_acao_secundaria_7f20f6" formatted="false">"Ação secundária"</string>
+    <string name="ui_adicionando_6ae81e" formatted="false">"Adicionando…"</string>
+    <string name="ui_adicionar_1_s_183174">"Adicionar %1$s"</string>
+    <string name="ui_adicionar_ao_carrinho_2f424d" formatted="false">"Adicionar ao Carrinho"</string>
+    <string name="ui_aposta_shake_317269" formatted="false">"Aposta Shake"</string>
+    <string name="ui_apresentar_atalhos_7381c6" formatted="false">"Apresentar atalhos"</string>
+    <string name="ui_authentication_loading_fade_16ad30" formatted="false">"authentication-loading-fade"</string>
+    <string name="ui_authentication_loading_icon_47a9aa" formatted="false">"authentication-loading-icon"</string>
+    <string name="ui_authentication_loading_rotation_7122cf" formatted="false">"authentication-loading-rotation"</string>
+    <string name="ui_avancar_859e48" formatted="false">"Avançar"</string>
+    <string name="ui_caixa_loterias_567fcc" formatted="false">"CAIXA Loterias"</string>
+    <string name="ui_campanha_anual_que_conscientiza_sobr_786d3a" formatted="false">"Campanha anual que conscientiza sobre a "</string>
+    <string name="ui_campo_45789c" formatted="false">"Campo"</string>
+    <string name="ui_cancelar_bb9dbb" formatted="false">"Cancelar"</string>
+    <string name="ui_cep_invalido_8b6688" formatted="false">"CEP inválido"</string>
+    <string name="ui_confirmar_717bed" formatted="false">"Confirmar"</string>
+    <string name="ui_continuar_63e2bb" formatted="false">"Continuar"</string>
+    <string name="ui_continuar_apostando_b9a94a" formatted="false">"Continuar apostando"</string>
+    <string name="ui_copiar_codigo_pix_55c205" formatted="false">"Copiar código Pix"</string>
+    <string name="ui_dados_da_aposta_848ea6" formatted="false">"Dados da aposta"</string>
+    <string name="ui_dados_pessoais_28bc56" formatted="false">"Dados pessoais"</string>
+    <string name="ui_detalhes_62c950" formatted="false">"Detalhes"</string>
+    <string name="ui_do_cancer_de_mama_e_do_cancer_do_col_f675fd" formatted="false">" do câncer de mama e do câncer do colo do útero."</string>
+    <string name="ui_duvidas_10e026" formatted="false">"Dúvidas"</string>
+    <string name="ui_excluir_1_s_5fd47f">"Excluir %1$s"</string>
+    <string name="ui_excluir_loterica_favorita_1ab99f" formatted="false">"Excluir lotérica favorita"</string>
+    <string name="ui_exclusao_de_mensagem_3af531" formatted="false">"Exclusão de mensagem"</string>
+    <string name="ui_favoritar_loterica_9b9006" formatted="false">"Favoritar lotérica"</string>
+    <string name="ui_fechar_menu_7ff314" formatted="false">"Fechar menu"</string>
+    <string name="ui_fim_da_lista_43a7d9" formatted="false">"Fim da lista"</string>
+    <string name="ui_ilustracao_de_notificacao_4cf671" formatted="false">"Ilustração de notificação"</string>
+    <string name="ui_importancia_da_prevencao_do_diagnost_8972f9" formatted="false">"importância da prevenção, do diagnóstico precoce e do tratamento adequado"</string>
+    <string name="ui_leitura_de_mensagem_d790e5" formatted="false">"Leitura de mensagem"</string>
+    <string name="ui_login_switch_thumb_ababd4" formatted="false">"login-switch-thumb"</string>
+    <string name="ui_manter_habitos_saudaveis_ter_atencao_10f959" formatted="false">"manter hábitos saudáveis, ter atenção aos sinais do corpo e fazer exames regulares."</string>
+    <string name="ui_mercado_pago_fe6402" formatted="false">"Mercado Pago"</string>
+    <string name="ui_minha_aposta_bae24c" formatted="false">"Minha aposta"</string>
+    <string name="ui_nao_exibir_novamente_66f1ec" formatted="false">"  Não exibir novamente"</string>
+    <string name="ui_nao_repetir_7c3a4f" formatted="false">"Não repetir"</string>
+    <string name="ui_nenhuma_aposta_f36be8" formatted="false">"Nenhuma aposta"</string>
+    <string name="ui_nome_508690" formatted="false">"Nome"</string>
+    <string name="ui_notificacoes_6b8e9e" formatted="false">"Notificações"</string>
+    <string name="ui_notificacoes_nao_lidas_24be56" formatted="false">"Notificações não lidas"</string>
+    <string name="ui_o_ministerio_da_saude_orienta_3_dica_c96da5" formatted="false">"O Ministério da Saúde orienta 3 dicas para melhorar a qualidade de vida e aumentar as chances de cura: "</string>
+    <string name="ui_ocultar_atalhos_ba8e63" formatted="false">"Ocultar atalhos"</string>
+    <string name="ui_outubro_rosa_1c2c8f" formatted="false">"Outubro Rosa"</string>
+    <string name="ui_para_a_forma_de_pagamento_04d723" formatted="false">"\npara a forma de pagamento"</string>
+    <string name="ui_pix_copiado_dffc13" formatted="false">"Pix copiado"</string>
+    <string name="ui_pix_fa7d3d" formatted="false">"Pix"</string>
+    <string name="ui_pode_comemorar_f533cc" formatted="false">"Pode comemorar!"</string>
+    <string name="ui_premio_10aac1" formatted="false">"Prêmio"</string>
+    <string name="ui_quantidades_de_cotas_434de0" formatted="false">"Quantidades de Cotas"</string>
+    <string name="ui_r_0d69df" formatted="false">"R$"</string>
+    <string name="ui_recarga_pay_ba884a" formatted="false">"Recarga Pay"</string>
+    <string name="ui_recargapay_5092d1" formatted="false">"recargapay"</string>
+    <string name="ui_recolher_bolao_82de6c" formatted="false">"Recolher bolão"</string>
+    <string name="ui_remover_1_s_f2ff9f">"Remover %1$s"</string>
+    <string name="ui_salvar_aef7cd" formatted="false">"Salvar"</string>
+    <string name="ui_salvar_nos_favoritos_3d0e8b" formatted="false">"Salvar nos favoritos"</string>
+    <string name="ui_somente_numeros_a4bde0" formatted="false">"Somente números"</string>
+    <string name="ui_suas_apostas_aparecerao_aqui_0b6281" formatted="false">"Suas apostas aparecerão aqui."</string>
+    <string name="ui_tentar_novamente_b9e106" formatted="false">"Tentar novamente"</string>
+    <string name="ui_texto_ab5df6" formatted="false">"…"</string>
+    <string name="ui_texto_de_apoio_e_conteudo_4a9983" formatted="false">"Texto de apoio e conteúdo."</string>
+    <string name="ui_titulo_4c08a5" formatted="false">"Título"</string>
+    <string name="ui_valor_atual_do_carrinho_2d85e6" formatted="false">"Valor atual do carrinho"</string>
+    <string name="ui_valor_da_cota_7ed993" formatted="false">"Valor da Cota"</string>
+    <string name="ui_ver_boloes_30719c" formatted="false">"Ver Bolões"</string>
+    <string name="ui_ver_mais_073f14" formatted="false">"Ver mais"</string>
+    <string name="ui_voltar_59dc92" formatted="false">"Voltar"</string>
+</resources>

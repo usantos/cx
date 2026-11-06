@@ -1,0 +1,745 @@
+{
+  "parameters": {
+    "valorLimiteDiario": 500,
+    "valorMinimoCarrinho": 30,
+    "quantidadeMaximaApostasCarrinho": 50,
+    "parametros": [
+      {
+        "parametroJogo": {
+          "concurso": {
+            "modalidade": "MEGA_SENA",
+            "modalidadeDetalhada": {
+              "valor": 2,
+              "descricao": "Mega-Sena",
+              "descricaoGestor": "MEGA_SENA"
+            },
+            "tipoConcurso": "NORMAL",
+            "numero": 2900,
+            "dataHoraSorteio": "10/09/2026 20:00:00",
+            "dataFechamento": "10/09/2099 19:00:00",
+            "estimativa": 35000000,
+            "aberto": true
+          },
+          "prognosticoMaximo": 60,
+          "quantidadeMinima": 6,
+          "quantidadeMaxima": 20,
+          "quantidadeSurpresinhas": 15,
+          "teimosinhas": [
+            2,
+            3,
+            4
+          ],
+          "valoresAposta": [
+            {
+              "valor": 5.0,
+              "numeroPrognosticos": 6,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 10.0,
+              "numeroPrognosticos": 7,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 15.0,
+              "numeroPrognosticos": 8,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 20.0,
+              "numeroPrognosticos": 9,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 25.0,
+              "numeroPrognosticos": 10,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 30.0,
+              "numeroPrognosticos": 11,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 35.0,
+              "numeroPrognosticos": 12,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 40.0,
+              "numeroPrognosticos": 13,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 45.0,
+              "numeroPrognosticos": 14,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 50.0,
+              "numeroPrognosticos": 15,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 55.0,
+              "numeroPrognosticos": 16,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 60.0,
+              "numeroPrognosticos": 17,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 65.0,
+              "numeroPrognosticos": 18,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 70.0,
+              "numeroPrognosticos": 19,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 75.0,
+              "numeroPrognosticos": 20,
+              "numeroTrevos": 0
+            }
+          ],
+          "concursoDisponivelSimulacao": true,
+          "concursoCanalAberto": true
+        }
+      },
+      {
+        "parametroJogo": {
+          "concurso": {
+            "modalidade": "LOTOFACIL",
+            "modalidadeDetalhada": {
+              "valor": 8,
+              "descricao": "Lotofácil",
+              "descricaoGestor": "LOTOFACIL"
+            },
+            "tipoConcurso": "NORMAL",
+            "numero": 3500,
+            "dataHoraSorteio": "10/09/2026 20:00:00",
+            "dataFechamento": "10/09/2099 19:00:00",
+            "estimativa": 35000000,
+            "aberto": true
+          },
+          "prognosticoMaximo": 25,
+          "quantidadeMinima": 15,
+          "quantidadeMaxima": 20,
+          "quantidadeSurpresinhas": 15,
+          "teimosinhas": [
+            2,
+            3,
+            4
+          ],
+          "valoresAposta": [
+            {
+              "valor": 5.0,
+              "numeroPrognosticos": 15,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 10.0,
+              "numeroPrognosticos": 16,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 15.0,
+              "numeroPrognosticos": 17,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 20.0,
+              "numeroPrognosticos": 18,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 25.0,
+              "numeroPrognosticos": 19,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 30.0,
+              "numeroPrognosticos": 20,
+              "numeroTrevos": 0
+            }
+          ],
+          "concursoDisponivelSimulacao": true,
+          "concursoCanalAberto": true
+        }
+      },
+      {
+        "parametroJogo": {
+          "concurso": {
+            "modalidade": "QUINA",
+            "modalidadeDetalhada": {
+              "valor": 3,
+              "descricao": "Quina",
+              "descricaoGestor": "QUINA"
+            },
+            "tipoConcurso": "NORMAL",
+            "numero": 6500,
+            "dataHoraSorteio": "10/09/2026 20:00:00",
+            "dataFechamento": "10/09/2099 19:00:00",
+            "estimativa": 35000000,
+            "aberto": true
+          },
+          "prognosticoMaximo": 80,
+          "quantidadeMinima": 5,
+          "quantidadeMaxima": 15,
+          "quantidadeSurpresinhas": 15,
+          "teimosinhas": [
+            2,
+            3,
+            4
+          ],
+          "valoresAposta": [
+            {
+              "valor": 5.0,
+              "numeroPrognosticos": 5,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 10.0,
+              "numeroPrognosticos": 6,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 15.0,
+              "numeroPrognosticos": 7,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 20.0,
+              "numeroPrognosticos": 8,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 25.0,
+              "numeroPrognosticos": 9,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 30.0,
+              "numeroPrognosticos": 10,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 35.0,
+              "numeroPrognosticos": 11,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 40.0,
+              "numeroPrognosticos": 12,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 45.0,
+              "numeroPrognosticos": 13,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 50.0,
+              "numeroPrognosticos": 14,
+              "numeroTrevos": 0
+            },
+            {
+              "valor": 55.0,
+              "numeroPrognosticos": 15,
+              "numeroTrevos": 0
+            }
+          ],
+          "concursoDisponivelSimulacao": true,
+          "concursoCanalAberto": true
+        }
+      },
+      {
+        "parametroJogo": {
+          "concurso": {
+            "modalidade": "MAIS_MILIONARIA",
+            "modalidadeDetalhada": {
+              "valor": 9,
+              "descricao": "+Milionária",
+              "descricaoGestor": "MAIS_MILIONARIA"
+            },
+            "tipoConcurso": "NORMAL",
+            "numero": 350,
+            "dataHoraSorteio": "10/09/2026 20:00:00",
+            "dataFechamento": "10/09/2099 19:00:00",
+            "estimativa": 35000000,
+            "aberto": true
+          },
+          "prognosticoMaximo": 50,
+          "quantidadeMinima": 6,
+          "quantidadeMaxima": 12,
+          "quantidadeSurpresinhas": 15,
+          "teimosinhas": [
+            2,
+            3,
+            4
+          ],
+          "valoresAposta": [
+            {
+              "valor": 5.0,
+              "numeroPrognosticos": 6,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 10.0,
+              "numeroPrognosticos": 7,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 15.0,
+              "numeroPrognosticos": 8,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 20.0,
+              "numeroPrognosticos": 9,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 25.0,
+              "numeroPrognosticos": 10,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 30.0,
+              "numeroPrognosticos": 11,
+              "numeroTrevos": 2
+            },
+            {
+              "valor": 35.0,
+              "numeroPrognosticos": 12,
+              "numeroTrevos": 2
+            }
+          ],
+          "concursoDisponivelSimulacao": true,
+          "concursoCanalAberto": true,
+          "trevos": {
+            "quantidadeMinima": 2,
+            "quantidadeMaxima": 6,
+            "prognosticoMaximo": 6
+          }
+        }
+      }
+    ],
+    "modalidadesDisponiveisCotas": [
+      {
+        "concurso": 2900,
+        "modalidade": "MEGA_SENA",
+        "modalidadeDetalhada": {
+          "valor": 2,
+          "descricao": "Mega-Sena",
+          "descricaoGestor": "MEGA_SENA"
+        },
+        "tipoConcurso": "NORMAL",
+        "estimativa": 35000000,
+        "dataEncerramentoRevenda": "10/09/2099",
+        "horaEncerramentoRevenda": "19:30:00",
+        "dataHoraSorteio": "10/09/2026 20:00:00"
+      },
+      {
+        "concurso": 3500,
+        "modalidade": "LOTOFACIL",
+        "modalidadeDetalhada": {
+          "valor": 8,
+          "descricao": "Lotofácil",
+          "descricaoGestor": "LOTOFACIL"
+        },
+        "tipoConcurso": "NORMAL",
+        "estimativa": 35000000,
+        "dataEncerramentoRevenda": "10/09/2099",
+        "horaEncerramentoRevenda": "19:30:00",
+        "dataHoraSorteio": "10/09/2026 20:00:00"
+      },
+      {
+        "concurso": 6500,
+        "modalidade": "QUINA",
+        "modalidadeDetalhada": {
+          "valor": 3,
+          "descricao": "Quina",
+          "descricaoGestor": "QUINA"
+        },
+        "tipoConcurso": "NORMAL",
+        "estimativa": 35000000,
+        "dataEncerramentoRevenda": "10/09/2099",
+        "horaEncerramentoRevenda": "19:30:00",
+        "dataHoraSorteio": "10/09/2026 20:00:00"
+      },
+      {
+        "concurso": 350,
+        "modalidade": "MAIS_MILIONARIA",
+        "modalidadeDetalhada": {
+          "valor": 9,
+          "descricao": "+Milionária",
+          "descricaoGestor": "MAIS_MILIONARIA"
+        },
+        "tipoConcurso": "NORMAL",
+        "estimativa": 35000000,
+        "dataEncerramentoRevenda": "10/09/2099",
+        "horaEncerramentoRevenda": "19:30:00",
+        "dataHoraSorteio": "10/09/2026 20:00:00"
+      }
+    ]
+  },
+  "pools": {
+    "totalRegistros": 6,
+    "paginaAtual": 1,
+    "ultimaPagina": 1,
+    "cotas": [
+      {
+        "index": 0,
+        "codigoBolao": "B1",
+        "codigoCota": "C1",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 101,
+        "nomeFantasia": "Lotérica Centro 1",
+        "nomeRazaoSocial": "Lotérica Centro 1 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      },
+      {
+        "index": 1,
+        "codigoBolao": "B2",
+        "codigoCota": "C2",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 102,
+        "nomeFantasia": "Lotérica Centro 2",
+        "nomeRazaoSocial": "Lotérica Centro 2 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      },
+      {
+        "index": 2,
+        "codigoBolao": "B3",
+        "codigoCota": "C3",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 103,
+        "nomeFantasia": "Lotérica Centro 3",
+        "nomeRazaoSocial": "Lotérica Centro 3 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      },
+      {
+        "index": 3,
+        "codigoBolao": "B4",
+        "codigoCota": "C4",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 104,
+        "nomeFantasia": "Lotérica Centro 4",
+        "nomeRazaoSocial": "Lotérica Centro 4 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      },
+      {
+        "index": 4,
+        "codigoBolao": "B5",
+        "codigoCota": "C5",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 105,
+        "nomeFantasia": "Lotérica Centro 5",
+        "nomeRazaoSocial": "Lotérica Centro 5 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      },
+      {
+        "index": 5,
+        "codigoBolao": "B6",
+        "codigoCota": "C6",
+        "qtdCotaDigital": 10,
+        "qtdCotaTotal": 10,
+        "qtdCotaDisponivel": 4,
+        "qtdCotaFisica": 0,
+        "loterica": 106,
+        "nomeFantasia": "Lotérica Centro 6",
+        "nomeRazaoSocial": "Lotérica Centro 6 Ltda",
+        "numeroUF": 7,
+        "uf": {
+          "sigla": "DF",
+          "nome": "Distrito Federal"
+        },
+        "idMunicipio": 1,
+        "municipio": {
+          "nome": "Brasília",
+          "uf": {
+            "sigla": "DF"
+          }
+        },
+        "concurso": 2900,
+        "tipoConcurso": 1,
+        "idModalidade": 2,
+        "modalidade": "MEGA_SENA",
+        "dataSorteio": "10/09/2026",
+        "horaSorteio": "20:00",
+        "diaSorteio": "quinta-feira",
+        "vrPremioEstimado": 35000000,
+        "valorCota": 12.50,
+        "valorTarifaServico": 2.50,
+        "qtdApostas": 3,
+        "qtdNumeros": 6,
+        "qtdCotaVendidas": 6,
+        "qtdCotaReservada": 0,
+        "qtdCotasBolao": 1,
+        "vrCotaSemTarifa": 10.00,
+        "vrCotaComTarifa": 12.50,
+        "vrTarifaBolao": 25.00,
+        "vrTotalBolaoComTarifa": 125.00,
+        "vrTotalBolaoSemTarifa": 100.00,
+        "vrUltimaCotaComTarifa": 12.50,
+        "lotericaFavorita": true
+      }
+    ]
+  },
+  "profile": {
+    "cpf": "12345678901",
+    "email": "mock@caixa.gov.br",
+    "nome": "Pessoa Mock",
+    "dataNascimento": "1990-01-01",
+    "telefone": {
+      "ddd": "61",
+      "numero": "999999999"
+    },
+    "cep": "70000000",
+    "aceitaReceberNoticias": true,
+    "municipioId": {
+      "idUF": 7,
+      "numero": 1,
+      "digitoVerificador": 0
+    },
+    "sexo": "F",
+    "limiteMinimoDiario": 10,
+    "limiteDiario": 100,
+    "limiteDiarioAutorizado": 200
+  },
+  "retailers": [
+    {
+      "codigo": 101,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 1",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    },
+    {
+      "codigo": 102,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 2",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    },
+    {
+      "codigo": 103,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 3",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    },
+    {
+      "codigo": 104,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 4",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    },
+    {
+      "codigo": 105,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 5",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    },
+    {
+      "codigo": 106,
+      "polo": 1,
+      "dv": 0,
+      "nomeFantasia": "Lotérica Centro 6",
+      "nomeMunicipio": "Brasília",
+      "siglaUf": "DF"
+    }
+  ]
+}

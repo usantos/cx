@@ -49,6 +49,12 @@ public class BolaoHeaderAdapter extends RecyclerView.Adapter<BolaoHeaderAdapter.
         notifyItemChanged(0);
     }
 
+    public void notificaAlteracaoCarrossel() {
+        if (carrosselAdapter != null) {
+            carrosselAdapter.notifyDataSetChanged();
+        }
+    }
+
     @NonNull
     @Override
     public HeaderViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dateSelectorBtn"
+    android:layout_marginTop="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:background="?selectableItemBackground"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_selecione_mes_ano"
+        android:textSize="12sp"
+        android:textColor="@color/azulFormNovoTipoPagamento"
+        android:fontFamily="@font/caixa_std_regular"
+        />
+
+    <TextView
+        android:id="@+id/dateResultTxt"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        tools:text="Janeiro de 2018"
+        android:textSize="16sp"
+        android:textColor="@color/pretoLinhaFormNovoTipoPagamento"
+        android:fontFamily="@font/caixa_std_regular"
+        android:gravity="center_vertical"
+        android:drawableEnd="@drawable/combo"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/azulClaroSelecaotime"/>
+
+</LinearLayout>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutFavoritas"
+    android:layout_width="match_parent"
+    android:importantForAccessibility="no"
+    android:layout_height="wrap_content"
+    android:background="@color/branco">
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTopModalidades"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/mega_verde_claro_mkp"
+        android:layout_marginTop="15dp"
+        android:gravity="left"
+        android:importantForAccessibility="no"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <RelativeLayout
+            android:id="@+id/RelativeLayoutTrevo"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:importantForAccessibility="no"
+            android:background="@drawable/background_trapeze_megasena">
+
+            <ImageView
+                android:id="@+id/trevoImagem"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="10dp"
+                android:importantForAccessibility="no"
+                android:scaleType="fitCenter"
+                android:src="@drawable/trevo" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/textViewCardTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:autoSizeMaxTextSize="20sp"
+            android:autoSizeMinTextSize="8sp"
+            android:autoSizeStepGranularity="1sp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center_vertical"
+            android:paddingLeft="12dp"
+            android:textColor="@color/branco"
+            android:textSize="20sp"
+            tools:text="mega sena"
+            android:fontFamily="@font/futura_std_bold"/>
+    </LinearLayout>
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tituloNomeApostaFavorita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/caixa_std_semi_bold"
+        android:textSize="16sp"
+        android:text="@string/agora_vai"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutTopModalidades"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <!-- Números da aposta -->
+    <TextView
+        android:id="@+id/numerosApostaFavorita"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/cinza130"
+        android:textSize="16sp"
+        android:fontFamily="@font/caixa_std_regular"
+        tools:text="01 - 02 - 03 - 04 - 05 - 06 - 10 - 11 - 12 - 20 - 33 - 100"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="12dp"
+        app:layout_constraintTop_toBottomOf="@id/tituloNomeApostaFavorita"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/editarRelativeLayout"
+        />
+
+    <RelativeLayout
+        android:id="@+id/container_super_sete"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="12dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/tituloNomeApostaFavorita"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/editarRelativeLayout">
+
+        <include
+            layout="@layout/super_sete_layout" />
+
+    </RelativeLayout>
+
+    <!-- Botões de ação -->
+    <LinearLayout
+        android:id="@+id/editarRelativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/transparente"
+        android:layout_marginTop="6dp"
+        app:layout_constraintTop_toBottomOf="@id/tituloNomeApostaFavorita"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="14dp">
+
+        <RelativeLayout
+            android:id="@+id/editarRelativeLayoutAddCarrinho"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:layout_marginEnd="8dp">
+
+            <Button
+                android:id="@+id/editarButtonAddCarrinho"
+                android:layout_width="26dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/label_adicionar_aposta"
+                android:background="@drawable/ic_favoritas_carrinho"
+                android:clickable="false" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/excluirRelativeLayoutFavoritos"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true">
+
+            <Button
+                android:id="@+id/excluirButtonFavoritos"
+                android:layout_width="17dp"
+                android:layout_height="24dp"
+                android:layout_centerInParent="true"
+                android:contentDescription="@string/label_excluir_aposta"
+                android:background="@drawable/ic_favoritas_lixeira"
+                android:clickable="false" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <!-- Informações adicionais -->
+    <LinearLayout
+        android:id="@+id/infoAdicionais"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/numerosApostaFavorita"
+        app:layout_constraintStart_toStartOf="@id/numerosApostaFavorita">
+
+        <LinearLayout
+            android:id="@+id/maisInformacoesLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/numerosApostaFavorita"
+            app:layout_constraintStart_toStartOf="@id/numerosApostaFavorita">
+
+            <TextView
+                android:id="@+id/labelInformacaoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                tools:text="Mes de Sorte: "
+                android:fontFamily="@font/caixa_std_regular" />
+
+            <TextView
+                android:id="@+id/informacaoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                tools:text="Fevereiro"
+                android:fontFamily="@font/caixa_std_regular" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/maisInformacoesMaisMilionaria"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="8dp"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/numerosApostaFavorita"
+            app:layout_constraintStart_toStartOf="@id/numerosApostaFavorita">
+
+            <TextView
+                android:id="@+id/labelInformacaoMaisMilionaria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                android:text="@string/trevos_"
+                tools:text="Trevos: "
+                android:fontFamily="@font/caixa_std_regular" />
+
+            <TextView
+                android:id="@+id/informacaoTextMaisMilionaria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cinza110"
+                android:textSize="16sp"
+                tools:text=""
+                android:fontFamily="@font/caixa_std_regular" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/linhaDivisoriaAposFragment"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/linhaDivisa"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/container_super_sete"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Linha divisória -->
+    <View
+        android:id="@+id/linhaDivisoria"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/linhaDivisa"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/infoAdicionais"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

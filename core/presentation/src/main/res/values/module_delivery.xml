@@ -1,0 +1,22 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:locale="pt">
+    <string name="module_title_account">Minha conta</string>
+    <string name="module_title_home">Início</string>
+    <string name="module_title_onboarding">Apresentação</string>
+    <string name="module_title_betting">Apostas</string>
+    <string name="module_title_marketplace">Bolões</string>
+    <string name="module_title_marketplace_filter">Filtros de bolões</string>
+    <string name="module_title_cart">Carrinho</string>
+    <string name="module_title_payment">Pagamento</string>
+    <string name="module_title_tickets">Apostas e compras</string>
+    <string name="module_title_results">Resultados</string>
+    <string name="module_title_notifications">Mensagens</string>
+    <string name="module_title_responsible_gaming">Jogo responsável</string>
+    <string name="module_title_retail">Lotéricas e resgates</string>
+    <string name="module_title_support_help">Ajuda</string>
+    <string name="module_title_support_faq">Dúvidas</string>
+    <string name="module_delivery_disabled">Este conteúdo não está disponível no momento.</string>
+    <string name="module_delivery_preparing">Preparando o conteúdo. Aguarde.</string>
+    <string name="module_delivery_failed">Não foi possível carregar o conteúdo. Tente novamente.</string>
+    <string name="module_delivery_retry">Tentar novamente</string>
+    <string name="module_delivery_back">Voltar</string>
+</resources>

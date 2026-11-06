@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_row_aposta_equipe_lotogol"
+    android:layout_width="180dp"
+    android:layout_height="wrap_content"
+    android:background="@color/transparente"
+    android:orientation="horizontal"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/imagem_escudo_aposta_partida_lotogol"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="9dp"
+        android:background="@drawable/time" />
+
+    <RelativeLayout
+        android:id="@+id/relative_layout_placar_aposta_partida_lotogol"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/shape_lotogol_circulo_branco" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_0"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/cinza"
+            android:fontFamily="@font/arialmt"
+            android:textSize="10sp"
+            android:id="@+id/placar_aposta_partida_lotogol_TextView"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/texto_aposta_partida_lotogol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textSize="14.2sp"
+        android:textColor="@color/branco"/>
+
+</LinearLayout>

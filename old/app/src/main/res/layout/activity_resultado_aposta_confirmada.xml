@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:id="@+id/clTopbarModalidade"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@color/mega_verde_claro_mkp"
+        android:orientation="horizontal">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/clBackgroundTopbar"
+            android:layout_width="90dp"
+            android:layout_height="56dp">
+
+            <ImageView
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/ivTrevoResultado"
+                android:layout_width="22sp"
+                android:layout_height="22dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/trevo" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            app:layout_constraintLeft_toRightOf="@id/clBackgroundTopbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tvTituloModalidade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/futura_std_bold"
+            android:textColor="@color/branco"
+            android:textSize="16sp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clFocoConcurso"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintLeft_toLeftOf="@id/tvFaixaConcursos"
+            app:layout_constraintRight_toRightOf="@id/tvFaixaConcursos"
+            app:layout_constraintTop_toTopOf="@id/tvConcursos"
+            app:layout_constraintBottom_toBottomOf="@id/tvFaixaConcursos"/>
+
+        <TextView
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:layout_marginEnd="24dp"
+            android:id="@+id/tvConcursos"
+            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/tvFaixaConcursos"
+            app:layout_constraintVertical_chainStyle="packed"
+            android:text="@string/txt_contest"/>
+        <TextView
+            android:textColor="@color/branco"
+            android:textSize="16sp"
+            android:id="@+id/tvFaixaConcursos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvConcursos"
+            app:layout_constraintRight_toRightOf="@id/tvConcursos"
+            tools:text="3490 - 3514"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintTop_toBottomOf="@id/clTopbarModalidade"
+        android:id="@+id/clTopoResultadoPremio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mega_verde_escuro_mkp"
+        >
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/tvPodeComemorar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/label_pode_comemorar"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="14sp"
+            android:fontFamily="@font/caixa_std_regular"/>
+
+        <TextView
+            app:layout_constraintTop_toBottomOf="@id/tvPodeComemorar"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/tvPremioTitulo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:lineSpacingExtra="10dp"
+            android:text="@string/label_voce_foi_premiado"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="20.1sp"
+            android:fontFamily="@font/caixa_std_bold" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clMidLayout"
+        app:layout_constraintTop_toBottomOf="@id/clTopoResultadoPremio"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_width="match_parent"
+        android:background="@color/mega_verde_escuro_mkp"
+        android:layout_height="wrap_content">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:importantForAccessibility="yes"
+            android:scrollbars="vertical"
+            android:fadeScrollbars="false"
+            android:scrollbarStyle="outsideOverlay"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/talvHeader"
+            app:layout_constraintHeight_min="45dp"
+            app:layout_constraintHeight_max="180dp"
+            app:layout_constraintHeight_default="wrap"
+            tools:listitem="@layout/layout_item_corpo"
+            tools:itemCount="2"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginVertical="16dp"
+            android:id="@+id/rvConcursos"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            app:layout_constraintTop_toBottomOf="@id/rvConcursos"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/talvHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clMidLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/clBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:scrollbars="vertical"
+            android:fadeScrollbars="true"
+            android:verticalScrollbarPosition="right"
+            android:scrollbarSize="4dp"
+            android:scrollbarStyle="outsideOverlay"
+            tools:listitem="@layout/layout_bet_reward"
+            app:layout_constraintVertical_bias="0"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/rvResgatePremio"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

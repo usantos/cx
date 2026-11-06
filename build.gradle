@@ -1,11 +1,12 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext {
-        kotlin_version = '2.1.0'
+        kotlin_version = '2.2.21'
     }
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -17,15 +18,79 @@ buildscript {
         classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.7.1"
         classpath "com.github.triplet.gradle:play-publisher:3.8.6"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.devtools.ksp:symbol-processing-gradle-plugin:2.3.6'
 
         classpath "org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:$kotlin_version"
-        classpath 'org.jetbrains.kotlin:compose-compiler-gradle-plugin:2.0.21'
     }
 }
 
+apply from: 'gradle/android-processors.gradle'
+apply from: 'gradle/core-local-tests.gradle'
+
+project(':core').subprojects { coreModule ->
+    def javaVersion = JavaVersion.VERSION_17
+    ['org.jetbrains.kotlin.android', 'org.jetbrains.kotlin.jvm'].each { pluginId ->
+        coreModule.plugins.withId(pluginId) {
+            coreModule.kotlin.jvmToolchain(javaVersion.majorVersion.toInteger())
+        }
+    }
+    coreModule.plugins.withId('java-library') {
+        coreModule.java {
+            sourceCompatibility = javaVersion
+            targetCompatibility = javaVersion
+        }
+    }
+    coreModule.plugins.withId('com.android.library') {
+        coreModule.android {
+            compileSdk 36
+            compileOptions {
+                sourceCompatibility = javaVersion
+                targetCompatibility = javaVersion
+            }
+        }
+    }
+    coreModule.plugins.withId('jacoco') {
+        coreModule.jacoco.toolVersion = '0.8.13'
+    }
+}
+
+def remoteVendorSdks = providers.gradleProperty('remoteVendorSdks').map { value ->
+    if (!(value in ['true', 'false'])) {
+        throw new GradleException('remoteVendorSdks deve ser true ou false.')
+    }
+    value == 'true'
+}.get()
+
+ext.filaBraSdk = remoteVendorSdks
+        ? 'com.filabra.adapter:FilaBRAAdapter:2.6.5.1'
+        : files('third-party/FilaBRAAdapter-2.6.5.1.aar')
+
 allprojects {
     repositories {
-        jcenter()
+        exclusiveContent {
+            forRepository {
+                maven {
+                    if (remoteVendorSdks) {
+                        name = 'topazRemote'
+                        url = 's3://mobile-artifacts-repo/releases'
+                        credentials(AwsCredentials)
+                    } else {
+                        name = 'topazLocal'
+                        url = rootProject.uri('third-party/maven')
+                    }
+                }
+            }
+            filter { includeModule 'br.com.topaz', 'heartbeat' }
+        }
+        if (!project.path.startsWith(':core:')) {
+            jcenter {
+                content {
+                    excludeGroup 'org.jetbrains.kotlin'
+                    excludeGroup 'org.jetbrains.kotlinx'
+                }
+            }
+        }
+        mavenCentral()
         google()
         maven { url "https://jitpack.io" }
 
@@ -34,13 +99,6 @@ allprojects {
         }
         maven {
             url 'https://maven.fabric.io/public'
-        }
-        maven {
-            url 's3://mobile-artifacts-repo/releases'
-            credentials(AwsCredentials) {
-                accessKey "AKIAXZ36BNOEOOHHXSPJ" // Chave fornecida pelo time da Topaz OFD
-                secretKey "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" // Chave fornecida pelo time da Topaz OFD
-            }
         }
         maven {
             url "https://artifacts.mercadolibre.com/repository/android-releases"

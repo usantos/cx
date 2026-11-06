@@ -1,0 +1,16 @@
+// O processador Hilt compatível com AGP 8 usa um leitor antigo de metadados.
+// Atualiza somente o classpath de processamento: dependências podem ter metadados Kotlin 2.4.
+def metadataVersion = libs.versions.kotlin.metadata.get()
+subprojects { owner ->
+    owner.configurations.configureEach { configuration ->
+        def name = configuration.name.toLowerCase(java.util.Locale.ROOT)
+        if (name.contains('hilt') || name.contains('annotationprocessor') || name.contains('ksp')) {
+            configuration.resolutionStrategy.eachDependency { dependency ->
+                if (dependency.requested.group == 'org.jetbrains.kotlin' && dependency.requested.name == 'kotlin-metadata-jvm') {
+                    dependency.useVersion(metadataVersion)
+                    dependency.because('Leitura estrita dos metadados das dependências com Hilt compatível com AGP 8')
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="queue_invalid_address">Endereço inválido para a fila.</string>
+    <string name="queue_open_failed">Não foi possível abrir a fila.</string>
+</resources>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:theme="@style/AppTheme.AppBarOverlay"
+    android:background="@drawable/background_gradient_verde">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/et_pesquisar"
+        android:layout_width="250dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/resultados_placeholder_toolbar"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/black"
+        android:paddingLeft="10dp"
+        android:focusableInTouchMode="true"
+        android:inputType="number"
+        android:textColorHint="@color/mp_darker_gray"
+        android:textSize="14sp"
+        android:background="@drawable/rounded_edittext"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_duvidas"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/icon_duvida2"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_pesquisar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/ic_lupa"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_favoritar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/ic_estrela"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:tint="@color/branco" />
+
+    <ImageButton
+        android:id="@+id/ib_excluir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/icon_excluir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:tint="@color/branco" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_duvidas"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageButton
+            android:id="@+id/ib_filtrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/transparente"
+            android:src="@drawable/ic_funil"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tv_badge"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_margin="6dp"
+            android:background="@drawable/btn_circulo_verde_filled"
+            android:backgroundTint="@color/mp_color_red_error"
+            android:fontFamily="@font/caixa_std_regular"
+            tools:text="1"
+            android:textSize="8sp"
+            android:textColor="@color/branco"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="@id/ib_filtrar"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="gone"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_salvar_rpd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparente"
+        android:textColor="@color/branco"
+        android:text="@string/salvar"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btn_pular_s7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/transparente"
+        android:textColor="@color/branco"
+        android:text="@string/pular"
+        android:fontFamily="@font/caixa_std_regular"
+        android:textSize="16sp"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/ib_favoritar"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/ib_configuracao_rpd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:backgroundTint="@color/transparente"
+        android:src="@drawable/ic_engrenagem"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
+        app:tint="@color/branco" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

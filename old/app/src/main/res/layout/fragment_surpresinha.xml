@@ -1,0 +1,439 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="50dp"
+    android:fillViewport="false"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/branco">
+
+        <TextView
+            android:id="@+id/surpresinhaInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaTitulo" />
+
+        <TextView
+            android:id="@+id/surpresinhaTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="125dp"
+            android:layout_marginLeft="125dp"
+            android:layout_marginRight="125dp"
+            android:layout_marginStart="125dp"
+            android:layout_marginTop="41dp"
+            android:text="@string/surpresinhaTitulo"
+            android:textAlignment="center"
+            android:textColor="@color/verdeagua"
+            android:textSize="18sp"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/numeroNovoConst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/branco"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaInfo"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/numeroTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:layout_marginLeft="125dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="125dp"
+                android:layout_marginRight="125dp"
+                android:text="@string/n_mero"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:textSize="18sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/numerosInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/escolha_a_quantidade_de_n_meros"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numeroTitulo" />
+
+
+            <TextView
+                android:id="@+id/qtdNumerosSelecionadasNovo"
+                android:layout_width="88dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/_6"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
+
+            <Button
+                android:id="@+id/btnNumerosMenos"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/cinzaescuro"
+                android:text="@string/menos"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintRight_toLeftOf="@+id/qtdNumerosSelecionadasNovo"
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
+
+            <Button
+                android:id="@+id/btnNumerosMais"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:text="@string/mais"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintLeft_toRightOf="@+id/qtdNumerosSelecionadasNovo"
+                app:layout_constraintTop_toBottomOf="@+id/numerosInfo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <br.gov.caixa.loterias.apostas.view.custom.ExpandableHeightGridView
+            android:id="@+id/listaDezenasSurpresinha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/drawer_linha_divisao_cinza_claro_top_bottom"
+            android:columnWidth="40dp"
+            android:gravity="center"
+            android:horizontalSpacing="15dp"
+            android:numColumns="auto_fit"
+            android:paddingBottom="20dp"
+            android:paddingEnd="29dp"
+            android:paddingStart="29dp"
+            android:paddingTop="20dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="9dp"
+            app:layout_constraintTop_toBottomOf="@+id/numeroNovoConst" />
+
+
+        <RelativeLayout
+            android:id="@+id/escolhaItemLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/imagemDescricaoLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:id="@+id/escolhaItemImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/time_surpresa" />
+
+                <TextView
+                    android:id="@+id/infoItemSurpresaTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="13dp"
+                    android:text="@string/time_surpresa"
+                    android:textColor="@color/megasenamedio"
+                    android:textSize="14.1sp"
+                    android:fontFamily="@font/caixa_std_bold"/>
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/escolherOutroItemBtn"
+                android:layout_width="183dp"
+                android:layout_height="48dp"
+                android:layout_below="@+id/imagemDescricaoLayout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="33dp"
+                android:background="@drawable/button_white_with_border"
+                android:text="@string/escolha_outro_time"
+                android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Large"
+                android:textColor="@color/cinza"
+                android:fontFamily="@font/caixa_std_regular"/>
+
+            <View
+                android:id="@+id/divisaoLinhaDois"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/escolherOutroItemBtn"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="21dp"
+                android:background="@color/cinzaclaro" />
+        </RelativeLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/maisMilionaria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/branco"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/listaDezenasSurpresinha"
+            tools:visibility="visible">
+
+            <TextView
+                android:id="@+id/trevosTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="125dp"
+                android:layout_marginLeft="125dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="125dp"
+                android:layout_marginRight="125dp"
+                android:text="@string/trevosTitulo"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/trevosInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/trevosInfo"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trevosTitulo" />
+
+
+            <TextView
+                android:id="@+id/qtdSurpresinhasSelecionadasTrevos"
+                android:layout_width="88dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/_2"
+                android:textAlignment="center"
+                android:textColor="@color/milionaria_escuro_mkp"
+                android:fontFamily="@font/caixa_std_bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
+
+            <Button
+                android:id="@+id/btnMenosTrevos"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginRight="0dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:backgroundTint="@color/cinzaescuro"
+                android:text="@string/menos"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadasTrevos"
+                app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
+
+            <Button
+                android:id="@+id/btnMaisTrevos"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_botao_surpresinha"
+                android:text="@string/mais"
+                android:textColor="@color/branco"
+                android:textSize="24sp"
+                android:fontFamily="@font/caixa_std_regular"
+                app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadasTrevos"
+                app:layout_constraintTop_toBottomOf="@+id/trevosInfo" />
+
+
+            <ImageView
+                android:id="@+id/trevoImg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_trevo"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                app:layout_constraintEnd_toStartOf="@+id/trevoImg2"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/qtdSurpresinhasSelecionadasTrevos" />
+
+            <ImageView
+                android:id="@+id/trevoImg2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_trevo"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/trevoImg"
+                app:layout_constraintTop_toBottomOf="@+id/qtdSurpresinhasSelecionadasTrevos" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/surpresinhaQtdInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="45dp"
+            android:layout_marginLeft="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/surpresinhaQtdInfo"
+            android:textAlignment="center"
+            android:textColor="@color/cinza"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/escolhaItemLayout" />
+
+        <TextView
+            android:id="@+id/qtdSurpresinhasSelecionadas"
+            android:layout_width="88dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/_1"
+            android:textAlignment="center"
+            android:fontFamily="@font/caixa_std_bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMenosSurpresinha"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginRight="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_botao_surpresinha"
+            android:backgroundTint="@color/mega_verde_claro_mkp"
+            android:text="@string/menos"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintRight_toLeftOf="@+id/qtdSurpresinhasSelecionadas"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <Button
+            android:id="@+id/btnMaisSurpresinha"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_botao_surpresinha"
+            android:backgroundTint="@color/mega_verde_claro_mkp"
+            android:text="@string/mais"
+            android:textColor="@color/branco"
+            android:textSize="24sp"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintLeft_toRightOf="@+id/qtdSurpresinhasSelecionadas"
+            app:layout_constraintTop_toBottomOf="@+id/surpresinhaQtdInfo" />
+
+        <LinearLayout
+            android:id="@+id/layoutEspelhoSurpresinha"
+            android:layout_width="183dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/cinza"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnMaisSurpresinha">
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/selcioneEspelhoSurpresinha"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/check_box_selected"
+                android:button="@color/transparente50"
+                android:clickable="false" />
+
+            <TextView
+                android:id="@+id/textoEspelhoSurpresinha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="17dp"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="20dp"
+                android:clickable="false"
+                android:text="@string/label_aposta_espelho"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:fontFamily="@font/caixa_std_bold"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

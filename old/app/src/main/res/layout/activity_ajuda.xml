@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.gov.caixa.loterias.apostas.controllers.AjudaActivity"
+    tools:showIn="@layout/custom_toolbar_ajuda">
+
+    <LinearLayout
+        android:id="@+id/layoutHeaderAjuda"
+        android:layout_width="match_parent"
+        android:layout_height="157dp"
+        android:background="@color/cinzaHeaderTelaAjuda"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/layoutHeaderAjudaColuna1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:paddingLeft="38dp"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:id="@+id/labelConcurso"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textConcurso"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_concurso"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+
+            <TextView
+                android:id="@+id/labelAbertura"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:text="@string/label_abertura"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textAbertura"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_abertura"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutHeaderAjudaColuna2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:paddingLeft="38dp"
+            android:paddingTop="40dp">
+
+            <TextView
+                android:id="@+id/labelProximoSorteio"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_proximo_sorteio"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textProximoSorteio"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_proximo_sorteio"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+
+            <TextView
+                android:id="@+id/labelEncerramento"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:text="@string/label_encerramento"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textEncerramento"
+                style="@style/ArialMT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_encerramento"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollAjuda"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="39dp">
+
+        <LinearLayout
+            android:id="@+id/layouTextScrolltAjuda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="39dp"
+            android:background="@color/cinza"
+            android:orientation="vertical"
+            android:paddingEnd="36dp"
+            android:paddingStart="36dp">
+
+            <TextView
+                android:id="@+id/titleTextScroll"
+                style="@style/ArialMT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="14.2dp"
+                android:text="@string/label_regras_jogo"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textScroll"
+                style="@style/ArialMT"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="39dp"
+                android:text="@string/label_regras_jogo"
+                android:textColor="@color/branco"
+                android:textSize="14.2sp" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:minHeight="30dp"
+    android:background="@color/transparente">
+
+    <TextView
+        android:id="@+id/tv_nome_modalidade"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoSizeMaxTextSize="14dp"
+        android:autoSizeMinTextSize="8sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:lines="1"
+        android:text="@string/mega_sena"
+        android:textColor="@color/branco"
+        android:textSize="14dp"
+        android:fontFamily="@font/futura_std_bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_teimosinha"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@color/transparente"
+        android:src="@drawable/ic_teimosinha"
+        android:visibility="invisible"
+        android:layout_marginRight="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_qtd_numeros"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_qtd_numeros"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:autoSizeMaxTextSize="14dp"
+        android:autoSizeMinTextSize="8sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:lines="1"
+        android:text="@string/_7_n_meros"
+        android:textColor="@color/branco"
+        android:textSize="14dp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_valor_total_carrinho"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_valor_total_carrinho"
+        android:layout_width="wrap_content"
+        android:minWidth="50dp"
+        android:layout_height="wrap_content"
+        android:autoSizeMaxTextSize="14dp"
+        android:autoSizeMinTextSize="8sp"
+        android:autoSizeStepGranularity="1sp"
+        android:autoSizeTextType="uniform"
+        android:lines="1"
+        android:textAlignment="textEnd"
+        tools:text="R$ 30,00"
+        android:textColor="@color/branco"
+        android:textSize="14dp"
+        android:fontFamily="@font/caixa_std_regular"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

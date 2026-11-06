@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:id="@+id/LinearLayoutContentNumerosRapidao"
+        android:background="@drawable/circle_numeros_obrigatorios"
+        android:layout_marginHorizontal="8dp">
+
+        <TextView
+            android:id="@+id/tituloNumeroRapidao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/_01"
+            android:textAlignment="center"
+            android:textColor="@color/branco"
+            android:textSize="14.1sp"
+            android:fontFamily="@font/caixa_std_bold"/>
+    </LinearLayout>
+
+</LinearLayout>

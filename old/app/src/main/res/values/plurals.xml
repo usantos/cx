@@ -1,0 +1,6 @@
+<resources>
+    <plurals name="quantidade_apostas">
+        <item quantity="one">%d aposta</item>
+        <item quantity="other">%d apostas</item>
+    </plurals>
+</resources>

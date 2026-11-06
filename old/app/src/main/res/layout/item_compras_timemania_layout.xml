@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/arialmt"
+        android:textColor="@color/megasenamedio"
+        android:textSize="14.2sp"
+        android:id="@+id/SeusNumerosListaComprasTextView"
+        android:text="@string/placeholder_prognosticos"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/time_do_cora_o"
+        android:textSize="12sp"
+        android:fontFamily="@font/arialmt"
+        android:textColor="@color/megasenamedio"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_flamengo"
+        android:textSize="12sp"
+        android:fontFamily="@font/arialmt"
+        android:textStyle="bold"
+        android:textColor="@color/megasenamedio"/>
+</LinearLayout>

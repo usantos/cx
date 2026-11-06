@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="false">
+
+    <View
+        android:id="@+id/stripe"
+        android:layout_width="5dp"
+        android:layout_height="0dp"
+        tools:background="#642475"
+        app:layout_constraintTop_toTopOf="@id/container_conteudo"
+        app:layout_constraintBottom_toBottomOf="@id/container_conteudo"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container_conteudo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:layout_marginStart="5dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/modalidadeTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:textSize="16sp"
+            android:fontFamily="@font/futura_std_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/concursoTxt"
+            tools:text="Modalidade"
+            tools:textColor="#642475" />
+
+        <TextView
+            android:id="@+id/concursoTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="42dp"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="12sp"
+            android:textAlignment="textStart"
+            android:fontFamily="@font/caixa_std_regular"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/id_detalhe_aposta"
+            tools:text="Conc. 0000 a 0000" />
+
+        <TextView
+            android:id="@+id/dataApostaTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/cinzaescuro"
+            android:textSize="12sp"
+            tools:text="@string/label_data_aposta"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginTop="2dp"
+            app:layout_constraintTop_toBottomOf="@id/modalidadeTxt"
+            app:layout_constraintStart_toStartOf="@id/modalidadeTxt"
+            />
+
+        <TextView
+            android:id="@+id/situacaoTxt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12sp"
+            tools:text="Situação: Não premiada"
+            tools:textColor="@color/cinzaescuro"
+            android:fontFamily="@font/caixa_std_regular"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintTop_toBottomOf="@id/dataApostaTxt"
+            app:layout_constraintStart_toStartOf="@id/dataApostaTxt"
+            app:layout_constraintEnd_toStartOf="@id/progressBarSituacao"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBarSituacao"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@id/situacaoTxt"
+            app:layout_constraintEnd_toEndOf="@id/concursoTxt" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/reloadImg"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_atualizar"
+            app:tint="@color/azul_detalhe_aposta"
+            android:visibility="gone"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/id_detalhe_aposta"
+            />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/id_detalhe_aposta"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_numero_bilhete"
+            app:tint="@color/azul_detalhe_aposta"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/id_add_carrinho"
+            app:layout_constraintBottom_toTopOf="@+id/tipo_aposta_linha"
+            />
+
+<!--        <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/id_tag_bolao"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:src="@drawable/ic_tag_bolao"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"/>-->
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/id_add_carrinho"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:src="@drawable/ic_adicionar_carrinho"
+            app:tint="@color/azul_detalhe_aposta"
+            android:layout_marginEnd="14dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/tipo_aposta_linha"
+            />
+
+        <br.gov.caixa.loterias.apostas.view.fragment.TipoApostaLinhaView
+            android:id="@+id/tipo_aposta_linha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-4dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/situacaoTxt"
+            android:visibility="visible"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

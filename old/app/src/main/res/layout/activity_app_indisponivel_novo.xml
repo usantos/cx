@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue_caixa"
+    android:orientation="vertical">
+
+    <!-- Barra de Modalidade -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@color/blue_caixa">
+
+        <TextView
+            android:id="@+id/tv_title_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:text="Loterias"
+            android:textColor="@color/branco"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/iv_logo_clover"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="24dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/icon_loteria" />
+
+    </RelativeLayout>
+
+    <!-- Imagem de ilustração (nuvem com ponto de exclamação) -->
+    <ImageView
+        android:id="@+id/iv_error_illustration"
+        android:layout_width="202dp"
+        android:layout_height="127dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="136dp"
+        android:importantForAccessibility="no"
+        android:src="@drawable/app_indisponivel" />
+
+    <!-- Mensagem principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_mensagem1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_semi_bold"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/app_indisponivel"
+            android:textColor="@color/branco"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <!-- Divisor -->
+        <View
+            android:layout_width="276dp"
+            android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:background="#47FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_mensagem2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:gravity="center"
+            android:lineSpacingMultiplier="1.5"
+            android:text="@string/pedido_desculpas"
+            android:textColor="@color/branco"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <!-- Espaço flexível -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+    <!--    </LinearLayout>-->
+    <LinearLayout
+        android:id="@+id/container_retry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/tenteNovamenteButton"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:background="@drawable/btn_round_laranja"
+            android:gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_refresh"
+                android:layout_marginStart="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_tentar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/caixa_std_semi_bold"
+                android:gravity="center"
+                android:text="@string/tentar_novamente"
+                android:textColor="@color/branco"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtVersao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:fontFamily="@font/caixa_std_regular"
+            android:gravity="center"
+            android:text="v. 1.23.5"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/tv_erro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:gravity="center"
+            android:text="Código do erro: LTR-503"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <Spinner
+        android:id="@+id/spin_ambiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:fontFamily="@font/caixa_std_regular"
+        android:backgroundTint="@color/colorAccent"
+        android:dropDownWidth="wrap_content"
+        android:visibility="gone" />
+</LinearLayout>

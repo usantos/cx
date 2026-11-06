@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="48dp"
+    android:id="@+id/layout_fragmento"
+    android:background="@color/mega_verde_claro_mkp">
+
+    <ImageButton
+        android:id="@+id/seta_voltar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/seta_esquerda"
+        android:backgroundTint="@color/transparente"
+        android:layout_marginStart="24dp"
+        android:contentDescription="@string/voltar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <ImageButton
+        android:id="@+id/duvida"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/duvidas_toolbar_icon"
+        android:backgroundTint="@color/transparente"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/duvidas"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:id="@+id/container_sorteio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="4dp"
+        android:descendantFocusability="blocksDescendants"
+        android:importantForAccessibility="yes"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/duvida">
+
+        <TextView
+            android:id="@+id/label_sorteio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:importantForAccessibility="no"
+            android:text="@string/label_sorteio_case"
+            android:textColor="@color/branco"/>
+
+        <TextView
+            android:id="@+id/id_sorteio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="03/12"
+            android:textSize="12sp"
+            android:importantForAccessibility="no"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:layout_marginTop="2dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_concurso"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:importantForAccessibility="yes"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintEnd_toStartOf="@id/container_sorteio">
+
+        <TextView
+            android:id="@+id/label_concurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/caixa_std_regular"
+            android:text="@string/label_concurso"
+            android:textColor="@color/branco"
+            android:importantForAccessibility="no"
+            android:layout_marginEnd="8dp"/>
+
+        <TextView
+            android:id="@+id/id_concurso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="1891"
+            android:textColor="@color/branco"
+            android:fontFamily="@font/caixa_std_bold"
+            android:importantForAccessibility="no"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/id_modalidade"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:text="Modalidade"
+        android:textColor="@color/branco"
+        android:fontFamily="@font/futura_std_bold"
+        android:textSize="18sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/seta_voltar"
+        app:layout_constraintEnd_toStartOf="@id/container_concurso"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
