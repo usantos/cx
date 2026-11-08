@@ -160,7 +160,11 @@ private fun SupportDestination(
     }
     SupportRoute(
         viewModel = supportViewModel,
-        onBack = { navController.popBackStack() },
+        onBack = {
+            if (!navController.popBackStack() && route == "support/terms-acceptance") {
+                navController.navigate("home") { launchSingleTop = true }
+            }
+        },
         onAcceptTerms = onAcceptTerms,
         faqContent = faqContent
     )

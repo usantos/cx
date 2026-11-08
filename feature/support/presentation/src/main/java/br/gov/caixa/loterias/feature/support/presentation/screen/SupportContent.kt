@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
@@ -100,57 +101,60 @@ internal fun SupportContent(
 private fun SupportTermsFooter(state: SupportUiState, onAction: (SupportAction) -> Unit) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
     if (state.acceptanceRequired && state.selectedTab == SupportTab.TERMS) {
-        Box(Modifier.fillMaxWidth().height(131.dp).background(LoteriasCaixaDSColorTokens.White)) {
+        Box(Modifier.fillMaxWidth().background(LoteriasCaixaDSColorTokens.White)) {
             Box(Modifier.fillMaxWidth().height(1.dp).background(LoteriasCaixaDSColorTokens.DrawerDivider))
-            Row(
-                modifier = Modifier.padding(start = 17.dp, top = 10.dp).uiId("help.0021").toggleable(
-                    value = state.termsAccepted,
-                    role = Role.Checkbox,
-                    onValueChange = { onAction(SupportAction.ToggleTermsAcceptance) }
-                ),
-                verticalAlignment = Alignment.Top
-            ) {
-                Image(
-                    painterResource(
-                        if (state.termsAccepted) LoteriasCaixaDSR.drawable.legacy_check2 else LoteriasCaixaDSR.drawable.legacy_check1
-                    ),
-                    contentDescription = uiStrings.getString(LocalizedR.string.ui_aceitar_termos_de_uso_eeb4ca),
-                    modifier = Modifier.padding(top = 6.dp).size(20.dp)
-                )
-                Text(
-                    uiStrings.getString(LocalizedR.string.ui_declaro_ter_lido_e_concordado_com_os_44f77b),
-                    (Modifier.padding(start = 20.dp)).uiId("help.0022"),
-                    color = LoteriasCaixaDS.colors.graphite,
-                    style = TextStyle(
-                        fontFamily = LoteriasCaixaDSRegularFontFamily,
-                        fontSize = 15.sp,
-                        platformStyle = PlatformTextStyle(includeFontPadding = true)
+            Column(Modifier.fillMaxWidth().padding(bottom = 20.dp)) {
+                Row(
+                    modifier = Modifier.heightIn(min = 55.dp).padding(start = 17.dp, top = 10.dp, end = 17.dp)
+                        .uiId("help.0021").toggleable(
+                            value = state.termsAccepted,
+                            role = Role.Checkbox,
+                            onValueChange = { onAction(SupportAction.ToggleTermsAcceptance) }
+                        ),
+                    verticalAlignment = Alignment.Top
+                ) {
+                    Image(
+                        painterResource(
+                            if (state.termsAccepted) LoteriasCaixaDSR.drawable.legacy_check2 else LoteriasCaixaDSR.drawable.legacy_check1
+                        ),
+                        contentDescription = uiStrings.getString(LocalizedR.string.ui_aceitar_termos_de_uso_eeb4ca),
+                        modifier = Modifier.padding(top = 6.dp).size(20.dp)
                     )
-                )
-            }
-            Button(
-                onClick = { onAction(SupportAction.AcceptTerms) },
-                enabled = state.termsAccepted,
-                modifier = (Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 55.dp).height(56.dp))
-                    .uiId("help.0023"),
-                shape = RoundedCornerShape(0.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = LoteriasCaixaDSColorTokens.YellowAction,
-                    contentColor = LoteriasCaixaDSColorTokens.White
-                ),
-                elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp)
-            ) {
-                Text(
-                    uiStrings.getString(LocalizedR.string.ui_continuar_63e2bb),
-                    style = TextStyle(
-                        fontFamily = LoteriasCaixaDSFontFamily,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp,
-                        platformStyle = PlatformTextStyle(includeFontPadding = true)
+                    Text(
+                        uiStrings.getString(LocalizedR.string.ui_declaro_ter_lido_e_concordado_com_os_44f77b),
+                        (Modifier.padding(start = 20.dp)).uiId("help.0022"),
+                        color = LoteriasCaixaDS.colors.graphite,
+                        style = TextStyle(
+                            fontFamily = LoteriasCaixaDSRegularFontFamily,
+                            fontSize = 15.sp,
+                            platformStyle = PlatformTextStyle(includeFontPadding = true)
+                        )
+                    )
+                }
+                Button(
+                    onClick = { onAction(SupportAction.AcceptTerms) },
+                    enabled = state.termsAccepted,
+                    modifier = (Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp).height(56.dp))
+                        .uiId("help.0023"),
+                    shape = RoundedCornerShape(0.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = LoteriasCaixaDSColorTokens.YellowAction,
+                        contentColor = LoteriasCaixaDSColorTokens.White
                     ),
-                    modifier = Modifier
-                        .uiId("help.0024")
-                )
+                    elevation = ButtonDefaults.buttonElevation(0.dp, 0.dp, 0.dp)
+                ) {
+                    Text(
+                        uiStrings.getString(LocalizedR.string.ui_continuar_63e2bb),
+                        style = TextStyle(
+                            fontFamily = LoteriasCaixaDSFontFamily,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp,
+                            platformStyle = PlatformTextStyle(includeFontPadding = true)
+                        ),
+                        modifier = Modifier
+                            .uiId("help.0024")
+                    )
+                }
             }
         }
     }

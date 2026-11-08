@@ -4,15 +4,21 @@
 package br.gov.caixa.loterias.feature.support
 
 import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.click
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.unit.Density
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -143,6 +149,67 @@ class SupportNavigationJvmTest {
     }
 
     @Test
+    fun requiredTermsCanBeSelectedByTouchAndSubmitted() {
+        show()
+        compose.runOnIdle { nav.navigate("support/terms-acceptance") }
+        compose.onNodeWithText("Continuar").assertIsNotEnabled()
+        compose.onNodeWithContentDescription("Aceitar Termos de Uso").performTouchInput { click() }
+        compose.onNodeWithText("Continuar").assertIsEnabled().performTouchInput { click() }
+        compose.runOnIdle {
+            assertEquals(1, accepts)
+            assertEquals(1, rechecks)
+        }
+    }
+
+    @Test
+    @Config(qualifiers = "w320dp-h640dp-xhdpi")
+    fun largeTextAcceptanceAllowsTouchingTheCheckboxAndItsLabelWithoutSubmitting() {
+        show(fontScale = 1.5f)
+        compose.runOnIdle { nav.navigate("support/terms-acceptance") }
+        compose.onNodeWithContentDescription("Aceitar Termos de Uso", useUnmergedTree = true).performTouchInput { click() }
+        compose.onNodeWithText("Continuar").assertIsEnabled()
+        compose.onNodeWithTag("simlo.help.0022", useUnmergedTree = true).performTouchInput { click(bottomCenter) }
+        compose.onNodeWithText("Continuar").assertIsNotEnabled()
+        compose.runOnIdle { assertEquals(0, accepts) }
+    }
+
+    @Test
+    fun slowRequiredTermsAllowReturningWithoutAcceptingTheContract() {
+        show(suspendTerms = true)
+        compose.runOnIdle { nav.navigate("support/terms-acceptance") }
+        compose.onNodeWithText("Carregando…").assertIsDisplayed()
+        compose.onNodeWithContentDescription("Voltar").performTouchInput { click() }
+        compose.onNodeWithText("Página inicial").assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals(0, accepts)
+            assertEquals(0, rechecks)
+        }
+    }
+
+    @Test
+    fun toolbarBackFromRequiredTermsAtGraphRootReturnsHomeWithoutAccepting() {
+        show(startDestination = "support/terms-acceptance")
+        compose.onNodeWithContentDescription("Voltar").performTouchInput { click() }
+        compose.onNodeWithText("Página inicial").assertIsDisplayed()
+        compose.runOnIdle {
+            assertEquals("home", nav.currentDestination?.route)
+            assertEquals(0, accepts)
+            assertEquals(0, rechecks)
+        }
+    }
+
+    @Test
+    fun systemBackFromRequiredTermsAtGraphRootReturnsHomeWithoutAccepting() {
+        show(startDestination = "support/terms-acceptance")
+        compose.runOnIdle { compose.activity.onBackPressedDispatcher.onBackPressed() }
+        compose.runOnIdle {
+            assertEquals("home", nav.currentDestination?.route)
+            assertEquals(0, accepts)
+            assertEquals(0, rechecks)
+        }
+    }
+
+    @Test
     fun gameHelpGraphPreservesRequestedModalityAndBackAcrossLegacyColorVariants() {
         show()
         listOf(14 to "Lotogol", 16 to "Lotomania", 19 to "Loteca", 20 to "Timemania", 8 to "Lotofacil").forEach { (id, name) ->
@@ -154,7 +221,12 @@ class SupportNavigationJvmTest {
         }
     }
 
-    private fun show(suspendFaqSections: Boolean = false) {
+    private fun show(
+        suspendFaqSections: Boolean = false,
+        suspendTerms: Boolean = false,
+        fontScale: Float = 1f,
+        startDestination: String = "fixture",
+    ) {
         val moduleDependencies = object : SupportModuleNavigationDependencies {
             override val modules = AppModulesConfigurationUseCase(object : AppModulesConfigurationRepository {
                 override val configuration = MutableStateFlow(AppModulesConfiguration())
@@ -194,16 +266,20 @@ class SupportNavigationJvmTest {
             },
             GetTermsUseCase {
                 termsRequests++
+                if (suspendTerms) awaitCancellation()
                 AppResult.Success("<p>Termos oficiais</p>")
             },
             optionalModule = moduleDependencies
         )
         compose.setFeatureContent {
             nav = rememberNavController()
-            LoteriasCaixaDSTheme {
-                NavHost(nav, startDestination = "fixture") {
-                    composable("fixture") { Text("Página inicial") }
-                    supportGraph(dependencies, nav, session)
+            CompositionLocalProvider(LocalDensity provides Density(LocalDensity.current.density, fontScale)) {
+                LoteriasCaixaDSTheme {
+                    NavHost(nav, startDestination = startDestination) {
+                        composable("fixture") { Text("Página inicial") }
+                        composable("home") { Text("Página inicial") }
+                        supportGraph(dependencies, nav, session)
+                    }
                 }
             }
         }

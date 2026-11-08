@@ -19,8 +19,12 @@ fun SupportRoute(
     faqContent: @Composable (SupportUiState, (SupportAction) -> Unit) -> Unit,
 ) {
     val state = viewModel.state.collectAsStateWithLifecycle().value
-    BackHandler(enabled = state.selectedSectionId != null) {
-        viewModel.onAction(SupportAction.CloseSection)
+    BackHandler(enabled = state.selectedSectionId != null || state.acceptanceRequired) {
+        if (state.selectedSectionId != null) {
+            viewModel.onAction(SupportAction.CloseSection)
+        } else {
+            onBack()
+        }
     }
     LaunchedEffect(viewModel) { viewModel.termsAccepted.collect { onAcceptTerms() } }
     SupportScreen(
