@@ -56,9 +56,10 @@ internal fun PrizePixSuccessScreen(onHelp: () -> Unit, onMyBets: () -> Unit) {
             LegacyRedemptionActionButton(
                 uiStrings.getString(DeliveryR.string.ui_acesse_minhas_apostas_85c594),
                 onMyBets,
-                (Modifier.padding(top = 24.dp)).uiId("retail.0118"),
+                (Modifier.padding(horizontal = 16.dp).padding(top = 24.dp)).uiId("retail.0118"),
                 color = LoteriasCaixaDSColorTokens.RedemptionButton,
-                cornerRadius = PIX_SUCCESS_BUTTON_RADIUS
+                cornerRadius = PIX_SUCCESS_BUTTON_RADIUS,
+                fitContent = true
             )
         }
     }

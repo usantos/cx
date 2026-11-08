@@ -127,8 +127,14 @@ class PrizeRedemptionViewModel(
 
     /** Retorna true quando o hospedeiro de navegação deve sair do fluxo. */
     fun back(): Boolean {
-        if (interactionBlocked() || (state.value.loading && state.value.stage == PrizeRedemptionStage.MERCADO_PAGO)) return false
-        val stage = state.value.stage
+        val currentState = state.value
+        if (interactionBlocked() || (currentState.loading && currentState.stage in setOf(
+                PrizeRedemptionStage.MERCADO_PAGO,
+                PrizeRedemptionStage.PIX_ENTRY,
+                PrizeRedemptionStage.PIX_CONFIRM
+            ))
+        ) return false
+        val stage = currentState.stage
         return when {
             stage != PrizeRedemptionStage.OPTIONS && stage != PrizeRedemptionStage.LOADING -> {
                 returnToOptions()

@@ -176,7 +176,13 @@ private fun reducePrizeRedemptionNavigationState(
 ): PrizeRedemptionUiState = when (action) {
     is PrizeRedemptionStateAction.ChannelSelected -> state.copy(selectedChannel = action.channel, errorMessage = null)
 
-    PrizeRedemptionStateAction.PixEntryOpened -> state.copy(stage = PrizeRedemptionStage.PIX_ENTRY)
+    PrizeRedemptionStateAction.PixEntryOpened -> state.copy(
+        stage = PrizeRedemptionStage.PIX_ENTRY,
+        pixKeySource = if (state.cpf.isBlank()) PrizePixKeySource.OTHER else PrizePixKeySource.CPF,
+        pixKey = "",
+        pixOwnershipAccepted = false,
+        pixBeneficiary = null
+    )
 
     PrizeRedemptionStateAction.MercadoPagoOpened -> state.copy(stage = PrizeRedemptionStage.MERCADO_PAGO)
 

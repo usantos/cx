@@ -3,8 +3,10 @@ package br.gov.caixa.loterias.feature.retail.presentation.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -52,10 +54,12 @@ internal fun LegacyRedemptionActionButton(
     color: Color,
     cornerRadius: Int = 10,
     compactContent: Boolean = false,
+    fitContent: Boolean = false,
 ) {
+    val buttonSize = if (fitContent) Modifier.fillMaxWidth().heightIn(min = 84.dp) else Modifier.size(184.dp, 84.dp)
     Button(
         onClick = onClick,
-        modifier = (modifier.size(184.dp, 84.dp)).uiId("retail.0029"),
+        modifier = modifier.then(buttonSize).uiId("retail.0029"),
         shape = RoundedCornerShape(cornerRadius.dp),
         contentPadding = if (compactContent) PaddingValues(0.dp) else ButtonDefaults.ContentPadding,
         colors = ButtonDefaults.buttonColors(containerColor = color, contentColor = LoteriasCaixaDSColorTokens.White)
@@ -65,8 +69,8 @@ internal fun LegacyRedemptionActionButton(
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
             fontSize = 17.7.sp,
-            maxLines = if (compactContent) 1 else 2,
-            modifier = Modifier.uiId("retail.0030")
+            maxLines = if (compactContent) 1 else if (fitContent) Int.MAX_VALUE else 2,
+            modifier = Modifier.then(if (fitContent) Modifier.fillMaxWidth() else Modifier).uiId("retail.0030")
         )
     }
 }

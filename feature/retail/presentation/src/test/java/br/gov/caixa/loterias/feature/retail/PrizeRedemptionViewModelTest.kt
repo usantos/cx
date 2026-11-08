@@ -388,7 +388,7 @@ class PrizeRedemptionViewModelTest : PrizeRedemptionTestFixture() {
         assertEquals(1, redemptionCalls)
     }
 
-    @Test fun `Pix confirmation submits the consulted beneficiary key once without reload resubmission`() = runTest(dispatcher) {
+    @Test fun `three rapid Pix confirmations submit the selected key once without reload resubmission`() = runTest(dispatcher) {
         consultResult = AppResult.Success(PixBeneficiary("CONTROLLED", "Fixture", "fixture@example.test", "Fixture Bank"))
         val vm = viewModel()
         advanceUntilIdle()
@@ -396,11 +396,10 @@ class PrizeRedemptionViewModelTest : PrizeRedemptionTestFixture() {
         vm.consultPix()
         advanceUntilIdle()
         assertEquals(PrizeRedemptionStage.PIX_CONFIRM, vm.state.value.stage)
-        vm.confirmPix()
-        vm.confirmPix()
+        repeat(RAPID_PIX_CLICKS) { vm.confirmPix() }
         advanceUntilIdle()
         assertEquals(1, redemptionCalls)
-        assertEquals(Triple(7L, PrizeRedemptionChannel.PIX, "fixture@example.test"), redemption)
+        assertEquals(Triple(7L, PrizeRedemptionChannel.PIX, "12345678901"), redemption)
         vm.confirmPix()
         vm.resumeAfterRedirect()
         vm.load()
@@ -520,3 +519,5 @@ class PrizeRedemptionViewModelTest : PrizeRedemptionTestFixture() {
         receipt.cancel()
     }
 }
+
+private const val RAPID_PIX_CLICKS = 3

@@ -95,7 +95,7 @@ internal fun PrizePixDataScreen(state: PrizeRedemptionUiState, onBack: () -> Uni
                         } else {
                             onBack()
                         }
-                    }, modifier = (Modifier.weight(1f)).uiId("retail.0106"), outlined = true)
+                    }, modifier = (Modifier.weight(1f)).uiId("retail.0106"), outlined = true, enabled = !state.loading)
                     PrizePixActionButton(
                         text = if (state.stage == PrizeRedemptionStage.PIX_ENTRY) {
                             uiStrings.getString(LocalizedR.string.ui_continuar_63e2bb)
@@ -108,7 +108,7 @@ internal fun PrizePixDataScreen(state: PrizeRedemptionUiState, onBack: () -> Uni
                             ({ actions.confirmPix() })
                         },
                         modifier = (Modifier.weight(1f)).uiId("retail.0107"),
-                        enabled = state.stage == PrizeRedemptionStage.PIX_CONFIRM || state.canContinuePix()
+                        enabled = !state.loading && (state.stage == PrizeRedemptionStage.PIX_CONFIRM || state.canContinuePix())
                     )
                 }
             }

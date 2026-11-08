@@ -212,6 +212,10 @@ class PrizeRedemptionServiceDecisionTest : PrizeRedemptionTestFixture() {
             val vm = viewModel()
             advanceUntilIdle()
             vm.select(channel)
+            if (channel == PrizeRedemptionChannel.PIX) {
+                vm.consultPix()
+                advanceUntilIdle()
+            }
             val stage = vm.state.value.stage
             if (channel == PrizeRedemptionChannel.MERCADO_PAGO) vm.confirmMercadoPago() else vm.confirmPix()
             advanceUntilIdle()
@@ -314,9 +318,12 @@ class PrizeRedemptionServiceDecisionTest : PrizeRedemptionTestFixture() {
         val vm = viewModel()
         advanceUntilIdle()
         vm.select(PrizeRedemptionChannel.PIX)
+        vm.consultPix()
+        advanceUntilIdle()
         vm.confirmPix()
         advanceUntilIdle()
-        assertEquals(PrizeRedemptionStage.PIX_ENTRY, vm.state.value.stage)
+        assertEquals(PrizeRedemptionStage.PIX_CONFIRM, vm.state.value.stage)
+        assertEquals(1, redemptionCalls)
         assertNull(vm.state.value.registrationNotice)
         assertNotNull(vm.state.value.errorMessage)
         assertFalse(vm.state.value.loading)

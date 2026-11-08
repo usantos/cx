@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.snapshots.Snapshot
 import androidx.compose.ui.Modifier
@@ -23,6 +24,11 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performSemanticsAction
+import androidx.compose.ui.semantics.SemanticsActions
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import br.gov.caixa.loterias.core.designsystem.testing.captureToImage
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
@@ -35,6 +41,7 @@ import br.gov.caixa.loterias.feature.retail.domain.model.PrizeDetails
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixOtherKeyField
 import br.gov.caixa.loterias.feature.retail.presentation.components.PrizePixTab
 import br.gov.caixa.loterias.feature.retail.presentation.screen.PrizeResultHeader
+import br.gov.caixa.loterias.feature.retail.presentation.screen.PrizePixSuccessScreen
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
 import java.math.BigDecimal
 import kotlin.math.abs
@@ -54,6 +61,30 @@ import org.robolectric.annotation.ResourcesMode
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 class PrizePixRenderingUiTest {
     @get:Rule val compose = createAndroidComposeRule<br.gov.caixa.loterias.apostas.HomeDrawerTestActivity>()
+
+    @Test fun `Pix success action displays every word without clipping`() = assertSuccessLabelFits(1f)
+
+    @Test fun `Pix success action displays every word with enlarged text`() = assertSuccessLabelFits(1.5f)
+
+    private fun assertSuccessLabelFits(fontScale: Float) {
+        compose.setFeatureContent {
+            CompositionLocalProvider(LocalDensity provides Density(LocalDensity.current.density, fontScale)) {
+                LoteriasCaixaDSTheme { PrizePixSuccessScreen({}, {}) }
+            }
+        }
+        val layouts = mutableListOf<TextLayoutResult>()
+        compose.onNodeWithTag("simlo.retail.0030", useUnmergedTree = true).performScrollTo()
+            .performSemanticsAction(SemanticsActions.GetTextLayoutResult) { getLayout -> assertTrue(getLayout(layouts)) }
+        compose.runOnIdle {
+            val layout = layouts.single()
+            assertEquals("Acesse Minhas apostas", layout.layoutInput.text.text.replace(Regex("\\s+"), " ").trim())
+            assertFalse(
+                "Texto cortado: escala=$fontScale, linhas=${layout.lineCount}, limite=${layout.layoutInput.maxLines}, " +
+                    "tamanho=${layout.size}, largura=${layout.didOverflowWidth}, altura=${layout.didOverflowHeight}",
+                layout.hasVisualOverflow
+            )
+        }
+    }
 
     @Test fun `selected Pix tab and invalid key have visibly distinct rendered states`() {
         val cpfSelected = mutableStateOf(true)

@@ -57,6 +57,10 @@ abstract class PrizeRedemptionTestFixture {
     protected var redemption: Triple<Long, PrizeRedemptionChannel, String>? = null
     protected var redemptionPending: kotlinx.coroutines.CompletableDeferred<Unit>? = null
     protected var redemptionCalls = 0
+    protected var consultCalls = 0
+    protected var consultedKey: String? = null
+    protected var consultPending: kotlinx.coroutines.CompletableDeferred<Unit>? = null
+    protected var cancelPending: kotlinx.coroutines.CompletableDeferred<Unit>? = null
     protected var cancelCalls = 0
     protected var codeCalls = 0
     protected var detailsCalls = 0
@@ -91,7 +95,12 @@ abstract class PrizeRedemptionTestFixture {
             codeCalls++
             codeResult
         },
-        ConsultPixRedemptionKeyUseCase { _, _ -> consultResult },
+        ConsultPixRedemptionKeyUseCase { _, key ->
+            consultCalls++
+            consultedKey = key
+            consultPending?.await()
+            consultResult
+        },
         RedeemPrizeUseCase { id, channel, value ->
             redemptionCalls++
             redemption = Triple(id, channel, value)
@@ -100,6 +109,7 @@ abstract class PrizeRedemptionTestFixture {
         },
         CancelPixRedemptionUseCase {
             cancelCalls++
+            cancelPending?.await()
             cancelResult
         },
         PrizeReceiptUseCases(betReceipt, DownloadPrizeReceiptUseCase { prizePdfResult }),

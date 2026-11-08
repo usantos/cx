@@ -107,6 +107,24 @@ class PrizeChannelScreensUiTest {
         compose.runOnIdle { assertEquals(listOf("consult", "confirm", "cancel"), calls) }
     }
 
+    @Test fun `Pix actions are disabled while a redemption is processing`() {
+        val actions = PrizePixActions({}, {}, {}, {}, {}, {}, {})
+        compose.setFeatureContent {
+            LoteriasCaixaDSTheme {
+                PrizePixDataScreen(
+                    PrizeRedemptionUiState(
+                        stage = PrizeRedemptionStage.PIX_CONFIRM,
+                        details = details,
+                        pixBeneficiary = PixBeneficiary("***", "Titular de teste", "fixture@example.test", "Banco"),
+                        loading = true
+                    ), {}, {}, actions
+                )
+            }
+        }
+        compose.onNodeWithText("Resgatar").performScrollTo().assertIsNotEnabled()
+        compose.onNodeWithText("Cancelar").performScrollTo().assertIsNotEnabled()
+    }
+
     @Test fun `Pix CPF tab and entry cancellation route locally without confirming a transfer`() {
         val state =
             mutableStateOf(

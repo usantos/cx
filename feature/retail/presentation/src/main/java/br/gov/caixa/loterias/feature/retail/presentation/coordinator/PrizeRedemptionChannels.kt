@@ -12,6 +12,8 @@ import br.gov.caixa.loterias.feature.retail.presentation.formatting.localizedMes
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.canContinuePix
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.isValidPrizeEmail
 import br.gov.caixa.loterias.feature.retail.presentation.mapper.selectedPixKey
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionInputAction
+import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionStage
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionStateAction
 import br.gov.caixa.loterias.feature.retail.presentation.state.PrizeRedemptionUiState
 import kotlinx.coroutines.CoroutineScope
@@ -73,42 +75,55 @@ internal class PrizePixChannel(
     private val interactionBlocked: () -> Boolean,
     private val fail: (AppError) -> Unit,
 ) {
-    fun selectCpfPixKey() = mutableState.dispatch(PrizeRedemptionStateAction.CpfPixKeySelected)
+    fun selectCpfPixKey() = editKey(PrizeRedemptionStateAction.CpfPixKeySelected)
 
-    fun selectOtherPixKey() = mutableState.dispatch(PrizeRedemptionStateAction.OtherPixKeySelected)
+    fun selectOtherPixKey() = editKey(PrizeRedemptionStateAction.OtherPixKeySelected)
 
-    fun changePixKey(value: String) = mutableState.dispatch(PrizeRedemptionStateAction.PixKeyChanged(value))
+    fun changePixKey(value: String) = editKey(PrizeRedemptionStateAction.PixKeyChanged(value))
 
-    fun togglePixOwnership() = mutableState.dispatch(PrizeRedemptionStateAction.PixOwnershipToggled)
+    fun togglePixOwnership() = editKey(PrizeRedemptionStateAction.PixOwnershipToggled)
 
-    fun consultPix() = scope.launch(dispatchers.io) {
-        if (interactionBlocked()) return@launch
-        val key = mutableState.value.selectedPixKey()
-        if (!mutableState.value.canContinuePix()) {
+    fun consultPix() {
+        if (!canAct(PrizeRedemptionStage.PIX_ENTRY)) return
+        val state = mutableState.value
+        if (!state.canContinuePix()) {
             mutableState.dispatch(PrizeRedemptionStateAction.PixKeyRejected())
-            return@launch
+            return
         }
+        val key = state.selectedPixKey()
+        // Reserva a etapa antes de agendar a consulta para impedir cliques repetidos.
         mutableState.dispatch(PrizeRedemptionStateAction.PixConsultStarted)
-        when (val result = consultPixKey(betId, key)) {
-            is AppResult.Success -> mutableState.dispatch(PrizeRedemptionStateAction.PixBeneficiaryReceived(result.value))
-            is AppResult.Failure -> fail(result.error)
+        scope.launch(dispatchers.io) {
+            when (val result = consultPixKey(betId, key)) {
+                is AppResult.Success -> mutableState.dispatch(PrizeRedemptionStateAction.PixBeneficiaryReceived(result.value))
+                is AppResult.Failure -> fail(result.error)
+            }
         }
     }
 
-    fun confirmPix() = submit(
-        PrizeRedemptionChannel.PIX,
-        mutableState.value.pixBeneficiary?.key?.ifBlank { mutableState.value.selectedPixKey() }
-            ?: mutableState.value.selectedPixKey()
-    )
+    fun confirmPix() {
+        if (!canAct(PrizeRedemptionStage.PIX_CONFIRM)) return
+        // O legado envia a chave escolhida; a chave do favorecido é apenas apresentação.
+        submit(PrizeRedemptionChannel.PIX, mutableState.value.selectedPixKey())
+    }
 
-    fun cancelPixAndExit() = scope.launch(dispatchers.io) {
-        if (interactionBlocked()) return@launch
+    fun cancelPixAndExit() {
+        if (!canAct(PrizeRedemptionStage.PIX_CONFIRM)) return
         mutableState.dispatch(PrizeRedemptionStateAction.PixCancellationStarted)
-        when (val result = cancelPix(betId)) {
-            is AppResult.Success -> returnToOptions()
-            is AppResult.Failure -> fail(result.error)
+        scope.launch(dispatchers.io) {
+            when (val result = cancelPix(betId)) {
+                is AppResult.Success -> returnToOptions()
+                is AppResult.Failure -> fail(result.error)
+            }
         }
     }
+
+    private fun editKey(action: PrizeRedemptionInputAction) {
+        if (canAct(PrizeRedemptionStage.PIX_ENTRY)) mutableState.dispatch(action)
+    }
+
+    private fun canAct(stage: PrizeRedemptionStage): Boolean =
+        mutableState.value.stage == stage && !mutableState.value.loading && !interactionBlocked()
 }
 
 internal class PrizeMercadoPagoChannel(
