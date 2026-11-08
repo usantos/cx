@@ -22,7 +22,13 @@ internal sealed interface TicketsStateAction {
         val modalities: List<br.gov.caixa.loterias.core.domain.contract.betting.model.LotteryModality>,
     ) : TicketsHistoryAction
     data object BetFiltersApplied : TicketsHistoryAction
-    data class BetsReceived(val page: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage) : TicketsHistoryAction
+    data object BetPageLoading : TicketsHistoryAction
+    data class BetPageFailed(val message: String) : TicketsHistoryAction
+    data class BetsReceived(
+        val page: br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage,
+        val append: Boolean = false,
+        val canLoadMore: Boolean = false,
+    ) : TicketsHistoryAction
     data object PurchasesLoading : TicketsHistoryAction
     data class PurchaseMonthsReceived(val months: List<br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth>) :
         TicketsHistoryAction

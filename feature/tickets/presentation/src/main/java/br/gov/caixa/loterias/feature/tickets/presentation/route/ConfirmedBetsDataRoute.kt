@@ -45,7 +45,8 @@ fun ConfirmedBetsDataRoute(
             selectPeriod = {
                 viewModel.selectBetPeriod(it)
                 viewModel.applyBetFilters()
-            }
+            },
+            loadMoreBets = viewModel::loadMoreBets
         )
     )
     if (state.showBetFilters) {

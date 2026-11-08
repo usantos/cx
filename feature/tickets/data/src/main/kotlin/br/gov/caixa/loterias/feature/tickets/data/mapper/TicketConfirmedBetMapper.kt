@@ -51,6 +51,13 @@ internal fun JsonElement?.mapConfirmedBets(): List<ConfirmedBet> = ticketCollect
     )
 }
 
+internal fun JsonElement?.confirmedBetsTotalCount(): Long? = ticketPayloadObject()
+    ?.ticketElement("rowCount")
+    ?.takeIf(JsonElement::isJsonPrimitive)
+    ?.asString
+    ?.toLongOrNull()
+    ?.takeIf { it >= 0 }
+
 internal fun JsonObject.ticketContestTypeId(): Long {
     ticketChildLong("tipoConcurso", "valor")?.let { return it }
     ticketLong("idTipoConcurso")?.let { return it }

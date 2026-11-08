@@ -8,6 +8,7 @@ import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.RsaTicketCod
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketCodeEncoder
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.TicketsRemoteDataSource
 import br.gov.caixa.loterias.feature.tickets.data.datasource.remote.prepareLegacyTicketPayload
+import br.gov.caixa.loterias.feature.tickets.data.mapper.confirmedBetsTotalCount
 import br.gov.caixa.loterias.feature.tickets.data.mapper.ticketFindFirstText
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toBets
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toCheckedTicketResult
@@ -17,6 +18,7 @@ import br.gov.caixa.loterias.feature.tickets.data.mapper.toPurchaseMonths
 import br.gov.caixa.loterias.feature.tickets.data.mapper.toPurchases
 import br.gov.caixa.loterias.feature.tickets.domain.model.CheckedTicketResult
 import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsConfiguration
+import br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage
 import br.gov.caixa.loterias.feature.tickets.domain.model.PreparedTicketScan
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseDetails
 import br.gov.caixa.loterias.feature.tickets.domain.model.PurchaseMonth
@@ -34,9 +36,14 @@ class TicketsRepositoryImpl(
     override suspend fun confirmedBets(filters: Map<String, String>): List<ConfirmedBet> =
         remote.confirmedBets(filters).toBets()
 
-    override suspend fun confirmedBetsPage(filters: Map<String, String>): br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage {
-        val bets = remote.confirmedBets(filters).toBets().map { it.copy(backend = remote.confirmedBetsBackend()) }
-        return br.gov.caixa.loterias.feature.tickets.domain.model.ConfirmedBetsPage(bets, remote.confirmedBetsBackend())
+    override suspend fun confirmedBetsPage(filters: Map<String, String>): ConfirmedBetsPage {
+        val payload = remote.confirmedBets(filters)
+        val backend = remote.confirmedBetsBackend()
+        return ConfirmedBetsPage(
+            bets = payload.toBets().map { it.copy(backend = backend) },
+            backend = backend,
+            totalCount = payload.confirmedBetsTotalCount(),
+        )
     }
 
     override suspend fun recoverConfirmedBet(bet: ConfirmedBet): ConfirmedBet =

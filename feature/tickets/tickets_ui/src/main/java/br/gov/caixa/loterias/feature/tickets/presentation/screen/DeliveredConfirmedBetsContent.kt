@@ -1,10 +1,13 @@
 package br.gov.caixa.loterias.feature.tickets.presentation.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,8 @@ fun ConfirmedBetsContentDelivered(
     actions: ConfirmedBetsListActions,
 ) {
     val uiStrings = androidx.compose.ui.platform.LocalResources.current
+    val listState = rememberLazyListState()
+    LaunchedEffect(state.betFilters.period) { listState.scrollToItem(0) }
     LoteriasCaixaDSScaffold(
         title = uiStrings.getString(DeliveryR.string.ui_minhas_apostas_807108),
         onBack = onBack,
@@ -56,7 +61,10 @@ fun ConfirmedBetsContentDelivered(
         containerColor = LoteriasCaixaDSColorTokens.White,
         modifier = Modifier.uiId("tickets.0164")
     ) { padding ->
-        androidx.compose.foundation.lazy.LazyColumn((Modifier.fillMaxSize().padding(padding)).uiId("tickets.0165")) {
+        androidx.compose.foundation.lazy.LazyColumn(
+            modifier = (Modifier.fillMaxSize().padding(padding)).uiId("tickets.0165"),
+            state = listState
+        ) {
             item { LegacyConfirmedBetsIntro(state.historyBackend) }
             item {
                 LegacyTicketPeriodSelector(
@@ -90,6 +98,18 @@ fun ConfirmedBetsContentDelivered(
                 else -> items(state.bets.size, key = { state.bets[it].id }) { index ->
                     val bet = state.bets[index]
                     LegacyConfirmedBetRow(bet, { onOpen(bet) }, onAddToCart?.let { { it(bet) } })
+                }
+            }
+            if (privateDataEnabled && !state.isLoading && state.errorMessage == null && state.bets.isNotEmpty()) {
+                item(key = "confirmed-bets-pagination") {
+                    val pageError = state.betPageErrorMessage
+                    when {
+                        state.isLoadingMoreBets -> LoadingData(Modifier.height(100.dp).uiId("tickets.0400"))
+                        pageError != null -> Box(Modifier.uiId("tickets.0401")) {
+                            ErrorData(pageError, actions.loadMoreBets)
+                        }
+                        state.canLoadMoreBets -> LaunchedEffect(state.bets.size) { actions.loadMoreBets() }
+                    }
                 }
             }
             item { Spacer(Modifier.height(120.dp)) }

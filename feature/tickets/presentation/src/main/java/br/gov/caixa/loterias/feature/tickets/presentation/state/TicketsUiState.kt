@@ -22,19 +22,17 @@ data class BetFilters(
     val recurring: Boolean = false,
     val combo: Boolean = false,
 ) {
-    fun query(): Map<String, String> = buildMap {
+    val pageSize: Int get() = if (period?.month == 45) 32 else 30
+
+    fun query(offset: Int = 0): Map<String, String> = buildMap {
         period?.let {
             put("mes", it.month.toString())
             it.year?.takeIf { year -> year > 0 }?.let { year -> put("ano", year.toString()) }
         }
-        put("offset", "0")
-        put("size", if (period?.month == 45) "32" else "30")
-        // As posições do seletor legado diferem dos códigos de pago e expirado do serviço.
-        when (status) {
-            1L -> put("situacao", "1")
-            2L -> put("situacao", "4")
-            3L -> put("situacao", "6")
-        }
+        put("offset", offset.toString())
+        put("size", pageSize.toString())
+        // O seletor já guarda o valor da configuração do serviço, não a posição na lista.
+        if (status > 0) put("situacao", status.toString())
         if (ordering > 0) put("ordenacao", ordering.toString())
         if (betType > 0) put("tipoAposta", betType.toString())
         if (contestType > 0) put("tipoConcurso", contestType.toString())
@@ -119,6 +117,9 @@ data class TicketsUiState(
     val favoriteOverwriteConfirmation: Boolean = false,
     val favoriteSaved: Boolean = false,
     val damMessage: String? = null,
+    val isLoadingMoreBets: Boolean = false,
+    val canLoadMoreBets: Boolean = false,
+    val betPageErrorMessage: String? = null,
     val showBetFilters: Boolean = false,
     val showPurchaseFilters: Boolean = false,
     val isLoading: Boolean = false,

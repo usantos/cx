@@ -62,7 +62,7 @@ class TicketsViewModelTest {
         defaultOrdering = 3,
         defaultStatus = 1,
         defaultPeriod = period,
-        statuses = listOf(option),
+        statuses = listOf(TicketFilterOption(4, "Pagas")),
         orderings = listOf(TicketFilterOption(4, "Antigas")),
         periods = listOf(period),
         betTypes = listOf(TicketFilterOption(5, "Bolão")),
@@ -124,7 +124,7 @@ class TicketsViewModelTest {
 
         viewModel.openBetFilters()
         viewModel.selectBetPeriod(period)
-        viewModel.selectBetStatus(2)
+        viewModel.selectBetStatus(4)
         viewModel.selectBetOrdering(4)
         viewModel.selectBetType(5)
         viewModel.selectContestType(6)
@@ -153,6 +153,26 @@ class TicketsViewModelTest {
         advanceUntilIdle()
         assertTrue(viewModel.state.value.loaded)
         assertFalse(viewModel.state.value.isLoading)
+    }
+
+    @Test fun `paid and expired selections from backend options reach the history query unchanged`() = runTest(dispatcher) {
+        val statuses = listOf(TicketFilterOption(1, "Todas"), TicketFilterOption(4, "Pagas"), TicketFilterOption(6, "Prescritas"))
+        configurationResult = AppResult.Success(configuration.copy(statuses = statuses))
+        val model = viewModel()
+        model.loadBets()
+        advanceUntilIdle()
+        for (status in statuses) {
+            model.openBetFilters()
+            model.selectBetStatus(status.value)
+            model.applyBetFilters()
+            advanceUntilIdle()
+            assertEquals(status.value.toString(), betFilters?.get("situacao"))
+            assertFalse(model.state.value.showBetFilters)
+            assertFalse(model.state.value.isLoading)
+        }
+        model.clearBetFilters()
+        advanceUntilIdle()
+        assertEquals("1", betFilters?.get("situacao"))
     }
 
     @Test fun `loads months filters and paginates purchases with legacy query keys`() = runTest(dispatcher) {
@@ -537,7 +557,7 @@ class TicketsViewModelTest {
         model.loadBets()
         advanceUntilIdle()
         assertTrue(model.state.value.errorMessage!!.contains("dados"))
-        model.selectBetStatus(2)
+        model.selectBetStatus(4)
         betsResult = AppResult.Success(listOf(bet))
         model.retryBets()
         advanceUntilIdle()

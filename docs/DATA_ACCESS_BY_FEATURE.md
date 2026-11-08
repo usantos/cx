@@ -298,6 +298,17 @@ Consumidores: [PaymentViewModel](../feature/payment/presentation/src/main/java/b
 
 Consumidores: [RetailSearchViewModel](../feature/retail/presentation/src/main/java/br/gov/caixa/loterias/feature/retail/presentation/viewmodel/RetailSearchViewModel.kt), [PrizeRedemptionViewModel](../feature/retail/presentation/src/main/java/br/gov/caixa/loterias/feature/retail/presentation/viewmodel/PrizeRedemptionViewModel.kt) e [LocationGateViewModel](../feature/retail/presentation/src/main/java/br/gov/caixa/loterias/feature/retail/presentation/viewmodel/LocationGateViewModel.kt).
 
+No resgate Pix, `PrizeRedemptionViewModel` abre a escolha de CPF ou outra chave;
+outra chave exige validação e aceite de titularidade. `PrizePixChannel` consulta
+o favorecido e só efetiva o resgate após confirmação explícita, enviando a mesma
+chave consultada, como no legado. Durante consulta ou cancelamento, bloqueia
+repetições, edição e saída da etapa. Cancelar na confirmação aguarda a resposta
+do serviço; falha permite nova tentativa explícita. Reabrir o canal limpa outra
+chave e aceite. As telas existentes apresentam confirmação, sucesso e acesso a
+Minhas Apostas. Os endpoints e o tratamento de erros permanecem os listados abaixo.
+
+O resgate mantém envio único e bloqueia novos acionamentos durante o processamento e após o sucesso. Os botões Resgatar e Cancelar ficam desabilitados enquanto a solicitação está em andamento. A exceção temporária de múltiplos envios foi removida.
+
 ## Notificações e preferências — Notifications / Account
 
 | Necessidade | Classe | Observação |
@@ -346,6 +357,12 @@ A suspensão protetiva continua permitida com o módulo opcional desabilitado.
 | Aceitar termos | [AcceptTermsUseCase](../feature/support/domain/src/main/kotlin/br/gov/caixa/loterias/feature/support/domain/usecase/AcceptTermsUseCase.kt) | Escrita; carregar o texto não implica aceitar. |
 
 Consumidor: [SupportViewModel](../feature/support/presentation/src/main/java/br/gov/caixa/loterias/feature/support/presentation/viewmodel/SupportViewModel.kt).
+
+O aceite obrigatório permite voltar sem aceitar: quando aberto na raiz da navegação,
+Voltar abre a Home; com uma tela anterior, retorna a ela. A declaração de aceite
+e o botão Continuar ficam empilhados, permitindo que o texto cresça com o tamanho
+da fonte sem sobrepor ou interceptar o toque de seleção.
+
 
 ### Disponibilidade e entrega do FAQ
 
@@ -684,7 +701,7 @@ Estas rotas permanecem declaradas em `BackendApi` para compatibilidade com o inv
 
 | Funcionalidade | Campos enviados e regras |
 | --- | --- |
-| Histórico de apostas | `mes`, `ano` quando há ano positivo; `offset` começa em `0`; `size` é `32` para mês especial `45`, senão `30`. Situação selecionada `1/2/3` vira `situacao=1/4/6`. `ordenacao`, `tipoAposta`, `tipoConcurso`, `modalidade` só quando positivos. `surpresinha`, `teimosinha`, `combo` recebem string `"3"` quando ativos. Paginação ajusta o deslocamento. |
+| Histórico de apostas | `mes`, `ano` quando há ano positivo; `offset` começa em `0`; `size` é `32` para mês especial `45`, senão `30`. Situação usa diretamente o `valor` da opção configurada (por exemplo, `1/4/6` para Todas/Pagas/Prescritas); não converter a posição do seletor novamente. `ordenacao`, `tipoAposta`, `tipoConcurso`, `modalidade` só quando positivos. `surpresinha`, `teimosinha`, `combo` recebem string `"3"` quando ativos. Paginação avança o deslocamento pelo número de registros recebidos, preserva os filtros aplicados e usa `payload.rowCount` como total quando fornecido. Sem total, encerra com página menor que o tamanho solicitado; página vazia sempre encerra. Trocar período invalida respostas antigas e reinicia em `offset=0`. |
 | Histórico dinâmico | Copia os filtros anteriores, renomeando `combo` para `comboApostas`. A política decide a base e se usa `apostas` ou `consultar`; recuperação `{id}/recuperar` é específica da Nova API. |
 | Compras | `mes`, `ano` quando há período; `offset`, `size=10`; `meio` se houver meio de pagamento; `situacao` se selecionada. Filtros de itens da compra são aplicados à lista em memória e não acrescentam parâmetros a `compras/{id}/apostas`. |
 | Apostas favoritas por modalidade | `modalidade`, `offset`, `size="8"`. |

@@ -13,9 +13,11 @@ import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import br.gov.caixa.loterias.core.designsystem.theme.LoteriasCaixaDSTheme
@@ -140,6 +142,45 @@ class TicketsContentStateUiTest {
             assertEquals(listOf(purchase), selected)
             assertEquals(1, pages)
         }
+    }
+
+    @Test fun confirmedBetsLoadNextPageWhenTheEndOfTheListIsReached() {
+        var pages = 0
+        val state = mutableStateOf(TicketsUiState(
+            loaded = true,
+            bets = listOf(ConfirmedBet(1, "Mega-Sena", 1, "04/11/2026", "Ativa", emptyList())),
+            canLoadMoreBets = true
+        ))
+        show {
+            ConfirmedBetsContentDelivered(
+                state.value, {}, {}, null, null, null, BigDecimal.ZERO, 0, null, true,
+                ConfirmedBetsListActions({}, {}, {}, {
+                    pages++
+                    state.value = state.value.copy(isLoadingMoreBets = true)
+                })
+            )
+        }
+        compose.onNodeWithTag("simlo.tickets.0165").performScrollToIndex(4)
+        compose.runOnIdle { assertEquals(1, pages) }
+    }
+
+    @Test fun failedNextBetPageKeepsTheVisibleBetAndOffersAnExplicitRetry() {
+        var retries = 0
+        show {
+            ConfirmedBetsContentDelivered(
+                TicketsUiState(
+                    loaded = true,
+                    bets = listOf(ConfirmedBet(1, "Mega-Sena", 1, "04/11/2026", "Ativa", emptyList())),
+                    canLoadMoreBets = true,
+                    betPageErrorMessage = "Falha na próxima página"
+                ), {}, {}, null, null, null, BigDecimal.ZERO, 0, null, true,
+                ConfirmedBetsListActions({}, {}, {}, { retries++ })
+            )
+        }
+        compose.onNodeWithText("04/11/2026").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Falha na próxima página").performScrollTo().assertIsDisplayed()
+        compose.onNodeWithText("Tentar novamente").performScrollTo().performClick()
+        compose.runOnIdle { assertEquals(1, retries) }
     }
 
     @Test fun confirmedBetsVisitorUsesDefaultPeriodAndCanBetFromEmptyState() {

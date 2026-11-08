@@ -8,14 +8,14 @@ import org.junit.Assert.assertFalse
 import org.junit.Test
 
 class TicketFilterQueryTest {
-    @Test fun `relative bet periods omit year and status choices use legacy service codes`() {
+    @Test fun `relative bet periods omit year and status choices preserve configured service codes`() {
         for (year in listOf(null, 0, -1)) {
             val query = BetFilters(period = TicketPeriod(RECENT_PERIOD, year, "Últimos 45 dias")).query()
             assertEquals("45", query["mes"])
             assertFalse(query.containsKey("ano"))
         }
         assertEquals("2026", BetFilters(period = TicketPeriod(OCTOBER, HISTORY_YEAR, "Outubro")).query()["ano"])
-        for ((selection, serviceCode) in listOf(1L to "1", 2L to "4", EXPIRED_STATUS to "6")) {
+        for ((selection, serviceCode) in listOf(1L to "1", PAID_STATUS to "4", EXPIRED_STATUS to "6")) {
             assertEquals(serviceCode, BetFilters(status = selection).query()["situacao"])
         }
     }
@@ -38,5 +38,6 @@ private const val RECENT_PERIOD = 45
 private const val HISTORY_YEAR = 2026
 private const val OCTOBER = 10
 private const val SEPTEMBER = 9
-private const val EXPIRED_STATUS = 3L
+private const val PAID_STATUS = 4L
+private const val EXPIRED_STATUS = 6L
 private const val PURCHASE_OFFSET = 3

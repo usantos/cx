@@ -68,6 +68,7 @@ internal class TicketsHistoryCoordinator(
     private val recovery = TicketsHistoryRecovery(mutableState, bets, purchases)
 
     fun loadBets() = bets.loadBets()
+    fun loadMoreBets() = bets.loadMoreBets()
     fun openBetFilters() = betFilters.openBetFilters()
     fun closeBetFilters() = betFilters.closeBetFilters()
     fun selectBetPeriod(value: TicketPeriod) = betFilters.selectBetPeriod(value)

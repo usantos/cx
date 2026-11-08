@@ -18,5 +18,7 @@
   "suporte.faq.secoes": "id=simlo.help.0026",
   "suporte.faq.perguntas": "id=simlo.help.0029",
   "modulo.estado": "id=simlo.modules.0001",
-  "modulo.acao": "id=simlo.ds.0019"
+  "modulo.acao": "id=simlo.ds.0019",
+  "apostas.paginacao.carregando": "id=simlo.tickets.0400",
+  "apostas.paginacao.erro": "id=simlo.tickets.0401"
 }

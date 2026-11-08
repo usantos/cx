@@ -60,6 +60,55 @@ class TicketsRepositoryImplTest {
         assertEquals(mapOf("mes" to "45"), remote.filters)
     }
 
+    @Test fun `history page preserves service total and actual backend for partial results`() = runTest {
+        val backend = ConfirmedBetsBackend.MICROSERVICE
+        val remote = FakeTicketsRemote(
+            bets = json("""{"rowCount":75,"apostas":[{"id":41,"modalidade":"QUINA"}]}"""),
+            backend = backend,
+        )
+
+        val page = TicketsRepositoryImpl(remote).confirmedBetsPage(mapOf("offset" to "30", "size" to "30"))
+
+        assertEquals(75L, page.totalCount)
+        assertEquals(listOf(41L), page.bets.map { it.id })
+        assertEquals(backend, page.backend)
+        assertEquals(backend, page.bets.single().backend)
+        assertEquals(mapOf("offset" to "30", "size" to "30"), remote.filters)
+    }
+
+    @Test fun `history page reads total from an optional payload envelope including empty pages`() = runTest {
+        listOf("0", "75", "\"75\"", "9223372036854775807").forEach { count ->
+            val remote = FakeTicketsRemote(
+                bets = json("""{"payload":{"rowCount":$count,"apostas":[]}}"""),
+                backend = ConfirmedBetsBackend.MICROSERVICE,
+            )
+
+            val page = TicketsRepositoryImpl(remote).confirmedBetsPage(emptyMap())
+
+            assertEquals(count.trim('"').toLong(), page.totalCount)
+            assertTrue(page.bets.isEmpty())
+            assertEquals(ConfirmedBetsBackend.MICROSERVICE, page.backend)
+        }
+    }
+
+    @Test fun `history page leaves absent or invalid total unknown without deriving it from bets`() = runTest {
+        val invalidTotals = listOf("null", "-1", "1.5", "true", "\"inválido\"", "[]", "{}", "9223372036854775808")
+        val payloads = invalidTotals.map { count ->
+            """{"rowCount":$count,"apostas":[{"id":41,"modalidade":"QUINA"}]}"""
+        } + listOf(
+            """{"apostas":[{"id":41,"modalidade":"QUINA","rowCount":99}]}""",
+            """{"payload":{"apostas":[{"id":41,"modalidade":"QUINA"}]}}""",
+            """[{"id":41,"modalidade":"QUINA"}]""",
+        )
+        payloads.forEach { payload ->
+            val page = TicketsRepositoryImpl(FakeTicketsRemote(bets = json(payload))).confirmedBetsPage(emptyMap())
+
+            assertNull(page.totalCount)
+            assertEquals(1, page.bets.size)
+        }
+        assertNull(TicketsRepositoryImpl(FakeTicketsRemote()).confirmedBetsPage(emptyMap()).totalCount)
+    }
+
     @Test fun `repository maps nested bets fallbacks flags and distinct ids`() = runTest {
         val json = json(
             """{

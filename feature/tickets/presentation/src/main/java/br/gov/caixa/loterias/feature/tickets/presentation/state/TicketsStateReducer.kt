@@ -35,7 +35,7 @@ private fun reduceTicketsHistoryState(state: TicketsUiState, action: TicketsHist
         errorMessage = action.message
     )
 
-    TicketsStateAction.BetsLoading -> state.copy(isLoading = true, errorMessage = null)
+    TicketsStateAction.BetsLoading -> state.copy(isLoading = true, isLoadingMoreBets = false, betPageErrorMessage = null, errorMessage = null)
 
     is TicketsStateAction.BetsConfigurationReceived -> state.copy(
         betConfiguration = action.configuration,
@@ -43,10 +43,20 @@ private fun reduceTicketsHistoryState(state: TicketsUiState, action: TicketsHist
         betFilters = initialBetFilters(state.betFilters, action.configuration)
     )
 
-    TicketsStateAction.BetFiltersApplied -> state.copy(showBetFilters = false, isLoading = true, errorMessage = null)
+    TicketsStateAction.BetFiltersApplied -> state.copy(
+        showBetFilters = false, isLoading = true, isLoadingMoreBets = false, canLoadMoreBets = false,
+        betPageErrorMessage = null, errorMessage = null
+    )
+
+    TicketsStateAction.BetPageLoading -> state.copy(isLoadingMoreBets = true, betPageErrorMessage = null)
+
+    is TicketsStateAction.BetPageFailed -> state.copy(isLoadingMoreBets = false, betPageErrorMessage = action.message)
 
     is TicketsStateAction.BetsReceived -> state.copy(
-        bets = action.page.bets,
+        bets = (if (action.append) state.bets + action.page.bets else action.page.bets).distinctBy { it.id },
+        isLoadingMoreBets = false,
+        canLoadMoreBets = action.canLoadMore,
+        betPageErrorMessage = null,
         historyBackend = action.page.backend,
         isLoading = false,
         loaded = true

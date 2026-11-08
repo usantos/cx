@@ -27,7 +27,7 @@ O valor é literal, não derivado do texto visível, CPF, usuário ou idioma. ID
 | retail | 131 |
 | onboarding | 46 |
 | support | 32 |
-| tickets | 250 |
+| tickets | 252 |
 
 O inventário acompanha o arquivo físico após a extração das UIs para os splits
 `*_ui`. Contratos, ViewModels e efeitos de plataforma permanecem nas bibliotecas
@@ -140,3 +140,11 @@ As linhas repetidas `help.0027`, `help.0030` e as respostas `help.0018` exigem
 escopo na respectiva lista/pergunta. A presença desses IDs na árvore nativa
 e a entrega do split dependem da execução no aplicativo; o gate estático
 valida somente declarações e localizadores.
+
+## Paginação de Minhas Apostas
+
+`simlo.tickets.0400` identifica a continuação em carregamento.
+`simlo.tickets.0401` identifica o erro de continuação; a ação de tentar novamente
+usa o controle compartilhado de estado vazio dentro desse contêiner. O erro
+não substitui as apostas já carregadas. Declarações publicadas no código e no
+inventário; presença na árvore nativa depende da página e da falha exercitadas.

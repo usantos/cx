@@ -16015,5 +16015,23 @@
     "line": 51,
     "feature": "core-presentation",
     "symbol": "simlo.modules.feature_module_state_screen.empty_state"
+  },
+  {
+    "id": "simlo.tickets.0400",
+    "key": "tickets.0400",
+    "source": "feature/tickets/tickets_ui/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/screen/DeliveredConfirmedBetsContent.kt",
+    "kind": "Compose",
+    "line": 107,
+    "feature": "tickets",
+    "symbol": "simlo.tickets.confirmed_bets_content.pagination_loading"
+  },
+  {
+    "id": "simlo.tickets.0401",
+    "key": "tickets.0401",
+    "source": "feature/tickets/tickets_ui/src/main/java/br/gov/caixa/loterias/feature/tickets/presentation/screen/DeliveredConfirmedBetsContent.kt",
+    "kind": "Compose",
+    "line": 108,
+    "feature": "tickets",
+    "symbol": "simlo.tickets.confirmed_bets_content.pagination_error"
   }
 ]

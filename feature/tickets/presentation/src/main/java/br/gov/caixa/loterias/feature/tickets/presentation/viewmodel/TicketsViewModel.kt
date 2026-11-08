@@ -102,6 +102,8 @@ class TicketsViewModel(
 
     fun toggleTicketModality(id: Int) = modalities.toggleTicketModality(id)
 
+    fun loadMoreBets() = history.loadMoreBets()
+
     fun openBetFilters() = history.openBetFilters()
 
     fun closeBetFilters() = history.closeBetFilters()
